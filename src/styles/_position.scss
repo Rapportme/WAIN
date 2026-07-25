@@ -1,0 +1,248 @@
+/* ============================================================ 02 · POSITION (signature) */
+.s-position {
+  --pad: clamp(92px, 13vh, 166px);
+}
+.pos-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.pos-head h2 {
+  font-size: var(--t-xl);
+  letter-spacing: var(--ls-mega);
+  max-width: 12ch;
+}
+.pos-read {
+  text-align: right;
+}
+.pos-read .big {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+.pos-read .big i {
+  font-style: normal;
+  color: var(--muted-2);
+}
+.pos-read .big b {
+  color: var(--signal-ink);
+}
+.posline {
+  position: relative;
+  margin-top: clamp(60px, 9vh, 104px);
+  padding-bottom: 4px;
+}
+.posline-rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--rule);
+}
+.posline-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  background: var(--signal);
+  width: 0;
+  transition: width 0.6s var(--ease), height 0.6s var(--ease);
+}
+.posline-marker {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 2px;
+  height: 24px;
+  background: var(--signal);
+  transform: translateX(-1px);
+  transition: left 0.6s var(--ease);
+}
+.posline-marker::after {
+  content: "You are here";
+  position: absolute;
+  top: -24px;
+  left: 1px;
+  transform: translateX(var(--tx, -50%));
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--signal-ink);
+  white-space: nowrap;
+}
+.posline-ticks {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.pos-tab {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  padding: 22px 0 0;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  color: var(--muted-2);
+  font-family: inherit;
+  transition: color 0.35s var(--ease);
+}
+.pos-tab::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 9px;
+  background: var(--rule);
+  transition: background 0.35s var(--ease), height 0.35s var(--ease);
+}
+.pos-tab:last-child {
+  flex: 0 0 auto;
+  text-align: right;
+}
+.pos-tab:last-child::before {
+  left: auto;
+  right: 0;
+}
+.pos-tab .num {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 5px;
+}
+.pos-tab .nm {
+  font-family: var(--disp);
+  font-size: clamp(1.05rem, 1.9vw, 1.55rem);
+  letter-spacing: -0.025em;
+  display: block;
+  line-height: 1.1;
+  font-weight: var(--w-head);
+}
+.pos-tab:hover {
+  color: var(--ink);
+}
+.pos-tab[aria-selected="true"] {
+  color: var(--ink);
+}
+.pos-tab[aria-selected="true"]::before {
+  background: var(--signal);
+  height: 16px;
+  width: 2px;
+}
+.pos-panels {
+  margin-top: clamp(46px, 7vh, 80px);
+  position: relative;
+}
+.pos-panel {
+  display: none;
+}
+.pos-panel.active {
+  display: block;
+  animation: fadeIn 0.55s var(--ease) both;
+}
+.pos-quote {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+  color: var(--ink);
+}
+.pos-quote .qm {
+  color: var(--signal);
+}
+.pos-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4.5vw, 72px);
+  margin-top: clamp(38px, 5.5vh, 60px);
+  border-top: 1px solid var(--rule);
+  padding-top: 26px;
+}
+.pos-cols h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.pos-cols h4 .mk {
+  width: 9px;
+  height: 9px;
+}
+.pos-cols p {
+  color: var(--muted);
+  max-width: 44ch;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+@media (max-width: 860px) {
+  .pos-cols {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .posline {
+    padding-left: 26px;
+    padding-bottom: 0;
+  }
+  .posline-rule {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+  .posline-fill {
+    width: 1px;
+    height: 0;
+  }
+  .posline-marker {
+    display: none;
+  }
+  .posline-ticks {
+    flex-direction: column;
+    gap: 0;
+  }
+  .pos-tab,
+  .pos-tab:last-child {
+    flex: 0 0 auto;
+    width: 100%;
+    text-align: left;
+    padding: 16px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .pos-tab::before,
+  .pos-tab:last-child::before {
+    top: 50%;
+    left: -26px;
+    right: auto;
+    width: 14px;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+  .pos-tab[aria-selected="true"]::before {
+    width: 20px;
+    height: 2px;
+  }
+  .pos-tab .num {
+    margin-bottom: 0;
+  }
+}

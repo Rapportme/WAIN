@@ -1,0 +1,143 @@
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .js .rise {
+    opacity: 1;
+    transform: none;
+  }
+  .hero-field i {
+    opacity: var(--shape-o, 1);
+  }
+}
+
+/* ============================================================ TYPE LAYER
+   Newsreader for every heading, Manrope for everything you read at
+   length. Newsreader carries an optical-size axis, so the display
+   sizes are set on the display cut and running text on the text cut.
+   The serif is kept for pull-quotes and asides — the moments where
+   the page is speaking rather than explaining. */
+.hero-h,
+.problem-h,
+.close-h,
+.statement,
+.s-promise blockquote {
+  font-variation-settings: "opsz" 60;
+}
+h2,
+h3,
+.routes-head h2,
+.guide .gq {
+  font-variation-settings: "opsz" 34;
+}
+.hero-h em {
+  font-style: italic;
+}
+.method-tail,
+.close-h b,
+.movement h3 {
+  font-variation-settings: "opsz" 40;
+}
+
+/* body copy moves to Manrope */
+.lede,
+.route p,
+.belief-note p,
+.pos-cols p,
+.ledger-row .pat,
+.movement p,
+.sit-a p,
+.lead .blurb,
+.piece .ttl,
+.sheet-cell p,
+.blind li,
+.dsteps li,
+.plist div,
+.menu-col a em,
+.modal-card .msub,
+.qlist li {
+  font-family: var(--body);
+  font-weight: 400;
+  letter-spacing: -0.008em;
+}
+.lede {
+  font-weight: 400;
+  line-height: 1.58;
+}
+.lede strong {
+  font-weight: 700;
+}
+.menu-col a em {
+  font-style: normal;
+  font-weight: 400;
+}
+.piece .ttl,
+.plist div {
+  font-weight: 500;
+}
+
+/* the voice stays in Newsreader */
+.lede-aside,
+.hero-sub,
+.win,
+.pos-quote,
+.sit-q .txt,
+.guide-say,
+.ledger-foot,
+.diag-cta .fine,
+.guide-go .fine,
+.f-brand p,
+.hero-third a {
+  font-family: var(--serif);
+  letter-spacing: -0.012em;
+}
+.lede-aside {
+  font-weight: 300;
+  font-style: italic;
+}
+.hero-sub {
+  font-weight: 300;
+  font-variation-settings: "opsz" 48;
+}
+
+/* Manrope sits a touch wide in caps — pull the tracking back */
+.label,
+.eyebrow .t,
+.eyebrow .n,
+.rt-n,
+.rt-go,
+.f-col h5,
+.filters button,
+.piece .fmt,
+.piece .rd,
+.spec .k,
+.sheet-cell .no,
+.movement .mv,
+.belief-note .ref,
+.sit-a .lb,
+.menu-col h4,
+.menu-btn,
+.menu-close,
+.modal-card .meye,
+.f-bot span,
+.guide-out .plabel,
+.ledger-hd span,
+.ledger-row .cnt {
+  letter-spacing: 0.15em;
+}
+.eyebrow .n,
+.piece .rd,
+.rt-n,
+.rt-go {
+  letter-spacing: 0.17em;
+}

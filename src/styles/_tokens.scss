@@ -1,0 +1,48 @@
+/* ============================================================
+   WE ARE IN COLLECTIVE — design tokens
+   The reason this page is colourful: every chapter is printed in
+   its own ink. CTAs stay teal everywhere, so "the action" never
+   changes hue. The brand geometry — circle, square, triangle,
+   wedge, bar, A — is the marker set. Each chapter gets one.
+   ============================================================ */
+:root {
+  --paper: #ffffff;
+  --paper-2: #f8fafc;
+  --paper-3: #f1f5f9;
+  --ink: #12263f; /* Navy */
+  --muted: rgba(18, 38, 63, 0.62);
+  --muted-2: rgba(18, 38, 63, 0.42);
+  --rule: rgba(18, 38, 63, 0.14);
+  --rule-2: rgba(18, 38, 63, 0.07);
+  --rule-dark: rgba(255, 255, 255, 0.16);
+
+  --signal: #0e9aa7; /* Teal — partnership, and the CTA */
+  --signal-lift: #4fd0d0; /* teal, lifted for navy plates */
+  --signal-ink: #0b7f8a; /* teal, darkened for small text */
+
+  --sage: #92b67e;
+  --sage-ink: #5c8347; /* Growth     */
+  --amber: #f4b22d;
+  --amber-ink: #96690a; /* Action     */
+  --coral: #f45d5d;
+  --coral-ink: #d33e3e; /* Challenges */
+  --lav: #8e78c7;
+  --lav-ink: #6b53ac; /* Thinking   */
+
+  /* Families resolve to the next/font-hosted variable fonts (see app/layout.tsx),
+     falling back to the literal names, then platform serifs / UI stacks. */
+  --disp: var(--font-newsreader), "Newsreader", "Iowan Old Style", Georgia, serif; /* headings   */
+  --ui: var(--font-manrope), "Manrope", system-ui, -apple-system, sans-serif; /* labels, UI */
+  --body: var(--font-manrope), "Manrope", system-ui, -apple-system, sans-serif; /* body       */
+  --serif: var(--font-newsreader), "Newsreader", "Iowan Old Style", Georgia, serif; /* the voice  */
+  --w-head: 500;
+  --w-mega: 600;
+  --ls-head: -0.018em;
+  --ls-mega: -0.028em;
+  --amask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 386.3 341.4'%3E%3Cpath d='M0.0 341.4L145.1 0.0L241.2 0.0L386.3 341.4L161.5 341.4L191.1 265.7L259.6 265.7L219.7 170.7L191.1 102.2L145.1 217.7L92.0 341.4L0.0 341.4Z' fill='%23000'/%3E%3C/svg%3E");
+  --t-mega: clamp(3.4rem, 12vw, 10.5rem);
+  --t-xl: clamp(2rem, 5.4vw, 4.5rem);
+  --t-lg: clamp(1.45rem, 3vw, 2.4rem);
+  --t-md: clamp(1rem, 1.1vw, 1.16rem);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

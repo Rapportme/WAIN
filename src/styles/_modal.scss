@@ -1,0 +1,114 @@
+/* ============================================================ 12-Q MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+}
+.modal.open {
+  display: block;
+}
+.modal-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 38, 63, 0.55);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.3s var(--ease);
+}
+.modal-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(680px, 100% - 40px);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border-top: 4px solid var(--signal);
+  padding: clamp(28px, 4vw, 48px);
+  animation: mpop 0.4s var(--ease);
+}
+@keyframes mpop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+.modal-card .mx {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-card .meye {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--signal-ink);
+  margin-bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.modal-card .meye .mk {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--signal);
+}
+.modal-card h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.modal-card .msub {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.02rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 52ch;
+}
+.qlist {
+  list-style: none;
+  counter-reset: q;
+  border-top: 1px solid var(--rule);
+}
+.qlist li {
+  counter-increment: q;
+  display: flex;
+  gap: 16px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--rule-2);
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.qlist li::before {
+  content: counter(q, decimal-leading-zero);
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.72rem;
+  color: var(--signal-ink);
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+.modal-card .mcta {
+  margin-top: 26px;
+}

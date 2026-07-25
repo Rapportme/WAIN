@@ -1,0 +1,45 @@
+/* ============================================================================
+   WE ARE IN COLLECTIVE — global stylesheet
+   Editorial edition. The whole design system, ported 1:1 from the original
+   single-file build into ordered SCSS partials.
+
+   The cascade is deliberately GLOBAL: the design relies on descendant
+   selectors (`.dark .eyebrow .n`), per-chapter CSS custom properties
+   (`--sig`, `--rc`, `--bc` …), and structural `:nth-child` colour rules.
+   Hashing class names through CSS Modules would sever those relationships,
+   so the visual system lives here and stays intact. Component-scoped design
+   tokens are all CSS custom properties, which is the modular seam that
+   matters for this brand.
+
+   Load order mirrors the original file so specificity ties resolve the same
+   way: tokens → base → furniture → chrome → chapters 00–10 → footer/modal →
+   type layer + reduced-motion overrides (which must come last).
+   ============================================================================ */
+
+@use "tokens";
+@use "base";
+@use "utilities";
+
+/* chrome */
+@use "masthead";
+@use "menu";
+
+/* chapters, in reading order */
+@use "hero"; // 00 · cover
+@use "routes"; // 00b · how to read this
+@use "problem"; // 01
+@use "position"; // 02
+@use "why"; // 03
+@use "experience"; // 04
+@use "method"; // 05 · dark plate
+@use "situations"; // 06
+@use "thinking"; // 07
+@use "promise"; // 08 · dark plate
+@use "diagnosis"; // 09
+@use "close"; // 10 + footer
+
+/* overlays */
+@use "modal";
+
+/* final overrides — must stay last */
+@use "typography-layer";

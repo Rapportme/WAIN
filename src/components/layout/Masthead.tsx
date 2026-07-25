@@ -1,0 +1,41 @@
+"use client";
+
+import Image from "next/image";
+import { useUI } from "@/components/providers/UIProvider";
+import { useStuck } from "@/hooks/useStuck";
+
+export function Masthead() {
+  const stuck = useStuck();
+  const { menuOpen, toggleMenu } = useUI();
+
+  return (
+    <header className={`masthead${stuck ? " stuck" : ""}`} id="masthead">
+      <a href="#top" className="logo" aria-label="We Are In Collective — back to the cover">
+        <Image
+          src="/images/weareinblack.png"
+          alt=""
+          width={1022}
+          height={1077}
+          priority
+        />
+      </a>
+      <div className="masthead-r">
+        <button
+          className="menu-btn"
+          id="menuBtn"
+          aria-expanded={menuOpen}
+          aria-controls="menu"
+          onClick={toggleMenu}
+        >
+          <i aria-hidden="true" /> Contents
+        </button>
+        <a href="#close" className="btn">
+          Let&apos;s talk over coffee{" "}
+          <span className="arw" aria-hidden="true">
+            &rarr;
+          </span>
+        </a>
+      </div>
+    </header>
+  );
+}

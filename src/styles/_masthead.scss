@@ -1,0 +1,94 @@
+/* ============================================================ MASTHEAD */
+.masthead {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  padding: 20px clamp(20px, 5vw, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s var(--ease), padding 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+}
+.masthead.stuck {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom-color: var(--rule);
+  padding-block: 12px;
+}
+.logo {
+  display: block;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.logo svg {
+  width: clamp(158px, 17vw, 212px);
+  height: auto;
+  transition: width 0.4s var(--ease);
+}
+.masthead.stuck .logo svg {
+  width: clamp(146px, 15vw, 186px);
+}
+/* the masthead uses the near-square stacked lockup (weareinblack.png) */
+.masthead .logo img {
+  width: clamp(60px, 6.5vw, 84px);
+  height: auto;
+  display: block;
+  transition: width 0.4s var(--ease);
+}
+.masthead.stuck .logo img {
+  width: clamp(52px, 5.6vw, 72px);
+}
+.masthead-r {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.5vw, 28px);
+}
+.menu-btn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 0;
+}
+.menu-btn i {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--ink);
+  position: relative;
+  transition: background 0.3s;
+}
+.menu-btn i::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  transform: translateY(-5px);
+  transition: transform 0.35s var(--ease);
+}
+.menu-btn:hover i::before {
+  transform: translateY(-5px) scaleX(0.5);
+  transform-origin: left;
+}
+.masthead .btn {
+  padding: 11px 20px;
+  font-size: 0.85rem;
+}
+@media (max-width: 700px) {
+  .masthead .btn {
+    display: none;
+  }
+}

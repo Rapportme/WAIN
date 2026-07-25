@@ -1,0 +1,230 @@
+/* ============================================================ 09 · GROWTH DIAGNOSIS (artifact) */
+.s-diag {
+  --pad: clamp(92px, 13vh, 166px);
+}
+.diag-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 80px);
+  align-items: end;
+}
+.diag-top h2 {
+  font-size: var(--t-xl);
+  letter-spacing: var(--ls-mega);
+  max-width: 11ch;
+}
+.spec {
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+  border-top: 2px solid var(--sage);
+  border-bottom: 1px solid var(--rule);
+}
+.spec li {
+  background: var(--paper);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 0;
+}
+.spec .k {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.spec .v {
+  font-family: var(--ui);
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+.spec .v.free {
+  color: var(--sage-ink);
+}
+.sheet {
+  margin-top: clamp(48px, 7vh, 78px);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+}
+.sheet-hd {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px clamp(20px, 3vw, 36px);
+  border-bottom: 1px solid var(--rule);
+}
+.sheet-hd .label {
+  color: var(--muted);
+}
+.sheet-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.sheet-cell {
+  padding: clamp(28px, 4vw, 46px) clamp(20px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid var(--cc);
+}
+.sheet-cell:nth-child(1) {
+  --cc: var(--sage);
+}
+.sheet-cell:nth-child(2) {
+  --cc: var(--coral);
+}
+.sheet-cell:nth-child(3) {
+  --cc: var(--signal);
+}
+.sheet-cell .no {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 16px;
+}
+.sheet-cell h3 {
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+.sheet-cell p {
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.score {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.score b {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+.score span {
+  font-family: var(--ui);
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--muted-2);
+}
+.scorebar {
+  position: relative;
+  height: 2px;
+  background: var(--rule);
+  margin-bottom: 20px;
+}
+.scorebar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  background: var(--sage);
+  width: 0;
+  transition: width 1.4s var(--ease);
+}
+.scorebar u {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 2px;
+  height: 12px;
+  background: var(--sage-ink);
+  transition: left 1.4s var(--ease);
+}
+.in .scorebar i {
+  width: 62%;
+}
+.in .scorebar u {
+  left: 62%;
+}
+.blind {
+  list-style: none;
+}
+.blind li {
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 11px 0 11px 22px;
+  position: relative;
+}
+.blind li + li {
+  border-top: 1px solid var(--rule);
+}
+.blind li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 19px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+.dsteps {
+  list-style: none;
+  counter-reset: s;
+}
+.dsteps li {
+  counter-increment: s;
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 11px 0 11px 30px;
+  position: relative;
+}
+.dsteps li + li {
+  border-top: 1px solid var(--rule);
+}
+.dsteps li::before {
+  content: counter(s, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.64rem;
+  color: var(--signal-ink);
+  letter-spacing: 0.06em;
+}
+.diag-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 26px;
+  margin-top: clamp(34px, 5vh, 50px);
+}
+.diag-cta .fine {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted-2);
+  font-size: 1rem;
+  max-width: 42ch;
+}
+@media (max-width: 960px) {
+  .diag-top {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+  .sheet-body {
+    grid-template-columns: 1fr;
+  }
+}

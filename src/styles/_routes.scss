@@ -1,0 +1,309 @@
+/* ============================================================ 00b · ROUTES (how to read this) */
+.s-routes {
+  --pad: clamp(66px, 9vh, 104px);
+  background: var(--paper-2);
+  border-block: 1px solid var(--rule);
+}
+.routes-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 64px);
+  align-items: end;
+}
+.routes-head h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.9rem);
+  letter-spacing: var(--ls-mega);
+  max-width: 16ch;
+}
+.routes-head .lede {
+  font-size: clamp(1.02rem, 1.3vw, 1.2rem);
+}
+@media (max-width: 880px) {
+  .routes-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 18px;
+  }
+}
+
+.routes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.6vw, 20px);
+  margin-top: clamp(34px, 5vh, 52px);
+}
+.route {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  overflow: hidden;
+  padding: clamp(24px, 2.6vw, 34px);
+  color: var(--ink);
+  transition: transform 0.32s var(--ease), box-shadow 0.32s var(--ease),
+    border-color 0.32s var(--ease);
+}
+.route::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--rc);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.42s var(--ease);
+}
+.route:hover,
+.route:focus-visible {
+  transform: translateY(-5px);
+  border-color: var(--rule-2);
+  box-shadow: 0 26px 46px -30px rgba(18, 38, 63, 0.5);
+}
+.route:hover::before,
+.route:focus-visible::before,
+.route[aria-expanded="true"]::before {
+  transform: scaleX(1);
+}
+.rt-shape {
+  width: 34px;
+  height: 34px;
+  background: var(--rc);
+  margin-bottom: 22px;
+  transition: transform 0.45s var(--ease);
+}
+.route:hover .rt-shape {
+  transform: scale(1.14);
+}
+.rt-n {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rc-ink);
+  display: block;
+  margin-bottom: 9px;
+}
+.route h3 {
+  font-family: var(--disp);
+  font-size: clamp(1.22rem, 1.9vw, 1.62rem);
+  letter-spacing: -0.028em;
+  line-height: 1.14;
+  font-weight: var(--w-head);
+}
+.route p {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-top: 11px;
+  max-width: 32ch;
+}
+.rt-go {
+  margin-top: auto;
+  padding-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rc-ink);
+}
+.rt-go b {
+  font-weight: 600;
+  transition: transform 0.3s var(--ease);
+}
+.route:hover .rt-go b {
+  transform: translateX(5px);
+}
+.r-guide {
+  --rc: var(--sage);
+  --rc-ink: var(--sage-ink);
+}
+.r-guide .rt-shape {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.r-read {
+  --rc: var(--signal);
+  --rc-ink: var(--signal-ink);
+}
+.r-read .rt-shape {
+  border-radius: 50%;
+}
+.r-jump {
+  --rc: var(--amber);
+  --rc-ink: var(--amber-ink);
+}
+@media (max-width: 900px) {
+  .routes {
+    grid-template-columns: 1fr;
+  }
+  .route p {
+    max-width: none;
+  }
+  .rt-go {
+    padding-top: 16px;
+  }
+}
+
+/* guided path panel */
+.guide {
+  margin-top: clamp(14px, 1.6vw, 20px);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--sage);
+  padding: clamp(24px, 3vw, 42px);
+  display: none;
+}
+.guide.open {
+  display: block;
+  animation: fadeIn 0.45s var(--ease);
+}
+.guide .gq {
+  font-family: var(--disp);
+  font-size: clamp(1.18rem, 2.1vw, 1.7rem);
+  letter-spacing: -0.028em;
+  line-height: 1.2;
+  max-width: 28ch;
+  font-weight: var(--w-head);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 24px;
+}
+.chips button {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 11px 18px;
+  cursor: pointer;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.25s var(--ease);
+}
+.chips button .mk {
+  width: 9px;
+  height: 9px;
+  background: var(--muted-2);
+  transition: background 0.25s;
+}
+.chips button:hover {
+  border-color: var(--sage);
+  transform: translateY(-2px);
+}
+.chips button:hover .mk {
+  background: var(--sage);
+}
+.chips button[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.chips button[aria-pressed="true"] .mk {
+  background: var(--sage);
+}
+.guide-out {
+  margin-top: 28px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+  display: none;
+}
+.guide-out.show {
+  display: block;
+  animation: fadeIn 0.4s var(--ease);
+}
+.guide-say {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.36;
+  letter-spacing: -0.015em;
+  max-width: 40ch;
+  color: var(--ink);
+}
+.guide-out .plabel {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin: 26px 0 14px;
+}
+.path {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.path a {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 9px 15px 9px 9px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.25s var(--ease);
+}
+.path a:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+.path a b {
+  width: 26px;
+  height: 26px;
+  background: var(--pc, var(--ink));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.guide-go {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+}
+.guide-go .fine {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted-2);
+  font-size: 0.98rem;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

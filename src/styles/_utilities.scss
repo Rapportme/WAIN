@@ -1,0 +1,236 @@
+/* ============================================================ SHARED FURNITURE
+   Cross-cutting classes used by every chapter: the brand marker set,
+   utility type, the numbered eyebrow, headings, buttons, the "pen"
+   underline link, the reveal system, and the dark plate base. */
+
+/* ---- the brand shape set ---- */
+.mk {
+  display: block;
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  background: var(--sig);
+}
+.mk-cir {
+  border-radius: 50%;
+}
+.mk-tri {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.mk-sq {
+}
+.mk-wedge {
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+.mk-bar {
+  width: 4px;
+  height: 14px;
+}
+.mk-a {
+  background: none;
+  width: 14px;
+  height: 12px;
+  -webkit-mask: var(--amask) center / contain no-repeat;
+  mask: var(--amask) center / contain no-repeat;
+  background-color: var(--sig);
+}
+
+/* ---- utility type ---- */
+.label {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.serif {
+  font-family: var(--serif);
+  font-weight: 300;
+  line-height: 1.5;
+}
+.lede {
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 1.65vw, 1.5rem);
+  line-height: 1.62;
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 56ch;
+}
+.lede strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+.lede-aside {
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+/* eyebrow: shape marker + chapter number. The number is real —
+   this page is a sequence, and the shape says which ink it's in. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: clamp(32px, 5vh, 56px);
+}
+.eyebrow .mk {
+  transition: transform 0.6s var(--ease) 0.1s;
+}
+.js .rise .eyebrow .mk,
+.js .eyebrow.rise .mk {
+  transform: scale(0.2);
+}
+.eyebrow.rise.in .mk,
+.rise.in .eyebrow .mk {
+  transform: none;
+}
+.eyebrow .n {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--sig-ink);
+  font-variant-numeric: tabular-nums;
+}
+.eyebrow .t {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow .r {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--disp);
+  font-weight: var(--w-head);
+  letter-spacing: var(--ls-head);
+  line-height: 1.02;
+}
+.statement {
+  font-size: var(--t-xl);
+  letter-spacing: var(--ls-mega);
+  line-height: 1.04;
+  max-width: 19ch;
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 15px 26px;
+  border: 0;
+  cursor: pointer;
+  background: var(--signal);
+  color: #fff;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.btn:hover {
+  background: var(--ink);
+}
+.btn .arw {
+  transition: transform 0.35s var(--ease);
+}
+.btn:hover .arw {
+  transform: translateX(5px);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--rule);
+}
+.btn--ghost:hover {
+  background: transparent;
+  color: var(--signal);
+  box-shadow: inset 0 0 0 1.5px var(--signal);
+}
+.dark .btn {
+  background: var(--signal-lift);
+  color: var(--ink);
+}
+.dark .btn:hover {
+  background: #fff;
+}
+
+/* the pen: a link underlines itself as you approach */
+.mark {
+  position: relative;
+  display: inline-block;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding-bottom: 3px;
+}
+.mark::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--sig);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+.mark:hover::after,
+.mark:focus-visible::after {
+  transform: scaleX(1);
+}
+.mark:hover {
+  color: var(--sig-ink);
+}
+
+/* ---- reveal ----
+   Framer Motion owns the entrance now (see components/ui/Reveal.tsx), so the
+   CSS transition is scoped under `.js` (which this build never sets) to avoid
+   fighting Framer's per-frame inline writes. The `.in` marker class is kept:
+   descendant rules (eyebrow marker, diagnosis score bar) still key off it. */
+.js .rise {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(var(--d, 0) * 80ms);
+}
+.js .rise.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================ DARK PLATE BASE
+   Shared by the two dark chapters (Method, Promise). */
+.dark {
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+.dark .eyebrow .t {
+  color: var(--muted-2);
+}
+.dark .eyebrow .n {
+  color: var(--sig);
+}
+.dark .eyebrow .r {
+  background: var(--rule-dark);
+}
+.dark .lede {
+  color: rgba(255, 255, 255, 0.6);
+}
+.dark .lede strong {
+  color: #fff;
+}

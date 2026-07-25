@@ -1,0 +1,139 @@
+/* ============================================================ 06 · SITUATIONS (accordion) */
+.s-sit {
+  --pad: clamp(92px, 13vh, 166px);
+}
+.sits {
+  margin-top: clamp(46px, 7vh, 78px);
+  border-top: 2px solid var(--coral);
+}
+.sit {
+  border-bottom: 1px solid var(--rule);
+}
+.sit-q {
+  width: 100%;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  display: grid;
+  grid-template-columns: 44px 1fr 34px;
+  gap: 14px;
+  align-items: baseline;
+  padding: clamp(22px, 3vh, 30px) 0;
+  color: var(--ink);
+  transition: padding-left 0.4s var(--ease), color 0.3s var(--ease);
+}
+.sit-q:hover {
+  padding-left: 10px;
+  color: var(--coral-ink);
+}
+.sit-q .ix {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: var(--muted-2);
+  transition: color 0.3s;
+}
+.sit-q:hover .ix,
+.sit-q[aria-expanded="true"] .ix {
+  color: var(--coral-ink);
+}
+.sit-q .txt {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.4vw, 1.8rem);
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
+.sit-q .pm {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  justify-self: end;
+  align-self: center;
+}
+.sit-q .pm::before,
+.sit-q .pm::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  transition: transform 0.4s var(--ease);
+}
+.sit-q .pm::before {
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 1.5px;
+}
+.sit-q .pm::after {
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  width: 1.5px;
+}
+.sit-q[aria-expanded="true"] .pm::after {
+  transform: rotate(90deg) scaleX(0);
+}
+.sit-q[aria-expanded="true"] {
+  color: var(--coral-ink);
+}
+.sit-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s var(--ease);
+}
+.sit-q[aria-expanded="true"] + .sit-a {
+  grid-template-rows: 1fr;
+}
+.sit-a > div {
+  overflow: hidden;
+}
+.sit-a .inner {
+  padding: 0 34px clamp(26px, 3.5vh, 36px) 58px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  max-width: 80ch;
+}
+.sit-a .lb {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral-ink);
+  padding-top: 5px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.sit-a .lb .mk {
+  width: 8px;
+  height: 8px;
+  background: var(--coral);
+  border-radius: 50%;
+}
+.sit-a p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.62;
+  font-family: var(--serif);
+  font-weight: 300;
+}
+@media (max-width: 700px) {
+  .sit-q {
+    grid-template-columns: 30px 1fr 20px;
+    gap: 10px;
+  }
+  .sit-a .inner {
+    padding-left: 40px;
+    padding-right: 0;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

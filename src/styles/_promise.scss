@@ -1,0 +1,121 @@
+/* ============================================================ 08 · PROMISE (dark plate) */
+.s-promise {
+  --pad: clamp(96px, 14vh, 168px);
+}
+.s-promise .wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+}
+.pplate {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+.pplate.p1 {
+  top: 0;
+  right: 0;
+  width: clamp(160px, 22vw, 330px);
+  aspect-ratio: 1;
+  background: var(--signal);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.92;
+}
+.pplate.p2 {
+  bottom: -48px;
+  left: -48px;
+  width: clamp(130px, 16vw, 246px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--coral);
+  opacity: 0.85;
+}
+.pplate.p3 {
+  top: 30%;
+  left: 9%;
+  width: 16px;
+  height: clamp(80px, 12vw, 130px);
+  background: var(--amber);
+  opacity: 0.72;
+}
+.pplate.p4 {
+  bottom: 16%;
+  right: 12%;
+  width: clamp(46px, 6vw, 74px);
+  aspect-ratio: 1;
+  background: var(--sage);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  opacity: 0.6;
+}
+.s-promise blockquote {
+  font-family: var(--disp);
+  font-size: clamp(1.75rem, 4.4vw, 3.5rem);
+  font-weight: var(--w-mega);
+  letter-spacing: var(--ls-mega);
+  line-height: 1.1;
+  max-width: 19ch;
+  color: #fff;
+}
+.s-promise blockquote i {
+  display: inline-block;
+  width: 0.14em;
+  height: 0.14em;
+  border-radius: 50%;
+  background: var(--amber);
+  margin-left: 0.05em;
+}
+.plist {
+  margin-top: clamp(30px, 4.4vh, 44px);
+  display: grid;
+  gap: 2px;
+  max-width: 62ch;
+}
+.plist div {
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.02rem, 1.6vw, 1.28rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.84);
+  display: flex;
+  gap: 15px;
+  align-items: baseline;
+}
+.plist div .mk {
+  width: 9px;
+  height: 9px;
+  transform: translateY(1px);
+}
+.plist div:nth-child(1) .mk {
+  background: var(--signal-lift);
+}
+.plist div:nth-child(2) .mk {
+  background: var(--sage);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.plist div:nth-child(3) .mk {
+  background: var(--coral);
+  border-radius: 50%;
+}
+.psig {
+  margin-top: clamp(32px, 4.6vh, 46px);
+  padding-left: 20px;
+  border-left: 2px solid var(--amber);
+  font-family: var(--ui);
+  font-size: clamp(1rem, 1.6vw, 1.24rem);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 760px) {
+  .s-promise blockquote {
+    max-width: none;
+  }
+  .pplate.p3 {
+    display: none;
+  }
+  .pplate.p1 {
+    width: 130px;
+  }
+}

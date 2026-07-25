@@ -1,0 +1,307 @@
+/* ============================================================ 10 · CLOSE + FOOTER */
+.s-close {
+  --pad: clamp(106px, 17vh, 186px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.s-close .wrap {
+  position: relative;
+  z-index: 2;
+}
+.s-close .eyebrow {
+  justify-content: center;
+}
+.close-spec {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(10px, 1.4vw, 18px);
+  padding-bottom: clamp(26px, 4vh, 44px);
+  opacity: 0.9;
+}
+.close-spec i {
+  display: block;
+  width: clamp(26px, 3.2vw, 44px);
+  height: clamp(26px, 3.2vw, 44px);
+}
+.close-spec i:nth-child(1) {
+  background: var(--signal);
+  border-radius: 50%;
+}
+.close-spec i:nth-child(2) {
+  background: var(--sage);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.close-spec i:nth-child(3) {
+  background: var(--amber);
+}
+.close-spec i:nth-child(4) {
+  background: var(--coral);
+  border-radius: 50%;
+}
+.close-spec i:nth-child(5) {
+  background: var(--lav);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+.close-h {
+  font-size: clamp(2.2rem, 6vw, 5.2rem);
+  letter-spacing: var(--ls-mega);
+  line-height: 1.03;
+  max-width: 16ch;
+  margin-inline: auto;
+}
+.close-h b {
+  font-weight: inherit;
+  color: var(--signal);
+}
+.close-h .dot {
+  display: inline-block;
+  width: 0.13em;
+  height: 0.13em;
+  border-radius: 50%;
+  background: var(--signal);
+  margin-left: 0.02em;
+  vertical-align: baseline;
+}
+.close-sub {
+  margin-top: 22px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  max-width: 54ch;
+  margin-inline: auto;
+}
+.close-cta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-top: clamp(36px, 5vh, 54px);
+}
+.close-contact {
+  margin-top: clamp(32px, 4.6vh, 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.close-contact .cc-mail {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--signal-ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: color 0.3s, border-color 0.3s;
+}
+.close-contact .cc-mail:hover {
+  color: var(--signal);
+  border-color: var(--signal);
+}
+.close-contact .cc-addr {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 46ch;
+}
+
+footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding-block: clamp(58px, 8vh, 88px) 34px;
+}
+.f-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr));
+  gap: clamp(26px, 3.4vw, 50px);
+  padding-bottom: clamp(44px, 6vh, 68px);
+  border-bottom: 1px solid var(--rule-dark);
+}
+.f-brand .logo {
+  color: #fff;
+}
+.f-brand .logo svg {
+  width: min(240px, 100%);
+}
+/* the footer uses the all-white stacked lockup (next/image) */
+.f-brand .f-logo {
+  display: inline-block;
+}
+.f-brand .f-logo img {
+  width: clamp(128px, 13vw, 168px);
+  height: auto;
+}
+.f-brand p {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted-2);
+  margin-top: 20px;
+  max-width: 28ch;
+  line-height: 1.5;
+}
+.f-contact {
+  margin-top: 22px;
+}
+.f-contact a {
+  color: var(--signal-lift);
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.92rem;
+  display: inline-block;
+  margin-bottom: 8px;
+  transition: color 0.25s;
+}
+.f-contact a:hover {
+  color: #fff;
+}
+.f-contact p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted-2);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 30ch;
+  margin-top: 0;
+}
+.f-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+.f-dots i {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+.f-dots i:nth-child(1) {
+  background: var(--signal);
+  border-radius: 50%;
+}
+.f-dots i:nth-child(2) {
+  background: var(--sage);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.f-dots i:nth-child(3) {
+  background: var(--amber);
+}
+.f-dots i:nth-child(4) {
+  background: var(--coral);
+  border-radius: 50%;
+}
+.f-dots i:nth-child(5) {
+  background: var(--lav);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+.f-col h5 {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fc);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.f-col h5 .mk {
+  width: 8px;
+  height: 8px;
+  background: var(--fc);
+}
+.f-col:nth-of-type(1) {
+  --fc: var(--signal-lift);
+}
+.f-col:nth-of-type(2) {
+  --fc: var(--sage);
+}
+.f-col:nth-of-type(3) {
+  --fc: var(--amber);
+}
+.f-col:nth-of-type(4) {
+  --fc: var(--lav);
+}
+.f-col a {
+  display: block;
+  padding: 6px 0;
+  color: #fff;
+  font-size: 0.94rem;
+  cursor: pointer;
+  transition: color 0.25s, transform 0.3s var(--ease);
+}
+.f-col a:hover {
+  color: var(--fc);
+  transform: translateX(4px);
+}
+.f-col a.hi {
+  color: var(--signal-lift);
+}
+.f-bot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px 28px;
+  flex-wrap: wrap;
+  padding-top: 26px;
+}
+.f-bot span {
+  font-family: var(--ui);
+  font-weight: 500;
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+/* "Developed by Pixlverse" credit — the logo is cropped from its padded square */
+.f-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.82;
+  transition: opacity 0.25s var(--ease);
+}
+.f-credit:hover {
+  opacity: 1;
+}
+.f-credit-label {
+  line-height: 1;
+}
+.f-credit-name {
+  color: #fff;
+  font-weight: 700;
+}
+/* Narrow: stack the three parts left-aligned so nothing wraps awkwardly. */
+@media (max-width: 820px) {
+  .f-bot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+@media (max-width: 960px) {
+  .f-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 26px;
+  }
+  .f-brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 520px) {
+  .f-top {
+    grid-template-columns: 1fr;
+  }
+}
