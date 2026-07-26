@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type MouseEvent } from "react";
 import Image from "next/image";
+import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
 
 interface MenuLink {
@@ -93,7 +94,7 @@ export function ContentsMenu() {
     >
       <div className="menu-top">
         <span className="logo">
-          <Image src="/images/weareinwhite.png" alt="We Are In Collective" width={1022} height={1077} />
+          <Image src={withBase("/images/weareinwhite.png")} alt="We Are In Collective" width={1022} height={1077} />
         </span>
         <button className="menu-close" ref={closeRef} onClick={() => setMenuOpen(false)}>
           <b aria-hidden="true">&#10005;</b> Close

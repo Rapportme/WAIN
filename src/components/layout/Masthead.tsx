@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
 import { useStuck } from "@/hooks/useStuck";
 
@@ -12,7 +13,7 @@ export function Masthead() {
     <header className={`masthead${stuck ? " stuck" : ""}`} id="masthead">
       <a href="#top" className="logo" aria-label="We Are In Collective — back to the cover">
         <Image
-          src="/images/weareinblack.png"
+          src={withBase("/images/weareinblack.png")}
           alt=""
           width={1022}
           height={1077}

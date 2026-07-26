@@ -3,6 +3,7 @@ import { Manrope, Newsreader } from "next/font/google";
 import "@/styles/globals.scss";
 
 import { UIProvider } from "@/components/providers/UIProvider";
+import { withBase } from "@/lib/withBase";
 import { Masthead } from "@/components/layout/Masthead";
 import { ContentsMenu } from "@/components/layout/ContentsMenu";
 import { ChapterRail } from "@/components/layout/ChapterRail";
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     "growth diagnosis",
   ],
   icons: {
-    icon: [{ url: "/images/WAIN-favicon.svg", type: "image/svg+xml" }],
+    icon: [{ url: withBase("/images/WAIN-favicon.svg"), type: "image/svg+xml" }],
   },
   alternates: { canonical: "/" },
   openGraph: {

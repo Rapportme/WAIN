@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Base path for GitHub Pages project site. Set via env in CI when
+  // deploying to a subpath (e.g. '/WAIN'). Leave empty for root domains.
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || "",
   // Static Site Generation — export-compatible for a fully static, SEO-first deploy.
   output: "export",
   reactStrictMode: true,

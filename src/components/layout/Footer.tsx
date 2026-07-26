@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
 
 export function Footer() {
@@ -13,7 +14,7 @@ export function Footer() {
           <div className="f-brand">
             <a href="#top" className="logo f-logo" aria-label="We Are In Collective — back to the cover">
               <Image
-                src="/images/weareinwhite.png"
+                src={withBase("/images/weareinwhite.png")}
                 alt="We Are In Collective"
                 width={1022}
                 height={1077}
