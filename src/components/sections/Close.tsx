@@ -20,8 +20,15 @@ export function Close() {
           Are <b>you</b>?
         </Reveal>
         <Reveal as="p" className="close-sub" d={2}>
-          Tell us where the business is right now. We&apos;ll come back with what we&apos;d look at
-          first — before anyone talks about scope or fees. Coffee&apos;s on us.
+          Let&apos;s talk about your business before we talk about proposals, scope or fees.
+        </Reveal>
+        <Reveal as="p" className="close-sub close-sub-2" d={2}>
+          No commitment, just coffee.
+        </Reveal>
+        <Reveal as="p" className="close-wager" d={3}>
+          If we&apos;re in, you pay for the coffee.
+          <br />
+          If we&apos;re not, we will. <span aria-hidden="true">😉</span>
         </Reveal>
         <Reveal as="div" className="close-cta" d={3}>
           <a href="mailto:hello@wearein.in" className="btn">
@@ -33,16 +40,6 @@ export function Close() {
           <a href="#diagnosis" className="btn btn--ghost">
             Get a free growth diagnosis
           </a>
-        </Reveal>
-        <Reveal as="div" className="close-contact" d={4}>
-          <a href="mailto:hello@wearein.in" className="cc-mail">
-            hello@wearein.in
-          </a>
-          <p className="cc-addr">
-            St. Mary&apos;s Arcade, Near Nalumanikkattu,
-            <br />
-            Thiruvalla &ndash; Ettumanoor Bypass, Kottayam
-          </p>
         </Reveal>
       </div>
     </section>

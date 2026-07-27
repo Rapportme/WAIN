@@ -1,86 +1,72 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 
-interface LedgerRow {
-  industry: string;
-  depth: string;
-  pattern: string;
+interface Stat {
+  /** The figure itself. */
+  n: string;
+  /** What it counts. */
+  t: string;
 }
 
-const ROWS: LedgerRow[] = [
-  {
-    industry: "Education",
-    depth: "Deep",
-    pattern:
-      "Great outcomes, described as facilities. We repositioned around what students actually leave with.",
-  },
-  {
-    industry: "Healthcare",
-    depth: "Deep",
-    pattern:
-      "Trust decided before the first appointment, not during it. The brand had to carry the reassurance.",
-  },
-  {
-    industry: "Startups",
-    depth: "Lived",
-    pattern:
-      "Clarity mistaken for a later-stage luxury. It's the earliest and cheapest thing to get right.",
-  },
-  {
-    industry: "SMEs",
-    depth: "Ongoing",
-    pattern:
-      "A business running on memory and WhatsApp. Growth kept breaking the same undocumented seams.",
-  },
-  {
-    industry: "Professional services",
-    depth: "Broad",
-    pattern:
-      "Selling expertise while sounding like everyone else. The differentiator was there, just never said.",
-  },
-  {
-    industry: "FMCG",
-    depth: "Selective",
-    pattern:
-      "Distribution and story treated as separate problems. They're the same problem, wearing two coats.",
-  },
+const STATS: Stat[] = [
+  { n: "23+", t: "years of combined entrepreneurial experience" },
+  { n: "5", t: "businesses founded or co-founded — active across Kerala and the Middle East" },
+  { n: "6+", t: "countries served, from the UK to Australia" },
+  { n: "1", t: "brand doctor with an actual dental degree" },
 ];
 
-/** 04 · Experience — a ledger. */
+/** 04 · Experience — careers before the collective, counted. */
 export function Experience() {
   return (
     <section className="chapter s-exp" id="experience">
       <div className="wrap">
         <Eyebrow shape="mk-sq" n="04" t="Experience" />
         <Reveal as="h2" className="statement">
-          The agency is new. <span style={{ color: "var(--muted-2)" }}>The experience isn&apos;t.</span>
+          The agency is new. <span className="soft">The experience isn&apos;t.</span>
         </Reveal>
+
         <Reveal as="p" className="lede" style={{ marginTop: "26px" }}>
-          Before this became a collective, it was individuals — building their own businesses across
-          cities, industries and countries that had little in common. Here&apos;s where that time was
-          spent, and the pattern we kept meeting.
+          Before this became a collective, it was individual careers — years of building brands and
+          teams across Kerala and the Middle East. Some of that time went into founding companies
+          from nothing, more than a decade ago now, and still running. Some went into scaling one
+          from the inside. Somewhere in the mix, there&apos;s even a dentist moonlighting as a brand
+          strategist — we&apos;re not sure root canals sharpen positioning instincts, but we&apos;re
+          not arguing with the results.
         </Reveal>
-        <Reveal as="div" className="ledger">
-          <div className="ledger-hd">
-            <span>Industry</span>
-            <span>Depth</span>
-            <span>The pattern underneath</span>
-          </div>
-          {ROWS.map((row) => (
-            <div className="ledger-row" key={row.industry}>
-              <span className="ind">{row.industry}</span>
-              <span className="cnt">
-                <span className="mk" />
-                {row.depth}
-              </span>
-              <span className="pat">{row.pattern}</span>
-            </div>
+        <Reveal as="p" className="lede" style={{ marginTop: "22px" }}>
+          The work itself has traveled further than we have. Clients across the UK, Australia,
+          Sweden, Denmark and Africa, handled without ever opening an agency in any of them.
+        </Reveal>
+        <Reveal as="p" className="lede" style={{ marginTop: "22px" }}>
+          None of it happened inside an agency.
+        </Reveal>
+
+        <Reveal as="blockquote" className="exp-quote">
+          The work here wasn&apos;t all done under the We Are In name. Experience doesn&apos;t belong
+          to a company registration. It belongs to the people who built it.
+        </Reveal>
+
+        <div className="exp-stats">
+          {STATS.map((s, i) => (
+            <Reveal as="div" className="exp-stat" key={s.n + s.t} d={i}>
+              <span className="mk mk-sq" />
+              <b>{s.n}</b>
+              <p>{s.t}</p>
+            </Reveal>
           ))}
+        </div>
+
+        <Reveal as="p" className="lede lede-aside exp-aside">
+          None of it happened here. All of it happens to be useful now.
         </Reveal>
-        <Reveal as="p" className="ledger-foot">
-          Businesses started. Brands repositioned. Campaigns launched. Products introduced. Teams
-          mentored. Systems redesigned. Problems solved. Mistakes made — and carried forward. None of
-          it began with a company registration.
+
+        <Reveal as="div" className="exp-cta">
+          <a href="#method" className="btn">
+            Explore the work{" "}
+            <span className="arw" aria-hidden="true">
+              &rarr;
+            </span>
+          </a>
         </Reveal>
       </div>
     </section>

@@ -43,7 +43,7 @@ export function Footer() {
               <span className="mk mk-cir" />
               Start here
             </h5>
-            <a href="#routes">How to read this</a>
+            <a href="#routes">Three ways in</a>
             <a href="#close">Let&apos;s talk over coffee</a>
             <a href="#diagnosis" className="hi">
               Growth diagnosis — diagnose my business

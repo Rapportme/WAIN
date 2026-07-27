@@ -34,8 +34,7 @@ interface RevealProps {
  * matching the original 0.9s / cubic-bezier(.2,.7,.2,1) / `--d` stagger.
  *
  * It also stamps an `in` class on entry so descendant rules that keyed off
- * `.rise.in` in the original stylesheet (the eyebrow marker, the diagnosis
- * score bar) still fire.
+ * `.rise.in` in the original stylesheet (the eyebrow marker) still fire.
  */
 export function Reveal({
   children,

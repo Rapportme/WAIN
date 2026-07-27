@@ -31,14 +31,6 @@
   opacity: 0.85;
 }
 .pplate.p3 {
-  top: 30%;
-  left: 9%;
-  width: 16px;
-  height: clamp(80px, 12vw, 130px);
-  background: var(--amber);
-  opacity: 0.72;
-}
-.pplate.p4 {
   bottom: 16%;
   right: 12%;
   width: clamp(46px, 6vw, 74px);
@@ -48,6 +40,7 @@
   opacity: 0.6;
 }
 .s-promise blockquote {
+  position: relative;
   font-family: var(--disp);
   font-size: clamp(1.75rem, 4.4vw, 3.5rem);
   font-weight: var(--w-mega);
@@ -55,6 +48,20 @@
   line-height: 1.1;
   max-width: 19ch;
   color: #fff;
+}
+/* The amber bar. It hangs in the wrap's left gutter, anchored to the quote
+   itself — as an absolutely-positioned sibling on the section it tracked the
+   viewport instead, and slid across behind the headline while resizing. */
+.s-promise blockquote::before {
+  content: "";
+  position: absolute;
+  top: 0.16em;
+  left: calc(-1 * clamp(28px, 3vw, 46px));
+  width: 16px;
+  height: clamp(80px, 12vw, 130px);
+  background: var(--amber);
+  opacity: 0.72;
+  pointer-events: none;
 }
 .s-promise blockquote i {
   display: inline-block;
@@ -112,8 +119,8 @@
   .s-promise blockquote {
     max-width: none;
   }
-  .pplate.p3 {
-    display: none;
+  .s-promise blockquote::before {
+    display: none; /* the gutter is too narrow to hold it clear of the text */
   }
   .pplate.p1 {
     width: 130px;

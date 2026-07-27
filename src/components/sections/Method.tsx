@@ -123,7 +123,9 @@ export function Method() {
       <div className="wrap">
         <Eyebrow shape="mk-wedge" n="05" t="How we work" />
         <Reveal as="div" className="method-head">
-          <h2>A partnership starts with understanding, not assumptions.</h2>
+          <h2>
+            Every business is different. <span className="soft">Our thinking process isn&apos;t.</span>
+          </h2>
           <div className="method-nav">
             <button aria-label="Previous movement" disabled={atStart} onClick={() => scrollByStep(-1)}>
               &larr;

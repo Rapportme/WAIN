@@ -23,10 +23,12 @@ export function Hero() {
             In the room. In the numbers. <span>In the question nobody wants to ask first.</span>
           </p>
           <p className="lede hero-body a4">
-            Most people call us a marketing collective. That&apos;s the half you can see. What we
-            actually sell is <strong>clarity</strong> — the kind that makes the next six months
-            obvious. Marketing is just one of the tools we reach for once we have it. We join your
-            business. We don&apos;t work for it.
+            Most businesses don&apos;t need another agency. They need someone willing to look beyond
+            marketing. That&apos;s where we begin.
+          </p>
+          <p className="lede hero-body hero-body-2 a4">
+            Not with campaigns. With conversations. Questions. Decisions. Everything else comes
+            later.
           </p>
           <div className="hero-cta a5">
             <a href="#close" className="btn">

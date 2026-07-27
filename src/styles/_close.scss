@@ -78,42 +78,25 @@
   max-width: 54ch;
   margin-inline: auto;
 }
+.close-sub-2 {
+  margin-top: 10px;
+}
+/* the coffee wager — set in the UI face so it lands as an aside, not as more
+   of the same italic voice above it */
+.close-wager {
+  margin-top: clamp(20px, 2.8vh, 28px);
+  font-family: var(--ui);
+  font-weight: 500;
+  font-size: clamp(0.92rem, 1.2vw, 1.02rem);
+  line-height: 1.7;
+  color: var(--muted);
+}
 .close-cta {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px 24px;
   margin-top: clamp(36px, 5vh, 54px);
-}
-.close-contact {
-  margin-top: clamp(32px, 4.6vh, 50px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.close-contact .cc-mail {
-  font-family: var(--ui);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
-  color: var(--signal-ink);
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 2px;
-  transition: color 0.3s, border-color 0.3s;
-}
-.close-contact .cc-mail:hover {
-  color: var(--signal);
-  border-color: var(--signal);
-}
-.close-contact .cc-addr {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.5;
-  max-width: 46ch;
 }
 
 footer {
@@ -170,7 +153,7 @@ footer {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  color: var(--muted-2);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.9rem;
   line-height: 1.5;
   max-width: 30ch;

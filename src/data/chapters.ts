@@ -15,7 +15,7 @@ export interface RailChapter {
 
 export const RAIL_CHAPTERS: readonly RailChapter[] = [
   { id: "cover", label: "Cover", ink: "#0E9AA7" },
-  { id: "routes", label: "How to read this", ink: "#92B67E" },
+  { id: "routes", label: "Three ways in", ink: "#92B67E" },
   { id: "problem", label: "The problem", ink: "#F45D5D" },
   { id: "position", label: "Where you are", ink: "#0E9AA7" },
   { id: "why", label: "Why partner", ink: "#92B67E" },

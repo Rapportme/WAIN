@@ -66,6 +66,15 @@
   font-family: var(--serif);
   font-style: italic;
 }
+/* the greyed second half of a two-beat headline ("The agency is new. The
+   experience isn't."). Navy-on-navy is invisible, so dark plates get a
+   light tint instead. */
+.soft {
+  color: var(--muted-2);
+}
+.dark .soft {
+  color: rgba(255, 255, 255, 0.42);
+}
 
 /* eyebrow: shape marker + chapter number. The number is real —
    this page is a sequence, and the shape says which ink it's in. */
@@ -199,7 +208,7 @@ h3 {
    Framer Motion owns the entrance now (see components/ui/Reveal.tsx), so the
    CSS transition is scoped under `.js` (which this build never sets) to avoid
    fighting Framer's per-frame inline writes. The `.in` marker class is kept:
-   descendant rules (eyebrow marker, diagnosis score bar) still key off it. */
+   descendant rules (the eyebrow marker) still key off it. */
 .js .rise {
   opacity: 0;
   transform: translateY(16px);
@@ -220,7 +229,7 @@ h3 {
   overflow: hidden;
 }
 .dark .eyebrow .t {
-  color: var(--muted-2);
+  color: rgba(255, 255, 255, 0.55);
 }
 .dark .eyebrow .n {
   color: var(--sig);

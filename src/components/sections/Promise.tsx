@@ -11,7 +11,6 @@ export function Promise() {
       <span className="pplate p1" aria-hidden="true" />
       <span className="pplate p2" aria-hidden="true" />
       <span className="pplate p3" aria-hidden="true" />
-      <span className="pplate p4" aria-hidden="true" />
       <div className="wrap">
         <Eyebrow shape="mk-sq" n="08" t="Our promise" />
         <Reveal as="blockquote" d={1}>

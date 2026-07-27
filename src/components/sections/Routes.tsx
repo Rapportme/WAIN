@@ -7,7 +7,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { useUI } from "@/components/providers/UIProvider";
 import { CH, STAGES, STAGE_CHIPS, type StageKey } from "@/data/chapters";
 
-/** 00b · How to read this — three routes in, plus a guided path builder. */
+/** 00b · Three ways in — three routes through the book, plus a guided path builder. */
 export function Routes() {
   const { setPositionTab } = useUI();
   const reduce = useReducedMotion();
@@ -30,13 +30,12 @@ export function Routes() {
   return (
     <section className="chapter s-routes" id="routes">
       <div className="wrap">
-        <Eyebrow shape="mk-tri" t="How to read this" />
+        <Eyebrow shape="mk-tri" t="Three ways in" />
         <Reveal as="div" className="routes-head">
           <h2>Ten chapters. You don&apos;t have to read them in order.</h2>
           <p className="lede">
-            Tell us roughly where the business is and we&apos;ll mark up a short path through the
-            chapters that apply to you. Or ignore all that and start at the beginning — it was written
-            to be read straight through.
+            This isn&apos;t meant to be read like a website. Read it like a book. Start anywhere. Or
+            let us point you to the chapters that matter most.
           </p>
         </Reveal>
 
@@ -74,8 +73,8 @@ export function Routes() {
             <span className="rt-n">Route C</span>
             <h3>I already know what I need.</h3>
             <p>
-              Skip the reading. See what a free growth diagnosis actually contains, then talk to a
-              human.
+              Skip ahead. Explore the diagnosis first. If it makes sense, let&apos;s have a
+              conversation.
             </p>
             <span className="rt-go">
               Go to chapter 09 <b aria-hidden="true">&rarr;</b>

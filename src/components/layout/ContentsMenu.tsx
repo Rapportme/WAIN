@@ -62,9 +62,9 @@ const COLUMNS: MenuColumn[] = [
     heading: "Start here",
     shape: "mk-cir",
     links: [
-      { href: "#routes", title: "How to read this", note: "Three ways in. Pick one." },
+      { href: "#routes", title: "Three ways in", note: "Pick one, or read it straight through." },
       { href: "#close", title: "Let's talk over coffee", note: "A conversation, not a pitch." },
-      { href: "#diagnosis", title: "Growth diagnosis", note: "Free. Written. Yours either way." },
+      { href: "#diagnosis", title: "Growth diagnosis", note: "Twelve questions. Free. Under five minutes." },
       { title: "Before you hire an agency", note: "Twelve questions. Some are uncomfortable.", modal: true },
       { href: "#close", title: "Contact", note: "A human replies. Usually the same day." },
     ],
