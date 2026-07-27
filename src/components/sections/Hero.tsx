@@ -24,11 +24,8 @@ export function Hero() {
           </p>
           <p className="lede hero-body a4">
             Most businesses don&apos;t need another agency. They need someone willing to look beyond
-            marketing. That&apos;s where we begin.
-          </p>
-          <p className="lede hero-body hero-body-2 a4">
-            Not with campaigns. With conversations. Questions. Decisions. Everything else comes
-            later.
+            marketing. That&apos;s where we begin. Not with campaigns. With conversations. Questions.
+            Decisions. Everything else comes later.
           </p>
           <div className="hero-cta a5">
             <a href="#close" className="btn">

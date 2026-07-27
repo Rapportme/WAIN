@@ -153,12 +153,14 @@
   --pc: var(--amber);
   --pc-ink: var(--amber-ink);
 }
+/* a title, so it takes the title face — same Newsreader cut as the lead
+   piece's h3 directly above it */
 .piece .ttl {
-  font-family: var(--serif);
-  font-weight: 300;
+  font-family: var(--disp);
+  font-weight: var(--w-head);
   font-size: clamp(1.1rem, 1.9vw, 1.45rem);
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--ls-head);
   transition: color 0.3s;
 }
 .piece .rd {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { useUI } from "@/components/providers/UIProvider";
@@ -10,13 +9,8 @@ import { CH, STAGES, STAGE_CHIPS, type StageKey } from "@/data/chapters";
 /** 00b · Three ways in — three routes through the book, plus a guided path builder. */
 export function Routes() {
   const { setPositionTab } = useUI();
-  const reduce = useReducedMotion();
   const [guideOpen, setGuideOpen] = useState(false);
   const [stage, setStage] = useState<StageKey | null>(null);
-
-  const guideRef = (node: HTMLDivElement | null) => {
-    if (node && guideOpen && !reduce) node.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  };
 
   const pickStage = (k: StageKey) => {
     setStage(k);
@@ -82,7 +76,7 @@ export function Routes() {
           </a>
         </Reveal>
 
-        <div className={`guide${guideOpen ? " open" : ""}`} id="guide" ref={guideRef}>
+        <div className={`guide${guideOpen ? " open" : ""}`} id="guide">
           <p className="gq">Which of these sounds most like your business right now?</p>
           <div className="chips" role="group" aria-label="Pick the stage your business is at">
             {STAGE_CHIPS.map((chip) => (
