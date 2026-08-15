@@ -102,6 +102,8 @@
   padding-bottom: 6px;
   margin-inline: calc(-1 * clamp(20px, 5vw, 72px));
   padding-inline: clamp(20px, 5vw, 72px);
+  /* keep snapped cards inset with the wrap gutter instead of the viewport edge */
+  scroll-padding-inline: clamp(20px, 5vw, 72px);
 }
 .track::-webkit-scrollbar {
   display: none;
@@ -162,4 +164,10 @@
 .method-tail b {
   font-weight: inherit;
   color: var(--signal-lift);
+}
+@media (max-width: 700px) {
+  .contours,
+  .track-prog {
+    display: none;
+  }
 }

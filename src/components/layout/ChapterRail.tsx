@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { RAIL_CHAPTERS } from "@/data/chapters";
 
@@ -11,8 +12,12 @@ const IDS = RAIL_CHAPTERS.map((c) => c.id);
  * on-dark palette while a dark-plate chapter is active. Hidden ≤ 1240px.
  */
 export function ChapterRail() {
+  const pathname = usePathname();
   const active = useActiveSection(IDS);
   const onDark = RAIL_CHAPTERS[active]?.dark ?? false;
+
+  // The ladder maps the book's chapters; off the home page there are none.
+  if (pathname !== "/" && pathname !== "") return null;
 
   const go = (id: string) => {
     const el = document.getElementById(id);

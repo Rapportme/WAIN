@@ -1,0 +1,23 @@
+name = "wain-diagnosis"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Plain config values. The one secret (RESEND_API_KEY) is NOT here — see README.md.
+[vars]
+# Only these origins get a CORS grant. Keep localhost out of production.
+ALLOWED_ORIGINS = "https://wearein.in,https://www.wearein.in"
+# Verified Resend sender, and where lead notifications land.
+MAIL_FROM = "We Are In Collective <diagnosis@wearein.in>"
+MAIL_NOTIFY = "hello@wearein.in"
+
+# Backs the per-IP rate limiter. Create it once, then paste the id here:
+#   npx wrangler kv namespace create RATE_LIMIT
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+
+# Optional: serve the endpoint from your own domain instead of *.workers.dev.
+# Requires the zone to be on Cloudflare.
+# [[routes]]
+# pattern = "diagnosis.wearein.in"
+# custom_domain = true

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -37,9 +38,9 @@ export function Close() {
               &rarr;
             </span>
           </a>
-          <a href="#diagnosis" className="btn btn--ghost">
+          <Link href="/diagnosis" className="btn btn--ghost">
             Get a free growth diagnosis
-          </a>
+          </Link>
         </Reveal>
       </div>
     </section>

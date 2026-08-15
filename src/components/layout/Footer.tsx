@@ -3,16 +3,18 @@
 import Image from "next/image";
 import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
+import { useSectionHref } from "@/hooks/useSectionHref";
 
 export function Footer() {
   const { openModal } = useUI();
+  const h = useSectionHref();
 
   return (
     <footer>
       <div className="wrap">
         <div className="f-top">
           <div className="f-brand">
-            <a href="#top" className="logo f-logo" aria-label="We Are In Collective — back to the cover">
+            <a href={h("#top")} className="logo f-logo" aria-label="We Are In Collective — back to the cover">
               <Image
                 src={withBase("/images/weareinwhite.png")}
                 alt="We Are In Collective"
@@ -43,9 +45,9 @@ export function Footer() {
               <span className="mk mk-cir" />
               Start here
             </h5>
-            <a href="#routes">Three ways in</a>
-            <a href="#close">Let&apos;s talk over coffee</a>
-            <a href="#diagnosis" className="hi">
+            <a href={h("#routes")}>Three ways in</a>
+            <a href={h("#close")}>Let&apos;s talk over coffee</a>
+            <a href={withBase("/diagnosis/")} className="hi">
               Growth diagnosis — diagnose my business
             </a>
             <a
@@ -77,8 +79,8 @@ export function Footer() {
             </h5>
             <a href="#">What we believe</a>
             <a href="#">How we think</a>
-            <a href="#method">How we work</a>
-            <a href="#experience">Experience</a>
+            <a href={h("#method")}>How we work</a>
+            <a href={h("#experience")}>Experience</a>
           </div>
 
           <div className="f-col">
@@ -86,10 +88,10 @@ export function Footer() {
               <span className="mk mk-wedge" />
               Our thinking
             </h5>
-            <a href="#thinking">Observations</a>
-            <a href="#thinking">Perspectives</a>
-            <a href="#thinking">Case studies</a>
-            <a href="#thinking">Field notes</a>
+            <a href={h("#thinking")}>Observations</a>
+            <a href={h("#thinking")}>Perspectives</a>
+            <a href={h("#thinking")}>Case studies</a>
+            <a href={h("#thinking")}>Field notes</a>
           </div>
         </div>
         <div className="f-bot">

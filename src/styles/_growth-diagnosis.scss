@@ -1,0 +1,676 @@
+/* ============================================================ GROWTH DIAGNOSIS
+   The /diagnosis route: one question per screen, then the read. Same ink
+   system as the book — each question carries its own --sig, so the tick, the
+   progress fill and the selected state all change hue as you move through.
+   Nothing here is new design language; it's chapter 09, continued. */
+
+.s-gd {
+  --pad: clamp(56px, 8vh, 96px);
+  --sig: var(--sage);
+  --sig-ink: var(--sage-ink);
+  min-height: 100vh;
+  /* The masthead is fixed, full-width and ~124px tall, so anything starting
+     higher than this is not just crowded — the masthead's empty flex space
+     sits over it and eats the clicks. The home page never noticed because the
+     hero has nothing interactive up there. */
+  padding-top: clamp(132px, 15vh, 176px);
+}
+.gd-wrap {
+  max-width: 860px;
+}
+
+/* The base reset drops font/colour/background from form controls but leaves the
+   UA border. Every control here draws its own ring with an inset shadow, so the
+   default one only ever shows up as an unwanted second box. */
+.s-gd button,
+.s-gd input,
+.s-gd textarea {
+  border: 0;
+}
+
+.gd-exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: clamp(30px, 5vh, 52px);
+  transition: color 0.3s var(--ease);
+}
+.gd-exit:hover {
+  color: var(--signal-ink);
+}
+
+/* the eyebrow, reused on the result screens */
+.gd-eye {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.gd-eye .t {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- the quiz */
+
+.gd-prog {
+  margin-bottom: clamp(34px, 5vh, 54px);
+}
+.gd-prog-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 11px;
+}
+.gd-prog-n {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sig-ink);
+  font-variant-numeric: tabular-nums;
+}
+.gd-prog-n i {
+  font-style: normal;
+  color: var(--muted-2);
+  margin-inline: 2px;
+}
+.gd-prog-pct {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+.gd-prog-track {
+  height: 2px;
+  background: var(--rule);
+}
+.gd-prog-fill {
+  height: 2px;
+  background: var(--sig);
+  transition: width 0.4s var(--ease), background 0.4s var(--ease);
+}
+
+.gd-q {
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+  letter-spacing: var(--ls-mega);
+  line-height: 1.1;
+  max-width: 24ch;
+  margin-bottom: clamp(22px, 3.4vh, 32px);
+}
+.gd-sub {
+  font-family: var(--ui);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--muted-2);
+  margin: -18px 0 26px;
+}
+
+.gd-opts {
+  display: grid;
+  gap: 9px;
+  max-width: 620px;
+}
+.gd-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  padding: 15px 18px;
+  cursor: pointer;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  transition: box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+.gd-opt:hover {
+  box-shadow: inset 0 0 0 1px var(--sig);
+}
+.gd-opt.on {
+  background: color-mix(in srgb, var(--sig) 7%, var(--paper));
+  box-shadow: inset 0 0 0 1.5px var(--sig);
+}
+.gd-opt-t {
+  font-family: var(--body);
+  font-size: 0.99rem;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  line-height: 1.45;
+}
+.gd-tick {
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.gd-tick.sq {
+  border-radius: 2px;
+}
+.gd-opt.on .gd-tick {
+  background: var(--sig);
+  box-shadow: inset 0 0 0 1.5px var(--sig);
+}
+
+/* industry search */
+.gd-search {
+  position: relative;
+  max-width: 480px;
+}
+.gd-search input {
+  width: 100%;
+  padding: 15px 17px;
+  font-family: var(--body);
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: inset 0 0 0 1px var(--rule);
+  background: var(--paper);
+  transition: box-shadow 0.2s var(--ease);
+}
+.gd-search input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--sig);
+}
+.gd-search-list {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 264px;
+  overflow-y: auto;
+  background: var(--paper);
+  box-shadow: 0 14px 40px rgba(18, 38, 63, 0.13), inset 0 0 0 1px var(--rule);
+}
+.gd-search-list button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 11px 17px;
+  font-family: var(--body);
+  font-size: 0.93rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 1px solid var(--rule-2);
+}
+.gd-search-list button:last-child {
+  border-bottom: 0;
+}
+.gd-search-list button:hover {
+  background: var(--paper-2);
+  color: var(--sig-ink);
+}
+.gd-search-list button.on {
+  background: var(--paper-3);
+}
+.gd-search-none {
+  padding: 14px 17px;
+  font-family: var(--body);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.gd-search-ok {
+  display: block;
+  margin-top: 11px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sig-ink);
+}
+
+/* the one open question */
+.gd-textarea {
+  max-width: 620px;
+}
+.gd-textarea textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 17px 19px;
+  font-family: var(--serif);
+  font-size: 1.18rem;
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: -0.012em;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  transition: box-shadow 0.2s var(--ease);
+}
+.gd-textarea textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--sig);
+}
+.gd-count {
+  display: block;
+  margin-top: 9px;
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* nav */
+.gd-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: clamp(32px, 5vh, 46px);
+  max-width: 620px;
+}
+.gd-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.3s var(--ease);
+}
+.gd-back:hover:not(:disabled) {
+  color: var(--ink);
+}
+.gd-back:disabled {
+  color: var(--muted-2);
+  opacity: 0.5;
+  cursor: default;
+}
+.gd-nav .btn .arw {
+  display: inline-flex;
+}
+.btn:disabled {
+  background: var(--paper-3);
+  color: var(--muted-2);
+  cursor: not-allowed;
+}
+.btn:disabled:hover {
+  background: var(--paper-3);
+}
+.gd-hint {
+  margin-top: 12px;
+  font-family: var(--ui);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--muted-2);
+}
+
+/* ------------------------------------------------------------- the waiting */
+
+.gd-wait {
+  min-height: 46vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  color: var(--signal);
+}
+.gd-wait p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.24rem;
+  color: var(--muted);
+}
+.gd-spin {
+  animation: gd-rotate 1s linear infinite;
+}
+@keyframes gd-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gd-error {
+  display: grid;
+  gap: 24px;
+  justify-items: start;
+  padding-block: clamp(30px, 6vh, 60px);
+}
+
+/* ------------------------------------------------------------- the results */
+
+.gd-res-h,
+.gd-form-h,
+.gd-rep-h {
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  letter-spacing: var(--ls-mega);
+  line-height: 1.05;
+  max-width: 20ch;
+  margin-bottom: clamp(28px, 4vh, 40px);
+}
+
+.gd-scores {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 5vw, 56px);
+  flex-wrap: wrap;
+  padding-bottom: clamp(28px, 4vh, 40px);
+  border-bottom: 1px solid var(--rule);
+}
+.gd-ring circle:last-of-type {
+  animation: gd-draw 1s var(--ease) both;
+}
+@keyframes gd-draw {
+  from {
+    stroke-dashoffset: 327;
+  }
+}
+.gd-ring-n {
+  font-family: var(--disp);
+  font-size: 30px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+.gd-ring-l {
+  font-family: var(--ui);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  fill: var(--muted-2);
+}
+.gd-brr-v {
+  font-family: var(--disp);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: var(--ls-mega);
+  line-height: 1;
+  margin-top: 8px;
+}
+
+/* strengths / attention */
+.gd-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 52px);
+  padding-block: clamp(28px, 4vh, 40px);
+  border-bottom: 1px solid var(--rule);
+}
+.gd-list ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.gd-list li {
+  display: flex;
+  gap: 11px;
+  font-family: var(--body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.008em;
+}
+.gd-list li i {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+.gd-list.good li i {
+  background: var(--sage);
+}
+.gd-list.watch li i {
+  background: var(--coral);
+}
+
+/* priority order */
+.gd-focus {
+  padding-block: clamp(28px, 4vh, 40px);
+  border-bottom: 1px solid var(--rule);
+}
+.gd-focus ol {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+.gd-focus li {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+}
+.gd-focus-n {
+  font-family: var(--disp);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--amber-ink);
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+}
+.gd-focus-t {
+  font-family: var(--body);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.008em;
+  max-width: 54ch;
+}
+
+/* the written read */
+.gd-prose {
+  padding-block: clamp(28px, 4vh, 40px);
+  display: grid;
+  gap: 18px;
+}
+.gd-prose p,
+.gd-prose-lg {
+  font-family: var(--body);
+  font-size: 1.06rem;
+  font-weight: 400;
+  line-height: 1.66;
+  letter-spacing: -0.008em;
+  color: var(--muted);
+  max-width: 62ch;
+}
+.gd-prose-lg {
+  margin-top: 14px;
+  font-size: 1.1rem;
+}
+
+.gd-fine {
+  font-family: var(--body);
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--muted-2);
+  max-width: 68ch;
+  padding-top: clamp(20px, 3vh, 28px);
+  border-top: 1px solid var(--rule-2);
+}
+
+.gd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(28px, 4vh, 38px);
+}
+.gd-restart {
+  display: block;
+  margin-top: 24px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  cursor: pointer;
+  transition: color 0.3s var(--ease);
+}
+.gd-restart:hover {
+  color: var(--coral-ink);
+}
+
+/* ---------------------------------------------------------------- the form */
+
+.gd-form .lede {
+  max-width: 52ch;
+}
+.gd-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 620px;
+  margin-top: clamp(28px, 4vh, 38px);
+}
+.gd-fields label {
+  display: grid;
+  gap: 7px;
+}
+.gd-fields input {
+  padding: 13px 15px;
+  font-family: var(--body);
+  font-size: 0.98rem;
+  font-weight: 500;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  transition: box-shadow 0.2s var(--ease);
+}
+.gd-fields input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--signal);
+}
+.gd-fields label.bad input {
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+.gd-fields em {
+  font-family: var(--ui);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--coral-ink);
+}
+
+/* -------------------------------------------------------------- the report */
+
+.gd-rep-note {
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--muted-2);
+  margin: -24px 0 clamp(30px, 5vh, 44px);
+  max-width: 56ch;
+}
+.gd-rep-sec {
+  padding-block: clamp(26px, 4vh, 36px);
+  border-top: 1px solid var(--rule);
+}
+.gd-depts {
+  display: grid;
+  gap: clamp(22px, 3vh, 30px);
+  margin-top: 22px;
+}
+.gd-dept {
+  padding-left: 20px;
+  border-left: 2px solid var(--sig);
+}
+.gd-dept h4 {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+}
+.gd-dept dl {
+  display: grid;
+  gap: 4px;
+}
+.gd-dept dt {
+  margin-top: 8px;
+}
+.gd-dept dt:first-child {
+  margin-top: 0;
+}
+.gd-dept dd {
+  font-family: var(--body);
+  font-size: 0.97rem;
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: -0.008em;
+  color: var(--muted);
+  max-width: 62ch;
+}
+.gd-dept dd.strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+.gd-rep .gd-cols {
+  border-top: 1px solid var(--rule);
+}
+
+/* ---------------------------------------------------------------- narrower */
+
+@media (max-width: 760px) {
+  .gd-cols,
+  .gd-fields {
+    grid-template-columns: 1fr;
+  }
+  .gd-nav {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 14px;
+  }
+  .gd-nav .btn {
+    flex: 1;
+    justify-content: center;
+  }
+  .gd-opt {
+    padding: 14px 15px;
+  }
+  .gd-scores {
+    gap: 24px;
+  }
+}
+
+/* --------------------------------------------------------------- for print
+   The download buttons are just window.print(); make that produce something
+   worth keeping. */
+@media print {
+  .no-print,
+  .masthead,
+  .rail,
+  .menu,
+  footer,
+  .modal {
+    display: none !important;
+  }
+  .s-gd {
+    padding-block: 0;
+    min-height: 0;
+  }
+  .gd-wrap {
+    max-width: none;
+    padding-inline: 0;
+  }
+  .gd-ring circle:last-of-type {
+    animation: none;
+  }
+  .gd-dept,
+  .gd-focus li,
+  .gd-list li {
+    break-inside: avoid;
+  }
+}

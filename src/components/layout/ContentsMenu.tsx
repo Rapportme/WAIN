@@ -4,6 +4,7 @@ import { useEffect, useRef, type MouseEvent } from "react";
 import Image from "next/image";
 import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
+import { useSectionHref } from "@/hooks/useSectionHref";
 
 interface MenuLink {
   href?: string;
@@ -64,7 +65,7 @@ const COLUMNS: MenuColumn[] = [
     links: [
       { href: "#routes", title: "Three ways in", note: "Pick one, or read it straight through." },
       { href: "#close", title: "Let's talk over coffee", note: "A conversation, not a pitch." },
-      { href: "#diagnosis", title: "Growth diagnosis", note: "Twelve questions. Free. Under five minutes." },
+      { href: "/diagnosis/", title: "Growth diagnosis", note: "Fifteen questions. Free. Under five minutes." },
       { title: "Before you hire an agency", note: "Twelve questions. Some are uncomfortable.", modal: true },
       { href: "#close", title: "Contact", note: "A human replies. Usually the same day." },
     ],
@@ -73,6 +74,7 @@ const COLUMNS: MenuColumn[] = [
 
 export function ContentsMenu() {
   const { menuOpen, setMenuOpen, openModal } = useUI();
+  const h = useSectionHref();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   // Move focus to the close button when the overlay opens.
@@ -122,7 +124,12 @@ export function ContentsMenu() {
                   <em>{link.note}</em>
                 </a>
               ) : (
-                <a key={link.title} href={link.href}>
+                <a
+                  key={link.title}
+                  href={
+                    !link.href ? "#" : link.href.startsWith("#") ? h(link.href) : withBase(link.href)
+                  }
+                >
                   <strong>{link.title}</strong>
                   <em>{link.note}</em>
                 </a>

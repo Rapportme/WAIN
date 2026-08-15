@@ -1,7 +1,12 @@
 # dependencies
 /node_modules
+/worker/node_modules
 /.pnp
 .pnp.*
+
+# cloudflare worker — local secrets and build state
+/worker/.dev.vars
+/worker/.wrangler/
 
 # next.js
 /.next/

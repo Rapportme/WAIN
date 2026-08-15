@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 
 const SPEC: { k: string; v: string; free?: boolean }[] = [
-  { k: "Format", v: "12 quick questions" },
+  { k: "Format", v: "15 quick questions" },
   { k: "Time", v: "Under 5 minutes" },
   { k: "Cost", v: "Free", free: true },
   { k: "Full report", v: "Sent to your inbox" },
@@ -30,7 +31,7 @@ export function Diagnosis() {
 
         <Reveal as="div" className="diag-body" d={1}>
           <p className="lede">
-            Answer twelve quick questions about your business — how it&apos;s growing, where it feels
+            Answer fifteen quick questions about your business — how it&apos;s growing, where it feels
             stuck, what you&apos;ve already tried. We&apos;ll generate an honest first read right
             there on the screen. Want the complete picture — the blind spots, the priorities, the
             specific next steps? Leave your email, and we&apos;ll send the full diagnosis to your
@@ -47,12 +48,12 @@ export function Diagnosis() {
         </Reveal>
 
         <Reveal as="div" className="diag-cta" d={2}>
-          <a href="#close" className="btn">
+          <Link href="/diagnosis" className="btn">
             Diagnose My Business{" "}
             <span className="arw" aria-hidden="true">
               &rarr;
             </span>
-          </a>
+          </Link>
           <p className="fine">
             Whether you work with us afterwards or not is entirely your choice. If it helps your
             business, that&apos;s enough for us.

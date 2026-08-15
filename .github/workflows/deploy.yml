@@ -24,8 +24,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_BASE_PATH: '/WAIN'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,6 +39,12 @@ jobs:
 
       - name: Build static export
         run: npm run build
+        env:
+          # A repository *variable*, not a secret: NEXT_PUBLIC_* values are
+          # inlined into the JS bundle at build time, so this URL is public
+          # either way. Unset until the diagnosis Worker is deployed — the site
+          # then falls back to its own local read (see worker/README.md).
+          NEXT_PUBLIC_DIAGNOSIS_API: ${{ vars.DIAGNOSIS_API }}
 
       - name: Ensure Jekyll is bypassed
         run: touch ./out/.nojekyll

@@ -41,5 +41,8 @@
 /* overlays */
 @use "modal";
 
+/* the /diagnosis route — chapter 09, continued */
+@use "growth-diagnosis";
+
 /* final overrides — must stay last */
 @use "typography-layer";

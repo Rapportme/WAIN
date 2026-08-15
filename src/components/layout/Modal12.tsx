@@ -1,6 +1,7 @@
 "use client";
 
 import { useUI } from "@/components/providers/UIProvider";
+import { useSectionHref } from "@/hooks/useSectionHref";
 
 const QUESTIONS = [
   "Can you say what my business does in one sentence a stranger would understand?",
@@ -19,6 +20,7 @@ const QUESTIONS = [
 
 export function Modal12() {
   const { modalOpen, closeModal } = useUI();
+  const h = useSectionHref();
 
   return (
     <div
@@ -49,7 +51,7 @@ export function Modal12() {
             <li key={q}>{q}</li>
           ))}
         </ol>
-        <a href="#close" className="btn mcta" onClick={closeModal}>
+        <a href={h("#close")} className="btn mcta" onClick={closeModal}>
           Talk it through over coffee{" "}
           <span className="arw" aria-hidden="true">
             &rarr;
