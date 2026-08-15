@@ -11,7 +11,17 @@ const variants: Variants = {
   shown: { opacity: 1, y: 0 },
 };
 
-type RevealTag = "div" | "section" | "h2" | "h3" | "p" | "ul" | "ol" | "blockquote" | "span";
+type RevealTag =
+  | "div"
+  | "section"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "p"
+  | "ul"
+  | "ol"
+  | "blockquote"
+  | "span";
 
 interface RevealProps {
   children: ReactNode;

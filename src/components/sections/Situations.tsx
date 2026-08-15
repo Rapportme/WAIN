@@ -25,7 +25,8 @@ const SITUATIONS: Situation[] = [
   },
   {
     ix: "03",
-    question: "I just have an idea. I'll reach out once I've figured more out.",
+    question:
+      "Uh no! I just have an idea. I'll reach out once I've figured more out.",
     answer:
       "That's usually the best time to start, not after. The earliest decisions are the cheapest to get right and the most expensive to unpick later.",
   },
@@ -67,8 +68,8 @@ export function Situations() {
           We don&apos;t sell services. We solve business problems.
         </Reveal>
         <Reveal as="p" className="lede" style={{ marginTop: "24px" }}>
-          The problem you notice isn&apos;t always the one holding the business back. Here&apos;s what
-          we usually hear — and what it usually means.
+          The problem you notice isn&apos;t always the one holding the business
+          back. Here&apos;s what we usually hear — and what it usually means.
         </Reveal>
         <Reveal as="div" className="sits" d={1}>
           {SITUATIONS.map((s, i) => {
@@ -99,9 +100,13 @@ export function Situations() {
             );
           })}
         </Reveal>
-        <Reveal as="p" className="lede lede-aside" style={{ marginTop: "34px" }}>
-          If your situation isn&apos;t listed here, tell us about it. Chances are we&apos;ve seen a
-          version of it before.
+        <Reveal
+          as="p"
+          className="lede lede-aside"
+          style={{ marginTop: "34px" }}
+        >
+          If your situation isn&apos;t listed here, tell us about it. Chances
+          are we&apos;ve seen a version of it before.
         </Reveal>
       </div>
     </section>

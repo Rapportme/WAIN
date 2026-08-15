@@ -44,5 +44,12 @@
 /* the /diagnosis route — chapter 09, continued */
 @use "growth-diagnosis";
 
+/* the standalone routes — same book, different binding. Loaded after the
+   chapters so the shared furniture they reuse (.statement, .lede, the
+   hairlines) is already defined and these can override it per section. */
+@use "pages";
+@use "why-we-exist";
+@use "how-we-exist";
+
 /* final overrides — must stay last */
 @use "typography-layer";

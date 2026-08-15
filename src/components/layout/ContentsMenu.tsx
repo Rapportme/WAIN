@@ -25,18 +25,32 @@ const COLUMNS: MenuColumn[] = [
     heading: "Why we exist",
     shape: "mk-cir",
     links: [
-      { href: "#", title: "Our story", note: "Why we stopped calling ourselves an agency." },
-      { href: "#", title: "People behind the thinking", note: "Small team. No account managers." },
-      { href: "#", title: "Failure resumes", note: "Everything we got wrong, and what it taught us." },
-      { href: "#", title: "Founder Q&A", note: "The questions we're asked most, answered plainly." },
+      {
+        href: "/why-we-exist/#story",
+        title: "Our story",
+        note: "Why we stopped calling ourselves an agency.",
+      },
+      {
+        href: "/why-we-exist/#people",
+        title: "People behind the thinking",
+        note: "Small team. Failure resumes and founder Q&A included.",
+      },
     ],
   },
   {
     heading: "How we exist",
     shape: "mk-tri",
     links: [
-      { href: "#", title: "What we believe", note: "The positions we're willing to defend." },
-      { href: "#", title: "How we think", note: "The questions we ask before anything else." },
+      {
+        href: "/how-we-exist/#believe",
+        title: "What we believe",
+        note: "The positions we're willing to defend.",
+      },
+      {
+        href: "/how-we-exist/#think",
+        title: "How we think",
+        note: "The questions we ask before anything else.",
+      },
       { href: "#method", title: "How we work", note: "Six movements. In order. No skipping." },
     ],
   },

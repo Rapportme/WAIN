@@ -66,10 +66,8 @@ export function Footer() {
               <span className="mk mk-tri" />
               Why we exist
             </h5>
-            <a href="#">Our story</a>
-            <a href="#">People behind the thinking</a>
-            <a href="#">Failure resumes</a>
-            <a href="#">Founder Q&amp;A</a>
+            <a href={withBase("/why-we-exist/#story")}>Our story</a>
+            <a href={withBase("/why-we-exist/#people")}>People behind the thinking</a>
           </div>
 
           <div className="f-col">
@@ -77,8 +75,8 @@ export function Footer() {
               <span className="mk mk-sq" />
               How we exist
             </h5>
-            <a href="#">What we believe</a>
-            <a href="#">How we think</a>
+            <a href={withBase("/how-we-exist/#believe")}>What we believe</a>
+            <a href={withBase("/how-we-exist/#think")}>How we think</a>
             <a href={h("#method")}>How we work</a>
             <a href={h("#experience")}>Experience</a>
           </div>
