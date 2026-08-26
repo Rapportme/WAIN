@@ -1,60 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { withBase } from "@/lib/withBase";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
+import { CATEGORIES, POSTS, categoryStyle, type BlogCategory } from "@/data/blog";
 
-type Format = "all" | "observations" | "perspectives" | "case" | "field";
+type Filter = BlogCategory | "ALL";
 
-interface Piece {
-  fmt: Exclude<Format, "all">;
-  label: string;
-  title: string;
-}
-
-const FILTERS: { f: Format; label: string }[] = [
-  { f: "all", label: "All" },
-  { f: "observations", label: "Observations" },
-  { f: "perspectives", label: "Perspectives" },
-  { f: "case", label: "Case studies" },
-  { f: "field", label: "Field notes" },
+const FILTERS: { f: Filter; label: string }[] = [
+  { f: "ALL", label: "All" },
+  ...CATEGORIES.map((c) => ({ f: c.key as Filter, label: c.plural })),
 ];
 
-const LEAD_FMT: Exclude<Format, "all"> = "perspectives";
-
-const PIECES: Piece[] = [
-  { fmt: "observations", label: "Observation", title: "Your leads are fine. Your follow-up isn't." },
-  {
-    fmt: "field",
-    label: "Field note",
-    title: "Before you buy an AI tool, map the hour it's meant to save.",
-  },
-  {
-    fmt: "perspectives",
-    label: "Perspective",
-    title: '"More marketing" is the most expensive way to avoid a hard decision.',
-  },
-  {
-    fmt: "case",
-    label: "Case study",
-    title: "A rebrand that started by deleting two of the three services.",
-  },
-  {
-    fmt: "observations",
-    label: "Observation",
-    title: "Businesses don't compete on price. They compete on how fast they can be understood.",
-  },
-  {
-    fmt: "field",
-    label: "Field note",
-    title: 'The meeting where "we\'re too busy to fix it" finally became the diagnosis.',
-  },
-];
+/** The lead piece, then the pieces under it. The full collection is at /thinking. */
+const [LEAD, ...REST] = POSTS;
+const SHELF = REST.slice(0, 6);
 
 /** 07 · Thinking — a contents page for the writing, filterable by format. */
 export function Thinking() {
-  const [filter, setFilter] = useState<Format>("all");
-  const leadVisible = filter === "all" || filter === LEAD_FMT;
+  const [filter, setFilter] = useState<Filter>("ALL");
+  if (!LEAD) return null;
+  const leadFmt = categoryStyle(LEAD.category);
+  const leadVisible = filter === "ALL" || filter === LEAD.category;
 
   return (
     <section className="chapter s-think" id="thinking">
@@ -74,40 +42,37 @@ export function Thinking() {
         <Reveal
           as="div"
           className="lead"
-          data-fmt={LEAD_FMT}
+          data-fmt={leadFmt.fmt}
           d={1}
           style={leadVisible ? undefined : { display: "none" }}
         >
           <div>
             <div className="kick">
               <span className="mk" />
-              <span className="label">Perspective — the lead piece</span>
+              <span className="label">{leadFmt.label} — the lead piece</span>
             </div>
             <h3>
-              <a href="#">Why we don&apos;t call ourselves an agency.</a>
+              <a href={withBase(`/thinking/${LEAD.slug}/`)}>{LEAD.title}</a>
             </h3>
           </div>
           <div>
-            <p className="blurb">
-              The word comes with expectations we don&apos;t want: retainers, decks, distance. We
-              wanted to be in the business, not next to it — so we changed the noun, and then had to
-              earn it.
-            </p>
-            <a href="#" className="mark">
+            <p className="blurb">{LEAD.body[0]}</p>
+            <a href={withBase(`/thinking/${LEAD.slug}/`)} className="mark">
               Read the argument &rarr;
             </a>
           </div>
         </Reveal>
 
         <ul className="pieces">
-          {PIECES.map((p) => {
-            const hidden = filter !== "all" && p.fmt !== filter;
+          {SHELF.map((p) => {
+            const cat = categoryStyle(p.category);
+            const hidden = filter !== "ALL" && p.category !== filter;
             return (
-              <li className={`piece${hidden ? " hide" : ""}`} data-fmt={p.fmt} key={p.title}>
-                <a href="#">
+              <li className={`piece${hidden ? " hide" : ""}`} data-fmt={cat.fmt} key={p.slug}>
+                <a href={withBase(`/thinking/${p.slug}/`)}>
                   <span className="fmt">
                     <span className="mk" />
-                    {p.label}
+                    {cat.label}
                   </span>
                   <span className="ttl">{p.title}</span>
                   <span className="rd">Read</span>
@@ -117,9 +82,14 @@ export function Thinking() {
           })}
         </ul>
 
-        <Reveal as="p" className="lede lede-aside" style={{ marginTop: "34px" }}>
-          Because better thinking leads to better decisions. Read it even if you never become a
-          client. That&apos;s kind of the point.
+        <Reveal as="div" className="think-all">
+          <p className="lede lede-aside" style={{ maxWidth: "44ch" }}>
+            Because better thinking leads to better decisions. Read it even if you never become a
+            client. That&apos;s kind of the point.
+          </p>
+          <a href={withBase("/thinking/")} className="mark">
+            All {POSTS.length} pieces &rarr;
+          </a>
         </Reveal>
       </div>
     </section>

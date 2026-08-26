@@ -50,6 +50,10 @@
 @use "pages";
 @use "why-we-exist";
 @use "how-we-exist";
+@use "experience-page";
+
+/* the writing — chapter 07, given its own binding at /thinking */
+@use "blog";
 
 /* final overrides — must stay last */
 @use "typography-layer";

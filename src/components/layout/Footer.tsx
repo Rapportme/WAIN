@@ -78,7 +78,7 @@ export function Footer() {
             <a href={withBase("/how-we-exist/#believe")}>What we believe</a>
             <a href={withBase("/how-we-exist/#think")}>How we think</a>
             <a href={h("#method")}>How we work</a>
-            <a href={h("#experience")}>Experience</a>
+            <a href={withBase("/experience/")}>Experience</a>
           </div>
 
           <div className="f-col">
@@ -86,10 +86,12 @@ export function Footer() {
               <span className="mk mk-wedge" />
               Our thinking
             </h5>
-            <a href={h("#thinking")}>Observations</a>
-            <a href={h("#thinking")}>Perspectives</a>
-            <a href={h("#thinking")}>Case studies</a>
-            <a href={h("#thinking")}>Field notes</a>
+            <a href={withBase("/thinking/")} className="hi">
+              Everything we&apos;ve published
+            </a>
+            <a href={withBase("/thinking/#observations")}>Observations</a>
+            <a href={withBase("/thinking/#perspectives")}>Perspectives</a>
+            <a href={withBase("/thinking/#case-studies")}>Case studies</a>
           </div>
         </div>
         <div className="f-bot">

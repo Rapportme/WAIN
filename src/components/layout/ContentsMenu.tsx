@@ -33,7 +33,7 @@ const COLUMNS: MenuColumn[] = [
       {
         href: "/why-we-exist/#people",
         title: "People behind the thinking",
-        note: "Small team. Failure resumes and founder Q&A included.",
+        note: "Three people, and the question each one keeps asking.",
       },
     ],
   },
@@ -58,19 +58,27 @@ const COLUMNS: MenuColumn[] = [
     heading: "Experience",
     shape: "mk-sq",
     links: [
-      { href: "#experience", title: "Across industries", note: "Where we've spent our time." },
-      { href: "#experience", title: "Patterns", note: "The same problem, wearing different clothes." },
-      { href: "#experience", title: "Behind We Are In", note: "Work our people led before the name existed." },
+      { href: "/experience/", title: "Intro", note: "Two kinds of experience, and why both of them count." },
+      {
+        href: "/experience/#industries",
+        title: "Experience across industries",
+        note: "Where the depth is, and where we've simply been in the room.",
+      },
+      {
+        href: "/experience/#behind",
+        title: "Experience behind We Are In",
+        note: "Work our people led before the name existed.",
+      },
     ],
   },
   {
     heading: "Our thinking",
     shape: "mk-wedge",
     links: [
-      { href: "#thinking", title: "Observations", note: "Short. Things we keep noticing." },
-      { href: "#thinking", title: "Perspectives", note: "Opinions we'll put our name on." },
-      { href: "#thinking", title: "Case studies", note: "What we did, including what didn't work." },
-      { href: "#thinking", title: "Field notes", note: "Written from inside the work, while it's messy." },
+      { href: "/thinking/", title: "Everything we've published", note: "Twenty-two pieces, in the order they were written." },
+      { href: "/thinking/#observations", title: "Observations", note: "Short. Things we keep noticing." },
+      { href: "/thinking/#perspectives", title: "Perspectives", note: "Opinions we'll put our name on." },
+      { href: "/thinking/#case-studies", title: "Case studies", note: "What we did, including what didn't work." },
     ],
   },
   {

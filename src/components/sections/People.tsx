@@ -36,20 +36,6 @@ const PEOPLE: Person[] = [
   },
 ];
 
-/** In progress — the two chapters of this section still being written. */
-const SOON = [
-  {
-    title: "Failure resumes",
-    note: "Everything we got wrong, and what it taught us. Being written — it's a longer list than the wins.",
-    shape: "mk-bar",
-  },
-  {
-    title: "Founder Q&A",
-    note: "The questions we're asked most, answered plainly. Coming to this page.",
-    shape: "mk-wedge",
-  },
-];
-
 /**
  * Why we exist · 02 — The people behind the thinking. Three cards, three
  * inks, and the question each person keeps asking set in the voice: the
@@ -93,22 +79,11 @@ export function People() {
             Together, we bring strategy, creativity, business experience and a healthy amount of
             questioning into the same conversation.
           </p>
-          <p className="pg-sign">You don&apos;t get a department. You get the room.</p>
+          <p className="pg-sign">
+            Work with WAIN, and you don&apos;t get one way of thinking. You get three: a go-getter,
+            a deep-diver, and a quick-study. Most days, that&apos;s actually the whole meeting.
+          </p>
         </Reveal>
-
-        <div className="pg-soon">
-          {SOON.map((s, i) => (
-            <Reveal as="div" className="pg-soon-item" key={s.title} d={i + 1}>
-              <article>
-                <span className="label">In progress</span>
-                <h4>
-                  <span className={`mk ${s.shape}`} aria-hidden="true" /> {s.title}
-                </h4>
-                <p>{s.note}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   );

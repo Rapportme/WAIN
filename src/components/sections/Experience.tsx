@@ -1,3 +1,4 @@
+import { withBase } from "@/lib/withBase";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -61,7 +62,7 @@ export function Experience() {
         </Reveal>
 
         <Reveal as="div" className="exp-cta">
-          <a href="#method" className="btn">
+          <a href={withBase("/experience/#work")} className="btn">
             Explore the work{" "}
             <span className="arw" aria-hidden="true">
               &rarr;

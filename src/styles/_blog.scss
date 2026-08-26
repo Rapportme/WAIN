@@ -1,0 +1,642 @@
+/* ============================================================ THE WRITING
+   /thinking and /thinking/<slug> — chapter 07 given its own binding.
+
+   Nothing new is invented here. The collection index reuses the standalone
+   pages' head (`.pg-head`, `.pg-title`) and the anchor-index grid, and every
+   format keeps the ink it already has in chapter 07: observations teal,
+   perspectives coral, case studies sage. The article itself is the one new
+   object on the site — a single measure of Newsreader, because these drafts
+   are written one sentence to a paragraph and that rhythm is the design. */
+
+.s-blog {
+  --sig: var(--lav);
+  --sig-ink: var(--lav-ink);
+}
+
+/* the format inks, shared by the index and the article. Declared once as a
+   mixin-by-attribute so a row, a card and a whole page can all take them. */
+[data-fmt="observations"] {
+  --pc: var(--signal);
+  --pc-ink: var(--signal-ink);
+}
+[data-fmt="perspectives"] {
+  --pc: var(--coral);
+  --pc-ink: var(--coral-ink);
+}
+[data-fmt="case"] {
+  --pc: var(--sage);
+  --pc-ink: var(--sage-ink);
+}
+
+/* ---------------------------------------------------------------- THE INDEX */
+
+/* the subject line the drafts are collected under, printed under the title */
+.bl-subject {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: clamp(18px, 2.6vh, 26px);
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.bl-subject .r {
+  flex: 1;
+  height: 1px;
+  background: var(--rule-2);
+  max-width: 220px;
+}
+
+/* the format switch — the anchor index from the standalone pages, except the
+   cells are buttons and the note is a count. */
+.bl-filters {
+  display: grid;
+  /* four across on the desk, two on a tablet, one on a phone — never an
+     orphan cell, which auto-fit would happily leave behind */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(38px, 5.5vh, 62px);
+  border-top: 2px solid var(--sig);
+}
+.bl-filters button {
+  /* a button vertically centres its content, so a cell whose note wraps to two
+     lines would ride higher than its neighbours — anchor the stack to the top */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  cursor: pointer;
+  padding: 20px clamp(18px, 2.2vw, 30px) 24px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+  transition: background 0.3s var(--ease), border-bottom-color 0.3s var(--ease);
+}
+.bl-filters button:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+.bl-filters button:hover {
+  background: var(--paper-2);
+}
+.bl-filters button:first-child:hover {
+  box-shadow: -14px 0 0 var(--paper-2);
+}
+.bl-filters button[aria-pressed="true"] {
+  border-bottom-color: var(--fc, var(--ink));
+}
+.bl-f-n {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 1.4em;
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+.bl-f-n .mk {
+  background: var(--fc, var(--ink));
+  transform: scale(0.62);
+  transition: transform 0.35s var(--ease);
+}
+.bl-filters button[aria-pressed="true"] .bl-f-n {
+  color: var(--fc-ink, var(--ink));
+}
+.bl-filters button[aria-pressed="true"] .bl-f-n .mk,
+.bl-filters button:hover .bl-f-n .mk {
+  transform: none;
+}
+.bl-f-c {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--disp);
+  font-weight: var(--w-mega);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  letter-spacing: var(--ls-mega);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-2);
+  transition: color 0.3s var(--ease);
+}
+.bl-f-w {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.bl-filters button[aria-pressed="true"] .bl-f-c {
+  color: var(--fc-ink, var(--ink));
+}
+.bl-filters button[data-fmt="perspectives"] {
+  --fc: var(--coral);
+  --fc-ink: var(--coral-ink);
+}
+.bl-filters button[data-fmt="observations"] {
+  --fc: var(--signal);
+  --fc-ink: var(--signal-ink);
+}
+.bl-filters button[data-fmt="case"] {
+  --fc: var(--sage);
+  --fc-ink: var(--sage-ink);
+}
+
+/* ---- the lead piece ---- */
+.s-blog-list {
+  --pad: clamp(76px, 10vh, 132px);
+  background: var(--paper-2);
+  border-top: 1px solid var(--rule-2);
+}
+.bl-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(26px, 4vw, 64px);
+  align-items: end;
+  padding-bottom: clamp(38px, 5vh, 54px);
+  border-bottom: 1px solid var(--rule);
+}
+.bl-kick {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pc-ink);
+}
+.bl-kick .mk {
+  background: var(--pc);
+}
+.bl-kick .sep {
+  color: var(--muted-2);
+}
+.bl-lead h2 {
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  letter-spacing: var(--ls-mega);
+  line-height: 1.06;
+  max-width: 22ch;
+}
+.bl-lead h2 a {
+  transition: color 0.3s var(--ease);
+}
+.bl-lead h2 a:hover {
+  color: var(--pc-ink);
+}
+.bl-lead .blurb {
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.62;
+  margin-bottom: 20px;
+}
+.bl-lead .mark::after {
+  background: var(--pc);
+}
+.bl-lead .mark:hover {
+  color: var(--pc-ink);
+}
+
+/* ---- the cards ---- */
+.bl-grid {
+  list-style: none;
+  display: grid;
+  /* two up, fixed: the left-hairline and padding rules below key off the
+     column count, so this can't be allowed to become three on a wide screen */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.bl-card {
+  /* the row stretches this cell; the flex chain below hands that height down to
+     the link so every card's footer lands on the same baseline */
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+.bl-card:nth-child(2n + 1) {
+  border-left: 0;
+}
+/* the reveal wrapper — a plain div between the cell and the link. It has to
+   pass the height through rather than shrink-wrap the copy. */
+.bl-c-in {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+.bl-c-in > a {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: clamp(24px, 3vh, 32px) clamp(20px, 2.4vw, 34px) clamp(26px, 3.4vh, 36px);
+  transition: background 0.35s var(--ease);
+}
+.bl-card:nth-child(2n + 1) .bl-c-in > a {
+  padding-left: 0;
+}
+.bl-c-in > a:hover {
+  background: var(--paper);
+}
+.bl-c-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pc-ink);
+}
+.bl-c-top .mk {
+  background: var(--pc);
+  transition: transform 0.35s var(--ease);
+}
+.bl-c-in > a:hover .bl-c-top .mk {
+  transform: rotate(0.25turn);
+}
+.bl-c-top .n {
+  margin-left: auto;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+.bl-c-t {
+  display: block;
+  margin-top: 16px;
+  font-family: var(--disp);
+  font-weight: var(--w-head);
+  font-size: clamp(1.22rem, 2vw, 1.52rem);
+  letter-spacing: var(--ls-head);
+  line-height: 1.16;
+  transition: color 0.3s var(--ease);
+}
+.bl-c-in > a:hover .bl-c-t {
+  color: var(--pc-ink);
+}
+.bl-c-x {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.58;
+  color: var(--muted);
+}
+.bl-c-b {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: clamp(20px, 2.6vh, 28px);
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.bl-c-b .rd {
+  color: var(--pc-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.bl-c-b .arw {
+  transition: transform 0.35s var(--ease);
+}
+.bl-c-in > a:hover .arw {
+  transform: translateX(5px);
+}
+
+/* ---------------------------------------------------------------- AN ARTICLE
+   One measure, and the format's ink promoted to the page's ink so the eyebrow,
+   the pull rule and the hand-off band all agree with the card the reader
+   clicked. */
+.s-article {
+  --sig: var(--pc);
+  --sig-ink: var(--pc-ink);
+}
+.bl-art-head {
+  padding-bottom: clamp(30px, 4vh, 46px);
+}
+.bl-art-head .pg-title {
+  max-width: 24ch;
+  font-size: clamp(2.1rem, 5.4vw, 4.1rem);
+  line-height: 1.05;
+}
+/* ---- the reading spread ----
+   A lone measure leaves a wide page mostly empty, so the piece's credits
+   move out of the head and into a rail that keeps pace with the reader — the
+   same gutter idiom the creed rows use on /how-we-exist. Below 1100px the rail
+   folds up above the prose, where it is simply a byline again. */
+.bl-art-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 208px) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 84px);
+  /* stretch, not start: the rail column has to be as tall as the article or the
+     sticky block inside it has nowhere to travel */
+  align-items: stretch;
+}
+.bl-rail-in {
+  position: sticky;
+  /* clear of the fixed masthead */
+  top: clamp(140px, 17vh, 172px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: clamp(16px, 2.2vh, 22px);
+  border-top: 2px solid var(--pc);
+}
+.bl-rail-fmt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--pc-ink);
+}
+.bl-rail-fmt .mk {
+  background: var(--pc);
+}
+/* the pairs are transparent to the rail's column layout; folded up they become
+   flex rows so a label never wraps away from its value */
+.bl-rail-pair {
+  display: contents;
+}
+.bl-rail-k {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-top: 20px;
+}
+.bl-rail-v {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.86rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-top: 3px;
+}
+.bl-rail-a {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8rem;
+}
+.bl-rail-a::after {
+  background: var(--pc);
+}
+.bl-rail-a:hover {
+  color: var(--pc-ink);
+}
+
+/* the prose. The drafts run one sentence to a paragraph — that cadence is the
+   voice, so the measure stays narrow and the leading stays open rather than
+   packing the lines tighter. */
+.s-article-body {
+  padding-block: clamp(20px, 3vh, 40px) clamp(70px, 9vh, 120px);
+}
+.bl-body {
+  /* ~70 characters — the top of the comfortable measure, which is what lets the
+     prose fill the column beside the rail instead of hugging its left edge */
+  max-width: 68ch;
+}
+.bl-body p {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.08rem, 1.35vw, 1.24rem);
+  line-height: 1.68;
+  color: var(--ink);
+  font-variation-settings: "opsz" 16;
+}
+.bl-body p + p {
+  margin-top: 1.15em;
+}
+/* the standfirst: the article's opening paragraph, set one step up. The ink
+   rule hangs in the gutter — a negative margin equal to its own indent — so the
+   opening line stays flush with every paragraph under it. */
+.bl-body p:first-child {
+  --hang: clamp(16px, 2.2vw, 26px);
+  font-size: clamp(1.24rem, 1.85vw, 1.6rem);
+  line-height: 1.5;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  padding-left: var(--hang);
+  margin-left: calc(var(--hang) * -1);
+  border-left: 2px solid var(--sig);
+  margin-bottom: 1.5em;
+  font-variation-settings: "opsz" 28;
+}
+.bl-end {
+  margin-top: clamp(44px, 6vh, 72px);
+  padding-top: clamp(22px, 3vh, 32px);
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  max-width: 68ch;
+}
+.bl-end .who {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.bl-end .who b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---- the hand-off: previous and next, side by side ---- */
+.bl-pn {
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.bl-pn > a {
+  padding: clamp(30px, 4.2vh, 52px) clamp(20px, 2.6vw, 40px);
+  transition: background 0.35s var(--ease);
+}
+.bl-pn > a:first-child {
+  border-right: 1px solid var(--rule);
+  padding-left: 0;
+}
+.bl-pn > a:last-child {
+  text-align: right;
+  padding-right: 0;
+}
+.bl-pn > a:hover {
+  background: var(--paper-2);
+}
+.bl-pn .lbl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.bl-pn > a:last-child .lbl {
+  justify-content: flex-end;
+}
+.bl-pn .lbl .mk {
+  background: var(--pc);
+}
+.bl-pn .ttl {
+  display: block;
+  font-family: var(--disp);
+  font-weight: var(--w-head);
+  font-size: clamp(1.15rem, 2.1vw, 1.6rem);
+  letter-spacing: var(--ls-head);
+  line-height: 1.14;
+  transition: color 0.3s var(--ease);
+}
+.bl-pn > a:hover .ttl {
+  color: var(--pc-ink);
+}
+
+/* the band that sends the reader back to the whole collection */
+.bl-all {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(34px, 5vh, 56px);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.bl-all .mark::after {
+  background: var(--lav);
+}
+.bl-all .mark:hover {
+  color: var(--lav-ink);
+}
+
+/* ---- the home chapter's link out to the collection ---- */
+.think-all {
+  margin-top: clamp(28px, 4vh, 44px);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@media (max-width: 1000px) {
+  .bl-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bl-filters button:nth-child(2n + 1) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .bl-filters button:nth-child(2n + 1):hover {
+    box-shadow: -14px 0 0 var(--paper-2);
+  }
+}
+@media (max-width: 1100px) {
+  .bl-art-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 3.4vh, 34px);
+  }
+  .bl-rail-in {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 20px;
+  }
+  .bl-rail-pair {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .bl-rail-k,
+  .bl-rail-v {
+    margin-top: 0;
+  }
+  /* folded up, the rail sits right under the eyebrow — which already names the
+     format — and above the band that already closes the page */
+  .bl-rail-fmt,
+  .bl-rail-a {
+    display: none;
+  }
+  .bl-body p:first-child {
+    margin-left: 0;
+  }
+}
+@media (max-width: 900px) {
+  .bl-lead {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 22px;
+  }
+}
+@media (max-width: 820px) {
+  .bl-grid {
+    grid-template-columns: 1fr;
+  }
+  .bl-card,
+  .bl-card:nth-child(2n + 1) {
+    border-left: 0;
+  }
+  .bl-c-in > a,
+  .bl-card:nth-child(2n + 1) .bl-c-in > a {
+    padding-inline: 0;
+  }
+  .bl-pn {
+    grid-template-columns: 1fr;
+  }
+  .bl-pn > a:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    padding-inline: 0;
+  }
+  .bl-pn > a:last-child {
+    text-align: left;
+    padding-inline: 0;
+  }
+  .bl-pn > a:last-child .lbl {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 560px) {
+  .bl-filters {
+    grid-template-columns: 1fr;
+  }
+  .bl-filters button,
+  .bl-filters button:first-child,
+  .bl-filters button:nth-child(2n + 1) {
+    border-left: 0;
+    padding-inline: 0;
+  }
+  .bl-filters button:hover,
+  .bl-filters button:first-child:hover,
+  .bl-filters button:nth-child(2n + 1):hover {
+    background: none;
+    box-shadow: none;
+  }
+}
