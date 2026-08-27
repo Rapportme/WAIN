@@ -9,6 +9,7 @@
 
 import { QUESTIONS } from "../../src/lib/diagnosis/questions";
 import type { Answers, LeadDetails } from "../../src/lib/diagnosis/types";
+import { CONTACT_LIMITS, CONTACT_STAGES, type ContactMessage } from "../../src/lib/contact/types";
 
 const IDS = new Set(QUESTIONS.map((q) => q.id));
 const MAX_ANSWER_CHARS = 400;
@@ -76,5 +77,49 @@ export function parseLead(raw: unknown): LeadDetails {
     company: str("company", 160, true),
     email,
     phone: str("phone", 40, false),
+  };
+}
+
+/* ---- the contact form -------------------------------------------------- */
+
+/**
+ * Accepts only the six fields the contact form collects, each within the same
+ * limits the browser enforces. Anything else is rejected here — this endpoint
+ * emails on request, so an unbounded body is an unbounded email.
+ */
+export function parseContact(raw: unknown): ContactMessage {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new BadRequest("message is required");
+  }
+  const m = raw as Record<string, unknown>;
+
+  const str = (key: keyof ContactMessage, required: boolean): string => {
+    const v = m[key];
+    if (typeof v !== "string" || !v.trim()) {
+      if (required) throw new BadRequest(`message.${key} is required`);
+      return "";
+    }
+    const trimmed = v.trim();
+    if (trimmed.length > CONTACT_LIMITS[key]) throw new BadRequest(`message.${key} is too long`);
+    return trimmed;
+  };
+
+  const email = str("email", true);
+  if (!EMAIL_RE.test(email)) throw new BadRequest("message.email is not a valid address");
+
+  const body = str("message", true);
+  if (body.length < 10) throw new BadRequest("message.message is too short");
+
+  const stage = str("stage", false);
+  // A free-typed stage is not an error, but it is not one of ours either.
+  const knownStage = (CONTACT_STAGES as readonly string[]).includes(stage) ? stage : "";
+
+  return {
+    name: str("name", true),
+    company: str("company", false),
+    email,
+    phone: str("phone", false),
+    stage: knownStage,
+    message: body,
   };
 }

@@ -1,7 +1,8 @@
 /* ============================================================================
    WAIN — Growth Diagnosis mail endpoint.
 
-   POST /detailed  { answers, lead }  ->  { emailed: boolean }
+   POST /detailed  { answers, lead }     ->  { emailed: boolean }
+   POST /contact   { message }           ->  { sent: boolean }
 
    The diagnosis itself is written by the deterministic scorer in
    src/lib/diagnosis/localRead.ts, which runs in the browser to draw the screen
@@ -19,8 +20,8 @@
    ========================================================================= */
 
 import { localDetailed } from "../../src/lib/diagnosis/localRead";
-import { deliverReport } from "./email";
-import { BadRequest, parseAnswers, parseLead } from "./validate";
+import { deliverContact, deliverReport } from "./email";
+import { BadRequest, parseAnswers, parseContact, parseLead } from "./validate";
 
 export interface Env {
   /** Comma-separated allowlist, e.g. "https://wearein.in,http://localhost:3000". */
@@ -45,8 +46,8 @@ const MAX_PER_HOUR = 5;
  * production KV reads can be briefly stale, which loosens it further. It exists
  * to stop the endpoint being used as a mail relay, not to be exact.
  */
-async function overLimit(env: Env, ip: string): Promise<boolean> {
-  const key = `rl:mail:${ip}`;
+async function overLimit(env: Env, ip: string, route: string): Promise<boolean> {
+  const key = `rl:${route}:${ip}`;
   const current = Number((await env.RATE_LIMIT.get(key)) ?? "0");
   if (current >= MAX_PER_HOUR) return true;
   await env.RATE_LIMIT.put(key, String(current + 1), { expirationTtl: WINDOW_SECONDS });
@@ -101,10 +102,15 @@ export default {
     }
 
     const path = new URL(request.url).pathname.replace(/\/+$/, "");
-    if (!path.endsWith("/detailed")) return json({ error: "not found" }, 404, origin);
+    const route = path.endsWith("/detailed")
+      ? "detailed"
+      : path.endsWith("/contact")
+        ? "contact"
+        : null;
+    if (!route) return json({ error: "not found" }, 404, origin);
 
     const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-    if (await overLimit(env, ip)) return json({ error: "too many requests" }, 429, origin);
+    if (await overLimit(env, ip, route)) return json({ error: "too many requests" }, 429, origin);
 
     let body: unknown;
     try {
@@ -114,6 +120,14 @@ export default {
     }
 
     try {
+      if (route === "contact") {
+        const message = parseContact((body as Record<string, unknown> | null)?.message);
+        const sent = await deliverContact(env, message);
+        // `sent: false` is a truthful 200 — the page then offers the reader the
+        // mailto fallback rather than claiming a message that never arrived.
+        return json({ sent }, 200, origin);
+      }
+
       const { answers: rawAnswers, lead: rawLead } = (body ?? {}) as Record<string, unknown>;
       const answers = parseAnswers(rawAnswers);
       const lead = parseLead(rawLead);
@@ -128,7 +142,7 @@ export default {
       return json({ emailed }, 200, origin);
     } catch (err) {
       if (err instanceof BadRequest) return json({ error: err.message }, 400, origin);
-      console.error("[diagnosis] unhandled error:", err);
+      console.error("[worker] unhandled error:", err);
       return json({ error: "internal error" }, 500, origin);
     }
   },

@@ -97,10 +97,34 @@ NEXT_PUBLIC_DIAGNOSIS_API=http://localhost:8787 npm run dev   # from the repo ro
 | Route | Body | Returns |
 |---|---|---|
 | `POST /detailed` | `{ answers, lead }` | `{ emailed: boolean }` |
+| `POST /contact` | `{ message }` | `{ sent: boolean }` |
 
 `emailed` is the literal result of the send, not an inference. The report screen
 says "a copy is on its way to your inbox" only when it's `true`; on `false` it
 says the copy couldn't be sent and points at Download.
+
+`sent` works the same way for `/contact`, and reflects the collective's copy
+only — the sender's acknowledgement is a nicer reply, not the delivery the page
+claims. On `false` the contact page says nothing was sent and hands the reader a
+prefilled `mailto:` instead, so the message isn't quietly lost.
+
+The rate limit is counted per route, so someone taking the diagnosis has their
+own budget from someone using the contact form.
+
+### The contact form
+
+By default the `/contact/` page does **not** use this Worker — it sends through
+Web3Forms, which needs no DNS and no Cloudflare account (see
+[`docs/contact-form.md`](../docs/contact-form.md)). Setting `CONTACT_API` or
+`DIAGNOSIS_API` makes it prefer this route instead, with no code change.
+
+`/contact` is the send path for the `/contact/` page, which is a plain form —
+name, company, email, phone, stage, message. The site points at it with either
+`NEXT_PUBLIC_CONTACT_API` or, if that's unset, the same
+`NEXT_PUBLIC_DIAGNOSIS_API` (it's one Worker; there's no reason to deploy two).
+Unlike the diagnosis, nothing is recomputed here — the body *is* the message —
+so every field is length-capped, the stage must be one of ours, and everything
+reaching the email HTML is escaped.
 
 ### Why the report is rebuilt here
 

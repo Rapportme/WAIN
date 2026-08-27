@@ -5,6 +5,7 @@ import Image from "next/image";
 import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
 import { useSectionHref } from "@/hooks/useSectionHref";
+import { SocialLinks } from "@/components/ui/SocialLinks";
 
 interface MenuLink {
   href?: string;
@@ -17,6 +18,8 @@ interface MenuLink {
 interface MenuColumn {
   heading: string;
   shape: string;
+  /** The page the column itself stands for — the heading links here. */
+  pageHref: string;
   links: MenuLink[];
 }
 
@@ -24,6 +27,7 @@ const COLUMNS: MenuColumn[] = [
   {
     heading: "Why we exist",
     shape: "mk-cir",
+    pageHref: "/why-we-exist/",
     links: [
       {
         href: "/why-we-exist/#story",
@@ -40,6 +44,7 @@ const COLUMNS: MenuColumn[] = [
   {
     heading: "How we exist",
     shape: "mk-tri",
+    pageHref: "/how-we-exist/",
     links: [
       {
         href: "/how-we-exist/#believe",
@@ -57,6 +62,7 @@ const COLUMNS: MenuColumn[] = [
   {
     heading: "Experience",
     shape: "mk-sq",
+    pageHref: "/experience/",
     links: [
       { href: "/experience/", title: "Intro", note: "Two kinds of experience, and why both of them count." },
       {
@@ -74,6 +80,7 @@ const COLUMNS: MenuColumn[] = [
   {
     heading: "Our thinking",
     shape: "mk-wedge",
+    pageHref: "/thinking/",
     links: [
       { href: "/thinking/", title: "Everything we've published", note: "Twenty-two pieces, in the order they were written." },
       { href: "/thinking/#observations", title: "Observations", note: "Short. Things we keep noticing." },
@@ -84,12 +91,13 @@ const COLUMNS: MenuColumn[] = [
   {
     heading: "Start here",
     shape: "mk-cir",
+    pageHref: "/",
     links: [
       { href: "#routes", title: "Three ways in", note: "Pick one, or read it straight through." },
       { href: "#close", title: "Let's talk over coffee", note: "A conversation, not a pitch." },
       { href: "/diagnosis/", title: "Growth diagnosis", note: "Fifteen questions. Free. Under five minutes." },
       { title: "Before you hire an agency", note: "Twelve questions. Some are uncomfortable.", modal: true },
-      { href: "#close", title: "Contact", note: "A human replies. Usually the same day." },
+      { href: "/contact/", title: "Contact", note: "A human replies. Usually the same day." },
     ],
   },
 ];
@@ -127,9 +135,13 @@ export function ContentsMenu() {
       <div className="menu-grid" onClick={onGridClick}>
         {COLUMNS.map((col) => (
           <div className="menu-col" key={col.heading}>
+            {/* The heading is the column's page, not a label — clicking "Experience"
+                should land on /experience/, same as its first entry does. */}
             <h4>
-              <span className={`mk ${col.shape}`} />
-              {col.heading}
+              <a className="menu-col-h" href={withBase(col.pageHref)}>
+                <span className={`mk ${col.shape}`} />
+                {col.heading}
+              </a>
             </h4>
             {col.links.map((link) =>
               link.modal ? (
@@ -159,6 +171,12 @@ export function ContentsMenu() {
             )}
           </div>
         ))}
+      </div>
+      <div className="menu-foot">
+        <a className="menu-mail" href="mailto:hello@wearein.in">
+          hello@wearein.in
+        </a>
+        <SocialLinks className="social social--menu" />
       </div>
     </nav>
   );

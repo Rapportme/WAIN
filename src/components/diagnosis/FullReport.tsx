@@ -104,7 +104,7 @@ export function FullReport({ report, name, emailed }: FullReportProps) {
         <button type="button" className="btn btn--ghost" onClick={() => window.print()}>
           <Download size={15} /> Download this report
         </button>
-        <a className="btn" href={withBase("/#close")}>
+        <a className="btn" href={withBase("/contact/")}>
           <Calendar size={15} /> Book a consultation
           <span className="arw" aria-hidden="true">
             &rarr;

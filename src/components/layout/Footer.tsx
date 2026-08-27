@@ -4,6 +4,7 @@ import Image from "next/image";
 import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
 import { useSectionHref } from "@/hooks/useSectionHref";
+import { SocialLinks } from "@/components/ui/SocialLinks";
 
 export function Footer() {
   const { openModal } = useUI();
@@ -31,6 +32,10 @@ export function Footer() {
                 Kottayam
               </p>
             </div>
+            <div className="f-social-row">
+              <h6>Find us</h6>
+              <SocialLinks className="social social--footer" />
+            </div>
             <div className="f-dots" aria-hidden="true">
               <i />
               <i />
@@ -42,11 +47,14 @@ export function Footer() {
 
           <div className="f-col">
             <h5>
-              <span className="mk mk-cir" />
-              Start here
+              <a className="f-col-h" href={withBase("/")}>
+                <span className="mk mk-cir" />
+                Start here
+              </a>
             </h5>
             <a href={h("#routes")}>Three ways in</a>
             <a href={h("#close")}>Let&apos;s talk over coffee</a>
+            <a href={withBase("/contact/")}>Contact us</a>
             <a href={withBase("/diagnosis/")} className="hi">
               Growth diagnosis — diagnose my business
             </a>
@@ -63,8 +71,10 @@ export function Footer() {
 
           <div className="f-col">
             <h5>
-              <span className="mk mk-tri" />
-              Why we exist
+              <a className="f-col-h" href={withBase("/why-we-exist/")}>
+                <span className="mk mk-tri" />
+                Why we exist
+              </a>
             </h5>
             <a href={withBase("/why-we-exist/#story")}>Our story</a>
             <a href={withBase("/why-we-exist/#people")}>People behind the thinking</a>
@@ -72,8 +82,10 @@ export function Footer() {
 
           <div className="f-col">
             <h5>
-              <span className="mk mk-sq" />
-              How we exist
+              <a className="f-col-h" href={withBase("/how-we-exist/")}>
+                <span className="mk mk-sq" />
+                How we exist
+              </a>
             </h5>
             <a href={withBase("/how-we-exist/#believe")}>What we believe</a>
             <a href={withBase("/how-we-exist/#think")}>How we think</a>
@@ -83,8 +95,10 @@ export function Footer() {
 
           <div className="f-col">
             <h5>
-              <span className="mk mk-wedge" />
-              Our thinking
+              <a className="f-col-h" href={withBase("/thinking/")}>
+                <span className="mk mk-wedge" />
+                Our thinking
+              </a>
             </h5>
             <a href={withBase("/thinking/")} className="hi">
               Everything we&apos;ve published

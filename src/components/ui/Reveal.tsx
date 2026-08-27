@@ -14,6 +14,7 @@ const variants: Variants = {
 type RevealTag =
   | "div"
   | "section"
+  | "aside"
   | "h1"
   | "h2"
   | "h3"

@@ -7,7 +7,7 @@
   color: var(--paper);
   padding: clamp(20px, 5vw, 72px);
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s var(--ease), visibility 0.5s;
@@ -68,12 +68,24 @@
   padding-bottom: 12px;
   margin-bottom: 16px;
   border-bottom: 1px solid var(--rule-dark);
+}
+/* The heading is a link to the column's page. It keeps the label's type and
+   its hairline, so nothing about the overlay's rhythm moves. */
+.menu-col h4 .menu-col-h {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 0;
+  color: inherit;
+  transition: opacity 0.25s var(--ease), transform 0.35s var(--ease);
+}
+.menu-col h4 .menu-col-h:hover {
+  transform: translateX(3px);
+  opacity: 0.72;
 }
 .menu-col h4 .mk {
   background: var(--mc);
+  flex-shrink: 0;
 }
 .menu-col:nth-child(1) {
   --mc: var(--signal-lift);
@@ -120,6 +132,112 @@
 }
 .menu-col a:hover strong {
   color: var(--mc);
+}
+
+/* ---- the overlay's foot: how to reach us, and where else we are --------- */
+.menu-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 26px;
+  margin-top: clamp(30px, 5vh, 56px);
+  padding-top: 20px;
+  border-top: 1px solid var(--rule-dark);
+}
+.menu-mail {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+  color: var(--signal-lift);
+  transition: color 0.25s var(--ease);
+}
+.menu-mail:hover {
+  color: #fff;
+}
+
+/* ============================================================ SOCIAL ROW
+   One component, three plates. The marks inherit `currentColor`, so each
+   context only sets the colour it wants. */
+.social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  transition: color 0.25s var(--ease), box-shadow 0.25s var(--ease),
+    background 0.25s var(--ease), transform 0.35s var(--ease);
+}
+.social a:hover {
+  color: var(--signal-ink);
+  box-shadow: inset 0 0 0 1px var(--signal);
+  transform: translateY(-2px);
+}
+.social svg {
+  display: block;
+}
+
+/* on the navy plates — the overlay and the footer */
+.social--menu a,
+.social--footer a {
+  color: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 0 0 1px var(--rule-dark);
+}
+.social--menu a:hover,
+.social--footer a:hover {
+  color: var(--ink);
+  background: var(--signal-lift);
+  box-shadow: inset 0 0 0 1px var(--signal-lift);
+}
+
+/* labelled variant — the contact page, where there's room for the handle */
+.social--stack {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.social--stack li {
+  display: flex;
+}
+.social--stack a {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: auto;
+  gap: 14px;
+  justify-content: flex-start;
+  padding: 14px 16px;
+}
+.social--stack a:hover {
+  transform: translateX(4px);
+}
+.social-t {
+  display: grid;
+  gap: 1px;
+}
+.social-t b {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+.social-t em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.86rem;
+  color: var(--muted);
 }
 
 /* ============================================================ CHAPTER RAIL */

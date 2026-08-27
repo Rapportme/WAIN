@@ -12,11 +12,12 @@ import type {
 } from "@/lib/diagnosis/types";
 import { ArrowLeft, Spinner } from "./Icons";
 import { FullReport } from "./FullReport";
+import { Landing } from "./Landing";
 import { LeadForm } from "./LeadForm";
 import { Quiz } from "./Quiz";
 import { Results } from "./Results";
 
-type Screen = "quiz" | "loading" | "results" | "form" | "report" | "error";
+type Screen = "landing" | "quiz" | "loading" | "results" | "form" | "report" | "error";
 
 /** Reading lines, so a ten-second wait doesn't feel like a stalled page. */
 const WAITING = [
@@ -42,8 +43,10 @@ function Waiting({ lines }: { lines: readonly string[] }) {
 }
 
 export function GrowthDiagnosis() {
-  const [screen, setScreen] = useState<Screen>("quiz");
+  const [screen, setScreen] = useState<Screen>("landing");
   const [index, setIndex] = useState(0);
+  /** Where a restored draft stopped, so the landing can offer to resume it. */
+  const [draftAt, setDraftAt] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [diagnosis, setDiagnosis] = useState<InstantDiagnosis | null>(null);
   const [report, setReport] = useState<DetailedDiagnosis | null>(null);
@@ -64,8 +67,11 @@ export function GrowthDiagnosis() {
       if (saved) {
         const { answers: a, index: i } = JSON.parse(saved) as { answers: Answers; index: number };
         if (a && typeof i === "number") {
+          const at = Math.min(Math.max(i, 0), TOTAL - 1);
           setAnswers(a);
-          setIndex(Math.min(Math.max(i, 0), TOTAL - 1));
+          setIndex(at);
+          // Only worth offering to resume if they actually answered something.
+          if (Object.keys(a).length > 0) setDraftAt(at + 1);
         }
       }
     } catch {
@@ -74,12 +80,13 @@ export function GrowthDiagnosis() {
   }, []);
 
   useEffect(() => {
+    if (screen === "landing") return;
     try {
       sessionStorage.setItem("wain.diagnosis", JSON.stringify({ answers, index }));
     } catch {
       /* private-mode storage failures are not the founder's problem */
     }
-  }, [answers, index]);
+  }, [answers, index, screen]);
 
   const runFirstRead = useCallback(async () => {
     setScreen("loading");
@@ -124,6 +131,7 @@ export function GrowthDiagnosis() {
     } catch {
       /* nothing to clear */
     }
+    setDraftAt(0);
     setScreen("quiz");
   };
 
@@ -133,6 +141,15 @@ export function GrowthDiagnosis() {
         <a className="gd-exit no-print" href={withBase("/#diagnosis")}>
           <ArrowLeft size={14} /> Back to the site
         </a>
+
+        {screen === "landing" ? (
+          <Landing
+            onStart={restart}
+            onResume={() => setScreen("quiz")}
+            hasDraft={draftAt > 0}
+            draftAt={draftAt}
+          />
+        ) : null}
 
         {screen === "quiz" ? (
           <Quiz

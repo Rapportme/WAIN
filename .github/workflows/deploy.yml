@@ -45,6 +45,16 @@ jobs:
           # either way. Unset until the diagnosis Worker is deployed — the site
           # then falls back to its own local read (see worker/README.md).
           NEXT_PUBLIC_DIAGNOSIS_API: ${{ vars.DIAGNOSIS_API }}
+          # Same Worker, its /contact route. Leave unset to reuse
+          # DIAGNOSIS_API. Setting either makes the contact form use the Worker
+          # in preference to Web3Forms below.
+          NEXT_PUBLIC_CONTACT_API: ${{ vars.CONTACT_API }}
+          # How the contact form sends by default: a Web3Forms access key,
+          # registered to hello@wearein.in. Public by design (see the note
+          # above) — a repository *variable*, not a secret. With this and the
+          # Worker both unset, the form says plainly that nothing was sent and
+          # offers a prefilled mailto: instead.
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
 
       - name: Ensure Jekyll is bypassed
         run: touch ./out/.nojekyll

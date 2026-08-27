@@ -32,12 +32,12 @@ export function Close() {
           If we&apos;re not, we will. <span aria-hidden="true">😉</span>
         </Reveal>
         <Reveal as="div" className="close-cta" d={3}>
-          <a href="mailto:hello@wearein.in" className="btn">
+          <Link href="/contact" className="btn">
             Let&apos;s talk over coffee{" "}
             <span className="arw" aria-hidden="true">
               &rarr;
             </span>
-          </a>
+          </Link>
           <Link href="/diagnosis" className="btn btn--ghost">
             Get a free growth diagnosis
           </Link>

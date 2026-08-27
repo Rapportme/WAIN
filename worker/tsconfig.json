@@ -13,5 +13,5 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["src/**/*.ts", "../src/lib/diagnosis/**/*.ts"]
+  "include": ["src/**/*.ts", "../src/lib/diagnosis/**/*.ts", "../src/lib/contact/**/*.ts"]
 }

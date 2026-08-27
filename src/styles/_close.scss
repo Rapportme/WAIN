@@ -159,6 +159,19 @@ footer {
   max-width: 30ch;
   margin-top: 0;
 }
+/* where else we are — the marks sit above the shape row */
+.f-social-row {
+  margin-top: 24px;
+}
+.f-social-row h6 {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+}
 .f-dots {
   display: flex;
   gap: 8px;
@@ -196,25 +209,38 @@ footer {
   text-transform: uppercase;
   color: var(--fc);
   margin-bottom: 14px;
+}
+/* The heading links to the column's page, keeping the label's type. */
+.f-col h5 .f-col-h {
   display: flex;
   align-items: center;
   gap: 9px;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  transition: opacity 0.25s var(--ease), transform 0.3s var(--ease);
+}
+.f-col h5 .f-col-h:hover {
+  color: inherit;
+  opacity: 0.72;
+  transform: translateX(3px);
 }
 .f-col h5 .mk {
   width: 8px;
   height: 8px;
   background: var(--fc);
+  flex-shrink: 0;
 }
-.f-col:nth-of-type(1) {
+.f-col:nth-child(2) {
   --fc: var(--signal-lift);
 }
-.f-col:nth-of-type(2) {
+.f-col:nth-child(3) {
   --fc: var(--sage);
 }
-.f-col:nth-of-type(3) {
+.f-col:nth-child(4) {
   --fc: var(--amber);
 }
-.f-col:nth-of-type(4) {
+.f-col:nth-child(5) {
   --fc: var(--lav);
 }
 .f-col a {

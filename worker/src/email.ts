@@ -11,6 +11,7 @@
 import type { DetailedDiagnosis, LeadDetails } from "../../src/lib/diagnosis/types";
 import { buildAnswerSummary } from "../../src/lib/diagnosis/prompts";
 import type { Answers } from "../../src/lib/diagnosis/types";
+import type { ContactMessage } from "../../src/lib/contact/types";
 
 const NAVY = "#12263f";
 const MUTED = "#5b6b7f";
@@ -207,6 +208,121 @@ export async function deliverReport(
       );
     } catch (err) {
       console.error("[diagnosis] lead notification failed:", err);
+    }
+  }
+
+  return delivered;
+}
+
+/* ---- the contact form -------------------------------------------------- */
+
+/** Just the first word of the name — the greeting, not the record. */
+function firstName(name: string): string {
+  return name.trim().split(/\s+/)[0] ?? name;
+}
+
+function contactNotifyHtml(msg: ContactMessage): string {
+  const row = (k: string, v: string) =>
+    v ? `<tr><td style="padding:2px 14px 2px 0;color:${MUTED};">${k}</td><td><b>${esc(v)}</b></td></tr>` : "";
+
+  return `<!doctype html><html><body style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${NAVY};">
+<h2 style="font-size:18px;margin:0 0 14px;">New message from the contact form</h2>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;margin-bottom:18px;">
+  ${row("Name", msg.name)}
+  ${row("Company", msg.company)}
+  <tr><td style="padding:2px 14px 2px 0;color:${MUTED};">Email</td><td><a href="mailto:${esc(msg.email)}">${esc(msg.email)}</a></td></tr>
+  ${row("Phone", msg.phone)}
+  ${row("Where they are", msg.stage)}
+</table>
+<h3 style="font-size:14px;margin:0 0 8px;">What they wrote</h3>
+<pre style="white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6;background:#f8fafc;padding:14px;margin:0;">${esc(
+    msg.message,
+  )}</pre>
+</body></html>`;
+}
+
+/** The reader's copy — short, and it repeats what they sent so they have it. */
+function contactAckHtml(msg: ContactMessage): string {
+  return `<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>We've got your message</title></head>
+<body style="margin:0;padding:0;background:#f8fafc;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8fafc;">
+<tr><td align="center" style="padding:32px 16px;">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%;background:#ffffff;">
+    <tr><td bgcolor="${TEAL}" height="4" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+    <tr><td style="padding:36px 36px 8px;">
+      <p style="margin:0 0 8px;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:${MUTED};">We Are In Collective</p>
+      <h1 style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:normal;line-height:1.18;color:${NAVY};">Thanks, ${esc(
+        firstName(msg.name),
+      )}. We&rsquo;ve got it.</h1>
+      ${para(
+        "A human reads this inbox — usually the same day, and always within two working days. When we reply it will probably be with a question rather than a deck.",
+        MUTED,
+      )}
+    </td></tr>
+    <tr><td style="padding:0 36px 8px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td style="border-top:1px solid ${RULE};padding-top:22px;">
+          ${label("What you sent us")}
+          <p style="margin:0;white-space:pre-wrap;font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.62;color:${NAVY};">${esc(
+            msg.message,
+          )}</p>
+        </td></tr>
+      </table>
+    </td></tr>
+    <tr><td style="padding:26px 36px 34px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+        <tr><td bgcolor="${TEAL}" style="padding:14px 26px;">
+          <a href="https://wearein.in/diagnosis/" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:bold;color:#ffffff;text-decoration:none;">While you wait: take the growth diagnosis &rarr;</a>
+        </td></tr>
+      </table>
+    </td></tr>
+    <tr><td bgcolor="${NAVY}" style="padding:24px 36px;">
+      <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:rgba(255,255,255,0.62);">
+        We Are In Collective &middot; <a href="mailto:hello@wearein.in" style="color:#4fd0d0;text-decoration:none;">hello@wearein.in</a>
+      </p>
+    </td></tr>
+  </table>
+</td></tr></table>
+</body></html>`;
+}
+
+/**
+ * Sends the message to the collective and an acknowledgement to the sender.
+ * Returns whether the collective's copy went out — that is the one the page's
+ * "we've got it" claim depends on, so the acknowledgement must not decide it.
+ */
+export async function deliverContact(env: SendEnv, msg: ContactMessage): Promise<boolean> {
+  if (!env.RESEND_API_KEY || !env.MAIL_FROM) return false;
+
+  const to = env.MAIL_NOTIFY || "hello@wearein.in";
+  let delivered = false;
+  try {
+    await send(
+      env,
+      to,
+      `Contact form — ${msg.name}${msg.company ? `, ${msg.company}` : ""}`,
+      contactNotifyHtml(msg),
+      msg.email,
+    );
+    delivered = true;
+  } catch (err) {
+    console.error("[contact] notification failed:", err);
+  }
+
+  // A failed acknowledgement is a worse reply, not a lost message.
+  if (delivered) {
+    try {
+      await send(
+        env,
+        msg.email,
+        "We've got your message — We Are In Collective",
+        contactAckHtml(msg),
+        "hello@wearein.in",
+      );
+    } catch (err) {
+      console.error("[contact] acknowledgement failed:", err);
     }
   }
 
