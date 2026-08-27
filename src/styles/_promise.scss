@@ -75,7 +75,11 @@
   margin-top: clamp(30px, 4.4vh, 44px);
   display: grid;
   gap: 2px;
-  max-width: 62ch;
+  /* Each promise has to read as one line — the measure is set by the longest
+     of the three ("If a proposal won't move your business forward, we won't
+     send it."), which orphaned its last word at 62ch. Widen this if the copy
+     ever grows, rather than letting a line wrap. */
+  max-width: 68ch;
 }
 .plist div {
   padding: 15px 0;

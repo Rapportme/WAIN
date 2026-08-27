@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { withBase } from "@/lib/withBase";
+import { OG_IMAGES } from "@/lib/seo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { POSTS, categoryStyle, neighbours, postBySlug } from "@/data/blog";
@@ -38,8 +39,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description,
       siteName: "We Are In Collective",
       authors: [post.author],
+      images: OG_IMAGES,
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: OG_IMAGES },
   };
 }
 

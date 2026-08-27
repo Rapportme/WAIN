@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG_IMAGES } from "@/lib/seo";
 import { PageHead, type PageIndexEntry } from "@/components/layout/PageHead";
 import { PageNext } from "@/components/layout/PageNext";
 import { Story } from "@/components/sections/Story";
@@ -18,8 +19,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
+    images: OG_IMAGES,
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: OG_IMAGES,
+  },
 };
 
 const INDEX: readonly PageIndexEntry[] = [

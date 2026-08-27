@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG_IMAGES } from "@/lib/seo";
 import { BlogIndex } from "@/components/blog/BlogIndex";
 import { PageNext } from "@/components/layout/PageNext";
 
@@ -16,8 +17,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
+    images: OG_IMAGES,
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: OG_IMAGES,
+  },
 };
 
 /** /thinking — the collection index. The writing, filterable by format. */

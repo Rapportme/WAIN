@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { withBase } from "@/lib/withBase";
+import { OG_IMAGES } from "@/lib/seo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { SocialLinks } from "@/components/ui/SocialLinks";
@@ -20,8 +21,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
+    images: OG_IMAGES,
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: OG_IMAGES,
+  },
 };
 
 /** Contact — the one page on the site that asks the reader a question back. */

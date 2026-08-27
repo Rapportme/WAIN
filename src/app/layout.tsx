@@ -4,6 +4,7 @@ import "@/styles/globals.scss";
 
 import { UIProvider } from "@/components/providers/UIProvider";
 import { withBase } from "@/lib/withBase";
+import { OG_IMAGES } from "@/lib/seo";
 import { Masthead } from "@/components/layout/Masthead";
 import { ContentsMenu } from "@/components/layout/ContentsMenu";
 import { ChapterRail } from "@/components/layout/ChapterRail";
@@ -54,11 +55,13 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
+    images: OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
+    images: OG_IMAGES,
   },
   robots: { index: true, follow: true },
 };
