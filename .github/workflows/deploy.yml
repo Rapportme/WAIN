@@ -40,6 +40,13 @@ jobs:
       - name: Build static export
         run: npm run build
         env:
+          # The site is served from a Pages *project* subpath
+          # (https://pixlverse.github.io/WAIN/), so basePath and assetPrefix
+          # must carry it — without this every /_next/... and /images/... URL
+          # resolves against the domain root and 404s, which loads the HTML
+          # with no CSS or JS at all. Change this (or clear it) only together
+          # with the Pages custom-domain setting: a root domain needs it empty.
+          NEXT_PUBLIC_BASE_PATH: /WAIN
           # A repository *variable*, not a secret: NEXT_PUBLIC_* values are
           # inlined into the JS bundle at build time, so this URL is public
           # either way. Unset until the diagnosis Worker is deployed — the site
