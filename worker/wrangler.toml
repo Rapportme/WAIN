@@ -14,7 +14,7 @@ MAIL_NOTIFY = "hello@wearein.in"
 #   npx wrangler kv namespace create RATE_LIMIT
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+id = "a8e43671d7c14b8dbb9537d99d9a1923"
 
 # Optional: serve the endpoint from your own domain instead of *.workers.dev.
 # Requires the zone to be on Cloudflare.
