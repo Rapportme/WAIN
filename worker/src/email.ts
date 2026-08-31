@@ -120,7 +120,7 @@ export function reportHtml(report: DetailedDiagnosis, lead: LeadDetails): string
         <tr><td style="padding:8px 0 32px;">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0">
             <tr><td bgcolor="${TEAL}" style="padding:14px 26px;">
-              <a href="https://wearein.in/#close" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:bold;color:#ffffff;text-decoration:none;">Talk it through over coffee &rarr;</a>
+              <a href="https://wearein.in/contact" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:bold;color:#ffffff;text-decoration:none;">Talk it through over coffee &rarr;</a>
             </td></tr>
           </table>
         </td></tr>
