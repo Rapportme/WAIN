@@ -62,7 +62,7 @@ export function Work() {
         </Reveal>
 
         <Reveal as="div" className="work-cta" d={3}>
-          <a href="mailto:hello@wearein.in" className="btn">
+          <a href={withBase("/contact/")} className="btn">
             Let&apos;s talk over coffee{" "}
             <span className="arw" aria-hidden="true">
               &rarr;

@@ -55,7 +55,8 @@ function bullets(items: string[], dot: string): string {
     .join("");
 }
 
-export function reportHtml(report: DetailedDiagnosis, lead: LeadDetails): string {
+/** The report's content rows — shared by the founder's copy and the internal one. */
+function reportRows(report: DetailedDiagnosis): string {
   const depts = DEPTS.map(({ key, label: name, ink }) => {
     const d = report.departments?.[key];
     if (!d) return "";
@@ -75,22 +76,7 @@ export function reportHtml(report: DetailedDiagnosis, lead: LeadDetails): string
       </td></tr>`;
   }).join("");
 
-  return `<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your Growth Diagnosis</title></head>
-<body style="margin:0;padding:0;background:#f8fafc;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8fafc;">
-<tr><td align="center" style="padding:32px 16px;">
-  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%;background:#ffffff;">
-    <tr><td bgcolor="${TEAL}" height="4" style="font-size:0;line-height:0;">&nbsp;</td></tr>
-    <tr><td style="padding:36px 36px 0;">
-      <p style="margin:0 0 8px;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:${MUTED};">We Are In Collective</p>
-      <h1 style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:normal;line-height:1.15;color:${NAVY};">Your detailed diagnosis</h1>
-      <p style="margin:0 0 28px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${MUTED};">Prepared for ${esc(lead.name)}${lead.company ? ` &middot; ${esc(lead.company)}` : ""}</p>
-    </td></tr>
-
-    <tr><td style="padding:0 36px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  return `
         <tr><td style="border-top:1px solid ${RULE};padding-top:24px;">
           ${label("Executive summary")}${para(report.executiveSummary)}
         </td></tr>
@@ -110,7 +96,27 @@ export function reportHtml(report: DetailedDiagnosis, lead: LeadDetails): string
         </td></tr>
         <tr><td style="border-top:1px solid ${RULE};padding-top:24px;">
           ${label("Closing summary")}${para(report.closingSummary)}
-        </td></tr>
+        </td></tr>`;
+}
+
+export function reportHtml(report: DetailedDiagnosis, lead: LeadDetails): string {
+  return `<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Your Growth Diagnosis</title></head>
+<body style="margin:0;padding:0;background:#f8fafc;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8fafc;">
+<tr><td align="center" style="padding:32px 16px;">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%;background:#ffffff;">
+    <tr><td bgcolor="${TEAL}" height="4" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+    <tr><td style="padding:36px 36px 0;">
+      <p style="margin:0 0 8px;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:${MUTED};">We Are In Collective</p>
+      <h1 style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:normal;line-height:1.15;color:${NAVY};">Your detailed diagnosis</h1>
+      <p style="margin:0 0 28px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${MUTED};">Prepared for ${esc(lead.name)}${lead.company ? ` &middot; ${esc(lead.company)}` : ""}</p>
+    </td></tr>
+
+    <tr><td style="padding:0 36px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        ${reportRows(report)}
         <tr><td style="padding:8px 0 32px;">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0">
             <tr><td bgcolor="${TEAL}" style="padding:14px 26px;">
@@ -136,8 +142,13 @@ export function reportHtml(report: DetailedDiagnosis, lead: LeadDetails): string
 </body></html>`;
 }
 
-/** The internal copy — plain, and carrying the raw answers so the lead is useful. */
-function leadHtml(lead: LeadDetails, answers: Answers, bhi?: number): string {
+/** The internal copy — the lead, their raw answers, and the report they were sent. */
+function leadHtml(
+  lead: LeadDetails,
+  answers: Answers,
+  report: DetailedDiagnosis,
+  bhi?: number,
+): string {
   return `<!doctype html><html><body style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${NAVY};">
 <h2 style="font-size:18px;">New growth diagnosis lead</h2>
 <p><b>${esc(lead.name)}</b> &middot; ${esc(lead.company)}<br>
@@ -147,6 +158,10 @@ ${bhi != null ? `<br>Health index: <b>${bhi}</b>` : ""}</p>
 <pre style="white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.55;background:#f8fafc;padding:14px;">${esc(
     buildAnswerSummary(answers),
   )}</pre>
+<h3 style="font-size:14px;margin:26px 0 0;">The report they were sent</h3>
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%;">
+  ${reportRows(report)}
+</table>
 </body></html>`;
 }
 
@@ -203,7 +218,7 @@ export async function deliverReport(
         env,
         env.MAIL_NOTIFY,
         `Diagnosis lead — ${lead.name}, ${lead.company}`,
-        leadHtml(lead, answers),
+        leadHtml(lead, answers, report),
         lead.email,
       );
     } catch (err) {

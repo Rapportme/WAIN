@@ -94,7 +94,7 @@ const COLUMNS: MenuColumn[] = [
     pageHref: "/",
     links: [
       { href: "#routes", title: "Three ways in", note: "Pick one, or read it straight through." },
-      { href: "#close", title: "Let's talk over coffee", note: "A conversation, not a pitch." },
+      { href: "/contact/", title: "Let's talk over coffee", note: "A conversation, not a pitch." },
       { href: "/diagnosis/", title: "Growth diagnosis", note: "Fifteen questions. Free. Under five minutes." },
       { title: "Before you hire an agency", note: "Twelve questions. Some are uncomfortable.", modal: true },
       { href: "/contact/", title: "Contact", note: "A human replies. Usually the same day." },

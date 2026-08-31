@@ -32,7 +32,7 @@ export function Masthead() {
         >
           <i aria-hidden="true" /> Contents
         </button>
-        <a href={h("#close")} className="btn">
+        <a href={withBase("/contact/")} className="btn">
           Let&apos;s talk over coffee{" "}
           <span className="arw" aria-hidden="true">
             &rarr;

@@ -53,7 +53,7 @@ export function Footer() {
               </a>
             </h5>
             <a href={h("#routes")}>Three ways in</a>
-            <a href={h("#close")}>Let&apos;s talk over coffee</a>
+            <a href={withBase("/contact/")}>Let&apos;s talk over coffee</a>
             <a href={withBase("/contact/")}>Contact us</a>
             <a href={withBase("/diagnosis/")} className="hi">
               Growth diagnosis — diagnose my business

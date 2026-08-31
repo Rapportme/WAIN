@@ -1,5 +1,6 @@
 "use client";
 
+import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
 
 /** 00 · Cover. Two-column grid: content left, the orbital shape system right. */
@@ -28,7 +29,7 @@ export function Hero() {
             Decisions. Everything else comes later.
           </p>
           <div className="hero-cta a5">
-            <a href="#close" className="btn">
+            <a href={withBase("/contact/")} className="btn">
               Let&apos;s talk over coffee{" "}
               <span className="arw" aria-hidden="true">
                 &rarr;
