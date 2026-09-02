@@ -52,18 +52,35 @@ const articles = marks.map((mk, idx) => {
   const author = am[1].trim();
   p++;
 
-  // remaining lines → paragraphs split on blank lines, order and wording kept
-  const body = [];
-  let buf = [];
-  for (const line of block.slice(p)) {
-    if (line.trim() === "") {
-      if (buf.length) body.push(buf.join(" ").trim());
-      buf = [];
-    } else {
-      buf.push(line.trim());
-    }
+  // an optional "Excerpt:" line — the author's own standfirst for the index
+  // and the meta description, for pieces whose opening line is not the summary
+  let excerpt = "";
+  while (p < block.length && block[p].trim() === "") p++;
+  const xm = /^Excerpt:\s*(.+)$/.exec((block[p] ?? "").trim());
+  if (xm) {
+    excerpt = xm[1].trim();
+    p++;
   }
-  if (buf.length) body.push(buf.join(" ").trim());
+
+  // remaining lines → paragraphs split on blank lines, order and wording kept.
+  // A paragraph written as "## Something" is one of the author's section
+  // headings: the marker is dropped and its position recorded in `heads`.
+  const body = [];
+  const heads = [];
+  let buf = [];
+  const flush = () => {
+    if (!buf.length) return;
+    const para = buf.join(" ").trim();
+    const h = /^##\s+(.+)$/.exec(para);
+    if (h) heads.push(body.length);
+    body.push(h ? h[1].trim() : para);
+    buf = [];
+  };
+  for (const line of block.slice(p)) {
+    if (line.trim() === "") flush();
+    else buf.push(line.trim());
+  }
+  flush();
 
   const words = body.join(" ").split(/\s+/).filter(Boolean).length;
 
@@ -73,7 +90,9 @@ const articles = marks.map((mk, idx) => {
     category: mk.category,
     title,
     author,
+    excerpt,
     body,
+    heads,
     minutes: Math.max(1, Math.round(words / 200)),
   };
 });
@@ -93,11 +112,11 @@ const entries = articles
     n: ${q(a.n)},
     category: ${q(a.category)},
     title: ${q(a.title)},
-    author: ${q(a.author)},
+    author: ${q(a.author)},${a.excerpt ? `\n    excerpt: ${q(a.excerpt)},` : ""}
     minutes: ${a.minutes},
     body: [
 ${a.body.map((pp) => `      ${q(pp)},`).join("\n")}
-    ],
+    ],${a.heads.length ? `\n    heads: [${a.heads.join(", ")}],` : ""}
   },`,
   )
   .join("\n");
@@ -122,10 +141,17 @@ export interface BlogPost {
   category: BlogCategory;
   title: string;
   author: string;
+  /**
+   * The author's own standfirst for the index and the meta description, where
+   * the drafts give one. Otherwise the opening paragraph serves as the summary.
+   */
+  excerpt?: string;
   /** Reading estimate in minutes, at 200wpm. */
   minutes: number;
   /** The article, one entry per paragraph, in order. */
   body: string[];
+  /** Indices in \`body\` the author wrote as section headings, if any. */
+  heads?: number[];
 }
 
 /** How each format is printed: the label, its ink, and its marker shape. */
@@ -170,6 +196,11 @@ const BY_KEY = new Map(CATEGORIES.map((c) => [c.key, c]));
 /** The printing style for a format. Falls back to perspective ink. */
 export function categoryStyle(key: BlogCategory): CategoryStyle {
   return BY_KEY.get(key) ?? PERSPECTIVE;
+}
+
+/** The summary shown on the index and in metadata. */
+export function summary(post: BlogPost): string {
+  return post.excerpt || post.body[0] || "";
 }
 
 export function postBySlug(slug: string): BlogPost | undefined {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { withBase } from "@/lib/withBase";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
-import { CATEGORIES, POSTS, categoryStyle, type BlogCategory } from "@/data/blog";
+import { CATEGORIES, POSTS, categoryStyle, summary, type BlogCategory } from "@/data/blog";
 
 type Filter = BlogCategory | "ALL";
 
@@ -56,7 +56,7 @@ export function Thinking() {
             </h3>
           </div>
           <div>
-            <p className="blurb">{LEAD.body[0]}</p>
+            <p className="blurb">{summary(LEAD)}</p>
             <a href={withBase(`/thinking/${LEAD.slug}/`)} className="mark">
               Read the argument &rarr;
             </a>

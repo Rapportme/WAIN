@@ -10,6 +10,7 @@ import {
   POSTS,
   categoryStyle,
   postsIn,
+  summary,
   type BlogCategory,
 } from "@/data/blog";
 
@@ -34,11 +35,6 @@ const NOTE: Record<Filter, string> = {
   OBSERVATION: "Short. Things we keep noticing.",
   "CASE STUDY": "What we did, including what didn't work.",
 };
-
-/** The first paragraph of a piece, used as its standfirst on the index. */
-function excerpt(body: readonly string[]) {
-  return body[0] ?? "";
-}
 
 /**
  * /thinking — the collection index. The format switch is state rather than a
@@ -127,7 +123,7 @@ export function BlogIndex() {
                 </h2>
               </div>
               <div>
-                <p className="blurb">{excerpt(lead.body)}</p>
+                <p className="blurb">{summary(lead)}</p>
                 <a href={withBase(`/thinking/${lead.slug}/`)} className="mark">
                   Read the piece &rarr;
                 </a>
@@ -148,7 +144,7 @@ export function BlogIndex() {
                         <span className="n">{post.n}</span>
                       </span>
                       <strong className="bl-c-t">{post.title}</strong>
-                      <span className="bl-c-x">{excerpt(post.body)}</span>
+                      <span className="bl-c-x">{summary(post)}</span>
                       <span className="bl-c-b">
                         <span>{post.minutes} min read</span>
                         <span className="rd">

@@ -4,7 +4,7 @@ import { withBase } from "@/lib/withBase";
 import { OG_IMAGES } from "@/lib/seo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
-import { POSTS, categoryStyle, neighbours, postBySlug } from "@/data/blog";
+import { POSTS, categoryStyle, neighbours, postBySlug, summary } from "@/data/blog";
 
 interface Params {
   params: Promise<{ slug: string }>;
@@ -21,9 +21,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!post) return {};
 
   const title = `${post.title} — We Are In Collective`;
-  // The opening paragraph is the author's own summary of the piece; nothing is
-  // rewritten for search, it's only trimmed to a description length.
-  const opener = post.body[0] ?? "";
+  // The author's own summary of the piece; nothing is rewritten for search,
+  // it's only trimmed to a description length.
+  const opener = summary(post);
   const description = opener.length > 190 ? `${opener.slice(0, 187).trimEnd()}…` : opener;
   const url = `/thinking/${post.slug}/`;
 
@@ -53,6 +53,9 @@ export default async function ArticlePage({ params }: Params) {
 
   const cat = categoryStyle(post.category);
   const near = neighbours(post.slug);
+  // The paragraphs the author set as section headings, kept as a lookup so the
+  // body stays a single ordered list.
+  const heads = new Set(post.heads ?? []);
 
   return (
     <main data-fmt={cat.fmt}>
@@ -96,7 +99,7 @@ export default async function ArticlePage({ params }: Params) {
           </aside>
           <div className="bl-body">
             {post.body.map((para, i) => (
-              <Reveal as="p" key={i} d={i < 3 ? i : 0}>
+              <Reveal as={heads.has(i) ? "h2" : "p"} key={i} d={i < 3 ? i : 0}>
                 {para}
               </Reveal>
             ))}

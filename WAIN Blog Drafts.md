@@ -440,52 +440,71 @@ Marketing becomes more interesting when that is treated as part of the medium ra
 CASE STUDY | ARTICLE 10
 Good Ideas Are Not Single-Use
 Author: Ananthu Vasudev
+Excerpt: A useful marketing idea does not always belong to one placement.
 
-A useful marketing idea does not always belong to one placement.
+A campaign doesn’t need a new idea every time the placement changes.
 
-That became clear during a campaign for Allen & Habour Opticals.
+We learned that properly on a project for Allen & Habour Opticals.
 
-The original execution was a Malayalam advertisement placed on Zomato's order-tracking page. The creative used a familiar line connected to hunger and eyesight: “വിശന്നിട്ട് കണ്ണ് കാണുന്നില്ലേ?” — a playful connection between being hungry, not being able to “see,” and eyewear.
+The starting point was a Malayalam ad on Zomato’s order-tracking page. The line — “വിശന്നിട്ട് കണ്ണ് കാണുന്നില്ലേ?” — took a familiar expression about hunger and not being able to “see” and pointed it at eyewear. It gave the brand a culturally familiar way into a moment that has nothing to do with conventional optical advertising.
 
-The interesting part came later.
+The placement was part of the thinking. Someone on an order-tracking screen has already ordered. They’re waiting. The environment is temporary and the mood is specific. A generic optical ad could have sat there. The opportunity was to make the surrounding moment part of the idea.
 
-The client needed an advertisement for a screen inside a restaurant.
+Then a second requirement came in: an ad for a screen inside a restaurant.
 
-The easy approach would have been to start a new creative process.
+The normal response is to treat that as a new brief. New location, new screen, new context, new concept.
 
-Instead, the same underlying insight was reused.
+We didn’t.
 
-The copy remained relevant. The cultural reference remained relevant. The craft simply adapted to a different physical context.
+## What we noticed
 
-The work did not need a completely new idea.
+Creative teams fall into one of two traps.
 
-It needed a different application of the same idea.
+The first is producing a completely new idea for every placement. That creates volume, not coherence — and pressure to manufacture novelty when a strong idea already exists.
 
-This distinction matters because creative teams sometimes equate new execution with new thinking. A campaign can produce multiple assets while communicating exactly the same idea. Conversely, one strong idea can generate several useful executions without becoming repetitive.
+The second is taking the same asset and resizing it for every channel.
 
-The key is understanding what is actually being reused.
+Neither is satisfying. The useful middle ground is to separate the idea from its execution. The idea stays. The expression changes.
 
-If the entire advertisement is copied mechanically, repetition becomes obvious.
+## The decision
 
-If the underlying insight is reused while the context changes, the idea can become stronger.
+We carried the underlying thought forward instead of restarting the strategic process.
 
-In this case, the original insight was built around a familiar Malayalam expression and a simple connection between hunger and eyesight. Zomato's order-tracking environment gave it one context. A restaurant screen gave it another.
+The customer’s physical situation had changed, so the execution could change with it. What stayed constant was the connection between the language, the moment and the category.
 
-The audience changes slightly. The physical environment changes. The role of the message changes.
+## The execution
 
-But the strategic thought remains intact.
+On Zomato, the food-ordering context was part of the idea. On the restaurant screen, the same thought moved into a different physical environment.
 
-This is one reason strong creative thinking can make content production more efficient.
+This wasn’t a production shortcut. It took judgement about what could stay, what had to change, and how much of the setup the new placement supplied on its own.
 
-The objective is not to invent a completely new idea for every placement.
+## What happened
 
-It is to find ideas that are strong enough to travel.
+The idea travelled. It moved from a food-delivery app to a restaurant wall without needing to be reinvented.
 
-A good idea should survive a change of screen, format, location or moment.
+We won’t put impressions, clicks or sales next to that, because we don’t have verified numbers for this work — and we’d rather leave a gap than fill it with something that looks like proof.
 
-When it does, the creative team is no longer producing isolated advertisements.
+## What didn’t work
 
-It is building a system around an insight.
+Nothing failed here, and we’re not going to invent a setback to make the story feel balanced.
+
+There was a real risk, though. Reuse the whole ad mechanically and repetition becomes obvious fast. What should travel is the insight — not every pixel of the execution.
+
+## What changed
+
+We stopped thinking in individual advertisements and started thinking in idea systems.
+
+The question moved from “What’s the new ad for this placement?” to “What can this idea do in this context?”
+
+## What we learned
+
+Good ideas are not single-use.
+
+The strongest ones survive a change of screen, location, audience moment or format. That doesn’t mean every execution should look the same. It means the thought is strong enough to be interpreted again.
+
+The most efficient creative system isn’t the one that produces the most ideas.
+
+It’s the one that knows which ideas deserve to travel.
 
 
 
@@ -552,56 +571,85 @@ It is “I understand why this might work for them.”
 CASE STUDY | ARTICLE 12
 Designing for Context: The Malayalam Ad on Zomato's Order-Tracking Page
 Author: Ananthu Vasudev
+Excerpt: A media placement can be bought as inventory. Or it can be treated as part of the idea.
 
-When Zomato opened its order-tracking experience as advertising space for hyperlocal brands, the interesting opportunity was not simply another digital placement.
+A media placement can be bought as inventory.
 
-It was context.
+Or it can be treated as part of the idea.
 
-A customer had already ordered food. They were waiting for the order. The advertising environment was connected to that moment.
+The Malayalam ad we built for Allen & Habour Opticals on Zomato’s order-tracking page is worth writing up because the second approach turned out to be the more useful one.
 
-For a Malayalam-speaking audience, that created room for something more specific than a translated generic advertisement.
+## The situation
 
-An advertisement was developed around the line “കണ്ണ് കാണുന്നില്ലേ?” and a familiar cultural connection between hunger and eyesight. The aim was to make the placement feel native to the environment rather than simply place a conventional banner inside an app.
+Zomato opened its order-tracking screen to advertisers. For an optical brand, the obvious move was a standard display ad carrying a product message.
 
-That distinction is important.
+But the placement came with a specific context.
 
-Contextual marketing is often discussed as a media-buying concept: the ad appears next to relevant content.
+The customer had already ordered. They were waiting. Everything about that screen is tied to hunger, anticipation and a very familiar behaviour.
 
-But context can be much broader.
+For a Malayalam-speaking audience, that added another layer.
 
-It can include language, location, timing, behaviour, mood and what the customer is doing immediately before seeing the message.
+## The problem
 
-A Malayalam message in Kerala is one layer of context.
+The job was not to make a Malayalam ad.
 
-A message appearing while someone is waiting for food is another.
+It was to make an ad that felt like it belonged where it appeared.
 
-The two together create a stronger creative opportunity.
+A translated optical ad can use perfectly correct Malayalam and still feel completely disconnected from what the customer is doing in that moment.
 
-The campaign was also useful as a test of the medium itself. Instead of recommending the placement to a client without experience, the agency chose to understand the format by using it.
+The better question was: what can an eyewear brand say to someone who is currently waiting for food?
 
-That creates a valuable principle for marketing work: when a new medium appears, experiencing the environment can reveal things a media kit cannot.
+## What we noticed
 
-What does the placement actually look like?
+Context is more than demographic relevance.
 
-How much attention does it receive?
+A food-delivery app is obviously relevant to food. That doesn’t make every food-adjacent ad good.
 
-What does the surrounding interface communicate?
+The layer that matters is behaviour. The customer has ordered. They’re waiting. They’re staring at the screen. They’re in a short, specific state of anticipation.
 
-Does the creative feel native?
+That makes the environment nothing like a billboard, a newspaper or a social feed.
 
-Is the audience in a state where the message makes sense?
+## The decision
 
-These details can change the quality of the work.
+Make the placement itself part of the message.
 
-The bigger lesson is not that brands should advertise on food-delivery apps.
+“വിശന്നിട്ട് കണ്ണ് കാണുന്നില്ലേ?” connects a familiar expression about hunger and “not being able to see” to the eyewear category.
 
-It is that media and creative should not always be treated as separate decisions.
+So the decision was less about localisation and more about using language and context as creative material.
 
-Sometimes the best creative idea is hidden inside the context where the message appears.
+## The execution
 
-The medium is not just where the advertisement sits.
+Three elements: a Malayalam-speaking audience, a food-ordering moment, an eyewear proposition.
 
-It can be part of the idea.
+None of them is complicated on its own. The strength came from putting them together at the right moment.
+
+## What happened
+
+The idea held up well enough to be reused later on a restaurant screen — a different physical environment, same underlying thought. We wrote that up separately in Good Ideas Are Not Single-Use.
+
+We don’t have verified impressions, click-throughs, enquiries or sales for this placement, so we’re not going to claim a commercial result the work doesn’t establish.
+
+## What didn’t work
+
+No route was rejected on this one.
+
+But there was a clear risk: contextual advertising can get too clever. If people have to decode the relationship between the placement, the language and the brand, the context stops helping and starts costing.
+
+The connection has to land in a second.
+
+## What changed
+
+The relationship between media and creative.
+
+Media doesn’t have to be the container and creative the contents. They can shape each other. A placement tells the creative team something about the customer’s state of mind. A location supplies the setup. A language supplies the cultural reference.
+
+## What we learned
+
+When you look at a new medium, “How many people can we reach?” is not the only useful question.
+
+Try: “What does this environment let us say that another one doesn’t?”
+
+Sometimes the answer is a much better brief.
 
 
 
@@ -664,44 +712,83 @@ That makes the audience the final context for the decision.
 CASE STUDY | ARTICLE 14
 When a Marketing Idea Moves Faster Than the Campaign Calendar
 Author: Ananthu Vasudev
+Excerpt: Some of the strongest campaign ideas do not begin months in advance.
 
-Some of the strongest campaign ideas do not begin months in advance.
+Some campaigns are built months ahead.
 
-They begin because the moment creates an opportunity.
+Others exist because someone noticed a moment was about to disappear.
 
-A Women's Day campaign for Malabar Village Luxe, a premium restaurant in Kottayam, is a useful example.
+The Women’s Day campaign for Malabar Village Luxe in Kottayam is the second kind.
 
-The idea began on the evening of March 5. The team discussed a small concept internally. The idea developed during the first conversation and a proposal was prepared quickly. The client responded almost immediately.
+## The situation
 
-The speed was not the interesting part by itself.
+Women’s Day is a familiar marketing moment. For most brands that means communication prepared weeks in advance, reviewed in stages, and published somewhere around March 8.
 
-The interesting part was the absence of unnecessary distance between the idea and the decision.
+Planning is useful. It also puts distance between an opportunity and the decision to act on it.
 
-Marketing teams often build processes that are designed for control. That is useful for large campaigns, complex approvals and high-risk communication. But not every opportunity requires the same machinery.
+For Malabar Village Luxe, the starting point was much closer to the moment.
 
-Some moments disappear if the organisation takes too long to respond.
+## The problem
 
-The challenge is knowing when speed is an advantage and when it becomes carelessness.
+The brief wasn’t “do something for Women’s Day.” That produces a calendar topic, not an idea.
 
-A fast campaign still needs a clear idea.
+The real challenge was to find something relevant enough to the brand and the occasion that it deserved to exist at all.
 
-It still needs a reason to exist.
+And there was a second constraint: time. The idea surfaced on the evening of March 5. A conventional campaign process would have made the window too slow to use.
 
-It still needs to fit the brand.
+## What we noticed
 
-And it still needs someone willing to make a decision.
+Speed on its own isn’t the interesting part.
 
-In this case, the idea was small enough to move quickly. That made speed part of the creative advantage.
+The interesting part is the relationship between the size of the idea and the size of the process wrapped around it.
 
-This is especially relevant to moment marketing. A brand cannot participate meaningfully in every cultural moment. But when a relevant opportunity appears, the ability to move from observation to concept to approval can determine whether the brand participates while the moment is alive.
+A major rebrand needs scrutiny. A large media campaign needs planning. A small, cultural-moment execution needs momentum.
 
-Speed therefore is not simply an operational KPI.
+Run all three through the same machinery and the team gets slower without getting better.
 
-Sometimes it is part of creative quality.
+## The decision
 
-The objective is not to make every marketing process faster.
+We developed the concept quickly instead of dropping it into a long campaign cycle.
 
-It is to make the right processes fast enough that good ideas do not arrive after the moment has passed.
+The internal discussion happened on March 5. A proposal went to the client, who responded almost immediately.
+
+The decision wasn’t simply to move fast. It was to keep the process proportionate to the opportunity.
+
+## The execution
+
+A small Women’s Day initiative that moved from internal discussion to client proposal to approval in a matter of hours.
+
+We’re not adding a production log, final assets or a media plan here, because this piece is about the decision, not the deliverables.
+
+## What happened
+
+The campaign happened because the decision-making matched the scale and timing of the idea.
+
+That’s different from saying every process should be faster. The principle is that the process should fit the problem.
+
+## What didn’t work
+
+Nothing was rejected or reworked on this one.
+
+There is an operational risk worth naming, though: speed can become an excuse for weak thinking. Moving quickly doesn’t remove the need for a clear idea, brand fit or audience relevance. It removes the time you’d normally spend checking for them — so the checks have to be faster, not absent.
+
+## What changed
+
+An operational idea that’s easy to underrate: speed is a creative capability.
+
+A team that can notice a relevant moment, form a useful thought, make a decision and execute without friction has access to opportunities slower organisations will miss.
+
+## What we learned
+
+Moment marketing is usually treated as a creative problem.
+
+It’s also an organisational one.
+
+The question isn’t only whether a brand can think of something interesting. It’s whether the business can make a good decision while the opportunity still exists.
+
+Sometimes the advantage isn’t having the best idea in the room.
+
+It’s being able to do something with it before the room moves on.
 
 
 
