@@ -1,86 +1,64 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { useState, type ElementType, type ReactNode } from "react";
-
-/** Original page easing — cubic-bezier(.2,.7,.2,1). */
-const EASE: [number, number, number, number] = [0.2, 0.7, 0.2, 1];
-
-const variants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  shown: { opacity: 1, y: 0 },
-};
+import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 
 type RevealTag =
-  | "div"
-  | "section"
-  | "aside"
-  | "h1"
-  | "h2"
-  | "h3"
-  | "p"
-  | "ul"
-  | "ol"
-  | "blockquote"
-  | "span";
+  | "div" | "section" | "aside" | "h1" | "h2" | "h3" | "p" | "ul" | "ol" | "blockquote" | "span" | "article" | "figure";
 
 interface RevealProps {
   children: ReactNode;
   className?: string;
-  /** Stagger step, mirroring the original `--d` custom property (× 80ms). */
+  /** Stagger step — × 80ms via the `--d` custom property. */
   d?: number;
-  /** Which element to render (defaults to a div). */
   as?: RevealTag;
   id?: string;
   style?: React.CSSProperties;
-  /** Fires once when the element scrolls into view (e.g. to start a timed effect). */
+  /** Fires once when the element scrolls into view. */
   onEnter?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
 
 /**
- * The reveal primitive. Replaces the original IntersectionObserver + `.rise`
- * CSS with a GPU-accelerated Framer Motion entrance (opacity + translateY),
- * matching the original 0.9s / cubic-bezier(.2,.7,.2,1) / `--d` stagger.
- *
- * It also stamps an `in` class on entry so descendant rules that keyed off
- * `.rise.in` in the original stylesheet (the eyebrow marker) still fire.
+ * The reveal primitive. Renders `.rv` and stamps `.in` when 12% of the element
+ * is in view (once). CSS does the motion, gated on `html.js`, so the page is
+ * fully readable without JavaScript and in the first painted frame.
  */
 export function Reveal({
-  children,
-  className = "",
-  d = 0,
-  as = "div",
-  id,
-  style,
-  onEnter,
-  onMouseEnter,
-  onMouseLeave,
+  children, className = "", d = 0, as = "div", id, style, onEnter, onMouseEnter, onMouseLeave,
 }: RevealProps) {
+  const ref = useRef<HTMLElement | null>(null);
   const [entered, setEntered] = useState(false);
-  const reduce = useReducedMotion();
-  // motion is a proxy of intrinsic tags; index access is safe at runtime.
-  const MotionTag = motion[as] as ElementType;
+  const Tag = as as ElementType;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (es) => {
+        if (es[0]?.isIntersecting) {
+          setEntered(true);
+          onEnter?.();
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <MotionTag
+    <Tag
+      ref={ref}
       id={id}
-      style={style}
+      style={{ ...(style ?? {}), ["--d" as string]: d } as React.CSSProperties}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`${className} rise${entered ? " in" : ""}`.trim()}
-      variants={reduce ? undefined : variants}
-      initial={reduce ? false : "hidden"}
-      whileInView={reduce ? undefined : "shown"}
-      viewport={{ once: true, margin: "0px 0px -8% 0px", amount: 0.15 }}
-      transition={{ duration: 0.9, ease: EASE, delay: (d * 80) / 1000 }}
-      onViewportEnter={() => {
-        setEntered(true);
-        onEnter?.();
-      }}
+      className={`${className} rv${entered ? " in" : ""}`.trim()}
     >
       {children}
-    </MotionTag>
+    </Tag>
   );
 }

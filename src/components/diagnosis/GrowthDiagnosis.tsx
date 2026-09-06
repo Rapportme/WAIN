@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { withBase } from "@/lib/withBase";
 import { hasEndpoint, runDetailed, runInstant } from "@/lib/diagnosis/client";
-import { TOTAL } from "@/lib/diagnosis/questions";
+import { QUESTIONS, TOTAL } from "@/lib/diagnosis/questions";
 import type {
   Answers,
   DetailedDiagnosis,
+  Ink,
   InstantDiagnosis,
   LeadDetails,
 } from "@/lib/diagnosis/types";
-import { ArrowLeft, Spinner } from "./Icons";
 import { FullReport } from "./FullReport";
 import { Landing } from "./Landing";
 import { LeadForm } from "./LeadForm";
@@ -18,6 +18,16 @@ import { Quiz } from "./Quiz";
 import { Results } from "./Results";
 
 type Screen = "landing" | "quiz" | "loading" | "results" | "form" | "report" | "error";
+
+/** Question ink → the section ink class that drives --sig / --sig-ink. */
+export const INK_CLASS: Record<Ink, string> = {
+  signal: "ink-teal",
+  sage: "ink-sage",
+  amber: "ink-amber",
+  coral: "ink-coral",
+  lav: "ink-lav",
+  ink: "ink-navy",
+};
 
 /** Reading lines, so a ten-second wait doesn't feel like a stalled page. */
 const WAITING = [
@@ -35,9 +45,14 @@ function Waiting({ lines }: { lines: readonly string[] }) {
     return () => clearInterval(t);
   }, [lines.length]);
   return (
-    <div className="gd-wait">
-      <Spinner size={26} />
-      <p aria-live="polite">{lines[i]}</p>
+    <div className="gd-load">
+      <div>
+        <div className="spin" aria-hidden="true" />
+        {/* keyed so the fade-in replays on every line change */}
+        <p key={i} aria-live="polite">
+          {lines[i]}
+        </p>
+      </div>
     </div>
   );
 }
@@ -135,13 +150,16 @@ export function GrowthDiagnosis() {
     setScreen("quiz");
   };
 
-  return (
-    <section className="chapter s-gd" id="growth-diagnosis">
-      <div className="wrap gd-wrap">
-        <a className="gd-exit no-print" href={withBase("/#diagnosis")}>
-          <ArrowLeft size={14} /> Back to the site
-        </a>
+  // The quiz prints each question in its own ink; every other screen sits in sage.
+  const ink =
+    screen === "quiz" ? INK_CLASS[QUESTIONS[index]?.ink ?? "sage"] : "ink-sage";
 
+  return (
+    <section className={`gd ${ink}`} id="growth-diagnosis">
+      <a className="gd-exit no-print" href={withBase("/#diagnosis")}>
+        ← Back to the site
+      </a>
+      <div className="wrap">
         {screen === "landing" ? (
           <Landing
             onStart={restart}
@@ -164,11 +182,15 @@ export function GrowthDiagnosis() {
         {screen === "loading" ? <Waiting lines={WAITING} /> : null}
 
         {screen === "error" ? (
-          <div className="gd-error">
-            <p className="lede">{error}</p>
-            <button type="button" className="btn" onClick={runFirstRead}>
-              Try again
-            </button>
+          <div className="gd-load gd-error">
+            <div>
+              <p className="lede">{error}</p>
+              <div className="ctas" style={{ justifyContent: "center", marginTop: 24 }}>
+                <button type="button" className="btn" onClick={runFirstRead}>
+                  Try again <span className="ar">→</span>
+                </button>
+              </div>
+            </div>
           </div>
         ) : null}
 
@@ -190,7 +212,12 @@ export function GrowthDiagnosis() {
         ) : null}
 
         {screen === "report" && report ? (
-          <FullReport report={report} name={lead?.name ?? ""} emailed={emailed} />
+          <FullReport
+            report={report}
+            name={lead?.name ?? ""}
+            email={lead?.email ?? ""}
+            emailed={emailed}
+          />
         ) : null}
       </div>
     </section>

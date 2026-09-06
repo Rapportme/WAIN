@@ -2,13 +2,22 @@
 
 import { useState } from "react";
 import type { LeadDetails } from "@/lib/diagnosis/types";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Reveal } from "@/components/ui/Reveal";
 import { Mail, Spinner } from "./Icons";
 
-const FIELDS: { key: keyof LeadDetails; label: string; type: string; required: boolean }[] = [
-  { key: "name", label: "Name", type: "text", required: true },
-  { key: "company", label: "Company", type: "text", required: true },
-  { key: "email", label: "Email", type: "email", required: true },
-  { key: "phone", label: "Phone (optional)", type: "tel", required: false },
+const FIELDS: {
+  key: keyof LeadDetails;
+  id: string;
+  label: string;
+  type: string;
+  required: boolean;
+  autoComplete: string;
+}[] = [
+  { key: "name", id: "lName", label: "Name", type: "text", required: true, autoComplete: "name" },
+  { key: "company", id: "lCo", label: "Company", type: "text", required: true, autoComplete: "organization" },
+  { key: "email", id: "lMail", label: "Email", type: "email", required: true, autoComplete: "email" },
+  { key: "phone", id: "lPh", label: "Phone (optional)", type: "tel", required: false, autoComplete: "tel" },
 ];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -36,63 +45,72 @@ export function LeadForm({ onSubmit, onCancel, submitting, willEmail }: LeadForm
   };
 
   return (
-    <form className="gd-form" onSubmit={submit} noValidate>
-      <div className="gd-eye">
-        <span className="mk mk-cir" />
-        <span className="t">The full picture</span>
-      </div>
-
-      <h2 className="gd-form-h">Receive your detailed report.</h2>
-      <p className="lede">
+    <div className="gd-form">
+      <Eyebrow shape="mk-cir" t="The full picture" />
+      <Reveal as="h2">Receive your detailed report.</Reveal>
+      <Reveal as="p" className="lede" d={1}>
         A fuller department-by-department read — strategy, customers, marketing, sales, operations,
         finance, and how much of the business still runs through you.
-      </p>
+      </Reveal>
 
-      <div className="gd-fields">
-        {FIELDS.map((f) => {
-          const invalid =
-            touched &&
-            f.required &&
-            (f.key === "email" ? !emailValid : !form[f.key].trim());
-          return (
-            <label key={f.key} className={invalid ? "bad" : undefined}>
-              <span className="label">{f.label}</span>
-              <input
-                type={f.type}
-                value={form[f.key]}
-                required={f.required}
-                autoComplete={
-                  f.key === "email" ? "email" : f.key === "phone" ? "tel" : f.key === "name" ? "name" : "organization"
-                }
-                onChange={(e) => setForm((p) => ({ ...p, [f.key]: e.target.value }))}
-              />
-              {invalid ? (
-                <em>{f.key === "email" ? "Enter a valid email address." : "This one's needed."}</em>
-              ) : null}
-            </label>
-          );
-        })}
-      </div>
+      {/* Reveal can't render a <form>; the form is wrapped in a revealed div instead. */}
+      <Reveal as="div" d={2}>
+        <form id="leadForm" onSubmit={submit} noValidate>
+          <div className="fields">
+            {FIELDS.map((f) => {
+              const invalid =
+                touched &&
+                f.required &&
+                (f.key === "email" ? !emailValid : !form[f.key].trim());
+              return (
+                <div key={f.key} className={`field${invalid ? " bad" : ""}`}>
+                  <label htmlFor={f.id}>{f.label}</label>
+                  <input
+                    className="gd-in"
+                    id={f.id}
+                    type={f.type}
+                    value={form[f.key]}
+                    required={f.required}
+                    autoComplete={f.autoComplete}
+                    aria-invalid={invalid || undefined}
+                    onChange={(e) => setForm((p) => ({ ...p, [f.key]: e.target.value }))}
+                  />
+                  {f.required ? (
+                    <span className="err">
+                      {f.key === "email" ? "Enter a valid email address." : "This one's needed."}
+                    </span>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
 
-      <div className="gd-actions">
-        <button type="submit" className="btn" disabled={submitting}>
-          {submitting ? <Spinner size={15} /> : <Mail size={15} />}
-          {submitting
-            ? "Preparing your report…"
-            : willEmail
-              ? "Send my detailed report"
-              : "Show my detailed report"}
-        </button>
-        <button type="button" className="btn btn--ghost" onClick={onCancel} disabled={submitting}>
-          Back to my diagnosis
-        </button>
-      </div>
+          <div className="ctas">
+            <button type="submit" className="btn" disabled={submitting}>
+              {submitting ? <Spinner size={15} /> : <Mail size={15} />}
+              {submitting
+                ? "Preparing your report…"
+                : willEmail
+                  ? "Send my detailed report"
+                  : "Show my detailed report"}
+            </button>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={onCancel}
+              disabled={submitting}
+            >
+              Back to my diagnosis
+            </button>
+          </div>
 
-      <p className="gd-fine">
-        {willEmail
-          ? "We use these details to send the report and, if you want it, to follow up once. Nothing else, and never to anyone outside the collective."
-          : "Your report opens on the next screen. Email delivery isn't switched on yet, so these details stay in your browser and reach no one — use Download to keep a copy."}
-      </p>
-    </form>
+          <p className="fine" style={{ marginTop: 18 }}>
+            {willEmail
+              ? "We use these details to send the report and, if you want it, to follow up once. Nothing else, and never to anyone outside the collective."
+              : "Your report opens on the next screen. Email delivery isn't switched on yet, so these details stay in your browser and reach no one — use Download to keep a copy."}
+          </p>
+        </form>
+      </Reveal>
+    </div>
   );
 }

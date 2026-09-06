@@ -36,26 +36,30 @@ const INDEX: readonly PageIndexEntry[] = [
     title: "Experience across industries",
     note: "Where the depth is, and where we've simply been in the room.",
     shape: "mk-cir",
+    ink: "ink-teal",
   },
   {
     href: "#behind",
     title: "Experience behind We Are In",
     note: "The figures that can be checked, and what they taught us.",
     shape: "mk-sq",
+    ink: "ink-amber",
   },
   {
     href: "#work",
     title: "The work",
     note: "Filed under the person who led it — none of it under this name.",
     shape: "mk-wedge",
+    ink: "ink-lav",
   },
 ];
 
 /** Experience — the industries, the figures, and the work that came before. */
 export default function ExperiencePage() {
   return (
-    <main className="s-exp-page">
+    <main>
       <PageHead
+        ink="ink-amber"
         kicker="Experience"
         shape="mk-sq"
         title="Two kinds of experience live here."
@@ -66,6 +70,7 @@ export default function ExperiencePage() {
       <ExpBehind />
       <ExpWork />
       <PageNext
+        ink="ink-lav"
         href="/thinking/"
         label="Read next"
         title="Our thinking"

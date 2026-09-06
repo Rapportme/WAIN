@@ -35,71 +35,68 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <main>
-      <header className="chapter ct-head" id="top">
+      <section className="pg-head ink-teal" id="top">
         <div className="wrap">
-          <a href={withBase("/")} className="pg-back">
-            <span className="arw" aria-hidden="true">
-              &larr;
-            </span>{" "}
-            Back to the book
+          <a className="pg-back" href={withBase("/")}>
+            ← Back to the book
           </a>
           <Eyebrow shape="mk-cir" t="Contact" />
-          <Reveal as="h1" className="pg-title" d={1}>
+          <Reveal as="h1" className="pg-title">
             Start with the business.
             <br />
             Not the brief.
           </Reveal>
-          <Reveal as="p" className="lede" d={2}>
+          <Reveal as="p" className="lede" d={1}>
             Tell us what&apos;s actually going on and we&apos;ll tell you what we think — including
             when the honest answer is that you shouldn&apos;t spend anything yet.
           </Reveal>
         </div>
-      </header>
+      </section>
 
-      <section className="chapter ct-body">
+      <section className="ink-teal">
         <div className="wrap ct-grid">
-          <Reveal as="div" className="ct-col-form">
-            <div className="gd-eye">
-              <span className="mk mk-tri" />
-              <span className="t">Send us a note</span>
-            </div>
-            <h2 className="ct-h">A conversation, not a pitch.</h2>
+          <Reveal as="div" id="ctFormWrap">
             <ContactForm />
           </Reveal>
 
-          <Reveal as="aside" className="ct-aside" d={2}>
-            <div className="ct-card">
-              <h3>Reach us directly</h3>
-              <a className="ct-mail" href="mailto:hello@wearein.in">
+          <Reveal as="aside" d={1}>
+            <div className="card">
+              <h4>Reach us directly</h4>
+              <a className="mail" href="mailto:hello@wearein.in">
                 hello@wearein.in
               </a>
-              <p className="ct-addr">
+              <address>
                 St. Mary&apos;s Arcade, Near Nalumanikkattu,
                 <br />
-                Thiruvalla &ndash; Ettumanoor Bypass, Kottayam
-              </p>
+                Thiruvalla – Ettumanoor Bypass, Kottayam
+              </address>
             </div>
-
-            <div className="ct-card">
-              <h3>Elsewhere</h3>
-              <SocialLinks className="social social--stack" withHandles />
+            <div className="card">
+              <h4>Elsewhere</h4>
+              <SocialLinks className="soc" withHandles />
             </div>
-
-            <div className="ct-card ct-card--alt">
-              <h3>Not ready to write?</h3>
+            <div className="card alt">
+              <h4>Not ready to write?</h4>
               <p>
                 Take the growth diagnosis instead. Fifteen questions, under five minutes, and you
                 get an honest first read of where the business stands.
               </p>
-              <a className="btn btn--ghost" href={withBase("/diagnosis/")}>
-                Get a free growth diagnosis
-              </a>
+              <div>
+                <a
+                  className="btn btn--ghost"
+                  href={withBase("/diagnosis/")}
+                  style={{ color: "#fff", boxShadow: "inset 0 0 0 1.5px var(--rule-dark)" }}
+                >
+                  Get a free growth diagnosis
+                </a>
+              </div>
             </div>
           </Reveal>
         </div>
       </section>
 
       <PageNext
+        ink="ink-teal"
         href="/why-we-exist/"
         label="Before you write"
         title="Why we exist"

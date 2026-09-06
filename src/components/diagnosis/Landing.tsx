@@ -1,7 +1,8 @@
 "use client";
 
 import { TOTAL } from "@/lib/diagnosis/questions";
-import { ArrowRight } from "./Icons";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface LandingProps {
   onStart: () => void;
@@ -20,52 +21,44 @@ interface LandingProps {
 export function Landing({ onStart, hasDraft, onResume, draftAt }: LandingProps) {
   return (
     <div className="gd-land">
-      <div className="gd-eye">
-        <span className="mk mk-cir" />
-        <span className="t">Growth diagnosis</span>
-      </div>
+      <Eyebrow shape="mk-cir" t="Growth diagnosis" />
 
-      <h1 className="gd-land-h">
-        Where does your
-        <br />
-        business actually stand?
-      </h1>
+      <Reveal as="h1" className="gd-land-h">
+        Where does your <span>business actually stand?</span>
+      </Reveal>
 
-      <p className="gd-land-lede">
-        Understand where your business stands today — in less than five minutes.
-      </p>
+      <Reveal as="p" className="lede" d={1}>
+        <strong>Understand where your business stands today — in less than five minutes.</strong>
+      </Reveal>
 
-      <p className="gd-land-body">
+      <Reveal as="p" className="lede" d={2} style={{ marginTop: 16 }}>
         Answer {TOTAL} carefully designed questions and get an honest first read of your business
         maturity, operational health, and the areas most likely holding growth back. This
         isn&apos;t a strategy or a roadmap — it&apos;s a read of where things stand right now.
-      </p>
+      </Reveal>
 
-      <div className="gd-land-cta">
+      <Reveal as="div" className="ctas" d={3} style={{ marginTop: 34 }}>
         {hasDraft ? (
           <>
             <button type="button" className="btn" onClick={onResume}>
-              Pick up where I left off
-              <span className="arw" aria-hidden="true">
-                &rarr;
-              </span>
+              Pick up where I left off <span className="ar">→</span>
             </button>
             <button type="button" className="btn btn--ghost" onClick={onStart}>
               Start again from question 01
             </button>
           </>
         ) : (
-          <button type="button" className="btn" onClick={onStart}>
-            Start the diagnosis <ArrowRight size={15} />
+          <button type="button" className="btn magnet" onClick={onStart}>
+            Start the diagnosis <span className="ar">→</span>
           </button>
         )}
-      </div>
+      </Reveal>
 
-      <p className="gd-land-meta">
+      <Reveal as="p" className="gd-meta" d={4}>
         {hasDraft
           ? `You stopped at question ${String(draftAt).padStart(2, "0")} of ${TOTAL} · about five minutes · no cost`
           : `${TOTAL} questions · about five minutes · no cost`}
-      </p>
+      </Reveal>
     </div>
   );
 }

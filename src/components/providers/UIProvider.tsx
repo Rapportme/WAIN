@@ -39,12 +39,15 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const closeModal = useCallback(() => setModalOpen(false), []);
   const toggleMenu = useCallback(() => setMenuOpen((o) => !o), []);
 
-  // Lock body scroll while an overlay is open.
+  // Body classes drive the CSS: `lock` freezes scroll while any overlay is
+  // open; `menu-open` morphs the masthead button into Close and lifts the
+  // masthead above the contents overlay.
   useEffect(() => {
-    const locked = menuOpen || modalOpen;
-    document.body.style.overflow = locked ? "hidden" : "";
+    const cl = document.body.classList;
+    cl.toggle("lock", menuOpen || modalOpen);
+    cl.toggle("menu-open", menuOpen);
     return () => {
-      document.body.style.overflow = "";
+      cl.remove("lock", "menu-open");
     };
   }, [menuOpen, modalOpen]);
 

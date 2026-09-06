@@ -1,94 +1,101 @@
 "use client";
 
 import { useState } from "react";
-import { withBase } from "@/lib/withBase";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
-import { CATEGORIES, POSTS, categoryStyle, summary, type BlogCategory } from "@/data/blog";
+import { withBase } from "@/lib/withBase";
+import { POSTS, type BlogCategory, type BlogPost } from "@/data/blog";
+import { FMT } from "@/data/home";
 
-type Filter = BlogCategory | "ALL";
+type Filter = "all" | BlogCategory;
 
 const FILTERS: { f: Filter; label: string }[] = [
-  { f: "ALL", label: "All" },
-  ...CATEGORIES.map((c) => ({ f: c.key as Filter, label: c.plural })),
+  { f: "all", label: "All" },
+  { f: "PERSPECTIVE", label: FMT.PERSPECTIVE.pl },
+  { f: "OBSERVATION", label: FMT.OBSERVATION.pl },
+  { f: "CASE STUDY", label: FMT["CASE STUDY"].pl },
 ];
 
-/** The lead piece, then the pieces under it. The full collection is at /thinking. */
-const [LEAD, ...REST] = POSTS;
-const SHELF = REST.slice(0, 6);
+const sum = (p: BlogPost): string => p.excerpt || p.body[0] || "";
+const url = (p: BlogPost): string => withBase(`/thinking/${p.slug}/`);
 
-/** 07 · Thinking — a contents page for the writing, filterable by format. */
+/** 07 · Our thinking. The lead piece, six more from the shelf, and a format filter. */
 export function Thinking() {
-  const [filter, setFilter] = useState<Filter>("ALL");
-  if (!LEAD) return null;
-  const leadFmt = categoryStyle(LEAD.category);
-  const leadVisible = filter === "ALL" || filter === LEAD.category;
+  const [filter, setFilter] = useState<Filter>("all");
+  const lead = POSTS[0];
+  const shelf = POSTS.slice(1, 7);
+  const show = (cat: BlogCategory) => filter === "all" || cat === filter;
 
   return (
-    <section className="chapter s-think" id="thinking">
+    <section className="chapter ink-lav" id="thinking" data-chap="thinking">
       <div className="wrap">
         <Eyebrow shape="mk-a" n="07" t="Our thinking" />
         <Reveal as="div" className="think-head">
           <h2>We publish what we&apos;d tell you in a room, not what performs online.</h2>
-          <div className="filters" role="group" aria-label="Filter writing">
-            {FILTERS.map((f) => (
-              <button key={f.f} aria-pressed={filter === f.f} onClick={() => setFilter(f.f)}>
-                {f.label}
+          <div className="filters" role="group" aria-label="Filter writing" id="homeFilters">
+            {FILTERS.map(({ f, label }) => (
+              <button
+                type="button"
+                key={f}
+                aria-pressed={filter === f}
+                data-f={f}
+                onClick={() => setFilter(f)}
+              >
+                {label}
               </button>
             ))}
           </div>
         </Reveal>
-
-        <Reveal
-          as="div"
-          className="lead"
-          data-fmt={leadFmt.fmt}
-          d={1}
-          style={leadVisible ? undefined : { display: "none" }}
-        >
-          <div>
-            <div className="kick">
-              <span className="mk" />
-              <span className="label">{leadFmt.label} — the lead piece</span>
+        {lead ? (
+          <Reveal
+            as="div"
+            className={`lead ${FMT[lead.category].cls}`}
+            style={show(lead.category) ? undefined : { display: "none" }}
+          >
+            <div>
+              <div className="kick label">
+                <i className={`mk ${FMT[lead.category].mk}`} />
+                {FMT[lead.category].l} — the lead piece
+              </div>
+              <h3>
+                <a href={url(lead)}>{lead.title}</a>
+              </h3>
             </div>
-            <h3>
-              <a href={withBase(`/thinking/${LEAD.slug}/`)}>{LEAD.title}</a>
-            </h3>
-          </div>
-          <div>
-            <p className="blurb">{summary(LEAD)}</p>
-            <a href={withBase(`/thinking/${LEAD.slug}/`)} className="mark">
-              Read the argument &rarr;
+            <div>
+              <p className="blurb">{sum(lead)}</p>
+              <a className="mark" href={url(lead)}>
+                Read the argument <span className="ar">→</span>
+              </a>
+            </div>
+          </Reveal>
+        ) : null}
+        <Reveal as="div" className="pieces" d={1}>
+          {shelf.map((p) => (
+            <a
+              className={`piece ${FMT[p.category].cls}`}
+              data-cat={p.category}
+              href={url(p)}
+              key={p.slug}
+              style={show(p.category) ? undefined : { display: "none" }}
+            >
+              <span className="fmt">
+                <i className={`mk ${FMT[p.category].mk}`} />
+                {FMT[p.category].l}
+              </span>
+              <span className="ttl">{p.title}</span>
+              <span className="rd">
+                Read <span className="ar">→</span>
+              </span>
             </a>
-          </div>
+          ))}
         </Reveal>
-
-        <ul className="pieces">
-          {SHELF.map((p) => {
-            const cat = categoryStyle(p.category);
-            const hidden = filter !== "ALL" && p.category !== filter;
-            return (
-              <li className={`piece${hidden ? " hide" : ""}`} data-fmt={cat.fmt} key={p.slug}>
-                <a href={withBase(`/thinking/${p.slug}/`)}>
-                  <span className="fmt">
-                    <span className="mk" />
-                    {cat.label}
-                  </span>
-                  <span className="ttl">{p.title}</span>
-                  <span className="rd">Read</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-
         <Reveal as="div" className="think-all">
-          <p className="lede lede-aside" style={{ maxWidth: "44ch" }}>
+          <p className="aside">
             Because better thinking leads to better decisions. Read it even if you never become a
             client. That&apos;s kind of the point.
           </p>
-          <a href={withBase("/thinking/")} className="mark">
-            All {POSTS.length} pieces &rarr;
+          <a className="mark" href={withBase("/thinking/")}>
+            All {POSTS.length} pieces <span className="ar">→</span>
           </a>
         </Reveal>
       </div>

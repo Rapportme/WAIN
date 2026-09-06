@@ -85,7 +85,7 @@ export const FOUNDERS: readonly Founder[] = [
         name: "The Evolvers Project",
         tag: "Founder",
         ctx: "2020–2025",
-        body: "Built the brand solo — strategy, identity, content, digital presence. Ran experiential learning programs for students, job seekers and professionals. Impacted **500+ lives directly.** Along the way: produced India's first proper educational vlog series, built a student-consultant model for a career-clarity journal, conceptualized a recruitment-focused reality show format, launched a teacher recognition award chosen by students and alumni, and implemented a mental health leave policy in 2020 — years ahead of most Indian companies.",
+        body: "Built the brand solo — strategy, identity, content, digital presence. Ran experiential learning programs for students, job seekers and professionals. Impacted **500+ lives directly.** Along the way: produced one of India's earliest long-form educational vlog series, built a student-consultant model for a career-clarity journal, conceptualized a recruitment-focused reality show format, launched a teacher recognition award chosen by students and alumni, and implemented a mental health leave policy in 2020 — years ahead of most Indian companies.",
       },
       {
         name: "Petklin Multispecialty Center",

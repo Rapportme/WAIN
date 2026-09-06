@@ -1,23 +1,18 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useActiveSection } from "@/hooks/useActiveSection";
 import { RAIL_CHAPTERS } from "@/data/chapters";
-
-const IDS = RAIL_CHAPTERS.map((c) => c.id);
 
 /**
  * The chapter rail — a colour ladder pinned to the right edge, one tick per
- * chapter. Highlights the chapter centred in the viewport and flips to its
- * on-dark palette while a dark-plate chapter is active. Hidden ≤ 1240px.
+ * home chapter. `aria-current` on the buttons is stamped by Effects from the
+ * same scroll pass that drives the ink bleed (it reads `data-chap` on the
+ * sections and matches it to `data-go` here). Hidden off the home page and
+ * ≤ 1240px (CSS).
  */
 export function ChapterRail() {
   const pathname = usePathname();
-  const active = useActiveSection(IDS);
-  const onDark = RAIL_CHAPTERS[active]?.dark ?? false;
-
-  // The ladder maps the book's chapters; off the home page there are none.
-  if (pathname !== "/" && pathname !== "") return null;
+  const onHome = pathname === "/" || pathname === "";
 
   const go = (id: string) => {
     const el = document.getElementById(id);
@@ -26,19 +21,22 @@ export function ChapterRail() {
   };
 
   return (
-    <div className={`rail${onDark ? " on-dark" : ""}`} id="rail">
-      {RAIL_CHAPTERS.map((chapter, i) => (
-        <button
-          key={chapter.id}
-          aria-label={`Go to ${chapter.label}`}
-          aria-current={i === active ? "true" : undefined}
-          style={{ "--tk": chapter.ink } as React.CSSProperties}
-          onClick={() => go(chapter.id)}
-        >
-          <span className="lbl">{chapter.label}</span>
-          <span className="tk" />
-        </button>
-      ))}
-    </div>
+    <nav id="rail" aria-label="Chapters" className={onHome ? undefined : "hide"}>
+      {onHome
+        ? RAIL_CHAPTERS.map((chapter) => (
+            <button
+              key={chapter.id}
+              type="button"
+              data-go={chapter.id}
+              aria-label={`Go to ${chapter.label}`}
+              style={{ "--c": chapter.ink } as React.CSSProperties}
+              onClick={() => go(chapter.id)}
+            >
+              <span className="lbl">{chapter.label}</span>
+              <span className="tk" />
+            </button>
+          ))
+        : null}
+    </nav>
   );
 }

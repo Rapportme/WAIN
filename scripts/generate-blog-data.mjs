@@ -22,6 +22,9 @@ const lines = raw.split("\n");
 
 const HEAD = /^(PERSPECTIVE|OBSERVATION|CASE STUDY)\s*\|\s*ARTICLE\s*(\d+)\s*$/;
 
+/** The day the collection shipped — every piece without its own "Date:" line carries it. */
+const DEFAULT_DATE = "2026-08-27";
+
 // locate every article header line
 const marks = [];
 lines.forEach((l, i) => {
@@ -52,15 +55,24 @@ const articles = marks.map((mk, idx) => {
   const author = am[1].trim();
   p++;
 
-  // an optional "Excerpt:" line — the author's own standfirst for the index
-  // and the meta description, for pieces whose opening line is not the summary
+  // Optional header lines after Author, in any order:
+  //   "Excerpt:" — the standfirst for the index and the meta description
+  //   "Date: YYYY-MM-DD" — the publication date; defaults to the day the
+  //   collection shipped
   let excerpt = "";
-  while (p < block.length && block[p].trim() === "") p++;
-  const xm = /^Excerpt:\s*(.+)$/.exec((block[p] ?? "").trim());
-  if (xm) {
-    excerpt = xm[1].trim();
+  let date = DEFAULT_DATE;
+  for (;;) {
+    while (p < block.length && block[p].trim() === "") p++;
+    const line = (block[p] ?? "").trim();
+    const xm = /^Excerpt:\s*(.+)$/.exec(line);
+    const dm = /^Date:\s*(\d{4}-\d{2}-\d{2})\s*$/.exec(line);
+    if (xm) excerpt = xm[1].trim();
+    else if (dm) date = dm[1];
+    else break;
     p++;
   }
+  if (!excerpt) throw new Error(`no excerpt for article ${mk.n}`);
+  if (excerpt.length > 155) throw new Error(`excerpt for article ${mk.n} is ${excerpt.length} chars (max 155)`);
 
   // remaining lines → paragraphs split on blank lines, order and wording kept.
   // A paragraph written as "## Something" is one of the author's section
@@ -91,6 +103,7 @@ const articles = marks.map((mk, idx) => {
     title,
     author,
     excerpt,
+    date,
     body,
     heads,
     minutes: Math.max(1, Math.round(words / 200)),
@@ -112,7 +125,9 @@ const entries = articles
     n: ${q(a.n)},
     category: ${q(a.category)},
     title: ${q(a.title)},
-    author: ${q(a.author)},${a.excerpt ? `\n    excerpt: ${q(a.excerpt)},` : ""}
+    author: ${q(a.author)},
+    excerpt: ${q(a.excerpt)},
+    date: ${q(a.date)},
     minutes: ${a.minutes},
     body: [
 ${a.body.map((pp) => `      ${q(pp)},`).join("\n")}
@@ -141,11 +156,10 @@ export interface BlogPost {
   category: BlogCategory;
   title: string;
   author: string;
-  /**
-   * The author's own standfirst for the index and the meta description, where
-   * the drafts give one. Otherwise the opening paragraph serves as the summary.
-   */
-  excerpt?: string;
+  /** The standfirst for the index and the meta description (≤155 chars). */
+  excerpt: string;
+  /** Publication date, ISO (YYYY-MM-DD). */
+  date: string;
   /** Reading estimate in minutes, at 200wpm. */
   minutes: number;
   /** The article, one entry per paragraph, in order. */

@@ -10,6 +10,8 @@ import { ContentsMenu } from "@/components/layout/ContentsMenu";
 import { ChapterRail } from "@/components/layout/ChapterRail";
 import { Footer } from "@/components/layout/Footer";
 import { Modal12 } from "@/components/layout/Modal12";
+import { Effects } from "@/components/layout/Effects";
+import { SOCIAL_LINKS } from "@/data/social";
 
 /* Self-hosted variable fonts, no layout shift. Manrope carries wght; Newsreader
    adds the optical-size axis the type layer keys off (font-variation-settings). */
@@ -66,6 +68,48 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+/* Structured data for the whole site: who the collective is, and that the
+   site is a WebSite. Page-level Article / FAQPage graphs live on their pages. */
+const ORG_ID = `${SITE_URL}/#organization`;
+const FOUNDERS = [
+  { name: "Divine Abraham Chirayil", jobTitle: "Founder" },
+  { name: "Ananthu Vasudev", jobTitle: "Brand & market strategist" },
+  { name: "Savio", jobTitle: "Brand & narrative strategist" },
+];
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: "We Are In Collective",
+      alternateName: ["We Are In", "WAIN"],
+      url: SITE_URL,
+      logo: `${SITE_URL}/images/og-cover.png`,
+      email: "hello@wearein.in",
+      description: DESCRIPTION,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "St. Mary's Arcade, Near Nalumanikkattu, Thiruvalla – Ettumanoor Bypass",
+        addressLocality: "Kottayam",
+        addressRegion: "Kerala",
+        addressCountry: "IN",
+      },
+      sameAs: SOCIAL_LINKS.map((s) => s.href),
+      founder: FOUNDERS.map((f) => ({ "@type": "Person", name: f.name, jobTitle: f.jobTitle })),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "We Are In Collective",
+      description: DESCRIPTION,
+      publisher: { "@id": ORG_ID },
+      inLanguage: "en",
+    },
+  ],
+};
+
 export const viewport: Viewport = {
   themeColor: "#12263F",
   width: "device-width",
@@ -76,7 +120,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${manrope.variable} ${newsreader.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          // JSON-LD is the one sanctioned use of innerHTML on the site.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD).replace(/</g, "\\u003c") }}
+        />
         <UIProvider>
+          <Effects />
           <Masthead />
           <ContentsMenu />
           <ChapterRail />

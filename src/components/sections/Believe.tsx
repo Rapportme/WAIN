@@ -8,6 +8,8 @@ interface Belief {
   body: ReactNode;
 }
 
+const SHAPES = ["mk-cir", "mk-tri", "mk-sq", "mk-wedge", "mk-bar", "mk-a"];
+
 /* Six statements that all open the same way. "We believe" is lifted out of the
    sentence and set as the label, so what's left is the belief itself. */
 const CREED: Belief[] = [
@@ -68,17 +70,13 @@ const CREED: Belief[] = [
   },
 ];
 
-/**
- * How we exist · 01 — What we believe. The creed is an anaphora, so it's set
- * as one: the repeated opening becomes a label in the left column and the
- * belief itself gets the measure, each row in its own ink.
- */
+/** How we exist · What we believe. The creed, one row per belief. */
 export function Believe() {
   return (
-    <section className="chapter pg-sec s-believe" id="believe">
+    <section className="sec ink-sage" id="believe">
       <div className="wrap">
         <Eyebrow shape="mk-tri" t="What we believe" />
-        <div className="pg-cols">
+        <div className="two">
           <Reveal as="h2" className="statement">
             We believe good businesses deserve better questions.
           </Reveal>
@@ -89,20 +87,20 @@ export function Believe() {
 
         <div className="creed">
           {CREED.map((c, i) => (
-            <Reveal as="div" className="creed-row" key={i} d={i + 1}>
-              <span className="creed-n">
-                <span className="mk" aria-hidden="true" />
+            <Reveal as="div" className="row" key={i} d={i}>
+              <div className="num">
+                <i className={`mk ${SHAPES[i] ?? "mk-cir"}`} />
                 {String(i + 1).padStart(2, "0")}
-              </span>
+              </div>
               <p>
-                <span className="creed-pre">{c.pre}</span>
+                <span className="pre">{c.pre}</span>
                 {c.body}
               </p>
             </Reveal>
           ))}
         </div>
 
-        <Reveal as="p" className="pg-sign" d={1}>
+        <Reveal as="p" className="pg-sign">
           Better businesses aren&apos;t built by having all the answers. They&apos;re built by
           asking better questions.
         </Reveal>

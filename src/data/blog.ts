@@ -18,11 +18,10 @@ export interface BlogPost {
   category: BlogCategory;
   title: string;
   author: string;
-  /**
-   * The author's own standfirst for the index and the meta description, where
-   * the drafts give one. Otherwise the opening paragraph serves as the summary.
-   */
-  excerpt?: string;
+  /** The standfirst for the index and the meta description (≤155 chars). */
+  excerpt: string;
+  /** Publication date, ISO (YYYY-MM-DD). */
+  date: string;
   /** Reading estimate in minutes, at 200wpm. */
   minutes: number;
   /** The article, one entry per paragraph, in order. */
@@ -71,6 +70,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "Before You Choose a Marketing Channel, Decide What You Are Trying to Build",
     author: "Ananthu Vasudev",
+    excerpt: "Channels are the easy part now. Decide what the brand is trying to mean, who needs to believe it and what behaviour to change — then pick the channel.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "“Should we do influencer marketing?” “Can we start posting on Instagram?” “Should we run Meta ads?”",
@@ -100,6 +101,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "What Is the Actual Job in an AI-Assisted Workplace?",
     author: "Ananthu Vasudev",
+    excerpt: "AI removes manual work before it removes responsibility. The useful question isn't whether AI can do a task, but whether that task is why the role exists.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "The question “Will AI take my job?” is becoming increasingly common. But for many roles, there is a more useful question:",
@@ -128,6 +131,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "Creative Teams Need Systems Too",
     author: "Ananthu Vasudev",
+    excerpt: "Systems don't tell creative people what idea to have. Clear briefs, approvals and timelines are what give a team the room to take creative risks.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Creative work is often treated as something that should remain free from systems.",
@@ -158,6 +163,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "When Businesses Keep Going Because They Have Already Invested Too Much",
     author: "Ananthu Vasudev",
+    excerpt: "Persistence responds to evidence; attachment responds to history. How to tell whether a business is continuing because it works or because it already paid.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Businesses do not always continue with an idea because it is working.",
@@ -190,6 +197,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "The Next Battle Between Instagram and YouTube May Be About Social, Not Video",
     author: "Ananthu Vasudev",
+    excerpt: "The next platform battle may be about the social layer around the video, not the video. What that means for how brands brief and measure content.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Instagram and YouTube are often compared as video platforms. That comparison misses an important difference.",
@@ -220,6 +229,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "Most of Your Customers Aren't Ready to Buy Yet",
     author: "Ananthu Vasudev",
+    excerpt: "Most people meet a brand long before they need it. Why some marketing plants a memory rather than triggering a sale, and how to judge each on its terms.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "A common marketing expectation is that communication should produce an immediate response.",
@@ -250,6 +261,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "Digital Marketing Is Still Marketing",
     author: "Ananthu Vasudev",
+    excerpt: "Running ads or making reels isn't the same as knowing how to market. Why understanding people should decide what the tools are for, not the reverse.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Many digital marketing courses now lead with tools.",
@@ -285,6 +298,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "The Segmentation Blind Spot: What People Are Willing to Spend",
     author: "Ananthu Vasudev",
+    excerpt: "Income tells you what a customer can spend. It doesn't tell you what they're willing to spend on. A more useful way to segment: by priorities and value.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Marketing segmentation usually begins with variables that are easy to identify.",
@@ -320,6 +335,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "People Are Already Being Influenced. The Question Is by What.",
     author: "Ananthu Vasudev",
+    excerpt: "Customers are part of the distribution system, not just the audience. A Maharani Wedding Collections campaign built on how people already sway each other.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "“Why bother convincing people?”",
@@ -352,7 +369,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "CASE STUDY",
     title: "Good Ideas Are Not Single-Use",
     author: "Ananthu Vasudev",
-    excerpt: "A useful marketing idea does not always belong to one placement.",
+    excerpt: "How one Malayalam eyewear idea for Allen & Habour Opticals moved from Zomato's order-tracking page to a restaurant screen without being reinvented.",
+    date: "2026-08-27",
     minutes: 3,
     body: [
       "A campaign doesn’t need a new idea every time the placement changes.",
@@ -396,6 +414,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "A Campaign You Don't Like Can Still Be a Good Campaign",
     author: "Ananthu Vasudev",
+    excerpt: "Not liking an ad doesn't make it ineffective. Why marketing judgement needs distance from personal taste, and better questions for a creative review.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Marketing professionals are exposed to thousands of campaigns. That makes personal taste almost impossible to separate from professional judgement.",
@@ -433,7 +453,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "CASE STUDY",
     title: "Designing for Context: The Malayalam Ad on Zomato's Order-Tracking Page",
     author: "Ananthu Vasudev",
-    excerpt: "A media placement can be bought as inventory. Or it can be treated as part of the idea.",
+    excerpt: "A case study on treating a Zomato order-tracking placement as part of the idea, not just inventory, with a Malayalam ad for Allen & Habour Opticals.",
+    date: "2026-08-27",
     minutes: 3,
     body: [
       "A media placement can be bought as inventory.",
@@ -484,6 +505,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "A Logo Does Not Become a Brand Just Because There Is Space for It",
     author: "Ananthu Vasudev",
+    excerpt: "A brand exists in customers' minds, not in the approval meeting. Why a logo should be judged by what it makes people think, not by who likes it.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "Branding often becomes a matter of personal preference.",
@@ -519,7 +542,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "CASE STUDY",
     title: "When a Marketing Idea Moves Faster Than the Campaign Calendar",
     author: "Ananthu Vasudev",
-    excerpt: "Some of the strongest campaign ideas do not begin months in advance.",
+    excerpt: "A Women's Day campaign for Malabar Village Luxe went from idea to client approval in hours. What it shows about fitting the process to the idea.",
+    date: "2026-08-27",
     minutes: 3,
     body: [
       "Some campaigns are built months ahead.",
@@ -569,6 +593,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "Sometimes the Billboard Next to Yours Is Part of Your Campaign",
     author: "Ananthu Vasudev",
+    excerpt: "On a road, people see billboards together, not one at a time. Why contextual and reactive outdoor advertising is an underused opportunity in Kerala.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "Outdoor advertising is usually planned as if every billboard exists independently.",
@@ -601,6 +627,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "“AI-Free” Is Not a Creative Strategy",
     author: "Ananthu Vasudev",
+    excerpt: "Avoiding a tool doesn't make work original. Why 'AI-free' is a badge, not a creative strategy, and what actually decides whether work is good.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "“AI-free content.”",
@@ -643,6 +671,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "AI Is Becoming a Team Tool, Not Just an Individual Tool",
     author: "Ananthu Vasudev",
+    excerpt: "Good AI output rarely comes from one perfect prompt. It comes from iteration — and collaborative AI turns that into a shared workspace for team thinking.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "AI is often imagined as a one-person interaction: one employee, one prompt, one answer.",
@@ -678,6 +708,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "The Best Business Automation May Not Need New Software",
     author: "Ananthu Vasudev",
+    excerpt: "A tyre shop's follow-up trick shows automation doesn't need new software. Start with where the business keeps losing time or follow-up, then build small.",
+    date: "2026-08-27",
     minutes: 2,
     body: [
       "One of the smartest low-cost examples of sales automation can look almost too simple to count as automation.",
@@ -715,6 +747,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "A Good Product Can Become Unpopular Because of How It Is Sold",
     author: "Ananthu Vasudev",
+    excerpt: "Insurance is useful, yet widely avoided in India. How the way a product is sold can shape how a whole category is seen, and what that means for trust.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "Insurance is a useful example of a marketing problem that is not really a product problem.",
@@ -748,6 +782,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "Sales Is Not the Last Department of a Business",
     author: "Ananthu Vasudev",
+    excerpt: "Sales is where a business hears what the market actually thinks. Why it belongs alongside marketing and product as a market intelligence function.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "Sales is often treated as the final stage of business.",
@@ -797,6 +833,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "OBSERVATION",
     title: "Customer Experience Starts Before the Product Does",
     author: "Ananthu Vasudev",
+    excerpt: "A visit to River's Kochi showroom shows customer experience begins at the car park, not the product. Every small interaction is part of the brand.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "A product showroom is usually evaluated by the product on display.",
@@ -840,6 +878,8 @@ export const POSTS: readonly BlogPost[] = [
     category: "PERSPECTIVE",
     title: "Why Should Businesses Be the Only Ones Being Rated?",
     author: "Ananthu Vasudev",
+    excerpt: "Customers rate businesses, but the rating rarely runs the other way. A case for symmetry, accountability and worker dignity in review systems.",
+    date: "2026-08-27",
     minutes: 1,
     body: [
       "Businesses are increasingly measured through ratings.",

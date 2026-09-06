@@ -2,37 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { INDUSTRIES, QUESTIONS, TOTAL } from "@/lib/diagnosis/questions";
-import type { Answer, Answers, Ink, Question } from "@/lib/diagnosis/types";
-import { ArrowLeft, ArrowRight, Check } from "./Icons";
-
-/** Each question is printed in a chapter ink; the pair drives --sig / --sig-ink. */
-const INK: Record<Ink, [fill: string, text: string]> = {
-  signal: ["var(--signal)", "var(--signal-ink)"],
-  sage: ["var(--sage)", "var(--sage-ink)"],
-  amber: ["var(--amber)", "var(--amber-ink)"],
-  coral: ["var(--coral)", "var(--coral-ink)"],
-  lav: ["var(--lav)", "var(--lav-ink)"],
-  ink: ["var(--ink)", "var(--ink)"],
-};
-
-/* ---- progress ----------------------------------------------------------- */
-
-function Progress({ index }: { index: number }) {
-  const pct = ((index + 1) / TOTAL) * 100;
-  return (
-    <div className="gd-prog">
-      <div className="gd-prog-row">
-        <span className="gd-prog-n">
-          Question {String(index + 1).padStart(2, "0")} <i>/</i> {TOTAL}
-        </span>
-        <span className="gd-prog-pct">{Math.round(pct)}%</span>
-      </div>
-      <div className="gd-prog-track">
-        <div className="gd-prog-fill" style={{ width: `${pct}%` }} />
-      </div>
-    </div>
-  );
-}
+import type { Answer, Answers, Question } from "@/lib/diagnosis/types";
 
 /* ---- option row --------------------------------------------------------- */
 
@@ -45,14 +15,13 @@ interface OptionRowProps {
 
 function OptionRow({ label, selected, multi, onClick }: OptionRowProps) {
   return (
-    <button
-      type="button"
-      className={`gd-opt${selected ? " on" : ""}`}
-      aria-pressed={selected}
-      onClick={onClick}
-    >
-      <span className="gd-opt-t">{label}</span>
-      <span className={`gd-tick${multi ? " sq" : ""}`}>{selected ? <Check size={11} /> : null}</span>
+    <button type="button" className="gd-opt" aria-pressed={selected} onClick={onClick}>
+      <span>{label}</span>
+      <span className={`tick${multi ? "" : " round"}`} aria-hidden="true">
+        <svg viewBox="0 0 12 12">
+          <path d="M2 6l3 3 5-6" />
+        </svg>
+      </span>
     </button>
   );
 }
@@ -69,6 +38,7 @@ function IndustrySearch({
   const [query, setQuery] = useState(value ?? "");
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -85,6 +55,10 @@ function IndustrySearch({
     return () => document.removeEventListener("mousedown", onDown);
   }, []);
 
+  useEffect(() => {
+    input.current?.focus();
+  }, []);
+
   const pick = (opt: string) => {
     onChange(opt);
     setQuery(opt);
@@ -92,8 +66,11 @@ function IndustrySearch({
   };
 
   return (
-    <div className="gd-search" ref={box}>
+    <div style={{ margin: "26px 0 34px" }} ref={box}>
       <input
+        ref={input}
+        className="gd-in"
+        id="indIn"
         type="text"
         value={query}
         onChange={(e) => {
@@ -106,7 +83,7 @@ function IndustrySearch({
         autoComplete="off"
       />
       {open ? (
-        <div className="gd-search-list" role="listbox">
+        <div className="gd-list" id="indList" role="listbox">
           {filtered.length ? (
             filtered.map((opt) => (
               <button
@@ -114,20 +91,19 @@ function IndustrySearch({
                 role="option"
                 aria-selected={opt === value}
                 key={opt}
-                className={opt === value ? "on" : undefined}
                 onClick={() => pick(opt)}
               >
                 {opt}
               </button>
             ))
           ) : (
-            <p className="gd-search-none">
-              Nothing matches that. Choose <b>Other</b> and tell us on the call.
-            </p>
+            <div className="empty">
+              Nothing matches that. Choose <strong>Other</strong> and tell us on the call.
+            </div>
           )}
         </div>
       ) : null}
-      {value ? <span className="gd-search-ok">Selected: {value}</span> : null}
+      {value ? <div className="gd-sel">Selected: {value}</div> : null}
     </div>
   );
 }
@@ -185,19 +161,21 @@ function QuestionBody({
   }
 
   const text = typeof value === "string" ? value : "";
+  const max = question.maxLength ?? 300;
   return (
-    <div className="gd-textarea">
+    <div style={{ margin: "26px 0 34px" }}>
       <textarea
+        className="gd-in"
+        id="txtIn"
         value={text}
-        maxLength={question.maxLength}
-        rows={4}
+        maxLength={max}
         onChange={(e) => onAnswer(e.target.value)}
         placeholder="In your own words. One sentence is enough."
         aria-label={question.q}
       />
-      <span className="gd-count">
-        {text.length} / {question.maxLength}
-      </span>
+      <div className="gd-count">
+        <span>{text.length}</span> / {max}
+      </div>
     </div>
   );
 }
@@ -211,6 +189,13 @@ interface QuizProps {
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
   onFinish: () => void;
 }
+
+const HINT: Record<Question["type"], string> = {
+  single: "Choose the closest answer.",
+  multi: "Choose at least one.",
+  search: "Start typing, then pick from the list.",
+  text: "Optional — you can skip this one.",
+};
 
 export function Quiz({ index, setIndex, answers, setAnswers, onFinish }: QuizProps) {
   const question = QUESTIONS[index];
@@ -230,34 +215,36 @@ export function Quiz({ index, setIndex, answers, setAnswers, onFinish }: QuizPro
   const next = () => (index === TOTAL - 1 ? onFinish() : setIndex(index + 1));
   const back = () => index > 0 && setIndex(index - 1);
 
-  const [fill, text] = INK[question.ink];
+  const pct = ((index + 1) / TOTAL) * 100;
 
   return (
-    <div className="gd-quiz" style={{ "--sig": fill, "--sig-ink": text } as React.CSSProperties}>
-      <Progress index={index} />
+    // keyed on the question so the fade-in replays for each one
+    <div className="gd-q" key={question.id}>
+      <div className="gd-prog">
+        <span>
+          Question <b>{String(index + 1).padStart(2, "0")}</b> / {TOTAL}
+        </span>
+        <span>{Math.round(pct)}%</span>
+      </div>
+      <div className="gd-bar">
+        <i style={{ width: `${pct}%` }} />
+      </div>
 
-      <h2 className="gd-q">{question.q}</h2>
+      <h2>{question.q}</h2>
       {question.sub ? <p className="gd-sub">{question.sub}</p> : null}
 
       <QuestionBody question={question} value={value} onAnswer={setValue} />
 
       <div className="gd-nav">
-        <button type="button" className="gd-back" onClick={back} disabled={index === 0}>
-          <ArrowLeft size={15} /> Back
+        <button type="button" className="back" onClick={back} disabled={index === 0}>
+          ← Back
         </button>
         <button type="button" className="btn" onClick={next} disabled={!canAdvance}>
-          {index === TOTAL - 1 ? "Get my diagnosis" : "Next"}
-          <span className="arw">
-            <ArrowRight size={15} />
-          </span>
+          {index === TOTAL - 1 ? "Get my diagnosis" : "Next"} <span className="ar">→</span>
         </button>
       </div>
 
-      {!canAdvance && question.type !== "text" ? (
-        <p className="gd-hint">
-          {question.type === "multi" ? "Choose at least one." : "Choose the closest answer."}
-        </p>
-      ) : null}
+      <p className="gd-hint">{HINT[question.type]}</p>
     </div>
   );
 }

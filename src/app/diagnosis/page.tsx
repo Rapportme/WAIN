@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   description:
     "Fifteen questions about your business, and an honest first read of where it stands: maturity, operational health, and the areas most likely holding growth back.",
   alternates: { canonical: "/diagnosis/" },
-  // A form, not a page to rank; the offer itself is indexed on the home page.
-  robots: { index: false, follow: true },
 };
 
 export default function DiagnosisPage() {

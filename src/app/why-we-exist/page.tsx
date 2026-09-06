@@ -3,8 +3,9 @@ import { OG_IMAGES } from "@/lib/seo";
 import { PageHead, type PageIndexEntry } from "@/components/layout/PageHead";
 import { PageNext } from "@/components/layout/PageNext";
 import { Story } from "@/components/sections/Story";
-import { People } from "@/components/sections/People";
+import { People, PEOPLE } from "@/components/sections/People";
 
+const SITE_URL = "https://wearein.in";
 const TITLE = "Why We Exist — We Are In Collective";
 const DESCRIPTION =
   "We didn't set out to build another agency. We set out to bring good people into one room — how the collective started, and the people behind the thinking.";
@@ -41,14 +42,29 @@ const INDEX: readonly PageIndexEntry[] = [
     title: "The people behind the thinking",
     note: "Three people, three questions they can't stop asking.",
     shape: "mk-a",
+    ink: "ink-amber",
   },
 ];
+
+/* The three people, as structured data, tied back to the Organization in the layout. */
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": PEOPLE.map((p) => ({
+    "@type": "Person",
+    name: p.name,
+    description: p.cred,
+    worksFor: { "@id": `${SITE_URL}/#organization` },
+    url: `${SITE_URL}/why-we-exist/#people`,
+  })),
+};
 
 /** Why we exist — the story, and the people it's made of. */
 export default function WhyWeExistPage() {
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
       <PageHead
+        ink="ink-teal"
         kicker="Why we exist"
         shape="mk-cir"
         title="We didn't set out to build another agency."
@@ -58,6 +74,7 @@ export default function WhyWeExistPage() {
       <Story />
       <People />
       <PageNext
+        ink="ink-sage"
         href="/how-we-exist/"
         label="Read next"
         title="How we exist"

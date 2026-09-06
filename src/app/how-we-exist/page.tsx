@@ -42,12 +42,14 @@ const INDEX: readonly PageIndexEntry[] = [
     title: "How we think",
     note: "Why the brief is rarely where the problem actually lives.",
     shape: "mk-bar",
+    ink: "ink-lav",
   },
   {
     href: "#work",
     title: "How we work",
     note: "What happens once we're in — and why it starts before the work does.",
     shape: "mk-wedge",
+    ink: "ink-teal",
   },
 ];
 
@@ -56,6 +58,7 @@ export default function HowWeExistPage() {
   return (
     <main>
       <PageHead
+        ink="ink-sage"
         kicker="How we exist"
         shape="mk-tri"
         title="Good businesses deserve better questions."
@@ -66,6 +69,7 @@ export default function HowWeExistPage() {
       <Think />
       <Work />
       <PageNext
+        ink="ink-sage"
         href="/diagnosis/"
         label="Start here"
         title="Get a growth diagnosis"

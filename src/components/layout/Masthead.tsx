@@ -1,42 +1,38 @@
 "use client";
 
-import Image from "next/image";
 import { withBase } from "@/lib/withBase";
 import { useUI } from "@/components/providers/UIProvider";
-import { useStuck } from "@/hooks/useStuck";
-import { useSectionHref } from "@/hooks/useSectionHref";
+import { Logo } from "@/components/ui/Logo";
 
+/**
+ * The masthead. `.stuck` is stamped by Effects on scroll, and `body.menu-open`
+ * (set by UIProvider) morphs the Contents button into Close via CSS.
+ */
 export function Masthead() {
-  const stuck = useStuck();
   const { menuOpen, toggleMenu } = useUI();
-  const h = useSectionHref();
 
   return (
-    <header className={`masthead${stuck ? " stuck" : ""}`} id="masthead">
-      <a href={h("#top")} className="logo" aria-label="We Are In Collective — back to the cover">
-        <Image
-          src={withBase("/images/weareinblack.png")}
-          alt=""
-          width={1022}
-          height={1077}
-          priority
-        />
+    <header className="mast" id="mast">
+      <a className="logo" href={withBase("/")} aria-label="We Are In Collective — back to the cover">
+        <Logo />
       </a>
-      <div className="masthead-r">
+      <div className="right">
         <button
           className="menu-btn"
           id="menuBtn"
-          aria-expanded={menuOpen}
           aria-controls="menu"
+          aria-expanded={menuOpen}
           onClick={toggleMenu}
         >
-          <i aria-hidden="true" /> Contents
+          <i />
+          <span className="lab">Contents</span>
         </button>
-        <a href={withBase("/contact/")} className="btn">
-          Let&apos;s talk over coffee{" "}
-          <span className="arw" aria-hidden="true">
-            &rarr;
-          </span>
+        <a className="btn" href={withBase("/contact/")}>
+          <span className="txt">Let&apos;s talk over coffee</span>
+          <span className="sm" aria-hidden="true">
+            ☕
+          </span>{" "}
+          <span className="ar">→</span>
         </a>
       </div>
     </header>

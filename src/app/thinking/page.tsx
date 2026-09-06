@@ -30,15 +30,16 @@ export const metadata: Metadata = {
 /** /thinking — the collection index. The writing, filterable by format. */
 export default function ThinkingPage() {
   return (
-    <>
+    <main>
       <BlogIndex />
       <PageNext
+        ink="ink-sage"
         href="/diagnosis/"
         label="Read next"
         title="Growth diagnosis"
         note="Fifteen questions about your business. Free, and under five minutes."
         shape="mk-cir"
       />
-    </>
+    </main>
   );
 }

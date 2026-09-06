@@ -1,120 +1,177 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
+import { useSectionHref } from "@/hooks/useSectionHref";
 import { useUI } from "@/components/providers/UIProvider";
-import { CH, STAGES, STAGE_CHIPS, type StageKey } from "@/data/chapters";
+import { HOME_STAGES, chapterByNum } from "@/data/home";
 
-/** 00b · Three ways in — three routes through the book, plus a guided path builder. */
+/** `.rv` → `.in` once, for elements Reveal can't render (button / anchor cards). */
+function useRv<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (es) => {
+        if (es[0]?.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return { ref, cls: inView ? "rv in" : "rv" };
+}
+
+/** 00b · Three ways in. Route A opens the guide; a chip marks up a reading path. */
 export function Routes() {
-  const { setPositionTab } = useUI();
-  const [guideOpen, setGuideOpen] = useState(false);
-  const [stage, setStage] = useState<StageKey | null>(null);
+  const h = useSectionHref();
+  const { setPositionTab, stopPositionAuto } = useUI();
+  const [open, setOpen] = useState(false);
+  const [stage, setStage] = useState<number | null>(null);
 
-  const pickStage = (k: StageKey) => {
-    setStage(k);
-    setPositionTab(STAGES[k].i); // chapter 02 now matches the stage
+  const pick = (i: number) => {
+    setStage(i);
+    setPositionTab(i);
+    stopPositionAuto();
   };
 
-  const selected = stage ? STAGES[stage] : null;
-  const startKey = selected?.path[0];
-  const startHref = startKey && CH[startKey] ? `#${CH[startKey].id}` : "#problem";
+  const rA = useRv<HTMLButtonElement>();
+  const rB = useRv<HTMLAnchorElement>();
+  const rC = useRv<HTMLAnchorElement>();
+
+  const s = stage === null ? null : HOME_STAGES[stage] ?? null;
+  const first = s ? chapterByNum(s.path[0] ?? "01") : null;
 
   return (
-    <section className="chapter s-routes" id="routes">
+    <section className="chapter ink-sage" id="routes" data-chap="routes">
       <div className="wrap">
         <Eyebrow shape="mk-tri" t="Three ways in" />
-        <Reveal as="div" className="routes-head">
-          <h2>Ten chapters. You don&apos;t have to read them in order.</h2>
-          <p className="lede">
-            This isn&apos;t meant to be read like a website. Read it like a book. Start anywhere. Or
-            let us point you to the chapters that matter most.
-          </p>
+        <Reveal as="h2" className="statement">
+          Ten chapters. You don&apos;t have to read them in order.
         </Reveal>
-
-        <Reveal as="div" className="routes" d={1}>
+        <Reveal as="p" className="lede" d={1} style={{ marginTop: 22 }}>
+          This isn&apos;t meant to be read like a website. Read it like a book. Start anywhere. Or let
+          us point you to the chapters that matter most.
+        </Reveal>
+        <div className="routes">
           <button
-            className="route r-guide"
-            aria-expanded={guideOpen}
+            type="button"
+            ref={rA.ref}
+            className={`rt ${rA.cls}`}
+            style={{ ["--d" as string]: 2 } as React.CSSProperties}
+            id="routeA"
             aria-controls="guide"
-            onClick={() => setGuideOpen((o) => !o)}
+            aria-expanded={open}
+            onClick={() => setOpen((o) => !o)}
           >
-            <span className="rt-shape" aria-hidden="true" />
-            <span className="rt-n">Route A</span>
+            <i className="shape" style={{ borderRadius: "50%" }} />
+            <span className="lab">
+              <i className="mk mk-cir" />
+              Route A
+            </span>
             <h3>Help me find my way.</h3>
             <p>
               Answer one question about your business. We&apos;ll mark the chapters worth your time
               and skip the rest.
             </p>
-            <span className="rt-go">
-              Mark up my path <b aria-hidden="true">&rarr;</b>
+            <span className="go">
+              Mark up my path <span className="ar">→</span>
             </span>
           </button>
-
-          <a className="route r-read" href="#problem">
-            <span className="rt-shape" aria-hidden="true" />
-            <span className="rt-n">Route B</span>
+          <a
+            ref={rB.ref}
+            className={`rt ink-coral ${rB.cls}`}
+            style={{ ["--d" as string]: 3 } as React.CSSProperties}
+            href={h("#problem")}
+          >
+            <i className="shape" style={{ clipPath: "polygon(50% 0,100% 100%,0 100%)" }} />
+            <span className="lab">
+              <i className="mk mk-tri" />
+              Route B
+            </span>
             <h3>Show me who you are.</h3>
             <p>Read it in order — the full story, the way we&apos;d tell it in a room with the door shut.</p>
-            <span className="rt-go">
-              Start at chapter 01 <b aria-hidden="true">&rarr;</b>
+            <span className="go">
+              Start at chapter 01 <span className="ar">→</span>
             </span>
           </a>
-
-          <a className="route r-jump" href="#diagnosis">
-            <span className="rt-shape" aria-hidden="true" />
-            <span className="rt-n">Route C</span>
+          <a
+            ref={rC.ref}
+            className={`rt ink-amber ${rC.cls}`}
+            style={{ ["--d" as string]: 4 } as React.CSSProperties}
+            href={h("#diagnosis")}
+          >
+            <i className="shape" />
+            <span className="lab">
+              <i className="mk mk-sq" />
+              Route C
+            </span>
             <h3>I already know what I need.</h3>
-            <p>
-              Skip ahead. Explore the diagnosis first. If it makes sense, let&apos;s have a
-              conversation.
-            </p>
-            <span className="rt-go">
-              Go to chapter 09 <b aria-hidden="true">&rarr;</b>
+            <p>Skip ahead. Explore the diagnosis first. If it makes sense, let&apos;s have a conversation.</p>
+            <span className="go">
+              Go to chapter 09 <span className="ar">→</span>
             </span>
           </a>
-        </Reveal>
-
-        <div className={`guide${guideOpen ? " open" : ""}`} id="guide">
-          <p className="gq">Which of these sounds most like your business right now?</p>
-          <div className="chips" role="group" aria-label="Pick the stage your business is at">
-            {STAGE_CHIPS.map((chip) => (
-              <button
-                key={chip.k}
-                aria-pressed={stage === chip.k}
-                onClick={() => pickStage(chip.k)}
-              >
-                <span className={`mk ${chip.shape}`} />
-                {chip.label}
-              </button>
-            ))}
-          </div>
-          <div className={`guide-out${selected ? " show" : ""}`} aria-live="polite">
-            <p className="guide-say">{selected?.say}</p>
-            <p className="plabel">Your path — read top to bottom</p>
-            <ul className="path">
-              {selected?.path.map((key) => {
-                const c = CH[key];
-                if (!c) return null;
-                return (
-                  <li key={key}>
-                    <a href={`#${c.id}`} style={{ "--pc": c.c } as React.CSSProperties}>
-                      <b>{c.n}</b>
-                      {c.t}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="guide-go">
-              <a href={startHref} className="btn">
-                Begin the walk-through{" "}
-                <span className="arw" aria-hidden="true">
-                  &rarr;
-                </span>
-              </a>
-              <span className="fine">Chapter 02 is already set to your stage.</span>
+        </div>
+        <div className={`guide${open ? " open" : ""}`} id="guide">
+          <div>
+            <div className="guide-in">
+              <p className="gq">Which of these sounds most like your business right now?</p>
+              <div className="chips" role="group" aria-label="Pick the stage your business is at">
+                {HOME_STAGES.map((st, i) => (
+                  <button
+                    type="button"
+                    className="chip"
+                    key={st.k}
+                    data-stage={i}
+                    aria-pressed={stage === i}
+                    onClick={() => pick(i)}
+                  >
+                    <i className={`mk ${st.mk}`} />
+                    {st.k}
+                  </button>
+                ))}
+              </div>
+              <div className={`guide-out${s ? " show" : ""}`} id="guideOut" aria-live="polite">
+                {s ? (
+                  <>
+                    <p className="guide-say">{s.say}</p>
+                    <div>
+                      <div className="label" style={{ marginBottom: 12 }}>
+                        Your path — read top to bottom
+                      </div>
+                      <div className="path">
+                        {s.path.map((n, i) => {
+                          const ch = chapterByNum(n);
+                          if (!ch) return null;
+                          return (
+                            <Fragment key={n}>
+                              {i ? <span className="ar">→</span> : null}
+                              <a href={h(`#${ch.a}`)} style={{ ["--c" as string]: ch.c } as React.CSSProperties}>
+                                <b>{ch.n}</b>
+                                {ch.t}
+                              </a>
+                            </Fragment>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div>
+                      <a className="btn" href={h(`#${first?.a ?? "problem"}`)}>
+                        Begin the walk-through <span className="ar">→</span>
+                      </a>
+                    </div>
+                    <p className="fine">Chapter 02 is already set to your stage.</p>
+                  </>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

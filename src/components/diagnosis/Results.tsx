@@ -1,43 +1,52 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { withBase } from "@/lib/withBase";
 import type { InstantDiagnosis } from "@/lib/diagnosis/types";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Reveal } from "@/components/ui/Reveal";
 import { Calendar, Download, Mail } from "./Icons";
 
-/** The BHI dial. Stroke length is set from the score, so it draws on mount. */
+/** Circumference of the r=52 arc — matches the dasharray baked into the CSS. */
+const CIRC = 326.7;
+
+/** The BHI dial. The arc starts empty and draws to the score after mount. */
 function ScoreRing({ score }: { score: number }) {
-  const r = 52;
-  const circ = 2 * Math.PI * r;
-  const offset = circ - (Math.max(0, Math.min(100, score)) / 100) * circ;
+  const [offset, setOffset] = useState(CIRC);
+  useEffect(() => {
+    const clamped = Math.max(0, Math.min(100, score));
+    // Two frames in, so the initial (empty) state has painted and the CSS
+    // transition on stroke-dashoffset has something to run from.
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setOffset(CIRC * (1 - clamped / 100)));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [score]);
+
   return (
-    <svg
-      width={132}
-      height={132}
-      viewBox="0 0 128 128"
-      className="gd-ring"
-      role="img"
-      aria-label={`Business Health Index ${score} out of 100`}
-    >
-      <circle cx={64} cy={64} r={r} fill="none" stroke="var(--rule)" strokeWidth={9} />
-      <circle
-        cx={64}
-        cy={64}
-        r={r}
-        fill="none"
-        stroke="var(--signal)"
-        strokeWidth={9}
-        strokeLinecap="round"
-        strokeDasharray={circ}
-        strokeDashoffset={offset}
-        transform="rotate(-90 64 64)"
-      />
-      <text x="64" y="60" textAnchor="middle" className="gd-ring-n">
-        {score}
-      </text>
-      <text x="64" y="78" textAnchor="middle" className="gd-ring-l">
-        BHI / 100
-      </text>
-    </svg>
+    <div className="ring-w" role="img" aria-label={`Business Health Index ${score} out of 100`}>
+      <svg viewBox="0 0 120 120">
+        <circle className="tr" cx="60" cy="60" r="52" />
+        <circle
+          className="ar"
+          cx="60"
+          cy="60"
+          r="52"
+          style={{ strokeDashoffset: offset }}
+        />
+      </svg>
+      <div className="c">
+        <div>
+          <b>{score}</b>
+          <br />
+          <span>BHI / 100</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -50,11 +59,12 @@ function ListBlock({
   items: string[];
   tone: "good" | "watch";
 }) {
+  const list = items.length ? items : ["No structural weakness stands out at this stage"];
   return (
-    <div className={`gd-list ${tone}`}>
-      <h3 className="label">{title}</h3>
+    <div className={tone}>
+      <h3>{title}</h3>
       <ul>
-        {items.map((s) => (
+        {list.map((s) => (
           <li key={s}>
             <i aria-hidden="true" />
             {s}
@@ -73,56 +83,52 @@ interface ResultsProps {
 
 export function Results({ diagnosis, onOpenForm, onRestart }: ResultsProps) {
   return (
-    <article className="gd-res">
-      <div className="gd-eye">
-        <span className="mk mk-cir" />
-        <span className="t">Your diagnosis</span>
-      </div>
+    <div className="gd-res">
+      <Eyebrow shape="mk-cir" t="Your diagnosis" />
+      <Reveal as="h2">{diagnosis.maturityLevel}</Reveal>
 
-      <h2 className="gd-res-h">{diagnosis.maturityLevel}</h2>
-
-      <div className="gd-scores">
+      <Reveal as="div" className="score-row" d={1}>
         <ScoreRing score={diagnosis.bhi} />
-        <div className="gd-brr">
-          <h3 className="label">Business readiness rating</h3>
-          <p className="gd-brr-v">{diagnosis.brr}</p>
+        <div className="grade">
+          <div className="k">Business readiness rating</div>
+          <div className="g">{diagnosis.brr}</div>
         </div>
-      </div>
+      </Reveal>
 
-      <div className="gd-cols">
+      <Reveal as="div" className="gd-lists" d={2}>
         <ListBlock title="Top strengths" items={diagnosis.topStrengths} tone="good" />
         <ListBlock
           title="Areas requiring attention"
           items={diagnosis.topAttentionAreas}
           tone="watch"
         />
-      </div>
+      </Reveal>
 
-      <section className="gd-focus">
-        <h3 className="label">Suggested focus areas</h3>
+      <Reveal as="div" className="gd-focus" d={3}>
+        <h3>Suggested focus areas</h3>
         <ol>
           {diagnosis.focusAreas.map((f) => (
             <li key={f.priority}>
-              <span className="gd-focus-n">{String(f.priority).padStart(2, "0")}</span>
-              <span className="gd-focus-t">{f.title}</span>
+              <b>{String(f.priority).padStart(2, "0")}</b>
+              <span>{f.title}</span>
             </li>
           ))}
         </ol>
-      </section>
+      </Reveal>
 
-      <div className="gd-prose">
+      <Reveal as="div" className="gd-prose">
         <p>{diagnosis.paragraphOne}</p>
         <p>{diagnosis.paragraphTwo}</p>
-      </div>
+      </Reveal>
 
-      <p className="gd-fine">
+      <Reveal as="p" className="fine">
         This first read is generated from your responses using our own scoring model. It is an initial
         business assessment, not a definitive evaluation or professional consulting advice. Every
         business operates within unique market conditions and requires contextual understanding before
         making strategic decisions.
-      </p>
+      </Reveal>
 
-      <div className="gd-actions no-print">
+      <Reveal as="div" className="gd-actions no-print">
         <button type="button" className="btn btn--ghost" onClick={() => window.print()}>
           <Download size={15} /> Download this summary
         </button>
@@ -130,16 +136,13 @@ export function Results({ diagnosis, onOpenForm, onRestart }: ResultsProps) {
           <Mail size={15} /> Receive the detailed report
         </button>
         <a className="btn" href={withBase("/contact/")}>
-          <Calendar size={15} /> Book a consultation
-          <span className="arw" aria-hidden="true">
-            &rarr;
-          </span>
+          <Calendar size={15} /> Book a consultation <span className="ar">→</span>
         </a>
-      </div>
+      </Reveal>
 
-      <button type="button" className="gd-restart no-print" onClick={onRestart}>
+      <button type="button" className="txtbtn no-print" onClick={onRestart}>
         Start the diagnosis again
       </button>
-    </article>
+    </div>
   );
 }

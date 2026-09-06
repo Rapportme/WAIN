@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useUI } from "@/components/providers/UIProvider";
 import { withBase } from "@/lib/withBase";
 
@@ -20,28 +21,34 @@ const QUESTIONS = [
 
 export function Modal12() {
   const { modalOpen, closeModal } = useUI();
+  const xRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (modalOpen) xRef.current?.focus();
+  }, [modalOpen]);
 
   return (
     <div
-      className={`modal${modalOpen ? " open" : ""}`}
       id="modal12"
+      className={modalOpen ? "open" : undefined}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="m12t"
+      aria-labelledby="m12h"
+      aria-hidden={!modalOpen}
     >
-      <div className="modal-bg" onClick={closeModal} />
-      <div className="modal-card">
-        <button className="mx" onClick={closeModal} aria-label="Close">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#12263F" strokeWidth="1.8">
-            <path d="M1 1l12 12M13 1L1 13" />
+      <div className="bd" onClick={closeModal} />
+      <div className="card ink-teal">
+        <button className="x" type="button" ref={xRef} onClick={closeModal} aria-label="Close">
+          <svg viewBox="0 0 20 20">
+            <path d="M3 3l14 14M17 3L3 17" />
           </svg>
         </button>
-        <span className="meye">
-          <span className="mk" />
+        <div className="label" style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <i className="mk mk-cir" />
           Read this first
-        </span>
-        <h3 id="m12t">Before you hire a marketing agency, ask these 12 questions.</h3>
-        <p className="msub">
+        </div>
+        <h3 id="m12h">Before you hire a marketing agency, ask these 12 questions.</h3>
+        <p className="sub">
           If an agency can&apos;t answer most of these clearly, more marketing won&apos;t fix what&apos;s
           actually wrong. Ask them. Ask us.
         </p>
@@ -50,11 +57,11 @@ export function Modal12() {
             <li key={q}>{q}</li>
           ))}
         </ol>
-        <a href={withBase("/contact/")} className="btn mcta" onClick={closeModal}>
-          Talk it through over coffee{" "}
-          <span className="arw" aria-hidden="true">
-            &rarr;
-          </span>
+        <a className="btn" href={withBase("/contact/")} onClick={closeModal}>
+          Talk it through over coffee <span className="ar">→</span>
+        </a>
+        <a className="more" href={withBase("/before-you-hire-an-agency/")} onClick={closeModal}>
+          Read these as a page →
         </a>
       </div>
     </div>
