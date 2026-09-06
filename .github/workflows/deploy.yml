@@ -1,8 +1,11 @@
 name: Deploy to GitHub Pages
 
 # Builds the static export and publishes it to GitHub Pages on every push to
-# main. The site is served at the custom domain wearein.in (see public/CNAME),
-# so no basePath / assetPrefix is required.
+# main. The production site is served at the custom domain wearein.in (see
+# public/CNAME) with no basePath. A fork deploying to <user>.github.io/<repo>
+# sets the repository variable BASE_PATH (e.g. "/WAIN"); the build then
+# prefixes routes and assets, and drops the CNAME so the fork doesn't claim the
+# custom domain. Sitemap, robots and llms.txt always describe wearein.in.
 
 on:
   push:
@@ -40,6 +43,8 @@ jobs:
       - name: Build static export
         run: npm run build
         env:
+          # Sub-path deploys only (forks). Unset for wearein.in.
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH }}
           # A repository *variable*, not a secret: NEXT_PUBLIC_* values are
           # inlined into the JS bundle at build time, so this URL is public
           # either way. Unset until the diagnosis Worker is deployed — the site
@@ -58,6 +63,11 @@ jobs:
 
       - name: Ensure Jekyll is bypassed
         run: touch ./out/.nojekyll
+
+      - name: Drop CNAME on sub-path deploys
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH }}
+        run: if [ -n "$NEXT_PUBLIC_BASE_PATH" ]; then rm -f out/CNAME; fi
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
