@@ -42,9 +42,7 @@ export function Experience() {
             <Reveal as="div" className="stat" d={i} key={cap}>
               <i className="mk mk-sq" />
               <div className="fig">
-                <span className="count" data-to={to}>
-                  0
-                </span>
+                <span className="count" data-to={to}>{to}</span>
                 {suffix}
               </div>
               <div className="cap">{cap}</div>

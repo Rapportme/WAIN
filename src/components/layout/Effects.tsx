@@ -185,22 +185,35 @@ export function Effects() {
       (es) => {
         es.forEach((e) => {
           if (!e.isIntersecting) return;
-          io.unobserve(e.target);
           const el = e.target as HTMLElement;
+          io.unobserve(el);
+          // The animation writes to the DOM, which wakes the MutationObserver
+          // below. Without this flag that re-observes the element, restarting
+          // the count from zero on every frame — the figure never lands.
+          if (el.dataset.counted === "1") return;
+          el.dataset.counted = "1";
           const to = Number(el.dataset.to ?? "0");
           if (reduced()) { el.textContent = String(to); return; }
           const t0 = performance.now();
           const step = (t: number) => {
             const p = Math.min(1, (t - t0) / 1400);
-            el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
-            if (p < 1) requestAnimationFrame(step);
+            if (p < 1) {
+              el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
+              requestAnimationFrame(step);
+            } else {
+              el.textContent = String(to);
+            }
           };
+          el.textContent = "0";
           requestAnimationFrame(step);
         });
       },
       { threshold: 0.5 },
     );
-    const observe = () => document.querySelectorAll(".count").forEach((el) => io.observe(el));
+    const observe = () =>
+      document.querySelectorAll<HTMLElement>(".count").forEach((el) => {
+        if (el.dataset.counted !== "1") io.observe(el);
+      });
     observe();
     const mo = new MutationObserver(observe);
     const main = document.querySelector("main");

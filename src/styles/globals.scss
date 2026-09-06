@@ -819,3 +819,9 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
   .s-method .mv{background:rgba(18,38,63,.82);backdrop-filter:blur(2px)}
   .s-method .m-head{position:relative;z-index:1}
 }
+
+/* contact card: the social links are labelled rows, not the circular icon row */
+.card .soc{display:grid;gap:4px}
+.card .soc a{width:auto;height:auto;border:0;border-radius:0;background:none;transform:none;justify-content:flex-start}
+.card .soc a:hover{background:none;transform:none;color:var(--signal)}
+.card.alt .soc a:hover{color:var(--signal-lift)}

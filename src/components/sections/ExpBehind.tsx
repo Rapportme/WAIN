@@ -29,9 +29,7 @@ export function ExpBehind() {
               <Reveal as="div" className="stat" key={s.n + s.t} d={i}>
                 <i className="mk mk-sq" />
                 <div className="fig">
-                  <span className="count" data-to={f.to}>
-                    0
-                  </span>
+                  <span className="count" data-to={f.to}>{f.to}</span>
                   {f.suffix}
                 </div>
                 <div className="cap">{s.t}</div>
