@@ -809,3 +809,13 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 .gd-spin{animation:spin 1s linear infinite}
 .gd-error .lede{max-width:44ch;margin:0 auto}
 @media print{.no-print,.mast,#rail,footer,#cur,#bleed,#wipe,#intro{display:none!important}.gd{padding-top:0;min-height:0}}
+
+/* fixes 6 Sep — intro shapes clear the wordmark; method contours readable on mobile */
+#intro .shapes>i{animation:drop .9s var(--ease) forwards,gather .6s var(--ease) 1.25s forwards}
+#intro .shapes{margin-bottom:70px}
+@media (max-width:760px){
+  .s-method .contours{opacity:.28}
+  .s-method .track{position:relative;z-index:1}
+  .s-method .mv{background:rgba(18,38,63,.82);backdrop-filter:blur(2px)}
+  .s-method .m-head{position:relative;z-index:1}
+}
