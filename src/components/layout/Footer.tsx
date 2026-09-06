@@ -96,12 +96,12 @@ export function Footer() {
           <span>
             Developed by{" "}
             <a
-              href="https://pixlverse.in/"
+              href="https://rapportme.com/"
               target="_blank"
               rel="noopener"
-              aria-label="Developed by Pixlverse — opens pixlverse.in in a new tab"
+              aria-label="Developed by Rapport Group — opens rapportme.com in a new tab"
             >
-              Pixlverse
+              Rapport Group
             </a>
           </span>
         </div>
