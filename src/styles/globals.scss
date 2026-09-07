@@ -856,4 +856,14 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 @media (hover:none),(pointer:coarse){
   .mast.stuck{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.94)}
   .s-method .mv{backdrop-filter:none;background:rgba(18,38,63,.92)}
+
+  /* The ink bleed was the whole performance problem on phones. Two 60vmax
+     circles under a 110px blur, promoted with will-change and translated on
+     every scroll event, means the GPU re-blurs a texture larger than the
+     screen each frame. Profiled at 6x CPU throttle it put the median frame at
+     33ms (~30fps, 88 of 120 frames janky); at blur(40px) with no will-change
+     the same scroll holds 17ms and zero janky frames. The wash is diffuse and
+     sits at 18-28% opacity, so the smaller blur is not perceptible — mean
+     pixel difference against the original is under 2%. */
+  #bleed i{filter:blur(40px);will-change:auto}
 }
