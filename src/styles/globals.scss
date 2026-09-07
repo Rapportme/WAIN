@@ -832,17 +832,14 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 .card .soc a:hover{background:none;transform:none;color:var(--signal)}
 .card.alt .soc a:hover{color:var(--signal-lift)}
 
-/* Menu on mobile: the panel used to wipe open with an animated clip-path circle
-   while the columns faded in behind it on a stagger. Animating clip-path over a
-   full-screen element is expensive on a phone — it janks, so the window where
-   the panel is open but still empty stretched well past what the timings say,
-   and a tap on Contents kept landing on blank navy. Small screens skip the wipe
-   entirely: the panel cross-fades as one piece, already populated. */
+/* Menu on mobile: the circular wipe stays — it is the brand's entrance. What
+   changed is what rides on it. The columns used to fade in on a .35-.63s
+   stagger *behind* the wipe, so on a phone (where animating a full-screen
+   clip-path drops frames and runs long) a tap on Contents landed on blank navy
+   for the best part of a second. The list now travels with the panel at full
+   opacity, so the wipe reveals a finished menu rather than an empty one. */
 @media (max-width:760px){
-  #menu{clip-path:none;opacity:0;visibility:hidden;
-        transition:opacity .2s var(--ease),visibility 0s linear .2s}
-  #menu.open{clip-path:none;opacity:1;visibility:visible;
-             transition:opacity .2s var(--ease)}
+  #menu{transition-duration:.5s}
   #menu .col,
   #menu.open .col{opacity:1;transform:none;transition:none}
   #menu.open .col:nth-child(1),
@@ -850,4 +847,13 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
   #menu.open .col:nth-child(3),
   #menu.open .col:nth-child(4),
   #menu.open .col:nth-child(5){transition-delay:0s}
+}
+
+/* Touch devices: backdrop-filter is repainted every scroll frame and is the
+   main source of the sluggish scrolling and delayed taps on a phone. The
+   masthead and the method cards get flat translucency instead — same reading,
+   none of the per-frame blur. */
+@media (hover:none),(pointer:coarse){
+  .mast.stuck{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.94)}
+  .s-method .mv{backdrop-filter:none;background:rgba(18,38,63,.92)}
 }
