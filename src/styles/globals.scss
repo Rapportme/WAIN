@@ -216,6 +216,12 @@ body.menu-open .mast .menu-btn i::before{transform:translateY(5px) rotate(45deg)
 body.menu-open .mast .menu-btn i::after{width:100%;transform:translateY(-5px) rotate(-45deg)}
 /* navy-filled letters of the wordmark on navy grounds */
 .wain-mark .tx{fill:currentColor}
+/* The big W is its own path, not part of .tx, so it needs an explicit fill —
+   without one it falls back to black. Every ground that isn't the masthead,
+   the intro or the site footer resolves it here: dark panels take white,
+   everything else takes the ink. */
+.wain-mark .navy{fill:var(--ink)}
+#menu .logo .navy,#menu .logo .tx{fill:#fff}
 body.lock{overflow:hidden}
 .soc{display:flex;gap:14px}
 .soc a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--rule-dark);border-radius:50%;transition:background .3s,color .3s,transform .3s var(--ease)}
