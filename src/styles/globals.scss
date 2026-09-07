@@ -867,3 +867,13 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
      pixel difference against the original is under 2%. */
   #bleed i{filter:blur(40px);will-change:auto}
 }
+
+/* Below 860px the two-column article collapses to one, so the meta rail is no
+   longer beside the text — it sits above it. Left sticky (declared further up,
+   after the media query that collapses the grid, so an override there loses),
+   it pinned at top:120px while the article scrolled underneath and printed its
+   labels straight over the body copy. In one column it scrolls like any block. */
+@media (max-width:860px){
+  .bl-rail{position:static;top:auto;gap:14px;
+           padding-bottom:26px;margin-bottom:6px;border-bottom:1px solid var(--rule-2)}
+}
