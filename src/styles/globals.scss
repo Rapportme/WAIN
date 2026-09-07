@@ -826,17 +826,22 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 .card .soc a:hover{background:none;transform:none;color:var(--signal)}
 .card.alt .soc a:hover{color:var(--signal-lift)}
 
-/* Menu on mobile: the panel fills the screen in ~.35s, but the columns were
-   staggered .35–.63s behind it and faded for .7s — so a tap on Contents showed
-   close to a second of empty navy. On small screens the list arrives with the
-   panel instead of after it. */
+/* Menu on mobile: the panel used to wipe open with an animated clip-path circle
+   while the columns faded in behind it on a stagger. Animating clip-path over a
+   full-screen element is expensive on a phone — it janks, so the window where
+   the panel is open but still empty stretched well past what the timings say,
+   and a tap on Contents kept landing on blank navy. Small screens skip the wipe
+   entirely: the panel cross-fades as one piece, already populated. */
 @media (max-width:760px){
-  #menu{transition-duration:.34s}
-  #menu .col{transform:translateY(10px);transition-duration:.32s}
-  #menu.open .col,
+  #menu{clip-path:none;opacity:0;visibility:hidden;
+        transition:opacity .2s var(--ease),visibility 0s linear .2s}
+  #menu.open{clip-path:none;opacity:1;visibility:visible;
+             transition:opacity .2s var(--ease)}
+  #menu .col,
+  #menu.open .col{opacity:1;transform:none;transition:none}
   #menu.open .col:nth-child(1),
   #menu.open .col:nth-child(2),
   #menu.open .col:nth-child(3),
   #menu.open .col:nth-child(4),
-  #menu.open .col:nth-child(5){transition-delay:.1s}
+  #menu.open .col:nth-child(5){transition-delay:0s}
 }
