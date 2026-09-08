@@ -94,12 +94,12 @@ export function Footer() {
           <span>© 2026 We Are In Collective</span>
           <span>Clarity is the product · Growth is the outcome</span>
           <span>
-            Developed by{" "}
+            Powered by{" "}
             <a
               href="https://rapportme.com/"
               target="_blank"
               rel="noopener"
-              aria-label="Developed by Rapport Group — opens rapportme.com in a new tab"
+              aria-label="Powered by Rapport Group — opens rapportme.com in a new tab"
             >
               Rapport Group
             </a>
