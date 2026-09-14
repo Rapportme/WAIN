@@ -14,6 +14,8 @@ Contact: hello@wearein.in · St. Mary's Arcade, Near Nalumanikkattu, Thiruvalla 
 - [Growth diagnosis](https://wearein.in/diagnosis/): fifteen questions about your business and an honest first read of where it stands. Free, under five minutes.
 - [What is a growth partner?](https://wearein.in/growth-partner/): a definition, and how it differs from a marketing agency, a consultant and a fractional CMO.
 - [Before you hire an agency](https://wearein.in/before-you-hire-an-agency/): twelve questions to ask any marketing agency — and us.
+- [Growth partner vs marketing agency](https://wearein.in/growth-partner-vs-marketing-agency/): an agency is hired to make marketing; a growth partner is hired to check whether marketing is the problem. Includes when the agency is the right call.
+- [Growth partner vs fractional CMO](https://wearein.in/growth-partner-vs-fractional-cmo/): a fractional CMO runs the marketing function part-time; a growth partner works on the business around it.
 - [Contact](https://wearein.in/contact/): a conversation, not a pitch. A human replies, usually the same day.
 
 ## About
@@ -24,7 +26,9 @@ Contact: hello@wearein.in · St. Mary's Arcade, Near Nalumanikkattu, Thiruvalla 
 
 ## Thinking
 
-Observations, perspectives and case studies on marketing, business, sales and growth, written by Ananthu Vasudev. Index: https://wearein.in/thinking/
+Observations, perspectives and case studies on marketing, business, sales and growth, written by Ananthu Vasudev — brand and market strategist, Head of Brand & Market Strategy at Antutive AB (Gothenburg), founder of The Evolvers Project 2020–2025. Author page: https://wearein.in/people/ananthu-vasudev/
+
+Index: https://wearein.in/thinking/
 
 - [Before You Choose a Marketing Channel, Decide What You Are Trying to Build](https://wearein.in/thinking/before-you-choose-a-marketing-channel-decide-what-you-are-trying-to-build/)
 - [What Is the Actual Job in an AI-Assisted Workplace?](https://wearein.in/thinking/what-is-the-actual-job-in-an-ai-assisted-workplace/)

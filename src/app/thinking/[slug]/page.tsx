@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { withBase } from "@/lib/withBase";
-import { OG_IMAGES } from "@/lib/seo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { POSTS, categoryStyle, neighbours, postBySlug, summary, type BlogCategory } from "@/data/blog";
+import { AUTHOR, AUTHOR_ID } from "@/data/author";
 
 const SITE_URL = "https://wearein.in";
 
@@ -54,9 +54,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       authors: [post.author],
       publishedTime: post.date,
       modifiedTime: post.date,
-      images: OG_IMAGES,
+      /* No `images` here on purpose: opengraph-image.tsx in this folder
+         generates a card per piece, and Next only injects it when the page
+         doesn't declare its own. Naming OG_IMAGES would put the shared cover
+         back on all twenty-two. */
     },
-    twitter: { card: "summary_large_image", title, description, images: OG_IMAGES },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -72,19 +75,36 @@ export default async function ArticlePage({ params }: Params) {
   const heads = new Set(post.heads ?? []);
   const url = `${SITE_URL}/thinking/${post.slug}/`;
 
+  /* Two graphs on an article: the piece itself, and where it sits. The author
+     resolves to a real page rather than a bare name — an author entity search
+     engines and AI systems can follow is what carries the expertise signal. */
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: summary(post),
-    datePublished: post.date,
-    dateModified: post.date,
-    author: { "@type": "Person", name: "Ananthu Vasudev" },
-    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "We Are In Collective" },
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    url,
-    articleSection: cat.label,
-    inLanguage: "en",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: summary(post),
+        datePublished: post.date,
+        dateModified: post.date,
+        author: { "@id": AUTHOR_ID },
+        publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "We Are In Collective" },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        url,
+        articleSection: cat.label,
+        wordCount: post.body.reduce((n, p) => n + p.split(/\s+/).length, 0),
+        timeRequired: `PT${post.minutes}M`,
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Our Thinking", item: `${SITE_URL}/thinking/` },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
+        ],
+      },
+    ],
   };
 
   return (
@@ -117,7 +137,9 @@ export default async function ArticlePage({ params }: Params) {
             </div>
             <div>
               <div className="k">Written by</div>
-              <div className="v">{post.author}</div>
+              <div className="v">
+                <a href={withBase(`/people/${AUTHOR.slug}/`)}>{post.author}</a>
+              </div>
             </div>
             <div>
               <div className="k">Published</div>

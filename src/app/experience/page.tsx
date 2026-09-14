@@ -8,7 +8,7 @@ import { ExpWork } from "@/components/sections/ExpWork";
 
 const TITLE = "Experience — We Are In Collective";
 const DESCRIPTION =
-  "Two kinds of experience live here: the industries we've been inside as We Are In, and the work our people led long before the collective existed. Neither is more real than the other.";
+  "Two kinds of experience live here: the industries we've been inside as We Are In, and the work our people led long before the collective existed.";
 
 export const metadata: Metadata = {
   title: TITLE,

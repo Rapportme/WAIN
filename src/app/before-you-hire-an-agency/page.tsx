@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { withBase } from "@/lib/withBase";
-import { OG_IMAGES } from "@/lib/seo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHead, type PageIndexEntry } from "@/components/layout/PageHead";
 import { PageNext } from "@/components/layout/PageNext";
 
-const TITLE = "Before you hire a marketing agency, ask these 12 questions — We Are In Collective";
+const TITLE = "Before you hire a marketing agency, ask these 12 questions";
 const DESCRIPTION =
-  "Twelve questions to ask any marketing agency before you sign — and why each one matters. If they can't answer most of them clearly, more marketing won't fix what's wrong.";
+  "Twelve questions to ask any marketing agency before you sign, and why each one matters. If they can't answer most of them, more marketing won't help.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -20,13 +19,11 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
-    images: OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: OG_IMAGES,
   },
 };
 

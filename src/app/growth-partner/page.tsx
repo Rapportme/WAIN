@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { withBase } from "@/lib/withBase";
-import { OG_IMAGES } from "@/lib/seo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHead, type PageIndexEntry } from "@/components/layout/PageHead";
@@ -20,13 +19,11 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
-    images: OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: OG_IMAGES,
   },
 };
 
@@ -294,6 +291,27 @@ export default function GrowthPartnerPage() {
             </a>
             <a className="mark" href={withBase("/contact/")}>
               Or just tell us what&apos;s going on
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="sec ink-lav" id="compare" style={{ borderTop: "1px solid var(--rule)" }}>
+        <div className="wrap">
+          <Eyebrow shape="mk-sq" t="The two closest comparisons" />
+          <Reveal as="h2" className="statement">
+            Taken one at a time.
+          </Reveal>
+          <Reveal as="p" className="lede" d={1} style={{ marginTop: 22 }}>
+            The table above puts four roles side by side. These two go further, because they are
+            the ones people are usually actually choosing between.
+          </Reveal>
+          <Reveal as="div" className="ctas" d={2} style={{ marginTop: 34 }}>
+            <a className="btn btn--ghost" href={withBase("/growth-partner-vs-marketing-agency/")}>
+              Growth partner vs marketing agency <span className="ar">&rarr;</span>
+            </a>
+            <a className="btn btn--ghost" href={withBase("/growth-partner-vs-fractional-cmo/")}>
+              Growth partner vs fractional CMO <span className="ar">&rarr;</span>
             </a>
           </Reveal>
         </div>

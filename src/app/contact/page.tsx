@@ -68,8 +68,15 @@ export default function ContactPage() {
               <address>
                 St. Mary&apos;s Arcade, Near Nalumanikkattu,
                 <br />
-                Thiruvalla – Ettumanoor Bypass, Kottayam
+                Thiruvalla – Ettumanoor Bypass,
+                <br />
+                Kottayam, Kerala, India
               </address>
+              <p className="ct-note">
+                A person reads every message — usually the same day, and always within one working
+                day. We work with businesses across Kerala and, remotely, wherever the problem is
+                interesting enough.
+              </p>
             </div>
             <div className="card">
               <h4>Elsewhere</h4>

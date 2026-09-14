@@ -32,7 +32,7 @@ const newsreader = Newsreader({
 const SITE_URL = "https://wearein.in";
 const TITLE = "We Are In Collective — Clarity is the product. Growth is the outcome.";
 const DESCRIPTION =
-  "We Are In is a growth partner, not a marketing agency. Marketing is one of the tools. Clarity is what we actually sell. We join your business — we don't work for it.";
+  "We Are In is a growth partner, not a marketing agency. Marketing is one of the tools; clarity is what we sell. We join your business — we don't work for it.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -80,12 +80,19 @@ const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
+      /* ProfessionalService as well as Organization: the collective works from a
+         real address in Kottayam, and the local-business type is what carries the
+         address, service area and contact point into local results and into AI
+         answers about firms in Kerala. No `geo` — we don't have surveyed
+         coordinates for the office and inventing them would be worse than the
+         omission. No `openingHours` for the same reason. */
+      "@type": ["Organization", "ProfessionalService"],
       "@id": ORG_ID,
       name: "We Are In Collective",
       alternateName: ["We Are In", "WAIN"],
       url: SITE_URL,
       logo: `${SITE_URL}/images/og-cover.png`,
+      image: `${SITE_URL}/images/og-cover.png`,
       email: "hello@wearein.in",
       description: DESCRIPTION,
       address: {
@@ -94,6 +101,24 @@ const JSON_LD = {
         addressLocality: "Kottayam",
         addressRegion: "Kerala",
         addressCountry: "IN",
+      },
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "Kerala" },
+        { "@type": "Country", name: "India" },
+      ],
+      knowsAbout: [
+        "Growth strategy",
+        "Brand positioning",
+        "Marketing strategy",
+        "Business diagnosis",
+        "Go-to-market strategy",
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "New business",
+        email: "hello@wearein.in",
+        areaServed: "IN",
+        availableLanguage: ["en"],
       },
       sameAs: SOCIAL_LINKS.map((s) => s.href),
       founder: FOUNDERS.map((f) => ({ "@type": "Person", name: f.name, jobTitle: f.jobTitle })),

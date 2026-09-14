@@ -877,3 +877,36 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
   .bl-rail{position:static;top:auto;gap:14px;
            padding-bottom:26px;margin-bottom:6px;border-bottom:1px solid var(--rule-2)}
 }
+
+/* ── Author page ─────────────────────────────────────────────────────────────
+   /people/<slug> — the person the Thinking pieces are written by. Two blocks:
+   the roles behind the writing, and every piece, listed. */
+.cred-row{display:grid;grid-template-columns:170px 1fr;gap:8px 34px;align-items:start}
+.cred-when{font-family:var(--ui);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+           font-weight:700;color:var(--muted);padding-top:5px;font-variant-numeric:tabular-nums}
+.cred-what{font-family:var(--disp);font-weight:500;font-size:1.5rem;letter-spacing:-.012em;margin:0}
+.cred-where{font-size:.95rem;color:var(--signal);font-weight:600;margin-top:2px}
+.cred-note{margin-top:9px;color:var(--muted);max-width:62ch}
+@media (max-width:760px){
+  .cred-row{grid-template-columns:1fr;gap:4px}
+  .cred-when{padding-top:0}
+}
+
+.auth-list{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:auth}
+.auth-list li{border-top:1px solid var(--rule)}
+.auth-list li:last-child{border-bottom:1px solid var(--rule)}
+.auth-list a{display:grid;grid-template-columns:190px 1fr;gap:6px 34px;padding:20px 0;align-items:baseline}
+.auth-list .auth-cat{display:flex;align-items:center;gap:9px;font-size:.68rem;letter-spacing:.18em;
+                     text-transform:uppercase;font-weight:700;color:var(--muted)}
+.auth-list strong{font-family:var(--disp);font-weight:500;font-size:1.3rem;letter-spacing:-.012em;
+                  line-height:1.2;display:block;transition:color .3s}
+.auth-list em{grid-column:2;font-style:normal;font-size:.9rem;color:var(--muted);margin-top:4px;
+              display:block;max-width:62ch}
+.auth-list a:hover strong{color:var(--signal)}
+@media (max-width:760px){
+  .auth-list a{grid-template-columns:1fr;gap:7px}
+  .auth-list em{grid-column:1}
+}
+
+/* Contact card: the response-time note under the address. */
+.card .ct-note{margin-top:14px;font-size:.88rem;line-height:1.55;color:var(--muted)}
