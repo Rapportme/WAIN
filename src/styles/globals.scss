@@ -910,3 +910,9 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 
 /* Contact card: the response-time note under the address. */
 .card .ct-note{margin-top:14px;font-size:.88rem;line-height:1.55;color:var(--muted)}
+
+/* Profile link on a person card. margin-top:auto pins it to the bottom so the
+   links line up across cards whose copy runs to different lengths — and so a
+   card without one (no confirmed URL) simply ends, with no gap left behind. */
+.person .p-li{margin-top:auto;padding-top:6px;font-size:.88rem;color:var(--sig-ink)}
+.author-li{margin-top:22px}

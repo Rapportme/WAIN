@@ -7,9 +7,9 @@
  * the single source for that entity: the layout's JSON-LD graph declares it,
  * each article references it by `@id`, and /people/ananthu-vasudev renders it.
  *
- * Everything below is drawn from the site's own experience data. `sameAs` is
- * deliberately empty until we have the real profile URLs — a wrong or guessed
- * one is worse than none, because it tells the graph the wrong person wrote it.
+ * Everything below is drawn from the site's own experience data. `sameAs` may
+ * only ever hold profile URLs we have been given — a wrong or guessed one is
+ * worse than none, because it tells the graph the wrong person wrote this.
  */
 
 export const SITE_URL = "https://wearein.in";
@@ -24,8 +24,8 @@ export const AUTHOR = {
   url: `${SITE_URL}/people/ananthu-vasudev/`,
   /** One line, for the article rail and the index. */
   short: "Brand and market strategist at We Are In. Writes the Thinking pieces.",
-  /** Profile URLs. Empty until confirmed — see the note at the top of this file. */
-  sameAs: [] as readonly string[],
+  /** Profile URLs. Confirmed only — see the note at the top of this file. */
+  sameAs: ["https://www.linkedin.com/in/ananthu-in/"] as readonly string[],
   bio: [
     "Ananthu writes everything filed under Our Thinking. He works on positioning and market strategy — the part of the job that happens before anyone opens a design file or books a media slot.",
     "He has been inside healthcare, education, retail, hospitality, FMCG and emerging tech, usually in the room where the decision gets made rather than the one where it gets executed. That range is why the writing moves between an ayurvedic hospital, a Zomato placement and an AI platform in Gothenburg without changing its footing.",

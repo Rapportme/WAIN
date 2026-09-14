@@ -15,6 +15,13 @@ export interface Person {
   shape: string;
   /** Inline style for the big shape in the card's corner. */
   bigshape: React.CSSProperties;
+  /**
+   * Public profile, if there is one. Rendered with rel="me" so the link is a
+   * claim of identity rather than a recommendation — it pairs with the `sameAs`
+   * in the JSON-LD and lets a reader check the person is real. Left out
+   * entirely where we don't have a confirmed URL; a guess would be worse.
+   */
+  linkedin?: string;
 }
 
 export const PEOPLE: readonly Person[] = [
@@ -27,6 +34,7 @@ export const PEOPLE: readonly Person[] = [
     ink: "ink-teal",
     shape: "mk-cir",
     bigshape: { borderRadius: "50%" },
+    linkedin: "https://www.linkedin.com/in/divine-abraham-a9b83773/",
   },
   {
     name: "Ananthu Vasudev",
@@ -37,6 +45,7 @@ export const PEOPLE: readonly Person[] = [
     ink: "ink-coral",
     shape: "mk-tri",
     bigshape: { clipPath: "polygon(50% 0,100% 100%,0 100%)" },
+    linkedin: "https://www.linkedin.com/in/ananthu-in/",
   },
   {
     name: "Savio",
@@ -82,6 +91,17 @@ export function People() {
               <p>{p.lead}</p>
               <p className="q">&ldquo;{p.q}&rdquo;</p>
               <p>{p.then}</p>
+              {p.linkedin ? (
+                <a
+                  className="mark p-li"
+                  href={p.linkedin}
+                  target="_blank"
+                  rel="me noopener"
+                  aria-label={`${p.name} on LinkedIn`}
+                >
+                  LinkedIn <span className="ar">→</span>
+                </a>
+              ) : null}
             </Reveal>
           ))}
         </div>

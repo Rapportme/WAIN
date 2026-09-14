@@ -84,6 +84,9 @@ const JSON_LD = {
   ],
 };
 
+/** First confirmed profile, or undefined while we have none. */
+const PROFILE = AUTHOR.sameAs[0];
+
 /** /people/ananthu-vasudev — the person the Thinking pieces are written by. */
 export default function AuthorPage() {
   return (
@@ -111,6 +114,20 @@ export default function AuthorPage() {
                   {p}
                 </p>
               ))}
+              {/* The visible half of the identity claim. `sameAs` in the graph
+                  tells a machine these are the same person; this lets a reader
+                  check. One without the other is half an answer. */}
+              {PROFILE ? (
+                <a
+                  className="mark author-li"
+                  href={PROFILE}
+                  target="_blank"
+                  rel="me noopener"
+                  aria-label={`${AUTHOR.name} on LinkedIn`}
+                >
+                  {AUTHOR.name} on LinkedIn <span className="ar">→</span>
+                </a>
+              ) : null}
             </Reveal>
           </div>
         </div>
