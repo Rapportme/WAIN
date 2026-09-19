@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAIN Admin Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; }
+        .container { display: flex; height: 100vh; }
+
+        .sidebar {
+            width: 280px; background: #1a1d29; color: #e0e6ed; overflow-y: auto;
+            border-right: 1px solid #2d3139;
+        }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid #2d3139; }
+        .sidebar-header h2 { font-size: 16px; font-weight: 600; }
+        .sidebar-nav { padding: 16px 0; }
+        .nav-item {
+            padding: 12px 16px; cursor: pointer; font-size: 14px;
+            border-left: 3px solid transparent; transition: all 0.2s;
+        }
+        .nav-item:hover { background: #2d3139; border-left-color: #4a9eff; }
+        .nav-item.active { background: #2d3139; border-left-color: #4a9eff; color: #4a9eff; font-weight: 600; }
+
+        .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .header {
+            background: white; padding: 16px 24px; border-bottom: 1px solid #e5e9f2;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header h1 { font-size: 20px; font-weight: 600; color: #1a1d29; }
+        .content { flex: 1; overflow-y: auto; padding: 24px; }
+
+        .card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 16px; }
+        .section-title { font-size: 16px; font-weight: 600; color: #1a1d29; margin-bottom: 16px; }
+
+        .client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+        .client-card {
+            background: white; border: 1px solid #e5e9f2; border-radius: 8px; padding: 16px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .client-card:hover { border-color: #4a9eff; box-shadow: 0 4px 12px rgba(74, 158, 255, 0.15); }
+        .client-card.active { border-color: #4a9eff; background: #f0f6ff; }
+        .client-name { font-weight: 600; color: #1a1d29; margin-bottom: 8px; font-size: 15px; }
+        .client-info { font-size: 12px; color: #6b7280; margin: 4px 0; }
+        .project-count { display: inline-block; background: #e5e9f2; color: #4a5568; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-top: 8px; }
+
+        .project-item {
+            background: #f9fafb; border: 1px solid #e5e9f2; border-radius: 6px; padding: 16px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .project-item:hover { border-color: #4a9eff; background: #f0f6ff; }
+        .project-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+        .project-name { font-weight: 600; color: #1a1d29; font-size: 14px; }
+        .project-status {
+            padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+            background: #e0f0fe; color: #0369a1;
+        }
+        .project-status.completed { background: #dcfce7; color: #166534; }
+        .project-status.in-progress { background: #fef3c7; color: #92400e; }
+        .project-type { display: inline-block; background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-right: 8px; margin-top: 8px; }
+
+        .task-input-group { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .task-input-group input { flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid #e5e9f2; border-radius: 6px; font-size: 13px; }
+        .task-input-group select { padding: 8px 12px; border: 1px solid #e5e9f2; border-radius: 6px; font-size: 13px; background: white; }
+
+        .btn {
+            padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 13px; font-weight: 600; transition: all 0.2s;
+        }
+        .btn-primary { background: #4a9eff; color: white; }
+        .btn-primary:hover { background: #2b7cd8; }
+        .btn-secondary { background: #e5e9f2; color: #4a5568; }
+        .btn-secondary:hover { background: #d1d5db; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-small { padding: 4px 8px; font-size: 12px; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .task-item {
+            background: #f9fafb; border-left: 3px solid #4a9eff; padding: 12px;
+            margin-bottom: 10px; border-radius: 4px; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .task-item.completed { background: #f0fdf4; border-left-color: #22c55e; opacity: 0.7; }
+        .task-content { flex: 1; }
+        .task-title { font-weight: 600; color: #1a1d29; font-size: 13px; }
+        .task-meta { font-size: 11px; color: #6b7280; margin-top: 4px; }
+        .task-assigned { background: #dbeafe; color: #0369a1; padding: 2px 6px; border-radius: 3px; font-size: 11px; display: inline-block; margin-right: 8px; }
+        .task-actions { display: flex; gap: 6px; }
+
+        .social-form { background: #f9fafb; border: 1px solid #e5e9f2; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 12px; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+        .form-group textarea { width: 100%; padding: 8px; border: 1px solid #e5e9f2; border-radius: 6px; font-family: inherit; resize: vertical; min-height: 100px; }
+        .form-group input[type="text"], .form-group input[type="url"], .form-group input[type="datetime-local"] { width: 100%; padding: 8px; border: 1px solid #e5e9f2; border-radius: 6px; font-family: inherit; }
+
+        .platform-select { display: flex; gap: 10px; flex-wrap: wrap; }
+        .platform-option {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 12px; border: 1px solid #e5e9f2; border-radius: 6px;
+            cursor: pointer; font-size: 13px;
+        }
+        .platform-option input { cursor: pointer; }
+        .platform-option input:checked { accent-color: #4a9eff; }
+
+        .activity-item {
+            border-left: 2px solid #e5e9f2; padding-left: 12px; padding-bottom: 16px;
+            margin-bottom: 16px; font-size: 13px;
+        }
+        .activity-time { color: #9ca3af; font-size: 11px; }
+        .activity-text { color: #1a1d29; margin-top: 4px; }
+
+        .team-member {
+            background: white; border: 1px solid #e5e9f2; border-radius: 6px;
+            padding: 12px; margin-bottom: 8px; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .team-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: #667eea;
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 12px; margin-right: 12px;
+        }
+        .team-info { flex: 1; }
+        .team-name { font-weight: 600; color: #1a1d29; font-size: 13px; }
+        .team-role { font-size: 11px; color: #6b7280; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>📊 WAIN Admin</h2>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-item active" onclick="switchView('clients')">👥 Clients</div>
+                <div class="nav-item" onclick="switchView('projects')">📋 Projects</div>
+                <div class="nav-item" onclick="switchView('team')">👨‍💼 Team</div>
+                <div class="nav-item" onclick="switchView('social')">📱 Social Media</div>
+                <div class="nav-item" onclick="switchView('activity')">📍 Activity</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <div class="header">
+                <h1 id="headerTitle">👥 Client Management</h1>
+            </div>
+
+            <div class="content" id="mainContent">
+                <!-- Clients View -->
+                <div id="clientsView" class="view">
+                    <div class="section-title">All Clients (4)</div>
+                    <div class="client-grid" id="clientsGrid"></div>
+                    <div id="clientDetailsPanel" class="hidden" style="margin-top: 24px;"></div>
+                </div>
+
+                <!-- Projects View -->
+                <div id="projectsView" class="view hidden">
+                    <div id="projectsContent"></div>
+                </div>
+
+                <!-- Team View -->
+                <div id="teamView" class="view hidden">
+                    <div class="section-title">Team Members (4)</div>
+                    <div id="teamList"></div>
+                </div>
+
+                <!-- Social View -->
+                <div id="socialView" class="view hidden">
+                    <div id="socialContent"></div>
+                </div>
+
+                <!-- Activity View -->
+                <div id="activityView" class="view hidden">
+                    <div class="section-title">Recent Activity</div>
+                    <div class="card" id="activityFeed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const clients = [
+            { id: 1, name: 'TechStartup', category: 'Technology', contact: 'contact@techstartup.com' },
+            { id: 2, name: 'FashionBrand', category: 'Fashion', contact: 'info@fashionbrand.com' },
+            { id: 3, name: 'CafeBiz', category: 'Food & Beverage', contact: 'hello@cafebiz.com' },
+            { id: 4, name: 'DesignStudio', category: 'Creative', contact: 'team@designstudio.com' },
+        ];
+
+        const projects = [
+            { id: 1, clientId: 1, name: 'Website Redesign', type: 'website', status: 'in-progress', deadline: '2024-10-15', assignedTo: 'Sarah' },
+            { id: 2, clientId: 1, name: 'Social Media Campaign Q4', type: 'social', status: 'pending', deadline: '2024-12-31', assignedTo: 'John' },
+            { id: 3, clientId: 2, name: 'Logo & Brand Identity', type: 'branding', status: 'in-progress', deadline: '2024-10-05', assignedTo: 'Emma' },
+            { id: 4, clientId: 3, name: 'Instagram Content Series', type: 'social', status: 'in-progress', deadline: '2024-09-30', assignedTo: 'John' },
+            { id: 5, clientId: 4, name: 'UI/UX Design System', type: 'design', status: 'pending', deadline: '2024-11-10', assignedTo: 'Emma' },
+        ];
+
+        const team = [
+            { id: 1, name: 'Sarah', role: 'Web Developer', status: 'online' },
+            { id: 2, name: 'John', role: 'Social Media Manager', status: 'online' },
+            { id: 3, name: 'Emma', role: 'Graphic Designer', status: 'online' },
+            { id: 4, name: 'Mike', role: 'Project Manager', status: 'away' },
+        ];
+
+        let tasks = [
+            { id: 1, projectId: 1, title: 'Design homepage mockup', assignedTo: 'Sarah', status: 'completed' },
+            { id: 2, projectId: 1, title: 'Develop responsive layout', assignedTo: 'Sarah', status: 'in-progress' },
+            { id: 3, projectId: 2, title: 'Create content calendar', assignedTo: 'John', status: 'pending' },
+            { id: 4, projectId: 3, title: 'Logo variations (3)', assignedTo: 'Emma', status: 'in-progress' },
+        ];
+
+        let socialPosts = [
+            { id: 1, clientId: 1, content: 'Excited to announce our new product launch!', platforms: ['facebook', 'instagram'], status: 'scheduled' },
+            { id: 2, clientId: 3, content: 'Check out our new menu items', platforms: ['instagram'], status: 'posted' },
+        ];
+
+        let activity = [
+            { type: 'task_completed', user: 'Sarah', text: 'Completed task: Design homepage mockup', time: '14:30' },
+            { type: 'post_scheduled', user: 'John', text: 'Scheduled social post for TechStartup', time: '13:20' },
+            { type: 'project_created', user: 'Mike', text: 'Created new project: Instagram Content Series', time: '11:00' },
+        ];
+
+        let selectedClient = null;
+        let currentView = 'clients';
+
+        // UI Functions
+        function switchView(view) {
+            currentView = view;
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            document.getElementById(view + 'View').classList.remove('hidden');
+            event.target.classList.add('active');
+
+            const titles = {
+                clients: '👥 Client Management',
+                projects: '📋 Projects & Tasks',
+                team: '👨‍💼 Team Members',
+                social: '📱 Social Media Admin',
+                activity: '📍 Activity Log'
+            };
+            document.getElementById('headerTitle').textContent = titles[view];
+
+            if (view === 'clients') renderClients();
+            else if (view === 'projects') renderProjects();
+            else if (view === 'team') renderTeam();
+            else if (view === 'social') renderSocial();
+            else if (view === 'activity') renderActivity();
+        }
+
+        function renderClients() {
+            const grid = document.getElementById('clientsGrid');
+            grid.innerHTML = clients.map(c => `
+                <div class="client-card ${selectedClient === c.id ? 'active' : ''}" onclick="selectClient(${c.id})">
+                    <div class="client-name">${c.name}</div>
+                    <div class="client-info">📧 ${c.contact}</div>
+                    <div class="client-info">🏷️ ${c.category}</div>
+                    <span class="project-count">${projects.filter(p => p.clientId === c.id).length} projects</span>
+                </div>
+            `).join('');
+
+            const panel = document.getElementById('clientDetailsPanel');
+            if (selectedClient) {
+                const clientProjects = projects.filter(p => p.clientId === selectedClient);
+                panel.innerHTML = `
+                    <div class="card">
+                        <div class="section-title">Projects & Tasks</div>
+                        ${clientProjects.map(p => `
+                            <div class="project-item">
+                                <div class="project-header">
+                                    <div class="project-name">${p.name}</div>
+                                    <span class="project-status ${p.status}">${p.status === 'completed' ? '✓ Completed' : p.status === 'in-progress' ? '⚡ In Progress' : '⏳ Pending'}</span>
+                                </div>
+                                <div>
+                                    <span class="project-type">${p.type}</span>
+                                    <span class="project-type">👤 ${p.assignedTo}</span>
+                                    <span class="project-type">📅 ${p.deadline}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                panel.classList.remove('hidden');
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        function selectClient(id) {
+            selectedClient = selectedClient === id ? null : id;
+            renderClients();
+        }
+
+        function renderProjects() {
+            const content = document.getElementById('projectsContent');
+            if (!selectedClient) {
+                content.innerHTML = '<p style="color: #9ca3af;">Select a client from the Clients tab</p>';
+                return;
+            }
+            const clientName = clients.find(c => c.id === selectedClient).name;
+            const clientProjects = projects.filter(p => p.clientId === selectedClient);
+
+            content.innerHTML = `
+                <div class="section-title">Projects for ${clientName}</div>
+                ${clientProjects.map(p => `
+                    <div class="card">
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 15px; font-weight: 600; color: #1a1d29;">${p.name}</div>
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">📅 ${p.deadline}</div>
+                        </div>
+                        <div class="social-form">
+                            <div style="font-size: 13px; font-weight: 600; margin-bottom: 12px;">Add New Task</div>
+                            <div class="task-input-group">
+                                <input type="text" id="taskTitle${p.id}" placeholder="Task title...">
+                                <select id="taskAssignee${p.id}">
+                                    <option value="">Assign to...</option>
+                                    ${team.map(t => `<option value="${t.name}">${t.name}</option>`).join('')}
+                                </select>
+                                <button class="btn btn-primary" onclick="addTask(${p.id})">+ Add</button>
+                            </div>
+                        </div>
+                        <div>
+                            ${tasks.filter(t => t.projectId === p.id).map(t => `
+                                <div class="task-item ${t.status}">
+                                    <div class="task-content">
+                                        <div class="task-title" style="text-decoration: ${t.status === 'completed' ? 'line-through' : 'none'}">
+                                            ${t.status === 'completed' ? '✓' : '○'} ${t.title}
+                                        </div>
+                                        <div class="task-meta">
+                                            <span class="task-assigned">👤 ${t.assignedTo}</span>
+                                        </div>
+                                    </div>
+                                    <div class="task-actions">
+                                        ${t.status !== 'completed' ? `<button class="btn btn-small btn-primary" onclick="completeTask(${t.id})">Complete</button>` : ''}
+                                        <button class="btn btn-small btn-danger" onclick="deleteTask(${t.id})">Delete</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function addTask(projectId) {
+            const title = document.getElementById(`taskTitle${projectId}`).value;
+            const assignee = document.getElementById(`taskAssignee${projectId}`).value;
+            if (title && assignee) {
+                tasks.push({
+                    id: Math.max(...tasks.map(t => t.id), 0) + 1,
+                    projectId,
+                    title,
+                    assignedTo: assignee,
+                    status: 'pending'
+                });
+                addActivity(assignee, `Created task: ${title}`);
+                renderProjects();
+            }
+        }
+
+        function completeTask(id) {
+            const task = tasks.find(t => t.id === id);
+            task.status = 'completed';
+            addActivity(task.assignedTo, `Completed task: ${task.title}`);
+            renderProjects();
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            renderProjects();
+        }
+
+        function renderTeam() {
+            const list = document.getElementById('teamList');
+            list.innerHTML = team.map(m => `
+                <div class="team-member">
+                    <div style="display: flex; align-items: center;">
+                        <div class="team-avatar">${m.name[0]}</div>
+                        <div class="team-info">
+                            <div class="team-name">${m.name}</div>
+                            <div class="team-role">${m.role}</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12px; color: ${m.status === 'online' ? '#22c55e' : '#9ca3af'}">
+                        ${m.status === 'online' ? '● Online' : '○ Away'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSocial() {
+            const content = document.getElementById('socialContent');
+            if (!selectedClient) {
+                content.innerHTML = '<p style="color: #9ca3af;">Select a client from the Clients tab</p>';
+                return;
+            }
+            const clientName = clients.find(c => c.id === selectedClient).name;
+            const clientPosts = socialPosts.filter(p => p.clientId === selectedClient);
+
+            content.innerHTML = `
+                <div class="section-title">Social Media - ${clientName}</div>
+                <div class="card">
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 16px;">Create & Schedule Post</div>
+                    <div class="social-form">
+                        <div class="form-group">
+                            <div class="form-label">Post Content</div>
+                            <textarea id="socialContent" placeholder="Write your post..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Select Platforms</div>
+                            <div class="platform-select">
+                                <label class="platform-option"><input type="checkbox" value="facebook"> 📘 Facebook</label>
+                                <label class="platform-option"><input type="checkbox" value="instagram"> 📷 Instagram</label>
+                                <label class="platform-option"><input type="checkbox" value="youtube"> 📹 YouTube</label>
+                                <label class="platform-option"><input type="checkbox" value="tiktok"> 🎵 TikTok</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="schedulePost()">Post Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="section-title">Recent Posts (${clientPosts.length})</div>
+                    ${clientPosts.length === 0 ? '<p style="color: #9ca3af;">No posts yet</p>' : ''}
+                    ${clientPosts.map(p => `
+                        <div class="project-item">
+                            <div style="margin-bottom: 10px;">
+                                <div style="font-size: 13px; color: #1a1d29; margin-bottom: 8px;">${p.content}</div>
+                                <div>
+                                    ${p.platforms.map(pl => `<span class="project-type">${pl}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div style="font-size: 11px; color: #9ca3af;">${p.status === 'scheduled' ? '📅 Scheduled' : '✉️ Posted'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function schedulePost() {
+            const content = document.getElementById('socialContent').value;
+            const platforms = Array.from(document.querySelectorAll('.platform-select input:checked')).map(c => c.value);
+            if (content && platforms.length > 0 && selectedClient) {
+                socialPosts.push({
+                    id: socialPosts.length + 1,
+                    clientId: selectedClient,
+                    content,
+                    platforms,
+                    status: 'posted'
+                });
+                addActivity(team[0].name, `Posted to ${platforms.join(', ')}`);
+                renderSocial();
+            }
+        }
+
+        function renderActivity() {
+            const feed = document.getElementById('activityFeed');
+            feed.innerHTML = activity.map(a => `
+                <div class="activity-item">
+                    <div style="display: flex; gap: 8px;">
+                        <span style="color: #4a9eff; font-size: 11px; font-weight: 600;">${a.type}</span>
+                        <span style="color: #6b7280; font-weight: 600; font-size: 12px;">${a.user}</span>
+                    </div>
+                    <div class="activity-text">${a.text}</div>
+                    <div class="activity-time">${a.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function addActivity(user, text) {
+            const now = new Date();
+            activity.unshift({
+                type: 'update',
+                user,
+                text,
+                time: `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`
+            });
+        }
+
+        // Initial render
+        renderClients();
+    </script>
+</body>
+</html>
