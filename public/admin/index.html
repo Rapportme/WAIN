@@ -640,6 +640,26 @@
             color: var(--wain-navy);
         }
 
+        .stage-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--wain-border);
+            background: white;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .stage-pill.active {
+            background: var(--wain-navy);
+            color: white;
+            border-color: var(--wain-navy);
+        }
+
         @media (max-width: 1024px) {
             .sidebar { width: 240px; }
             .main { margin-left: 240px; }
@@ -719,7 +739,7 @@
                 <div class="nav-section-title">Business</div>
                 <div class="nav-item" onclick="switchView('sales')">
                     <span class="nav-icon">💼</span>
-                    <span>Sales Pipeline</span>
+                    <span>CRM & Pipeline</span>
                 </div>
                 <div class="nav-item" onclick="switchView('clients')">
                     <span class="nav-icon">👥</span>
@@ -764,6 +784,14 @@
                 <div class="nav-item" id="hrNav" style="display: none;" onclick="switchView('hr')">
                     <span class="nav-icon">👔</span>
                     <span>Team & HR</span>
+                </div>
+            </div>
+
+            <div class="nav-section" id="financeSection" style="display: none;">
+                <div class="nav-section-title">Finance</div>
+                <div class="nav-item" id="accountsNav" style="display: none;" onclick="switchView('accounts')">
+                    <span class="nav-icon">🧾</span>
+                    <span>Accounts</span>
                 </div>
             </div>
 
@@ -966,14 +994,125 @@
                 <div class="section-header">
                     <div class="section-number">05</div>
                     <div class="section-titles">
-                        <h2>Sales Pipeline</h2>
-                        <div class="section-subtitle">Lead tracking and opportunity management</div>
+                        <h2>CRM & Pipeline</h2>
+                        <div class="section-subtitle">Leads, deals, and the path to becoming a client</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">This module isn't wired to real data yet. Clients, Social Media, Tasks & Cost Centers, and Team & Access are live now — Sales pipeline tracking is next.</p>
+
+                <div class="grid grid-3col">
+                    <div class="card">
+                        <div class="stat-label">Open Pipeline Value</div>
+                        <div class="stat-value" id="statPipelineValue">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Open Leads</div>
+                        <div class="stat-value" id="statOpenLeads">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Won</div>
+                        <div class="stat-value" id="statWonLeads">—</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">New Lead</div>
+                        </div>
+                        <form id="leadForm" onsubmit="createLead(event)" style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr auto; gap:12px; align-items:end;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Company</label>
+                                <input type="text" id="newLeadCompany" required>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Contact Name</label>
+                                <input type="text" id="newLeadContact">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Email</label>
+                                <input type="email" id="newLeadEmail">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Source</label>
+                                <input type="text" id="newLeadSource" placeholder="Referral, BNI, inbound…">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Est. Value (₹)</label>
+                                <input type="number" id="newLeadValue">
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Add Lead</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Pipeline</div>
+                            <span class="card-badge" id="leadsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;" id="stageFilters">
+                            <span class="stage-pill active" data-stage="all" onclick="filterLeadsByStage('all')">All</span>
+                            <span class="stage-pill" data-stage="new" onclick="filterLeadsByStage('new')">New</span>
+                            <span class="stage-pill" data-stage="contacted" onclick="filterLeadsByStage('contacted')">Contacted</span>
+                            <span class="stage-pill" data-stage="proposal" onclick="filterLeadsByStage('proposal')">Proposal</span>
+                            <span class="stage-pill" data-stage="negotiation" onclick="filterLeadsByStage('negotiation')">Negotiation</span>
+                            <span class="stage-pill" data-stage="won" onclick="filterLeadsByStage('won')">Won</span>
+                            <span class="stage-pill" data-stage="lost" onclick="filterLeadsByStage('lost')">Lost</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Company</th>
+                                        <th>Contact</th>
+                                        <th>Owner</th>
+                                        <th>Est. Value</th>
+                                        <th>Stage</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leadsTableBody">
+                                    <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading pipeline…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Log Activity</div>
+                        </div>
+                        <form id="activityForm" onsubmit="createActivity(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Lead</label>
+                                <select id="newActivityLead" required></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Type</label>
+                                <select id="newActivityType">
+                                    <option value="call">Call</option>
+                                    <option value="email">Email</option>
+                                    <option value="meeting">Meeting</option>
+                                    <option value="note">Note</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Notes</label>
+                                <textarea id="newActivityNotes" rows="2" style="padding:10px 12px; border:1px solid var(--wain-border); border-radius:6px; font-family:inherit; font-size:14px;" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Log Activity</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Recent Activity</div>
+                        </div>
+                        <div id="activityList" style="margin-top:12px; font-size:13px;">Loading…</div>
+                    </div>
                 </div>
             </div>
 
@@ -1095,13 +1234,322 @@
                     <div class="section-number">07</div>
                     <div class="section-titles">
                         <h2>Team & HR</h2>
-                        <div class="section-subtitle">Capacity planning and performance</div>
+                        <div class="section-subtitle">Directory, leave requests, and attendance</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">Superadmin can already manage roles and access in <strong>Team & Access</strong>. Capacity planning is next.</p>
+
+                <div class="grid grid-2col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Request Leave</div>
+                        </div>
+                        <form id="leaveForm" onsubmit="createLeaveRequest(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Type</label>
+                                <select id="newLeaveType">
+                                    <option value="casual">Casual</option>
+                                    <option value="sick">Sick</option>
+                                    <option value="earned">Earned</option>
+                                    <option value="unpaid">Unpaid</option>
+                                </select>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>From</label>
+                                    <input type="date" id="newLeaveStart" required>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>To</label>
+                                    <input type="date" id="newLeaveEnd" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Reason</label>
+                                <input type="text" id="newLeaveReason">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Mark Today's Attendance</div>
+                        </div>
+                        <form id="attendanceForm" onsubmit="markAttendance(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Status</label>
+                                <select id="newAttendanceStatus">
+                                    <option value="present">Present</option>
+                                    <option value="half_day">Half Day</option>
+                                    <option value="absent">Absent</option>
+                                    <option value="leave">On Leave</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Note</label>
+                                <input type="text" id="newAttendanceNote" placeholder="Optional">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Mark for Today</button>
+                            <div style="font-size:12px; color:var(--text-secondary);" id="todayAttendanceStatus"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Leave Requests</div>
+                            <span class="card-badge" id="leaveCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Type</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaveTableBody">
+                                    <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Recent Attendance</div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceTableBody">
+                                    <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Team Directory</div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Phone</th>
+                                        <th>Joined</th>
+                                        <th>Emergency Contact</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hrDirectoryTableBody">
+                                    <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="margin-top:12px; font-size:12px; color:var(--text-secondary);">
+                            Phone, join date, and emergency contact are editable per-person in Supabase for now — a self-serve profile edit form is a natural next step.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCOUNTS -->
+            <div id="accounts" class="content-view">
+                <div class="section-header">
+                    <div class="section-number">13</div>
+                    <div class="section-titles">
+                        <h2>Accounts</h2>
+                        <div class="section-subtitle">Invoicing, expenses, and profit &amp; loss by client</div>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+
+                <div class="grid grid-3col">
+                    <div class="card">
+                        <div class="stat-label">Revenue (Paid)</div>
+                        <div class="stat-value" id="statRevenue">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Outstanding</div>
+                        <div class="stat-value" id="statOutstanding">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Total Expenses</div>
+                        <div class="stat-value" id="statExpenses">—</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">New Invoice</div>
+                        </div>
+                        <form id="invoiceForm" onsubmit="createInvoice(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Client</label>
+                                <select id="newInvoiceClient" required></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Invoice Number</label>
+                                <input type="text" id="newInvoiceNumber" placeholder="WAIN-2026-001" required>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Due Date</label>
+                                    <input type="date" id="newInvoiceDue">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Tax (₹)</label>
+                                    <input type="number" id="newInvoiceTax" value="0">
+                                </div>
+                            </div>
+                            <div id="invoiceLineItems">
+                                <div class="form-group" style="margin:0; display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px;">
+                                    <input type="text" class="lineDesc" placeholder="Description" required>
+                                    <input type="number" class="lineQty" placeholder="Qty" value="1" min="1">
+                                    <input type="number" class="lineRate" placeholder="Rate" required>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addInvoiceLine()" style="align-self:flex-start;">+ Add Line</button>
+                            <button type="submit" class="btn btn-primary">Create Invoice</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Log Expense</div>
+                        </div>
+                        <form id="expenseForm" onsubmit="createExpense(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Cost Center</label>
+                                <select id="newExpenseCostCenter" required></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Category</label>
+                                <select id="newExpenseCategory">
+                                    <option>Salaries</option>
+                                    <option>Software & Tools</option>
+                                    <option>Ad Spend</option>
+                                    <option>Travel</option>
+                                    <option>Rent & Utilities</option>
+                                    <option>Freelance/Contractor</option>
+                                    <option>Misc</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Description</label>
+                                <input type="text" id="newExpenseDescription">
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Amount (₹)</label>
+                                    <input type="number" id="newExpenseAmount" required>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Date</label>
+                                    <input type="date" id="newExpenseDate">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Log Expense</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Invoices</div>
+                            <span class="card-badge" id="invoicesCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Client</th>
+                                        <th>Issued</th>
+                                        <th>Due</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoicesTableBody">
+                                    <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading invoices…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Expenses</div>
+                            <span class="card-badge" id="expensesCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Cost Center</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Logged By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expensesTableBody">
+                                    <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading expenses…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">P&amp;L by Cost Center</div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Cost Center</th>
+                                        <th>Revenue (Paid)</th>
+                                        <th>Expenses</th>
+                                        <th>Net</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="plTableBody">
+                                    <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1266,18 +1714,28 @@
         let allClients = [];
         let allCostCenters = [];
         let allSocialAccounts = [];
+        let allLeads = [];
+        let allInvoices = [];
+        let allExpenses = [];
+        let allLeaveRequests = [];
+        let allAttendance = [];
+        let leadStageFilter = 'all';
+        const LEAD_STAGE_LABELS = { new: 'New', contacted: 'Contacted', proposal: 'Proposal', negotiation: 'Negotiation', won: 'Won', lost: 'Lost' };
+        const LEAD_STAGE_CLASS = { new: 'status-pending', contacted: 'status-in-progress', proposal: 'status-in-progress', negotiation: 'status-in-progress', won: 'status-active', lost: 'status-overdue' };
+        const LEAD_NEXT_STAGE = { new: 'contacted', contacted: 'proposal', proposal: 'negotiation', negotiation: 'won' };
 
         const MODULE_TITLES = {
             'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
             'creative': { title: 'Creative Work', subtitle: 'Project tracking, deliverables, and approvals' },
             'social': { title: 'Social Media Posting', subtitle: 'Client accounts, content calendar, and post management' },
             'marketing': { title: 'Marketing Operations', subtitle: 'Campaign management and performance' },
-            'sales': { title: 'Sales Pipeline', subtitle: 'Lead tracking and opportunity management' },
+            'sales': { title: 'CRM & Pipeline', subtitle: 'Leads, deals, and the path to becoming a client' },
             'clients': { title: 'Client Management', subtitle: 'Every WAIN client, live from the database' },
             'projects': { title: 'All Projects', subtitle: 'Master project list with status' },
             'tasks': { title: 'Tasks & Cost Centers', subtitle: "Who's assigned to what, and under which cost center" },
             'resources': { title: 'Budget & Resources', subtitle: 'Financial allocation and tracking' },
-            'hr': { title: 'Team & HR', subtitle: 'Capacity planning and performance' },
+            'hr': { title: 'Team & HR', subtitle: 'Directory, leave requests, and attendance' },
+            'accounts': { title: 'Accounts', subtitle: 'Invoicing, expenses, and profit & loss by client' },
             'website': { title: 'Website Editor', subtitle: 'Manage pages, content, and marketing website' },
             'team': { title: 'Team & Access', subtitle: 'Manage roles, module access, and logins' }
         };
@@ -1378,6 +1836,8 @@
             document.getElementById('tasksNav').style.display = (modules.includes('projects') || isSuperadmin) ? 'flex' : 'none';
             document.getElementById('resourcesNav').style.display = modules.includes('resources') ? 'flex' : 'none';
             document.getElementById('hrNav').style.display = modules.includes('hr') ? 'flex' : 'none';
+            document.getElementById('financeSection').style.display = modules.includes('accounts') ? 'block' : 'none';
+            document.getElementById('accountsNav').style.display = modules.includes('accounts') ? 'flex' : 'none';
         }
 
         function switchView(viewName) {
@@ -1415,6 +1875,9 @@
             if (viewName === 'social') { renderSocialAccounts(); renderPosts(); }
             if (viewName === 'tasks') renderTasks();
             if (viewName === 'team') renderEmployees();
+            if (viewName === 'sales') renderLeads();
+            if (viewName === 'accounts') renderAccounts();
+            if (viewName === 'hr') renderHR();
         }
 
         // ---------- DATA LOADING ----------
@@ -1448,6 +1911,8 @@
             if (socialSel) socialSel.innerHTML = opts;
             const taskSel = document.getElementById('newTaskClient');
             if (taskSel) taskSel.innerHTML = '<option value="">— Internal —</option>' + opts;
+            const invoiceSel = document.getElementById('newInvoiceClient');
+            if (invoiceSel) invoiceSel.innerHTML = opts;
         }
 
         function populateAssigneeDropdowns() {
@@ -1460,6 +1925,8 @@
             const opts = allCostCenters.map(cc => `<option value="${cc.id}">${escapeHtml(cc.name)}</option>`).join('');
             const sel = document.getElementById('newTaskCostCenter');
             if (sel) sel.innerHTML = '<option value="">Use client\'s</option>' + opts;
+            const expSel = document.getElementById('newExpenseCostCenter');
+            if (expSel) expSel.innerHTML = opts;
         }
 
         // ---------- OVERVIEW ----------
@@ -1739,6 +2206,423 @@
             const { error } = await db.from('employees').update({ active: !currentlyActive }).eq('id', id);
             if (error) { alert('Could not update: ' + error.message); return; }
             renderEmployees();
+        }
+
+        // ---------- CRM / PIPELINE ----------
+        async function createLead(event) {
+            event.preventDefault();
+            const company_name = document.getElementById('newLeadCompany').value.trim();
+            const contact_name = document.getElementById('newLeadContact').value.trim();
+            const contact_email = document.getElementById('newLeadEmail').value.trim();
+            const source = document.getElementById('newLeadSource').value.trim();
+            const estimated_value = parseFloat(document.getElementById('newLeadValue').value) || null;
+            if (!company_name) return;
+
+            const { error } = await db.from('leads').insert({
+                company_name, contact_name: contact_name || null, contact_email: contact_email || null,
+                source: source || null, estimated_value, owner_id: currentEmployee.id, created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not add lead: ' + error.message); return; }
+            document.getElementById('leadForm').reset();
+            await renderLeads();
+        }
+
+        async function loadLeads() {
+            const { data, error } = await db
+                .from('leads')
+                .select('*, employees!leads_owner_id_fkey(name), clients(name)')
+                .order('created_at', { ascending: false });
+            if (!error) allLeads = data || [];
+        }
+
+        function computePipelineStats() {
+            const open = allLeads.filter(l => l.stage !== 'won' && l.stage !== 'lost');
+            const won = allLeads.filter(l => l.stage === 'won');
+            const totalValue = open.reduce((s, l) => s + (Number(l.estimated_value) || 0), 0);
+            document.getElementById('statPipelineValue').textContent = '₹' + totalValue.toLocaleString('en-IN');
+            document.getElementById('statOpenLeads').textContent = open.length;
+            document.getElementById('statWonLeads').textContent = won.length;
+        }
+
+        function filterLeadsByStage(stage) {
+            leadStageFilter = stage;
+            document.querySelectorAll('#stageFilters .stage-pill').forEach(p => p.classList.toggle('active', p.dataset.stage === stage));
+            renderLeadsTable();
+        }
+
+        async function renderLeads() {
+            await loadLeads();
+            populateActivityLeadDropdown();
+            document.getElementById('leadsCount').textContent = allLeads.length + (allLeads.length === 1 ? ' lead' : ' leads');
+            computePipelineStats();
+            renderLeadsTable();
+            renderActivity();
+        }
+
+        function renderLeadsTable() {
+            const body = document.getElementById('leadsTableBody');
+            if (!body) return;
+            const rows = leadStageFilter === 'all' ? allLeads : allLeads.filter(l => l.stage === leadStageFilter);
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No leads in this stage.</td></tr>';
+                return;
+            }
+            body.innerHTML = rows.map(l => `
+                <tr>
+                    <td><strong>${escapeHtml(l.company_name)}</strong>${l.converted_client_id ? ' <span style="color:var(--success-green); font-size:11px;">→ Client</span>' : ''}</td>
+                    <td>${escapeHtml(l.contact_name) || '—'}${l.contact_email ? '<br><span style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(l.contact_email) + '</span>' : ''}</td>
+                    <td>${l.employees ? escapeHtml(l.employees.name) : '—'}</td>
+                    <td>${l.estimated_value ? '₹' + Number(l.estimated_value).toLocaleString('en-IN') : '—'}</td>
+                    <td><span class="status-badge ${LEAD_STAGE_CLASS[l.stage] || 'status-pending'}">${LEAD_STAGE_LABELS[l.stage] || l.stage}</span></td>
+                    <td style="white-space:nowrap;">
+                        ${LEAD_NEXT_STAGE[l.stage] ? `<button class="btn btn-sm btn-secondary" onclick="advanceLead('${l.id}','${LEAD_NEXT_STAGE[l.stage]}')">${l.stage === 'negotiation' ? 'Mark Won' : 'Advance'}</button>` : ''}
+                        ${(l.stage !== 'won' && l.stage !== 'lost') ? `<button class="btn btn-sm btn-secondary" onclick="markLeadLost('${l.id}')">Lost</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function advanceLead(id, nextStage) {
+            if (nextStage === 'won') { await convertLeadToClient(id); return; }
+            const { error } = await db.from('leads').update({ stage: nextStage, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update lead: ' + error.message); return; }
+            renderLeads();
+        }
+
+        async function markLeadLost(id) {
+            const reason = prompt('Why was this lead lost? (optional)') || null;
+            const { error } = await db.from('leads').update({ stage: 'lost', lost_reason: reason, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update lead: ' + error.message); return; }
+            renderLeads();
+        }
+
+        async function convertLeadToClient(id) {
+            const lead = allLeads.find(l => l.id === id);
+            if (!lead) return;
+            if (!confirm(`Mark "${lead.company_name}" as won and create it as a client?`)) return;
+
+            let costCenter = allCostCenters.find(cc => cc.name.toLowerCase() === lead.company_name.toLowerCase());
+            if (!costCenter) {
+                const { data: ccData, error: ccErr } = await db.from('cost_centers').insert({ name: lead.company_name }).select().single();
+                if (!ccErr) costCenter = ccData;
+            }
+
+            const { data: clientData, error: clientErr } = await db.from('clients').insert({
+                name: lead.company_name, status: 'active', notes: lead.notes || null,
+                cost_center_id: costCenter ? costCenter.id : null, created_by: currentEmployee.id
+            }).select().single();
+
+            if (clientErr) { alert('Could not create client: ' + clientErr.message); return; }
+
+            const { error } = await db.from('leads').update({
+                stage: 'won', converted_client_id: clientData.id, updated_at: new Date().toISOString()
+            }).eq('id', id);
+            if (error) { alert('Client created, but could not mark the lead as won: ' + error.message); }
+
+            await loadCostCenters();
+            await loadClients();
+            populateClientDropdowns();
+            populateCostCenterDropdowns();
+            renderLeads();
+            alert(`${lead.company_name} is now a client.`);
+        }
+
+        function populateActivityLeadDropdown() {
+            const sel = document.getElementById('newActivityLead');
+            if (!sel) return;
+            sel.innerHTML = allLeads.map(l => `<option value="${l.id}">${escapeHtml(l.company_name)}</option>`).join('');
+        }
+
+        async function createActivity(event) {
+            event.preventDefault();
+            const lead_id = document.getElementById('newActivityLead').value;
+            const activity_type = document.getElementById('newActivityType').value;
+            const notes = document.getElementById('newActivityNotes').value.trim();
+            if (!lead_id || !notes) return;
+            const { error } = await db.from('crm_activities').insert({ lead_id, employee_id: currentEmployee.id, activity_type, notes });
+            if (error) { alert('Could not log activity: ' + error.message); return; }
+            document.getElementById('activityForm').reset();
+            renderActivity();
+        }
+
+        async function renderActivity() {
+            const list = document.getElementById('activityList');
+            if (!list) return;
+            const { data, error } = await db
+                .from('crm_activities')
+                .select('*, leads(company_name), employees(name)')
+                .order('created_at', { ascending: false })
+                .limit(15);
+            if (error) { list.innerHTML = 'Could not load activity.'; return; }
+            if (!data || !data.length) { list.innerHTML = '<div style="color:var(--text-secondary);">No activity logged yet.</div>'; return; }
+            list.innerHTML = data.map(a => `
+                <div style="padding:8px 0; border-bottom:1px solid var(--wain-border);">
+                    <strong>${a.leads ? escapeHtml(a.leads.company_name) : '—'}</strong>
+                    <span style="color:var(--text-secondary); font-size:11px;"> · ${escapeHtml(a.activity_type)} · ${a.employees ? escapeHtml(a.employees.name) : ''} · ${new Date(a.created_at).toLocaleDateString()}</span>
+                    <div style="margin-top:4px;">${escapeHtml(a.notes)}</div>
+                </div>
+            `).join('');
+        }
+
+        // ---------- ACCOUNTS ----------
+        function addInvoiceLine() {
+            const wrap = document.getElementById('invoiceLineItems');
+            const row = document.createElement('div');
+            row.className = 'form-group';
+            row.style.cssText = 'margin:0; display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px; margin-top:8px;';
+            row.innerHTML = `<input type="text" class="lineDesc" placeholder="Description" required><input type="number" class="lineQty" placeholder="Qty" value="1" min="1"><input type="number" class="lineRate" placeholder="Rate" required>`;
+            wrap.appendChild(row);
+        }
+
+        async function createInvoice(event) {
+            event.preventDefault();
+            const client_id = document.getElementById('newInvoiceClient').value;
+            const invoice_number = document.getElementById('newInvoiceNumber').value.trim();
+            const due_date = document.getElementById('newInvoiceDue').value || null;
+            const tax = parseFloat(document.getElementById('newInvoiceTax').value) || 0;
+            if (!client_id || !invoice_number) return;
+
+            const client = allClients.find(c => c.id === client_id);
+            const descs = document.querySelectorAll('#invoiceLineItems .lineDesc');
+            const qtys = document.querySelectorAll('#invoiceLineItems .lineQty');
+            const rates = document.querySelectorAll('#invoiceLineItems .lineRate');
+            const items = [];
+            let subtotal = 0;
+            for (let i = 0; i < descs.length; i++) {
+                const desc = descs[i].value.trim();
+                const qty = parseFloat(qtys[i].value) || 1;
+                const rate = parseFloat(rates[i].value) || 0;
+                if (!desc) continue;
+                const amount = qty * rate;
+                subtotal += amount;
+                items.push({ description: desc, quantity: qty, unit_price: rate, amount });
+            }
+            if (!items.length) { alert('Add at least one line item.'); return; }
+
+            const { data: invoice, error } = await db.from('invoices').insert({
+                invoice_number, client_id, cost_center_id: client ? client.cost_center_id : null,
+                issue_date: new Date().toISOString().slice(0, 10), due_date,
+                subtotal, tax, total: subtotal + tax, created_by: currentEmployee.id
+            }).select().single();
+
+            if (error) { alert('Could not create invoice: ' + error.message); return; }
+
+            const { error: itemsErr } = await db.from('invoice_items').insert(items.map(it => ({ ...it, invoice_id: invoice.id })));
+            if (itemsErr) { alert('Invoice created, but line items failed to save: ' + itemsErr.message); }
+
+            document.getElementById('invoiceForm').reset();
+            document.getElementById('invoiceLineItems').innerHTML = `<div class="form-group" style="margin:0; display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px;"><input type="text" class="lineDesc" placeholder="Description" required><input type="number" class="lineQty" placeholder="Qty" value="1" min="1"><input type="number" class="lineRate" placeholder="Rate" required></div>`;
+            renderAccounts();
+        }
+
+        async function updateInvoiceStatus(id, status) {
+            const { error } = await db.from('invoices').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update invoice: ' + error.message); return; }
+            renderAccounts();
+        }
+
+        async function createExpense(event) {
+            event.preventDefault();
+            const cost_center_id = document.getElementById('newExpenseCostCenter').value;
+            const category = document.getElementById('newExpenseCategory').value;
+            const description = document.getElementById('newExpenseDescription').value.trim();
+            const amount = parseFloat(document.getElementById('newExpenseAmount').value);
+            const expense_date = document.getElementById('newExpenseDate').value || new Date().toISOString().slice(0, 10);
+            if (!cost_center_id || !amount) return;
+            const { error } = await db.from('expenses').insert({
+                cost_center_id, category, description: description || null, amount, expense_date, logged_by: currentEmployee.id
+            });
+            if (error) { alert('Could not log expense: ' + error.message); return; }
+            document.getElementById('expenseForm').reset();
+            renderAccounts();
+        }
+
+        async function renderAccounts() {
+            const invBody = document.getElementById('invoicesTableBody');
+            const expBody = document.getElementById('expensesTableBody');
+            const plBody = document.getElementById('plTableBody');
+            if (!invBody) return;
+
+            const [{ data: invoices, error: invErr }, { data: expenses, error: expErr }] = await Promise.all([
+                db.from('invoices').select('*, clients(name), cost_centers(name)').order('issue_date', { ascending: false }),
+                db.from('expenses').select('*, cost_centers(name), employees(name)').order('expense_date', { ascending: false })
+            ]);
+
+            allInvoices = invoices || [];
+            allExpenses = expenses || [];
+
+            const revenue = allInvoices.filter(i => i.status === 'paid').reduce((s, i) => s + Number(i.total || 0), 0);
+            const outstanding = allInvoices.filter(i => i.status === 'sent' || i.status === 'overdue').reduce((s, i) => s + Number(i.total || 0), 0);
+            const totalExpenses = allExpenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+            document.getElementById('statRevenue').textContent = '₹' + revenue.toLocaleString('en-IN');
+            document.getElementById('statOutstanding').textContent = '₹' + outstanding.toLocaleString('en-IN');
+            document.getElementById('statExpenses').textContent = '₹' + totalExpenses.toLocaleString('en-IN');
+
+            document.getElementById('invoicesCount').textContent = allInvoices.length + (allInvoices.length === 1 ? ' invoice' : ' invoices');
+            if (invErr) {
+                invBody.innerHTML = `<tr><td colspan="7">Error: ${escapeHtml(invErr.message)}</td></tr>`;
+            } else if (!allInvoices.length) {
+                invBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No invoices yet.</td></tr>';
+            } else {
+                const statusClass = { draft: 'status-pending', sent: 'status-in-progress', paid: 'status-active', overdue: 'status-overdue', cancelled: 'status-overdue' };
+                const nextStatus = { draft: 'sent', sent: 'paid' };
+                invBody.innerHTML = allInvoices.map(i => `
+                    <tr>
+                        <td><strong>${escapeHtml(i.invoice_number)}</strong></td>
+                        <td>${i.clients ? escapeHtml(i.clients.name) : '—'}</td>
+                        <td>${i.issue_date ? new Date(i.issue_date).toLocaleDateString() : '—'}</td>
+                        <td>${i.due_date ? new Date(i.due_date).toLocaleDateString() : '—'}</td>
+                        <td>₹${Number(i.total || 0).toLocaleString('en-IN')}</td>
+                        <td><span class="status-badge ${statusClass[i.status] || 'status-pending'}">${escapeHtml(i.status)}</span></td>
+                        <td style="white-space:nowrap;">
+                            ${nextStatus[i.status] ? `<button class="btn btn-sm btn-secondary" onclick="updateInvoiceStatus('${i.id}','${nextStatus[i.status]}')">Mark ${nextStatus[i.status]}</button>` : ''}
+                            ${i.status === 'sent' ? `<button class="btn btn-sm btn-secondary" onclick="updateInvoiceStatus('${i.id}','overdue')">Mark Overdue</button>` : ''}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            document.getElementById('expensesCount').textContent = allExpenses.length + (allExpenses.length === 1 ? ' expense' : ' expenses');
+            if (expErr) {
+                expBody.innerHTML = `<tr><td colspan="6">Error: ${escapeHtml(expErr.message)}</td></tr>`;
+            } else if (!allExpenses.length) {
+                expBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No expenses logged yet.</td></tr>';
+            } else {
+                expBody.innerHTML = allExpenses.map(e => `
+                    <tr>
+                        <td>${e.expense_date ? new Date(e.expense_date).toLocaleDateString() : '—'}</td>
+                        <td>${escapeHtml(e.category)}</td>
+                        <td>${e.cost_centers ? escapeHtml(e.cost_centers.name) : '—'}</td>
+                        <td>${escapeHtml(e.description) || '—'}</td>
+                        <td>₹${Number(e.amount || 0).toLocaleString('en-IN')}</td>
+                        <td>${e.employees ? escapeHtml(e.employees.name) : '—'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            const byCC = {};
+            allInvoices.filter(i => i.status === 'paid').forEach(i => {
+                const key = i.cost_centers ? i.cost_centers.name : 'Unassigned';
+                if (!byCC[key]) byCC[key] = { revenue: 0, expenses: 0 };
+                byCC[key].revenue += Number(i.total || 0);
+            });
+            allExpenses.forEach(e => {
+                const key = e.cost_centers ? e.cost_centers.name : 'Unassigned';
+                if (!byCC[key]) byCC[key] = { revenue: 0, expenses: 0 };
+                byCC[key].expenses += Number(e.amount || 0);
+            });
+            const rows = Object.entries(byCC);
+            plBody.innerHTML = rows.length ? rows.map(([name, v]) => `
+                <tr>
+                    <td><strong>${escapeHtml(name)}</strong></td>
+                    <td>₹${v.revenue.toLocaleString('en-IN')}</td>
+                    <td>₹${v.expenses.toLocaleString('en-IN')}</td>
+                    <td style="color:${v.revenue - v.expenses >= 0 ? 'var(--success-green)' : 'var(--danger-red)'}; font-weight:700;">₹${(v.revenue - v.expenses).toLocaleString('en-IN')}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No financial activity yet.</td></tr>';
+        }
+
+        // ---------- HR ----------
+        function canManageHR() {
+            return currentEmployee && (currentEmployee.role === 'Superadmin' || currentEmployee.role === 'HR Manager');
+        }
+
+        async function createLeaveRequest(event) {
+            event.preventDefault();
+            const leave_type = document.getElementById('newLeaveType').value;
+            const start_date = document.getElementById('newLeaveStart').value;
+            const end_date = document.getElementById('newLeaveEnd').value;
+            const reason = document.getElementById('newLeaveReason').value.trim();
+            if (!start_date || !end_date) return;
+            const { error } = await db.from('leave_requests').insert({
+                employee_id: currentEmployee.id, leave_type, start_date, end_date, reason: reason || null
+            });
+            if (error) { alert('Could not submit leave request: ' + error.message); return; }
+            document.getElementById('leaveForm').reset();
+            renderHR();
+        }
+
+        async function updateLeaveStatus(id, status) {
+            const { error } = await db.from('leave_requests').update({ status, approved_by: currentEmployee.id, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            renderHR();
+        }
+
+        async function markAttendance(event) {
+            event.preventDefault();
+            const status = document.getElementById('newAttendanceStatus').value;
+            const note = document.getElementById('newAttendanceNote').value.trim();
+            const today = new Date().toISOString().slice(0, 10);
+            const { error } = await db.from('attendance').upsert({
+                employee_id: currentEmployee.id, attendance_date: today, status, note: note || null
+            }, { onConflict: 'employee_id,attendance_date' });
+            if (error) { alert('Could not mark attendance: ' + error.message); return; }
+            document.getElementById('todayAttendanceStatus').textContent = `Marked ${status.replace('_', ' ')} for today.`;
+            renderHR();
+        }
+
+        async function renderHR() {
+            const leaveBody = document.getElementById('leaveTableBody');
+            const attBody = document.getElementById('attendanceTableBody');
+            const dirBody = document.getElementById('hrDirectoryTableBody');
+            if (!leaveBody) return;
+
+            const manage = canManageHR();
+
+            const [{ data: leaves, error: leaveErr }, { data: attendance, error: attErr }] = await Promise.all([
+                db.from('leave_requests').select('*, employees!leave_requests_employee_id_fkey(name)').order('created_at', { ascending: false }),
+                db.from('attendance').select('*, employees(name)').order('attendance_date', { ascending: false }).limit(30)
+            ]);
+
+            allLeaveRequests = leaves || [];
+            allAttendance = attendance || [];
+
+            document.getElementById('leaveCount').textContent = allLeaveRequests.length + (allLeaveRequests.length === 1 ? ' request' : ' requests');
+            if (leaveErr) {
+                leaveBody.innerHTML = `<tr><td colspan="7">Error: ${escapeHtml(leaveErr.message)}</td></tr>`;
+            } else if (!allLeaveRequests.length) {
+                leaveBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No leave requests yet.</td></tr>';
+            } else {
+                const statusClass = { pending: 'status-pending', approved: 'status-active', rejected: 'status-overdue' };
+                leaveBody.innerHTML = allLeaveRequests.map(l => `
+                    <tr>
+                        <td><strong>${l.employees ? escapeHtml(l.employees.name) : '—'}</strong></td>
+                        <td>${escapeHtml(l.leave_type)}</td>
+                        <td>${new Date(l.start_date).toLocaleDateString()}</td>
+                        <td>${new Date(l.end_date).toLocaleDateString()}</td>
+                        <td>${escapeHtml(l.reason) || '—'}</td>
+                        <td><span class="status-badge ${statusClass[l.status] || 'status-pending'}">${escapeHtml(l.status)}</span></td>
+                        <td>${(manage && l.status === 'pending') ? `<button class="btn btn-sm btn-secondary" onclick="updateLeaveStatus('${l.id}','approved')">Approve</button> <button class="btn btn-sm btn-secondary" onclick="updateLeaveStatus('${l.id}','rejected')">Reject</button>` : '—'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            if (attErr) {
+                attBody.innerHTML = `<tr><td colspan="4">Error: ${escapeHtml(attErr.message)}</td></tr>`;
+            } else if (!allAttendance.length) {
+                attBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No attendance marked yet.</td></tr>';
+            } else {
+                attBody.innerHTML = allAttendance.map(a => `
+                    <tr>
+                        <td>${a.employees ? escapeHtml(a.employees.name) : '—'}</td>
+                        <td>${new Date(a.attendance_date).toLocaleDateString()}</td>
+                        <td>${escapeHtml((a.status || '').replace('_', ' '))}</td>
+                        <td>${escapeHtml(a.note) || '—'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            if (dirBody) {
+                dirBody.innerHTML = allEmployees.map(e => `
+                    <tr>
+                        <td><strong>${escapeHtml(e.name)}</strong></td>
+                        <td>${escapeHtml(e.role)}</td>
+                        <td>${escapeHtml(e.phone) || '—'}</td>
+                        <td>${e.join_date ? new Date(e.join_date).toLocaleDateString() : '—'}</td>
+                        <td>${escapeHtml(e.emergency_contact_name) || '—'}${e.emergency_contact_phone ? ' (' + escapeHtml(e.emergency_contact_phone) + ')' : ''}</td>
+                    </tr>
+                `).join('');
+            }
         }
 
         boot();
