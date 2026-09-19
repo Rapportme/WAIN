@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAIN Collective — Operations Dashboard</title>
+    <title>WAIN Collective — Operations Dashboard v4</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,6 +17,7 @@
             --wain-border: #e5e9f2;
             --success-green: #22c55e;
             --warning-amber: #f59e0b;
+            --danger-red: #ef4444;
             --text-primary: #1a2138;
             --text-secondary: #6b7280;
         }
@@ -29,6 +30,107 @@
         }
 
         .container { display: flex; height: 100vh; }
+
+        /* LOGIN SCREEN */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--wain-navy) 0%, var(--wain-dark-slate) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            padding: 48px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--wain-navy);
+            margin-bottom: 8px;
+        }
+
+        .login-logo-accent {
+            color: var(--wain-cyan);
+        }
+
+        .login-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px 12px;
+            border: 1px solid var(--wain-border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--wain-cyan);
+            box-shadow: 0 0 0 3px rgba(0,184,212,0.1);
+        }
+
+        .login-btn {
+            padding: 12px 16px;
+            background: var(--wain-cyan);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #0096a6;
+            box-shadow: 0 4px 12px rgba(0,184,212,0.25);
+        }
 
         /* SIDEBAR */
         .sidebar {
@@ -66,6 +168,22 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 8px;
+        }
+
+        .user-info {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-role {
+            color: rgba(255,255,255,0.6);
+            font-size: 11px;
         }
 
         .sidebar-nav { padding: 16px 0; }
@@ -178,13 +296,30 @@
             color: var(--wain-cyan);
         }
 
+        .btn-logout {
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
         .content {
             flex: 1;
             overflow-y: auto;
             padding: 32px;
         }
 
-        /* CONTENT SECTIONS */
         .content-view { display: none; }
         .content-view.active { display: block; }
 
@@ -221,13 +356,16 @@
             margin-bottom: 24px;
         }
 
-        /* CARDS & GRIDS */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
             margin-bottom: 32px;
         }
+
+        .grid-full { grid-template-columns: 1fr; }
+        .grid-2col { grid-template-columns: repeat(2, 1fr); }
+        .grid-3col { grid-template-columns: repeat(3, 1fr); }
 
         .card {
             background: white;
@@ -264,24 +402,224 @@
             letter-spacing: 0.5px;
         }
 
-        .badge-branding { background: rgba(217,69,66,0.1); color: var(--wain-red); }
-        .badge-creative { background: rgba(245,166,35,0.1); color: var(--wain-gold); }
-        .badge-sales { background: rgba(0,184,212,0.1); color: var(--wain-cyan); }
-        .badge-hr { background: rgba(34,197,94,0.1); color: var(--success-green); }
-        .badge-marketing { background: rgba(245,158,11,0.1); color: var(--warning-amber); }
+        /* TABLE */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--wain-border);
+            border-radius: 8px;
+            background: white;
+        }
 
-        .card-content p {
-            font-size: 14px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--wain-light-gray);
+            border-bottom: 2px solid var(--wain-border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
             color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--wain-border);
+        }
+
+        tr:hover td {
+            background: var(--wain-light-gray);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-active { background: rgba(34,197,94,0.1); color: var(--success-green); }
+        .status-pending { background: rgba(245,158,11,0.1); color: var(--warning-amber); }
+        .status-in-progress { background: rgba(0,184,212,0.1); color: var(--wain-cyan); }
+        .status-overdue { background: rgba(239,68,68,0.1); color: var(--danger-red); }
+
+        /* SOCIAL MEDIA ICONS */
+        .social-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 4px;
+            transition: all 0.2s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .social-handles {
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--wain-light-gray);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .social-account {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--wain-border);
+        }
+
+        .social-account:last-child {
+            border-bottom: none;
+        }
+
+        .social-account-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-account-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .social-account-handle {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .social-status {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* APPROVAL WORKFLOW */
+        .approval-item {
+            background: white;
+            border: 1px solid var(--wain-border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .approval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 12px;
         }
 
-        .card-stats {
+        .approval-title {
+            font-weight: 600;
+            color: var(--wain-navy);
+        }
+
+        .deliverable-checklist {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .deliverable-item {
+            padding: 6px 0;
             display: flex;
-            gap: 16px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--wain-border);
+            gap: 8px;
+        }
+
+        .deliverable-item.completed {
+            color: var(--success-green);
+        }
+
+        .deliverable-item.in-progress {
+            color: var(--wain-cyan);
+        }
+
+        .deliverable-item.pending {
+            color: var(--warning-amber);
+        }
+
+        .post-item {
+            background: var(--wain-light-gray);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .post-platform {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .post-status {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .post-content {
+            font-size: 12px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .post-actions button {
+            padding: 4px 8px;
+            border: 1px solid var(--wain-border);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .post-actions button:hover {
+            background: var(--wain-light-gray);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--wain-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--wain-cyan), var(--success-green));
         }
 
         .stat {
@@ -302,198 +640,11 @@
             color: var(--wain-navy);
         }
 
-        /* TIMELINE */
-        .timeline {
-            background: white;
-            border-radius: 8px;
-            border: 1px solid var(--wain-border);
-            padding: 24px;
-            margin-bottom: 32px;
-        }
-
-        .timeline-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--wain-navy);
-        }
-
-        .timeline-item {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 20px;
-        }
-
-        .timeline-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 9px;
-            top: 40px;
-            width: 2px;
-            height: calc(100% + 20px);
-            background: var(--wain-border);
-        }
-
-        .timeline-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid var(--wain-cyan);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .timeline-content {
-            flex: 1;
-        }
-
-        .timeline-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--wain-navy);
-            margin-bottom: 4px;
-        }
-
-        .timeline-description {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .timeline-duration {
-            display: inline-block;
-            background: var(--wain-light-gray);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        /* PROGRESS BAR */
-        .progress-bar {
-            height: 8px;
-            background: var(--wain-border);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 12px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--wain-cyan), var(--success-green));
-            transition: width 0.3s;
-        }
-
-        /* TEAM GRID */
-        .team-member {
-            text-align: center;
-            padding: 16px;
-        }
-
-        .member-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--wain-cyan), var(--wain-gold));
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-        }
-
-        .member-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .member-role {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--wain-navy);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--wain-navy);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--wain-border);
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .modal-footer {
-            margin-top: 24px;
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .sidebar { width: 240px; }
             .main { margin-left: 240px; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            .grid-2col { grid-template-columns: 1fr; }
+            .grid-3col { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
@@ -506,23 +657,72 @@
             .nav-item.active { border-bottom-color: var(--wain-cyan); }
             .content { padding: 20px; }
             .grid { grid-template-columns: 1fr; }
+            .grid-2col, .grid-3col { grid-template-columns: 1fr; }
             .section-header { flex-direction: column; }
         }
     </style>
 </head>
 <body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-logo">WE <span class="login-logo-accent">ARE IN</span></div>
+                <div class="login-subtitle">Operations Dashboard</div>
+            </div>
+
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Team Member</label>
+                    <select id="employeeSelect" required>
+                        <option value="">Select your profile...</option>
+                        <option value="divine">Divine — Superadmin</option>
+                        <option value="anandhu">Anandhu — Creative Developer</option>
+                        <option value="akshay">Akshay — Social Media & Creative</option>
+                        <option value="dany">Dany — Social Media & Creative</option>
+                        <option value="arun">Arun — Project Manager</option>
+                        <option value="jipthy">Jipthy — HR Manager</option>
+                        <option value="ameen">Ameen — Social Media & Creative</option>
+                        <option value="sreeja">Sreeja — View Only</option>
+                        <option value="savio">Savio — Sales Manager</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="login-btn">Login to Dashboard</button>
+
+                <div style="margin-top: 16px; font-size: 12px; color: var(--text-secondary); text-align: center;">
+                    Demo credentials — select any profile to explore their personalized view
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="wain-logo">WE <span class="wain-logo-accent">ARE IN</span></div>
             <div class="sidebar-subtitle">Operations</div>
         </div>
+
+        <div class="user-info">
+            <div class="user-name" id="currentUserName">Welcome</div>
+            <div class="user-role" id="currentUserRole">Team Member</div>
+        </div>
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">Dashboard</div>
                 <div class="nav-item active" onclick="switchView('overview')">
                     <span class="nav-icon">📊</span>
-                    <span>Overview</span>
+                    <span>My Dashboard</span>
+                </div>
+            </div>
+
+            <div class="nav-section" id="businessSection" style="display: none;">
+                <div class="nav-section-title">Business</div>
+                <div class="nav-item" onclick="switchView('sales')">
+                    <span class="nav-icon">💼</span>
+                    <span>Sales Pipeline</span>
                 </div>
                 <div class="nav-item" onclick="switchView('clients')">
                     <span class="nav-icon">👥</span>
@@ -530,824 +730,804 @@
                 </div>
             </div>
 
-            <div class="nav-section">
+            <div class="nav-section" id="departmentSection" style="display: none;">
                 <div class="nav-section-title">Departments</div>
-                <div class="nav-item" onclick="switchView('creative')">
+                <div class="nav-item" id="creativeNav" style="display: none;" onclick="switchView('creative')">
                     <span class="nav-icon">🎨</span>
-                    <span>Creative</span>
+                    <span>Creative Work</span>
                 </div>
-                <div class="nav-item" onclick="switchView('sales')">
-                    <span class="nav-icon">💼</span>
-                    <span>Sales</span>
+                <div class="nav-item" id="socialNav" style="display: none;" onclick="switchView('social')">
+                    <span class="nav-icon">📱</span>
+                    <span>Social Media</span>
                 </div>
-                <div class="nav-item" onclick="switchView('marketing')">
+                <div class="nav-item" id="marketingNav" style="display: none;" onclick="switchView('marketing')">
                     <span class="nav-icon">📢</span>
                     <span>Marketing</span>
                 </div>
-                <div class="nav-item" onclick="switchView('hr')">
-                    <span class="nav-icon">👔</span>
-                    <span>HR & Team</span>
+                <div class="nav-item" id="websiteNav" style="display: none;" onclick="switchView('website')">
+                    <span class="nav-icon">🌐</span>
+                    <span>Website Editor</span>
                 </div>
             </div>
 
-            <div class="nav-section">
-                <div class="nav-section-title">Projects</div>
-                <div class="nav-item" onclick="switchView('projects')">
+            <div class="nav-section" id="operationsSection" style="display: none;">
+                <div class="nav-section-title">Operations</div>
+                <div class="nav-item" id="projectsNav" style="display: none;" onclick="switchView('projects')">
                     <span class="nav-icon">📋</span>
-                    <span>All Projects</span>
+                    <span>Projects</span>
                 </div>
-                <div class="nav-item" onclick="switchView('timeline')">
-                    <span class="nav-icon">📅</span>
-                    <span>Timeline</span>
-                </div>
-                <div class="nav-item" onclick="switchView('resources')">
+                <div class="nav-item" id="resourcesNav" style="display: none;" onclick="switchView('resources')">
                     <span class="nav-icon">💰</span>
-                    <span>Resources</span>
+                    <span>Budget</span>
+                </div>
+                <div class="nav-item" id="hrNav" style="display: none;" onclick="switchView('hr')">
+                    <span class="nav-icon">👔</span>
+                    <span>Team & HR</span>
                 </div>
             </div>
 
             <div class="nav-section">
-                <div class="nav-section-title">Management</div>
-                <div class="nav-item" onclick="switchView('settings')">
-                    <span class="nav-icon">⚙️</span>
-                    <span>Settings</span>
-                </div>
+                <button class="btn btn-logout" onclick="logout()">← Logout</button>
             </div>
         </nav>
     </div>
 
     <!-- MAIN CONTENT -->
     <div class="main">
-        <!-- HEADER -->
         <div class="header">
             <div class="header-content">
-                <h1 id="pageTitle">Operations Dashboard</h1>
-                <div class="header-subtitle" id="pageSubtitle">Manage all departments and projects</div>
+                <h1 id="pageTitle">My Dashboard</h1>
+                <div class="header-subtitle" id="pageSubtitle">Personalized view for your role</div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" onclick="showAddProject()">+ New Project</button>
-                <button class="btn btn-primary" onclick="showAddClient()">+ New Client</button>
+                <button class="btn btn-secondary btn-sm" onclick="switchView('overview')">Refresh</button>
             </div>
         </div>
 
-        <!-- CONTENT AREA -->
         <div class="content">
 
-            <!-- OVERVIEW VIEW -->
-            <div id="overview" class="content-view active">
-                <div class="section-header">
-                    <div class="section-number">01</div>
-                    <div class="section-titles">
-                        <h2>Dashboard</h2>
-                        <div class="section-subtitle">Real-time operations overview</div>
-                    </div>
-                </div>
-                <div class="accent-line"></div>
-
-                <!-- Key Metrics -->
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Active Clients</div>
-                            <span class="card-badge badge-sales">Current</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Total</div>
-                                <div class="stat-value">12</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Active</div>
-                                <div class="stat-value">8</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Onboarding</div>
-                                <div class="stat-value">4</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Projects Pipeline</div>
-                            <span class="card-badge badge-creative">In Progress</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Total</div>
-                                <div class="stat-value">24</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">This Month</div>
-                                <div class="stat-value">7</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Completed</div>
-                                <div class="stat-value">16</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Team Capacity</div>
-                            <span class="card-badge badge-hr">8 Members</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Allocated</div>
-                                <div class="stat-value">92%</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Available</div>
-                                <div class="stat-value">8%</div>
-                            </div>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 92%"></div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Revenue This Month</div>
-                            <span class="card-badge badge-sales">Live</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Current</div>
-                                <div class="stat-value">₹3.4L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Target</div>
-                                <div class="stat-value">₹4L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Progress</div>
-                                <div class="stat-value">85%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="section-header" style="margin-top: 40px;">
-                    <div class="section-number">02</div>
-                    <div class="section-titles">
-                        <h2>Active Projects</h2>
-                        <div class="section-subtitle">Recently updated and in-progress</div>
-                    </div>
-                </div>
-                <div class="accent-line"></div>
-
-                <div class="grid" style="grid-template-columns: 1fr;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">TechStartup — Brand Redesign</div>
-                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Due: Oct 15, 2026</div>
-                            </div>
-                            <span class="card-badge badge-branding">Branding</span>
-                        </div>
-                        <p style="margin-bottom: 12px; color: var(--text-secondary);">Complete rebrand for SaaS product launch. Includes logo, style guide, and brand materials.</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 65%"></div>
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">65% Complete • Assigned to Sarah, Emma • 8 days left</div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">CafeBiz — Social Media Campaign</div>
-                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Due: Sep 28, 2026</div>
-                            </div>
-                            <span class="card-badge badge-marketing">Marketing</span>
-                        </div>
-                        <p style="margin-bottom: 12px; color: var(--text-secondary);">Launch 4-week organic + paid social strategy. Content creation, ad management, community engagement.</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 48%"></div>
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">48% Complete • Assigned to John, Mike • 9 days left</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CLIENTS VIEW -->
-            <div id="clients" class="content-view">
-                <div class="section-header">
-                    <div class="section-number">03</div>
-                    <div class="section-titles">
-                        <h2>Client Management</h2>
-                        <div class="section-subtitle">All client accounts and profiles</div>
-                    </div>
-                </div>
-                <div class="accent-line"></div>
-
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">TechStartup</div>
-                            <span class="card-badge badge-sales">Premium</span>
-                        </div>
-                        <p>SaaS product launch and brand positioning</p>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Status</div>
-                                <div class="stat-value" style="font-size: 14px;">Active</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Projects</div>
-                                <div class="stat-value" style="font-size: 14px;">3</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Since</div>
-                                <div class="stat-value" style="font-size: 12px;">6 months</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">FashionBrand</div>
-                            <span class="card-badge badge-creative">Standard</span>
-                        </div>
-                        <p>E-commerce site and marketing strategy</p>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Status</div>
-                                <div class="stat-value" style="font-size: 14px;">Active</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Projects</div>
-                                <div class="stat-value" style="font-size: 14px;">2</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Since</div>
-                                <div class="stat-value" style="font-size: 12px;">4 months</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">CafeBiz</div>
-                            <span class="card-badge badge-marketing">Growth</span>
-                        </div>
-                        <p>Social media and community engagement</p>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Status</div>
-                                <div class="stat-value" style="font-size: 14px;">Active</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Projects</div>
-                                <div class="stat-value" style="font-size: 14px;">1</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Since</div>
-                                <div class="stat-value" style="font-size: 12px;">2 months</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CREATIVE DEPARTMENT -->
+            <!-- CREATIVE DEPARTMENT DASHBOARD -->
             <div id="creative" class="content-view">
                 <div class="section-header">
                     <div class="section-number">04</div>
                     <div class="section-titles">
-                        <h2>Creative Department</h2>
-                        <div class="section-subtitle">Design, branding, and content production</div>
+                        <h2>Creative Work</h2>
+                        <div class="section-subtitle">My active projects, deliverables, and approvals</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
 
-                <div class="grid">
+                <div class="grid grid-full">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Brand Guidelines</div>
-                            <span class="card-badge badge-branding">Branding</span>
+                            <div class="card-title">My Active Projects</div>
                         </div>
-                        <p>Color palette, typography, logo usage standards</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 100%; background: var(--success-green);"></div>
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">✓ Complete • 24/09/26</div>
-                    </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Website Design</div>
-                            <span class="card-badge badge-creative">In Progress</span>
-                        </div>
-                        <p>Responsive design mockups and prototypes</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 72%;"></div>
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">72% Complete • Due 30/09/26</div>
-                    </div>
+                        <div style="margin-top: 20px;">
+                            <!-- Project 1 -->
+                            <div class="approval-item">
+                                <div class="approval-header">
+                                    <div>
+                                        <div class="approval-title">TechStartup — Brand Redesign</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Assigned to: Sarah Nelson, Emma Clarke</div>
+                                    </div>
+                                    <span class="status-badge status-in-progress">Design Draft</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%;"></div>
+                                </div>
+                                <div class="deliverable-checklist">
+                                    <div class="deliverable-item completed">✓ Logo Concepts (Complete)</div>
+                                    <div class="deliverable-item completed">✓ Color Palette (Complete)</div>
+                                    <div class="deliverable-item in-progress">🔄 Typography System (65% - 2 days left)</div>
+                                    <div class="deliverable-item pending">⏳ Style Guide (Pending)</div>
+                                    <div class="deliverable-item pending">⏳ Brand Guidelines (Pending)</div>
+                                </div>
+                                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--wain-border); display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-primary">Request Review</button>
+                                    <button class="btn btn-sm btn-secondary">Upload Assets</button>
+                                    <button class="btn btn-sm btn-secondary">View Feedback</button>
+                                </div>
+                            </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Content Production</div>
-                            <span class="card-badge badge-marketing">In Progress</span>
+                            <!-- Project 2 -->
+                            <div class="approval-item">
+                                <div class="approval-header">
+                                    <div>
+                                        <div class="approval-title">FashionBrand — Website Design</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Assigned to: Sarah Nelson</div>
+                                    </div>
+                                    <span class="status-badge" style="background: rgba(239,68,68,0.1); color: var(--danger-red);">Client Review (URGENT)</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 92%;"></div>
+                                </div>
+                                <div class="deliverable-checklist">
+                                    <div class="deliverable-item completed">✓ Homepage Mockup (Client Approved)</div>
+                                    <div class="deliverable-item completed">✓ Product Pages (Client Approved)</div>
+                                    <div class="deliverable-item completed">✓ Mobile Responsive (Client Approved)</div>
+                                    <div class="deliverable-item" style="color: var(--danger-red);">⏳ Client Sign-Off URGENT (Due Sep 30)</div>
+                                </div>
+                                <div style="margin-top: 12px; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 6px; border-left: 3px solid var(--danger-red); font-size: 12px; color: var(--danger-red);">
+                                    <strong>⚠️ Action Required:</strong> Waiting for client final approval. Last communication: Sep 28. Follow up recommended.
+                                </div>
+                                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-primary">Send Reminder</button>
+                                    <button class="btn btn-sm btn-secondary">View Design</button>
+                                </div>
+                            </div>
+
+                            <!-- Project 3 -->
+                            <div class="approval-item">
+                                <div class="approval-header">
+                                    <div>
+                                        <div class="approval-title">CafeBiz — Social Content Pack</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Assigned to: Emma Clarke</div>
+                                    </div>
+                                    <span class="status-badge status-in-progress">Design Draft</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%;"></div>
+                                </div>
+                                <div class="deliverable-checklist">
+                                    <div class="deliverable-item in-progress">🔄 Instagram Posts (4/12 complete, 33%)</div>
+                                    <div class="deliverable-item pending">⏳ Stories Templates (Not started)</div>
+                                    <div class="deliverable-item pending">⏳ Banner Designs (Not started)</div>
+                                </div>
+                                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-primary">Update Status</button>
+                                    <button class="btn btn-sm btn-secondary">Request Feedback</button>
+                                </div>
+                            </div>
                         </div>
-                        <p>Photography, videography, copy writing</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 45%;"></div>
+                    </div>
+                </div>
+
+                <!-- Asset Library -->
+                <div style="margin-top: 40px;">
+                    <div class="section-header">
+                        <div class="section-number">04.1</div>
+                        <div class="section-titles">
+                            <h2>Asset Library</h2>
+                            <div class="section-subtitle">Project files, brand assets, and design resources</div>
                         </div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">45% Complete • Due 15/10/26</div>
+                    </div>
+                    <div class="accent-line"></div>
+
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Asset Type</th>
+                                        <th>File Name</th>
+                                        <th>Version</th>
+                                        <th>Last Updated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TechStartup Rebrand</td>
+                                        <td>Logo</td>
+                                        <td>techstartup_logo_v3.ai</td>
+                                        <td>v3</td>
+                                        <td>Sep 26</td>
+                                        <td><button class="btn btn-sm btn-secondary">Download</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TechStartup Rebrand</td>
+                                        <td>Colors</td>
+                                        <td>brand_palette_final.pdf</td>
+                                        <td>Final</td>
+                                        <td>Sep 24</td>
+                                        <td><button class="btn btn-sm btn-secondary">Download</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>FashionBrand Website</td>
+                                        <td>Mockup</td>
+                                        <td>website_designs_v2.fig</td>
+                                        <td>v2</td>
+                                        <td>Sep 28</td>
+                                        <td><button class="btn btn-sm btn-secondary">Download</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SALES DEPARTMENT -->
+            <!-- SOCIAL MEDIA MANAGEMENT -->
+            <div id="social" class="content-view">
+                <div class="section-header">
+                    <div class="section-number">04.2</div>
+                    <div class="section-titles">
+                        <h2>Social Media Posting</h2>
+                        <div class="section-subtitle">Client accounts, content calendar, and post management</div>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+
+                <!-- Client Social Accounts -->
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Client Social Accounts</div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Social Platforms</th>
+                                    <th>Followers</th>
+                                    <th>Manager</th>
+                                    <th>Account Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>TechStartup</strong></td>
+                                    <td>
+                                        <div style="font-size: 20px;">
+                                            <span title="LinkedIn">💼</span>
+                                            <span title="Twitter">🐦</span>
+                                            <span title="Instagram">📷</span>
+                                        </div>
+                                    </td>
+                                    <td>25.3K | 18.9K | 12.4K</td>
+                                    <td>John Murphy</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FashionBrand</strong></td>
+                                    <td>
+                                        <div style="font-size: 20px;">
+                                            <span title="Instagram">📷</span>
+                                            <span title="TikTok">📱</span>
+                                            <span title="Facebook">👍</span>
+                                        </div>
+                                    </td>
+                                    <td>48.7K | 32.1K | 15.6K</td>
+                                    <td>John Murphy</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>CafeBiz</strong></td>
+                                    <td>
+                                        <div style="font-size: 20px;">
+                                            <span title="Facebook">👍</span>
+                                            <span title="Instagram">📷</span>
+                                            <span title="YouTube">📺</span>
+                                        </div>
+                                    </td>
+                                    <td>8.2K | 6.4K | 3.1K</td>
+                                    <td>John Murphy</td>
+                                    <td><span class="status-badge status-pending">Pending Setup</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Content Calendar & Posting -->
+                <div class="grid grid-2col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Scheduled Posts (This Week)</div>
+                        </div>
+
+                        <div class="post-item">
+                            <div class="post-header">
+                                <div class="post-platform">📷 Instagram — TechStartup</div>
+                                <span class="post-status" style="background: rgba(34,197,94,0.1); color: var(--success-green); padding: 4px 8px; border-radius: 12px;">Scheduled</span>
+                            </div>
+                            <div class="post-content">"Excited to announce our new product launch! 🚀 Join us for the webinar next week where we'll dive deep into innovation and impact..."</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">📅 Sep 29 at 9:00 AM</div>
+                            <div class="post-actions">
+                                <button>Preview</button>
+                                <button>Edit</button>
+                                <button>Post Now</button>
+                            </div>
+                        </div>
+
+                        <div class="post-item">
+                            <div class="post-header">
+                                <div class="post-platform">🐦 Twitter — TechStartup</div>
+                                <span class="post-status" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan); padding: 4px 8px; border-radius: 12px;">Awaiting Approval</span>
+                            </div>
+                            <div class="post-content">"Building the future of SaaS. Simplifying complex workflows. That's what we do. #Innovation #SaaS #TechStartup"</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">📅 Sep 30 at 2:00 PM (Pending approval)</div>
+                            <div class="post-actions">
+                                <button>Preview</button>
+                                <button>Edit</button>
+                                <button style="background: rgba(217,69,66,0.1); color: var(--wain-red);">Request Changes</button>
+                            </div>
+                        </div>
+
+                        <div class="post-item">
+                            <div class="post-header">
+                                <div class="post-platform">📷 Instagram — FashionBrand</div>
+                                <span class="post-status" style="background: rgba(245,158,11,0.1); color: var(--warning-amber); padding: 4px 8px; border-radius: 12px;">In Draft</span>
+                            </div>
+                            <div class="post-content">"Fall collection drops tomorrow! ✨ Get ready for 30% off on select items. Limited time only..."</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">📅 Oct 1 at 10:00 AM (Not scheduled yet)</div>
+                            <div class="post-actions">
+                                <button>Preview</button>
+                                <button>Edit</button>
+                                <button>Schedule</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">September Performance</div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Target</th>
+                                    <th>Actual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Posts Published</strong></td>
+                                    <td>24</td>
+                                    <td>22</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Reach</strong></td>
+                                    <td>150K</td>
+                                    <td>182.3K</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Engagement</strong></td>
+                                    <td>6K</td>
+                                    <td>8.2K</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Engagement Rate</strong></td>
+                                    <td>4%</td>
+                                    <td>4.5%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>New Followers</strong></td>
+                                    <td>500</td>
+                                    <td>647</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--wain-border);">
+                            <div class="btn btn-sm btn-primary" style="width: 100%; text-align: center;">Create New Post</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DEFAULT EMPLOYEE DASHBOARD -->
+            <div id="overview" class="content-view active">
+                <div class="section-header">
+                    <div class="section-number">01</div>
+                    <div class="section-titles">
+                        <h2>My Dashboard</h2>
+                        <div class="section-subtitle">Your personalized view based on your role</div>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+
+                <div class="grid grid-2col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">My Tasks Today</div>
+                            <span class="card-badge" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">3 Active</span>
+                        </div>
+                        <div style="margin-top: 16px; font-size: 13px;">
+                            <div style="padding: 8px 0; border-bottom: 1px solid var(--wain-border);">
+                                <input type="checkbox"> <strong>Review TechStartup brand concepts</strong> — Due today
+                            </div>
+                            <div style="padding: 8px 0; border-bottom: 1px solid var(--wain-border);">
+                                <input type="checkbox"> <strong>Schedule social media posts</strong> — Due today
+                            </div>
+                            <div style="padding: 8px 0;">
+                                <input type="checkbox"> <strong>Client call with FashionBrand</strong> — 2:00 PM
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">My Assignments</div>
+                            <span class="card-badge" style="background: rgba(34,197,94,0.1); color: var(--success-green);">4 Projects</span>
+                        </div>
+                        <div style="margin-top: 16px; font-size: 13px;">
+                            <div style="margin-bottom: 8px;">
+                                <strong>TechStartup Brand Redesign</strong><br/>
+                                <span style="color: var(--text-secondary); font-size: 12px;">Assigned with Emma Clarke • 65% complete</span>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <strong>FashionBrand Website Design</strong><br/>
+                                <span style="color: var(--text-secondary); font-size: 12px;">Solo • 92% complete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Pending Approvals</div>
+                            <span class="card-badge" style="background: rgba(245,158,11,0.1); color: var(--warning-amber);">2 Waiting</span>
+                        </div>
+                        <div style="margin-top: 16px; font-size: 13px;">
+                            <div style="padding: 8px; background: rgba(0,184,212,0.1); border-radius: 6px; margin-bottom: 8px;">
+                                <strong>📤 Typography System</strong><br/>
+                                <span style="font-size: 12px;">Submitted for review • 2 days ago</span>
+                            </div>
+                            <div style="padding: 8px; background: rgba(0,184,212,0.1); border-radius: 6px;">
+                                <strong>📤 Twitter Post</strong><br/>
+                                <span style="font-size: 12px;">Awaiting approval • Ready to post</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Quick Stats</div>
+                        </div>
+                        <div style="margin-top: 16px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                                <div style="text-align: center; padding: 12px; background: var(--wain-light-gray); border-radius: 6px;">
+                                    <div class="stat-label">Workload</div>
+                                    <div class="stat-value">90%</div>
+                                </div>
+                                <div style="text-align: center; padding: 12px; background: var(--wain-light-gray); border-radius: 6px;">
+                                    <div class="stat-label">On-time Rate</div>
+                                    <div class="stat-value">100%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <div class="card">
+                        <div style="text-align: center; padding: 32px; color: var(--text-secondary);">
+                            <h3 style="color: var(--wain-navy); margin-bottom: 12px;">Welcome to Your Dashboard!</h3>
+                            <p>Select a module from the sidebar to view your department-specific workflow and active projects.</p>
+                            <p style="margin-top: 12px; font-size: 13px;">
+                                <strong>Available modules based on your role:</strong><br/>
+                                Creative → Design projects, deliverables, and asset library<br/>
+                                Social Media → Client accounts and content posting<br/>
+                                Marketing → Campaign management and performance<br/>
+                                And more based on your permissions...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLACEHOLDER SECTIONS -->
             <div id="sales" class="content-view">
                 <div class="section-header">
                     <div class="section-number">05</div>
                     <div class="section-titles">
                         <h2>Sales Pipeline</h2>
-                        <div class="section-subtitle">Leads, opportunities, and conversions</div>
                     </div>
                 </div>
-                <div class="accent-line"></div>
-
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">This Month</div>
-                            <span class="card-badge badge-sales">Closing</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">New Leads</div>
-                                <div class="stat-value">15</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">In Progress</div>
-                                <div class="stat-value">8</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Won</div>
-                                <div class="stat-value">4</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Revenue Target</div>
-                            <span class="card-badge badge-sales">Live</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Target</div>
-                                <div class="stat-value">₹4L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Current</div>
-                                <div class="stat-value">₹3.4L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Progress</div>
-                                <div class="stat-value">85%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Active Opportunities</div>
-                            <span class="card-badge badge-sales">Tracking</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">High Value</div>
-                                <div class="stat-value">3</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Medium</div>
-                                <div class="stat-value">5</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Low</div>
-                                <div class="stat-value">2</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="card" style="text-align: center; padding: 40px;">Sales pipeline module loading...</div>
             </div>
 
-            <!-- MARKETING DEPARTMENT -->
+            <div id="clients" class="content-view">
+                <div class="section-header">
+                    <div class="section-number">03</div>
+                    <div class="section-titles">
+                        <h2>Client Management</h2>
+                    </div>
+                </div>
+                <div class="card" style="text-align: center; padding: 40px;">Client management module loading...</div>
+            </div>
+
             <div id="marketing" class="content-view">
                 <div class="section-header">
                     <div class="section-number">06</div>
                     <div class="section-titles">
                         <h2>Marketing Operations</h2>
-                        <div class="section-subtitle">Campaigns, content, and performance</div>
                     </div>
                 </div>
-                <div class="accent-line"></div>
-
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Active Campaigns</div>
-                            <span class="card-badge badge-marketing">Running</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Total</div>
-                                <div class="stat-value">6</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Social</div>
-                                <div class="stat-value">3</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Email</div>
-                                <div class="stat-value">3</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Ad Spend</div>
-                            <span class="card-badge badge-marketing">Monthly</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Budget</div>
-                                <div class="stat-value">₹1.5L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Spent</div>
-                                <div class="stat-value">₹92K</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Left</div>
-                                <div class="stat-value">₹58K</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Performance</div>
-                            <span class="card-badge badge-marketing">This Month</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Reach</div>
-                                <div class="stat-value">250K</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Engagement</div>
-                                <div class="stat-value">8.2K</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Conversion</div>
-                                <div class="stat-value">3.2%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="card" style="text-align: center; padding: 40px;">Marketing operations module loading...</div>
             </div>
 
-            <!-- HR & TEAM -->
-            <div id="hr" class="content-view">
-                <div class="section-header">
-                    <div class="section-number">07</div>
-                    <div class="section-titles">
-                        <h2>Team & HR</h2>
-                        <div class="section-subtitle">Team members, assignments, and performance</div>
-                    </div>
-                </div>
-                <div class="accent-line"></div>
-
-                <div class="grid">
-                    <div class="team-member card">
-                        <div class="member-avatar" style="background: linear-gradient(135deg, #d94542, #f5a623);">SN</div>
-                        <div class="member-name">Sarah Nelson</div>
-                        <div class="member-role">Web Developer</div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">3 projects active</div>
-                    </div>
-
-                    <div class="team-member card">
-                        <div class="member-avatar" style="background: linear-gradient(135deg, #00b8d4, #1a2138);">JM</div>
-                        <div class="member-name">John Murphy</div>
-                        <div class="member-role">Social Media Manager</div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">2 projects active</div>
-                    </div>
-
-                    <div class="team-member card">
-                        <div class="member-avatar" style="background: linear-gradient(135deg, #f5a623, #d94542);">EC</div>
-                        <div class="member-name">Emma Clarke</div>
-                        <div class="member-role">Graphic Designer</div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">4 projects active</div>
-                    </div>
-
-                    <div class="team-member card">
-                        <div class="member-avatar" style="background: linear-gradient(135deg, #1a2138, #00b8d4);">MB</div>
-                        <div class="member-name">Mike Brown</div>
-                        <div class="member-role">Project Manager</div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Overseeing 7 projects</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PROJECTS -->
             <div id="projects" class="content-view">
                 <div class="section-header">
                     <div class="section-number">08</div>
                     <div class="section-titles">
                         <h2>All Projects</h2>
-                        <div class="section-subtitle">Complete project list and status</div>
                     </div>
                 </div>
-                <div class="accent-line"></div>
-
-                <div class="grid" style="grid-template-columns: 1fr;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">Project Directory</div>
-                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">24 total projects across all clients</div>
-                            </div>
-                        </div>
-                        <p style="margin: 16px 0; padding: 16px; background: var(--wain-light-gray); border-radius: 6px; color: var(--text-secondary); text-align: center;">
-                            Project list with filters and search coming soon
-                        </p>
-                    </div>
-                </div>
+                <div class="card" style="text-align: center; padding: 40px;">Project list module loading...</div>
             </div>
 
-            <!-- TIMELINE -->
-            <div id="timeline" class="content-view">
-                <div class="section-header">
-                    <div class="section-number">09</div>
-                    <div class="section-titles">
-                        <h2>Project Timeline</h2>
-                        <div class="section-subtitle">Phased approach to project delivery</div>
-                    </div>
-                </div>
-                <div class="accent-line"></div>
-
-                <div class="timeline">
-                    <div class="timeline-title">TechStartup Brand Redesign Timeline</div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">Phase 1: Discovery & Strategy</div>
-                            <div class="timeline-description">Client brief, competitive analysis, brand positioning</div>
-                            <span class="timeline-duration">Days 1-5 | Complete</span>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">Phase 2: Design Development</div>
-                            <div class="timeline-description">Logo concepts, color palette, typography system</div>
-                            <span class="timeline-duration">Days 6-12 | In Progress (67%)</span>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">Phase 3: Brand Guidelines</div>
-                            <div class="timeline-description">Complete style guide and brand standards documentation</div>
-                            <span class="timeline-duration">Days 13-17 | Pending</span>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">Phase 4: Launch & Handoff</div>
-                            <div class="timeline-description">Training, final revisions, client approval, delivery</div>
-                            <span class="timeline-duration">Days 18-20 | Pending</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RESOURCES -->
             <div id="resources" class="content-view">
                 <div class="section-header">
                     <div class="section-number">10</div>
                     <div class="section-titles">
-                        <h2>Resources & Budget</h2>
-                        <div class="section-subtitle">Project costs, allocations, and spending</div>
+                        <h2>Budget & Resources</h2>
                     </div>
                 </div>
-                <div class="accent-line"></div>
-
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Monthly Budget</div>
-                            <span class="card-badge badge-sales">All Departments</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Total Budget</div>
-                                <div class="stat-value">₹8.5L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Allocated</div>
-                                <div class="stat-value">₹6.2L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Available</div>
-                                <div class="stat-value">₹2.3L</div>
-                            </div>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 73%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Creative Department</div>
-                            <span class="card-badge badge-creative">Budget</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Allocation</div>
-                                <div class="stat-value">₹2.1L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Spent</div>
-                                <div class="stat-value">₹1.4L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Left</div>
-                                <div class="stat-value">₹0.7L</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Marketing Department</div>
-                            <span class="card-badge badge-marketing">Budget</span>
-                        </div>
-                        <div class="card-stats">
-                            <div class="stat">
-                                <div class="stat-label">Allocation</div>
-                                <div class="stat-value">₹2.8L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Spent</div>
-                                <div class="stat-value">₹2.1L</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Left</div>
-                                <div class="stat-value">₹0.7L</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="card" style="text-align: center; padding: 40px;">Budget tracking module loading...</div>
             </div>
 
-            <!-- SETTINGS -->
-            <div id="settings" class="content-view">
+            <div id="hr" class="content-view">
                 <div class="section-header">
-                    <div class="section-number">11</div>
+                    <div class="section-number">07</div>
                     <div class="section-titles">
-                        <h2>Settings</h2>
-                        <div class="section-subtitle">Configuration and preferences</div>
+                        <h2>Team & HR</h2>
+                    </div>
+                </div>
+                <div class="card" style="text-align: center; padding: 40px;">Team management module loading...</div>
+            </div>
+
+            <!-- WEBSITE EDITOR -->
+            <div id="website" class="content-view">
+                <div class="section-header">
+                    <div class="section-number">12</div>
+                    <div class="section-titles">
+                        <h2>Website Editor</h2>
+                        <div class="section-subtitle">Manage pages, content, and marketing website</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
 
-                <div class="grid" style="grid-template-columns: 1fr;">
+                <div class="grid grid-2">
                     <div class="card">
-                        <div class="card-title" style="margin-bottom: 16px;">System Preferences</div>
-                        <div style="padding: 16px; background: var(--wain-light-gray); border-radius: 6px; color: var(--text-secondary); text-align: center;">
-                            Settings interface coming soon
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="margin: 0;">Pages</h3>
+                            <button class="btn btn-primary btn-sm" onclick="alert('Create new page feature')">+ New Page</button>
+                        </div>
+                        <table style="width: 100%; font-size: 13px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <th style="text-align: left; padding: 8px 0;">Page Title</th>
+                                    <th style="text-align: left; padding: 8px 0;">Status</th>
+                                    <th style="text-align: left; padding: 8px 0;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <td style="padding: 12px 0;">Home</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: var(--success-green); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Published</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button> <button class="btn btn-secondary btn-xs">Preview</button></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <td style="padding: 12px 0;">Services</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: var(--success-green); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Published</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button> <button class="btn btn-secondary btn-xs">Preview</button></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <td style="padding: 12px 0;">About Us</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: var(--warning-amber); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Draft</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button> <button class="btn btn-secondary btn-xs">Preview</button></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 0;">Contact</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: var(--success-green); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Published</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button> <button class="btn btn-secondary btn-xs">Preview</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 16px;">Page Performance</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 13px; color: var(--text-secondary);">Total Visits</span>
+                                <span style="font-size: 16px; font-weight: 600; color: var(--wain-cyan);">12.4K</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 13px; color: var(--text-secondary);">Page Views</span>
+                                <span style="font-size: 16px; font-weight: 600; color: var(--wain-cyan);">24.8K</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 13px; color: var(--text-secondary);">Avg. Time on Page</span>
+                                <span style="font-size: 16px; font-weight: 600; color: var(--wain-cyan);">2m 34s</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 13px; color: var(--text-secondary);">Bounce Rate</span>
+                                <span style="font-size: 16px; font-weight: 600; color: var(--wain-gold);">34.2%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- MODALS -->
-    <div class="modal" id="addProjectModal">
-        <div class="modal-content">
-            <div class="modal-header">Add New Project</div>
-            <div class="form-group">
-                <label>Project Name</label>
-                <input type="text" placeholder="Enter project name">
-            </div>
-            <div class="form-group">
-                <label>Client</label>
-                <select>
-                    <option>TechStartup</option>
-                    <option>FashionBrand</option>
-                    <option>CafeBiz</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Department</label>
-                <select>
-                    <option>Creative</option>
-                    <option>Marketing</option>
-                    <option>Sales</option>
-                    <option>HR</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Project Type</label>
-                <input type="text" placeholder="e.g., Branding, Website, Campaign">
-            </div>
-            <div class="form-group">
-                <label>Budget</label>
-                <input type="number" placeholder="₹">
-            </div>
-            <div class="form-group">
-                <label>Due Date</label>
-                <input type="date">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('addProjectModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="closeModal('addProjectModal')">Create Project</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="addClientModal">
-        <div class="modal-content">
-            <div class="modal-header">Add New Client</div>
-            <div class="form-group">
-                <label>Client Name</label>
-                <input type="text" placeholder="Enter client name">
-            </div>
-            <div class="form-group">
-                <label>Industry/Category</label>
-                <input type="text" placeholder="e.g., Tech, Fashion, F&B">
-            </div>
-            <div class="form-group">
-                <label>Contact Email</label>
-                <input type="email" placeholder="contact@client.com">
-            </div>
-            <div class="form-group">
-                <label>Service Plan</label>
-                <select>
-                    <option>Premium</option>
-                    <option>Standard</option>
-                    <option>Growth</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea placeholder="Brief description of the client"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('addClientModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="closeModal('addClientModal')">Add Client</button>
+                <div class="grid grid-full" style="margin-top: 24px;">
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 16px;">Content Calendar</h3>
+                        <table style="width: 100%; font-size: 13px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <th style="text-align: left; padding: 8px 0;">Content Type</th>
+                                    <th style="text-align: left; padding: 8px 0;">Topic</th>
+                                    <th style="text-align: left; padding: 8px 0;">Scheduled Date</th>
+                                    <th style="text-align: left; padding: 8px 0;">Status</th>
+                                    <th style="text-align: left; padding: 8px 0;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <td style="padding: 12px 0;">Blog Post</td>
+                                    <td style="padding: 12px 0;">Design Trends 2026</td>
+                                    <td style="padding: 12px 0;">Sep 22, 2026</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: var(--wain-cyan); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Scheduled</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--wain-border);">
+                                    <td style="padding: 12px 0;">Case Study</td>
+                                    <td style="padding: 12px 0;">TechStartup Success</td>
+                                    <td style="padding: 12px 0;">Sep 25, 2026</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: var(--warning-amber); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">In Progress</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 0;">Update</td>
+                                    <td style="padding: 12px 0;">Service Page Refresh</td>
+                                    <td style="padding: 12px 0;">Oct 1, 2026</td>
+                                    <td style="padding: 12px 0;"><span class="status-badge" style="background: #999; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Planning</span></td>
+                                    <td style="padding: 12px 0;"><button class="btn btn-secondary btn-xs">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Employee roles and their accessible modules
+        const employees = {
+            divine: {
+                name: 'Divine',
+                role: 'Superadmin',
+                modules: ['overview', 'creative', 'social', 'marketing', 'sales', 'clients', 'projects', 'resources', 'hr', 'website'],
+                defaultView: 'overview'
+            },
+            anandhu: {
+                name: 'Anandhu',
+                role: 'Creative Developer',
+                modules: ['overview', 'creative', 'social', 'projects'],
+                defaultView: 'creative'
+            },
+            akshay: {
+                name: 'Akshay',
+                role: 'Social Media & Creative',
+                modules: ['overview', 'social', 'creative'],
+                defaultView: 'social'
+            },
+            dany: {
+                name: 'Dany',
+                role: 'Social Media & Creative',
+                modules: ['overview', 'social', 'creative'],
+                defaultView: 'social'
+            },
+            arun: {
+                name: 'Arun',
+                role: 'Project Manager',
+                modules: ['overview', 'projects', 'resources', 'clients'],
+                defaultView: 'projects'
+            },
+            jipthy: {
+                name: 'Jipthy',
+                role: 'HR Manager',
+                modules: ['overview', 'hr', 'resources'],
+                defaultView: 'hr'
+            },
+            ameen: {
+                name: 'Ameen',
+                role: 'Social Media & Creative',
+                modules: ['overview', 'social', 'creative'],
+                defaultView: 'social'
+            },
+            sreeja: {
+                name: 'Sreeja',
+                role: 'View Only',
+                modules: ['overview'],
+                defaultView: 'overview'
+            },
+            savio: {
+                name: 'Savio',
+                role: 'Sales Manager',
+                modules: ['overview', 'sales', 'clients'],
+                defaultView: 'sales'
+            }
+        };
+
+        let currentEmployee = null;
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const selected = document.getElementById('employeeSelect').value;
+            if (!selected) return;
+
+            currentEmployee = selected;
+            const emp = employees[selected];
+
+            // Hide login screen
+            document.getElementById('loginScreen').classList.add('hidden');
+
+            // Update user info
+            document.getElementById('currentUserName').textContent = emp.name;
+            document.getElementById('currentUserRole').textContent = emp.role;
+
+            // Show/hide nav items based on modules
+            updateNavigation(emp.modules);
+
+            // Switch to default view
+            switchView(emp.defaultView);
+        }
+
+        function updateNavigation(modules) {
+            // Show/hide sections
+            document.getElementById('businessSection').style.display =
+                modules.includes('sales') || modules.includes('clients') ? 'block' : 'none';
+            document.getElementById('departmentSection').style.display =
+                modules.some(m => ['creative', 'social', 'marketing', 'website'].includes(m)) ? 'block' : 'none';
+            document.getElementById('operationsSection').style.display =
+                modules.some(m => ['projects', 'resources', 'hr'].includes(m)) ? 'block' : 'none';
+
+            // Show/hide individual nav items
+            document.getElementById('creativeNav').style.display = modules.includes('creative') ? 'flex' : 'none';
+            document.getElementById('socialNav').style.display = modules.includes('social') ? 'flex' : 'none';
+            document.getElementById('marketingNav').style.display = modules.includes('marketing') ? 'flex' : 'none';
+            document.getElementById('websiteNav').style.display = modules.includes('website') ? 'flex' : 'none';
+            document.getElementById('projectsNav').style.display = modules.includes('projects') ? 'flex' : 'none';
+            document.getElementById('resourcesNav').style.display = modules.includes('resources') ? 'flex' : 'none';
+            document.getElementById('hrNav').style.display = modules.includes('hr') ? 'flex' : 'none';
+        }
+
         function switchView(viewName) {
-            // Hide all views
+            if (!currentEmployee) return;
+
+            const emp = employees[currentEmployee];
+            if (!emp.modules.includes(viewName)) {
+                alert('You do not have access to this module');
+                return;
+            }
+
             document.querySelectorAll('.content-view').forEach(view => {
                 view.classList.remove('active');
             });
 
-            // Remove active class from nav items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
 
-            // Show selected view
-            document.getElementById(viewName).classList.add('active');
+            const view = document.getElementById(viewName);
+            if (view) {
+                view.classList.add('active');
+            }
 
-            // Add active class to clicked nav item
-            event.target.closest('.nav-item').classList.add('active');
+            if (event && event.target) {
+                const navItem = event.target.closest('.nav-item');
+                if (navItem) navItem.classList.add('active');
+            }
 
-            // Update header
             const titles = {
-                'overview': { title: 'Operations Dashboard', subtitle: 'Manage all departments and projects' },
-                'clients': { title: 'Client Management', subtitle: 'All client accounts and profiles' },
-                'creative': { title: 'Creative Department', subtitle: 'Design, branding, and content production' },
-                'sales': { title: 'Sales Pipeline', subtitle: 'Leads, opportunities, and conversions' },
-                'marketing': { title: 'Marketing Operations', subtitle: 'Campaigns, content, and performance' },
-                'hr': { title: 'Team & HR', subtitle: 'Team members, assignments, and performance' },
-                'projects': { title: 'All Projects', subtitle: 'Complete project list and status' },
-                'timeline': { title: 'Project Timeline', subtitle: 'Phased approach to project delivery' },
-                'resources': { title: 'Resources & Budget', subtitle: 'Project costs, allocations, and spending' },
-                'settings': { title: 'Settings', subtitle: 'Configuration and preferences' }
+                'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
+                'creative': { title: 'Creative Work', subtitle: 'My active projects, deliverables, and approvals' },
+                'social': { title: 'Social Media Posting', subtitle: 'Client accounts, content calendar, and post management' },
+                'marketing': { title: 'Marketing Operations', subtitle: 'Campaign management and performance' },
+                'sales': { title: 'Sales Pipeline', subtitle: 'Lead tracking and opportunity management' },
+                'clients': { title: 'Client Management', subtitle: 'Account status and project history' },
+                'projects': { title: 'All Projects', subtitle: 'Master project list with status' },
+                'resources': { title: 'Budget & Resources', subtitle: 'Financial allocation and tracking' },
+                'hr': { title: 'Team & HR', subtitle: 'Capacity planning and performance' },
+                'website': { title: 'Website Editor', subtitle: 'Manage pages, content, and marketing website' }
             };
 
             if (titles[viewName]) {
@@ -1356,26 +1536,13 @@
             }
         }
 
-        function showAddProject() {
-            document.getElementById('addProjectModal').classList.add('active');
+        function logout() {
+            currentEmployee = null;
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('employeeSelect').value = '';
+            document.querySelectorAll('.content-view').forEach(v => v.classList.remove('active'));
+            document.getElementById('overview').classList.add('active');
         }
-
-        function showAddClient() {
-            document.getElementById('addClientModal').classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Close modal when clicking outside
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.classList.remove('active');
-                }
-            });
-        });
     </script>
 </body>
 </html>
