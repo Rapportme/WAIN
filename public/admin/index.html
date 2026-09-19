@@ -660,6 +660,119 @@
             border-color: var(--wain-navy);
         }
 
+        .checklist-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 12px;
+        }
+
+        .checklist-row input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            accent-color: var(--wain-cyan);
+        }
+
+        .checklist-row.done span {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .checklist-add {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .checklist-add input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--wain-border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        .nav-section-title {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-section-title .chevron {
+            font-size: 9px;
+            transition: transform 0.2s;
+            opacity: 0.6;
+        }
+
+        .nav-section.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .nav-section.collapsed .nav-item {
+            display: none !important;
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: white;
+            border: 1px solid var(--wain-border);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--wain-cyan);
+            box-shadow: 0 6px 16px rgba(0,184,212,0.12);
+            transform: translateY(-1px);
+        }
+
+        .kpi-card .stat-label { margin-bottom: 6px; }
+        .kpi-card .stat-value { font-size: 22px; }
+
+        .skeleton-row {
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .skeleton-row::after {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-left: 8px;
+            border: 2px solid var(--wain-border);
+            border-top-color: var(--wain-cyan);
+            border-radius: 50%;
+            animation: skeleton-spin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes skeleton-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .capacity-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
         @media (max-width: 1024px) {
             .sidebar { width: 240px; }
             .main { margin-left: 240px; }
@@ -728,7 +841,7 @@
 
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">Dashboard</div>
+                <div class="nav-section-title" onclick="toggleNavSection(this)"><span>Dashboard</span><span class="chevron">▾</span></div>
                 <div class="nav-item active" onclick="switchView('overview')">
                     <span class="nav-icon">📊</span>
                     <span>My Dashboard</span>
@@ -736,7 +849,7 @@
             </div>
 
             <div class="nav-section" id="businessSection" style="display: none;">
-                <div class="nav-section-title">Business</div>
+                <div class="nav-section-title" onclick="toggleNavSection(this)"><span>Business</span><span class="chevron">▾</span></div>
                 <div class="nav-item" onclick="switchView('sales')">
                     <span class="nav-icon">💼</span>
                     <span>CRM & Pipeline</span>
@@ -748,7 +861,7 @@
             </div>
 
             <div class="nav-section" id="departmentSection" style="display: none;">
-                <div class="nav-section-title">Departments</div>
+                <div class="nav-section-title" onclick="toggleNavSection(this)"><span>Departments</span><span class="chevron">▾</span></div>
                 <div class="nav-item" id="creativeNav" style="display: none;" onclick="switchView('creative')">
                     <span class="nav-icon">🎨</span>
                     <span>Creative Work</span>
@@ -763,12 +876,12 @@
                 </div>
                 <div class="nav-item" id="websiteNav" style="display: none;" onclick="switchView('website')">
                     <span class="nav-icon">🌐</span>
-                    <span>Website Editor</span>
+                    <span>Website Tracker</span>
                 </div>
             </div>
 
             <div class="nav-section" id="operationsSection" style="display: none;">
-                <div class="nav-section-title">Operations</div>
+                <div class="nav-section-title" onclick="toggleNavSection(this)"><span>Operations</span><span class="chevron">▾</span></div>
                 <div class="nav-item" id="projectsNav" style="display: none;" onclick="switchView('projects')">
                     <span class="nav-icon">📋</span>
                     <span>Projects</span>
@@ -778,8 +891,8 @@
                     <span>Tasks & Cost Centers</span>
                 </div>
                 <div class="nav-item" id="resourcesNav" style="display: none;" onclick="switchView('resources')">
-                    <span class="nav-icon">💰</span>
-                    <span>Budget</span>
+                    <span class="nav-icon">📈</span>
+                    <span>Team Capacity</span>
                 </div>
                 <div class="nav-item" id="hrNav" style="display: none;" onclick="switchView('hr')">
                     <span class="nav-icon">👔</span>
@@ -788,7 +901,7 @@
             </div>
 
             <div class="nav-section" id="financeSection" style="display: none;">
-                <div class="nav-section-title">Finance</div>
+                <div class="nav-section-title" onclick="toggleNavSection(this)"><span>Finance</span><span class="chevron">▾</span></div>
                 <div class="nav-item" id="accountsNav" style="display: none;" onclick="switchView('accounts')">
                     <span class="nav-icon">🧾</span>
                     <span>Accounts</span>
@@ -796,7 +909,7 @@
             </div>
 
             <div class="nav-section" id="adminSection" style="display: none;">
-                <div class="nav-section-title">Admin</div>
+                <div class="nav-section-title" onclick="toggleNavSection(this)"><span>Admin</span><span class="chevron">▾</span></div>
                 <div class="nav-item" id="teamNav" onclick="switchView('team')">
                     <span class="nav-icon">🔐</span>
                     <span>Team & Access</span>
@@ -829,13 +942,53 @@
                     <div class="section-number">04</div>
                     <div class="section-titles">
                         <h2>Creative Work</h2>
-                        <div class="section-subtitle">Project tracking, deliverables, and approvals</div>
+                        <div class="section-subtitle">Deliverables per client, with a checklist for each</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">This module isn't wired to real data yet. Clients, Social Media, Tasks & Cost Centers, and Team & Access are live now — Creative workflow tracking is next.</p>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">New Deliverable</div>
+                        </div>
+                        <form id="deliverableForm" onsubmit="createDeliverable(event)" style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr auto; gap:12px; align-items:end;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Title</label>
+                                <input type="text" id="newDeliverableTitle" required>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Client</label>
+                                <select id="newDeliverableClient"><option value="">— Internal —</option></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Type</label>
+                                <input type="text" id="newDeliverableType" placeholder="Logo, video, post…">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Assign To</label>
+                                <select id="newDeliverableAssignee" required></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Due</label>
+                                <input type="date" id="newDeliverableDue">
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Add</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;" id="deliverableStageFilters">
+                    <span class="stage-pill active" data-stage="all" onclick="filterDeliverablesByStage('all')">All</span>
+                    <span class="stage-pill" data-stage="brief" onclick="filterDeliverablesByStage('brief')">Brief</span>
+                    <span class="stage-pill" data-stage="in_progress" onclick="filterDeliverablesByStage('in_progress')">In Progress</span>
+                    <span class="stage-pill" data-stage="review" onclick="filterDeliverablesByStage('review')">Review</span>
+                    <span class="stage-pill" data-stage="approved" onclick="filterDeliverablesByStage('approved')">Approved</span>
+                    <span class="stage-pill" data-stage="delivered" onclick="filterDeliverablesByStage('delivered')">Delivered</span>
+                </div>
+
+                <div id="deliverablesList">
+                    <div class="card skeleton-row">Loading deliverables…</div>
                 </div>
             </div>
             <!-- SOCIAL MEDIA MANAGEMENT -->
@@ -980,12 +1133,9 @@
                 </div>
 
                 <div style="margin-top: 40px;">
-                    <div class="card">
-                        <div style="text-align: center; padding: 32px; color: var(--text-secondary);">
-                            <h3 style="color: var(--wain-navy); margin-bottom: 12px;">Welcome, <span id="welcomeName">there</span>.</h3>
-                            <p>Select a module from the sidebar to view your department-specific workflow and active projects.</p>
-                        </div>
-                    </div>
+                    <h3 style="color: var(--wain-navy); margin-bottom: 4px;">Welcome, <span id="welcomeName">there</span>.</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">Jump straight to a module below, or use the sidebar.</p>
+                    <div id="overviewModuleCards"></div>
                 </div>
             </div>
 
@@ -1189,13 +1339,93 @@
                     <div class="section-number">06</div>
                     <div class="section-titles">
                         <h2>Marketing Operations</h2>
-                        <div class="section-subtitle">Campaign management and performance</div>
+                        <div class="section-subtitle">Campaigns by channel, budget, and status</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">This module isn't wired to real data yet. Clients, Social Media, Tasks & Cost Centers, and Team & Access are live now — Marketing campaigns are next.</p>
+
+                <div class="grid grid-3col">
+                    <div class="card">
+                        <div class="stat-label">Active Campaigns</div>
+                        <div class="stat-value" id="statActiveCampaigns">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Planned Budget (Active)</div>
+                        <div class="stat-value" id="statCampaignBudget">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Total Campaigns</div>
+                        <div class="stat-value" id="statTotalCampaigns">—</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">New Campaign</div>
+                        </div>
+                        <form id="campaignForm" onsubmit="createCampaign(event)" style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr auto; gap:12px; align-items:end;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Name</label>
+                                <input type="text" id="newCampaignName" required>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Client</label>
+                                <select id="newCampaignClient"><option value="">— Internal —</option></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Channel</label>
+                                <select id="newCampaignChannel">
+                                    <option>Social</option>
+                                    <option>Email</option>
+                                    <option>Paid Ads</option>
+                                    <option>SEO</option>
+                                    <option>Events</option>
+                                    <option>PR</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Budget (₹)</label>
+                                <input type="number" id="newCampaignBudget">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Start</label>
+                                <input type="date" id="newCampaignStart">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>End</label>
+                                <input type="date" id="newCampaignEnd">
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Add</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">All Campaigns</div>
+                            <span class="card-badge" id="campaignsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Campaign</th>
+                                        <th>Client</th>
+                                        <th>Channel</th>
+                                        <th>Budget</th>
+                                        <th>Dates</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="campaignsTableBody">
+                                    <tr><td colspan="7" class="skeleton-row">Loading campaigns…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1204,13 +1434,71 @@
                     <div class="section-number">08</div>
                     <div class="section-titles">
                         <h2>All Projects</h2>
-                        <div class="section-subtitle">Master project list with status</div>
+                        <div class="section-subtitle">Named projects, grouping the tasks under them</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">Use <strong>Tasks & Cost Centers</strong> in the sidebar for real, live task assignment tracking. A full project view is next.</p>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">New Project</div>
+                        </div>
+                        <form id="projectForm" onsubmit="createProject(event)" style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr auto; gap:12px; align-items:end;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Name</label>
+                                <input type="text" id="newProjectName" required>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Client</label>
+                                <select id="newProjectClient"><option value="">— Internal —</option></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Owner</label>
+                                <select id="newProjectOwner" required></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Start</label>
+                                <input type="date" id="newProjectStart">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Due</label>
+                                <input type="date" id="newProjectDue">
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Add Project</button>
+                        </form>
+                        <div class="form-group" style="margin-top:12px;">
+                            <label>Brief (optional)</label>
+                            <input type="text" id="newProjectBrief" placeholder="What is this project for?">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">All Projects</div>
+                            <span class="card-badge" id="projectsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Client</th>
+                                        <th>Owner</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                        <th>Due</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projectsTableBody">
+                                    <tr><td colspan="7" class="skeleton-row">Loading projects…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1218,14 +1506,55 @@
                 <div class="section-header">
                     <div class="section-number">10</div>
                     <div class="section-titles">
-                        <h2>Budget & Resources</h2>
-                        <div class="section-subtitle">Financial allocation and tracking</div>
+                        <h2>Team Capacity</h2>
+                        <div class="section-subtitle">Who's overloaded, who has room — from live task assignments</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">Cost centers already exist behind the scenes (see Tasks & Cost Centers). Budget tracking against them is next.</p>
+
+                <div class="grid grid-3col">
+                    <div class="card">
+                        <div class="stat-label">Team Members</div>
+                        <div class="stat-value" id="statCapTotal">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">At Capacity</div>
+                        <div class="stat-value" id="statCapOverloaded">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Have Room</div>
+                        <div class="stat-value" id="statCapAvailable">—</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Workload by Person</div>
+                        </div>
+                        <div style="margin-bottom:12px; font-size:12px; color:var(--text-secondary);">
+                            <span class="capacity-dot" style="background:var(--success-green);"></span>Available (0–2 open tasks) &nbsp;
+                            <span class="capacity-dot" style="background:var(--warning-amber);"></span>Busy (3–5) &nbsp;
+                            <span class="capacity-dot" style="background:var(--danger-red);"></span>At capacity (6+)
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Person</th>
+                                        <th>Role</th>
+                                        <th>Open Tasks</th>
+                                        <th>Overdue</th>
+                                        <th>Done (all time)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="capacityTableBody">
+                                    <tr><td colspan="6" class="skeleton-row">Loading workload…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1558,14 +1887,68 @@
                 <div class="section-header">
                     <div class="section-number">12</div>
                     <div class="section-titles">
-                        <h2>Website Editor</h2>
-                        <div class="section-subtitle">Manage pages, content, and the marketing website</div>
+                        <h2>Website Tracker</h2>
+                        <div class="section-subtitle">What needs work on wearein.in — this doesn't edit the live site, it tracks the work</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
-                <div class="card" style="text-align: center; padding: 48px;">
-                    <h3 style="color: var(--wain-navy); margin-bottom: 8px;">Coming soon</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px;">This module isn't wired to real data yet. Clients, Social Media, Tasks & Cost Centers, and Team & Access are live now — the website editor is next on the roadmap.</p>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Add a Page</div>
+                        </div>
+                        <form id="websitePageForm" onsubmit="createWebsitePage(event)" style="display:grid; grid-template-columns: 1.5fr 1.5fr 1fr 1fr auto; gap:12px; align-items:end;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Page Name</label>
+                                <input type="text" id="newPageName" required>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>URL</label>
+                                <input type="text" id="newPageUrl" placeholder="/growth-diagnosis">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Status</label>
+                                <select id="newPageStatus">
+                                    <option value="live">Live</option>
+                                    <option value="needs_update">Needs Update</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="review">In Review</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Assign To</label>
+                                <select id="newPageAssignee"><option value="">— Unassigned —</option></select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Add Page</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Pages</div>
+                            <span class="card-badge" id="websitePagesCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Page</th>
+                                        <th>URL</th>
+                                        <th>Assigned To</th>
+                                        <th>Status</th>
+                                        <th>Updated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="websitePagesTableBody">
+                                    <tr><td colspan="6" class="skeleton-row">Loading pages…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1719,6 +2102,27 @@
         let allExpenses = [];
         let allLeaveRequests = [];
         let allAttendance = [];
+        let allProjects = [];
+        let allDeliverables = [];
+        let deliverableChecklists = {};
+        let deliverableStageFilter = 'all';
+        let allCampaigns = [];
+        let allWebsitePages = [];
+        const DELIVERABLE_STAGE_LABELS = { brief: 'Brief', in_progress: 'In Progress', review: 'Review', approved: 'Approved', delivered: 'Delivered' };
+        const DELIVERABLE_STAGE_CLASS = { brief: 'status-pending', in_progress: 'status-in-progress', review: 'status-in-progress', approved: 'status-active', delivered: 'status-active' };
+        const DELIVERABLE_NEXT_STAGE = { brief: 'in_progress', in_progress: 'review', review: 'approved', approved: 'delivered' };
+        const OVERVIEW_MODULE_CARDS = [
+            { module: 'sales', view: 'sales', icon: '🎯', label: 'CRM & Pipeline' },
+            { module: 'clients', view: 'clients', icon: '🏢', label: 'Clients' },
+            { module: 'creative', view: 'creative', icon: '🎨', label: 'Creative' },
+            { module: 'social', view: 'social', icon: '📱', label: 'Social Media' },
+            { module: 'marketing', view: 'marketing', icon: '📣', label: 'Marketing' },
+            { module: 'website', view: 'website', icon: '🌐', label: 'Website Tracker' },
+            { module: 'projects', view: 'projects', icon: '📁', label: 'Projects' },
+            { module: 'resources', view: 'resources', icon: '📈', label: 'Team Capacity' },
+            { module: 'hr', view: 'hr', icon: '👥', label: 'Team & HR' },
+            { module: 'accounts', view: 'accounts', icon: '💳', label: 'Accounts' }
+        ];
         let leadStageFilter = 'all';
         const LEAD_STAGE_LABELS = { new: 'New', contacted: 'Contacted', proposal: 'Proposal', negotiation: 'Negotiation', won: 'Won', lost: 'Lost' };
         const LEAD_STAGE_CLASS = { new: 'status-pending', contacted: 'status-in-progress', proposal: 'status-in-progress', negotiation: 'status-in-progress', won: 'status-active', lost: 'status-overdue' };
@@ -1726,17 +2130,17 @@
 
         const MODULE_TITLES = {
             'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
-            'creative': { title: 'Creative Work', subtitle: 'Project tracking, deliverables, and approvals' },
+            'creative': { title: 'Creative Work', subtitle: 'Deliverables per client, with a checklist for each' },
             'social': { title: 'Social Media Posting', subtitle: 'Client accounts, content calendar, and post management' },
-            'marketing': { title: 'Marketing Operations', subtitle: 'Campaign management and performance' },
+            'marketing': { title: 'Marketing Operations', subtitle: 'Campaigns by channel, budget, and status' },
             'sales': { title: 'CRM & Pipeline', subtitle: 'Leads, deals, and the path to becoming a client' },
             'clients': { title: 'Client Management', subtitle: 'Every WAIN client, live from the database' },
-            'projects': { title: 'All Projects', subtitle: 'Master project list with status' },
+            'projects': { title: 'All Projects', subtitle: 'Named projects, grouping the tasks under them' },
             'tasks': { title: 'Tasks & Cost Centers', subtitle: "Who's assigned to what, and under which cost center" },
-            'resources': { title: 'Budget & Resources', subtitle: 'Financial allocation and tracking' },
+            'resources': { title: 'Team Capacity', subtitle: "Who's overloaded, who has room — from live task assignments" },
             'hr': { title: 'Team & HR', subtitle: 'Directory, leave requests, and attendance' },
             'accounts': { title: 'Accounts', subtitle: 'Invoicing, expenses, and profit & loss by client' },
-            'website': { title: 'Website Editor', subtitle: 'Manage pages, content, and marketing website' },
+            'website': { title: 'Website Tracker', subtitle: "What needs work on wearein.in — this doesn't edit the live site, it tracks the work" },
             'team': { title: 'Team & Access', subtitle: 'Manage roles, module access, and logins' }
         };
 
@@ -1838,6 +2242,41 @@
             document.getElementById('hrNav').style.display = modules.includes('hr') ? 'flex' : 'none';
             document.getElementById('financeSection').style.display = modules.includes('accounts') ? 'block' : 'none';
             document.getElementById('accountsNav').style.display = modules.includes('accounts') ? 'flex' : 'none';
+            restoreNavSections();
+        }
+
+        // ---------- COLLAPSIBLE NAV SECTIONS ----------
+        function toggleNavSection(titleEl) {
+            const section = titleEl.closest('.nav-section');
+            if (!section) return;
+            section.classList.toggle('collapsed');
+            persistNavSectionState(titleEl, section.classList.contains('collapsed'));
+        }
+
+        function persistNavSectionState(titleEl, isCollapsed) {
+            try {
+                const labelEl = titleEl.querySelector('span');
+                if (!labelEl) return;
+                const label = labelEl.textContent;
+                const collapsed = JSON.parse(localStorage.getItem('wainNavCollapsed') || '[]');
+                const idx = collapsed.indexOf(label);
+                if (isCollapsed && idx === -1) collapsed.push(label);
+                if (!isCollapsed && idx !== -1) collapsed.splice(idx, 1);
+                localStorage.setItem('wainNavCollapsed', JSON.stringify(collapsed));
+            } catch (e) { /* localStorage unavailable — collapse just won't persist */ }
+        }
+
+        function restoreNavSections() {
+            try {
+                const collapsed = JSON.parse(localStorage.getItem('wainNavCollapsed') || '[]');
+                if (!collapsed.length) return;
+                document.querySelectorAll('.nav-section-title').forEach(titleEl => {
+                    const labelEl = titleEl.querySelector('span');
+                    if (labelEl && collapsed.includes(labelEl.textContent)) {
+                        titleEl.closest('.nav-section').classList.add('collapsed');
+                    }
+                });
+            } catch (e) { /* ignore */ }
         }
 
         function switchView(viewName) {
@@ -1878,6 +2317,11 @@
             if (viewName === 'sales') renderLeads();
             if (viewName === 'accounts') renderAccounts();
             if (viewName === 'hr') renderHR();
+            if (viewName === 'projects') renderProjects();
+            if (viewName === 'resources') renderCapacity();
+            if (viewName === 'creative') renderDeliverables();
+            if (viewName === 'marketing') renderCampaigns();
+            if (viewName === 'website') renderWebsitePages();
         }
 
         // ---------- DATA LOADING ----------
@@ -1907,18 +2351,31 @@
 
         function populateClientDropdowns() {
             const opts = allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+            const internalOpts = '<option value="">— Internal —</option>' + opts;
             const socialSel = document.getElementById('newSocialClient');
             if (socialSel) socialSel.innerHTML = opts;
             const taskSel = document.getElementById('newTaskClient');
-            if (taskSel) taskSel.innerHTML = '<option value="">— Internal —</option>' + opts;
+            if (taskSel) taskSel.innerHTML = internalOpts;
             const invoiceSel = document.getElementById('newInvoiceClient');
             if (invoiceSel) invoiceSel.innerHTML = opts;
+            const projectSel = document.getElementById('newProjectClient');
+            if (projectSel) projectSel.innerHTML = internalOpts;
+            const deliverableSel = document.getElementById('newDeliverableClient');
+            if (deliverableSel) deliverableSel.innerHTML = internalOpts;
+            const campaignSel = document.getElementById('newCampaignClient');
+            if (campaignSel) campaignSel.innerHTML = internalOpts;
         }
 
         function populateAssigneeDropdowns() {
             const opts = allEmployees.filter(e => e.active).map(e => `<option value="${e.id}">${escapeHtml(e.name)} — ${escapeHtml(e.role)}</option>`).join('');
             const sel = document.getElementById('newTaskAssignee');
             if (sel) sel.innerHTML = opts;
+            const projectOwnerSel = document.getElementById('newProjectOwner');
+            if (projectOwnerSel) projectOwnerSel.innerHTML = opts;
+            const deliverableSel = document.getElementById('newDeliverableAssignee');
+            if (deliverableSel) deliverableSel.innerHTML = opts;
+            const pageSel = document.getElementById('newPageAssignee');
+            if (pageSel) pageSel.innerHTML = '<option value="">— Unassigned —</option>' + opts;
         }
 
         function populateCostCenterDropdowns() {
@@ -1947,6 +2404,22 @@
                     ${t.due_date ? ' <span style="color:var(--text-secondary); font-size:12px;">Due ' + new Date(t.due_date).toLocaleDateString() + '</span>' : ''}
                 </div>
             `).join('') : '<div style="color:var(--text-secondary);">No open tasks assigned to you right now.</div>';
+            renderOverviewModuleCards();
+        }
+
+        function renderOverviewModuleCards() {
+            const container = document.getElementById('overviewModuleCards');
+            if (!container || !currentEmployee) return;
+            const modules = currentEmployee.modules || [];
+            const isSuperadmin = currentEmployee.role === 'Superadmin';
+            const cards = OVERVIEW_MODULE_CARDS.filter(c => modules.includes(c.module) || (c.module === 'accounts' && isSuperadmin));
+            if (!cards.length) { container.innerHTML = ''; return; }
+            container.innerHTML = '<div class="kpi-row">' + cards.map(c => `
+                <div class="kpi-card" onclick="switchView('${c.view}')">
+                    <div class="stat-label">${c.icon} ${escapeHtml(c.label)}</div>
+                    <div class="stat-value" style="font-size: 14px; color: var(--wain-cyan);">Open →</div>
+                </div>
+            `).join('') + '</div>';
         }
 
         // ---------- CLIENTS ----------
@@ -2623,6 +3096,353 @@
                     </tr>
                 `).join('');
             }
+        }
+
+        // ---------- PROJECTS ----------
+        async function loadProjects() {
+            const { data, error } = await db.from('projects')
+                .select('*, clients(name), employees!projects_owner_id_fkey(name)')
+                .order('created_at', { ascending: false });
+            if (!error) allProjects = data || [];
+        }
+
+        async function createProject(event) {
+            event.preventDefault();
+            const name = document.getElementById('newProjectName').value.trim();
+            const client_id = document.getElementById('newProjectClient').value || null;
+            const owner_id = document.getElementById('newProjectOwner').value;
+            const start_date = document.getElementById('newProjectStart').value || null;
+            const due_date = document.getElementById('newProjectDue').value || null;
+            const brief = document.getElementById('newProjectBrief').value.trim();
+            if (!name || !owner_id) return;
+
+            const client = allClients.find(c => c.id === client_id);
+            const { error } = await db.from('projects').insert({
+                name, client_id, cost_center_id: client ? client.cost_center_id : null,
+                owner_id, start_date, due_date, brief: brief || null, created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not add project: ' + error.message); return; }
+            document.getElementById('projectForm').reset();
+            document.getElementById('newProjectBrief').value = '';
+            await renderProjects();
+        }
+
+        async function updateProjectStatus(id, status) {
+            const { error } = await db.from('projects').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update project: ' + error.message); return; }
+            await renderProjects();
+        }
+
+        async function renderProjects() {
+            const body = document.getElementById('projectsTableBody');
+            if (!body) return;
+            await loadProjects();
+            document.getElementById('projectsCount').textContent = allProjects.length + (allProjects.length === 1 ? ' project' : ' projects');
+            if (!allProjects.length) {
+                body.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No projects yet — add the first one above.</td></tr>';
+                return;
+            }
+            const { data: projTasks } = await db.from('tasks').select('project_id, status').not('project_id', 'is', null);
+            const progress = {};
+            (projTasks || []).forEach(t => {
+                if (!progress[t.project_id]) progress[t.project_id] = { total: 0, done: 0 };
+                progress[t.project_id].total++;
+                if (t.status === 'done') progress[t.project_id].done++;
+            });
+            const statusClass = { planning: 'status-pending', active: 'status-in-progress', review: 'status-in-progress', completed: 'status-active', on_hold: 'status-overdue' };
+            body.innerHTML = allProjects.map(p => {
+                const pr = progress[p.id];
+                const pct = pr && pr.total ? Math.round((pr.done / pr.total) * 100) : 0;
+                return `
+                <tr>
+                    <td><strong>${escapeHtml(p.name)}</strong>${p.brief ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">' + escapeHtml(p.brief) + '</div>' : ''}</td>
+                    <td>${p.clients ? escapeHtml(p.clients.name) : 'Internal'}</td>
+                    <td>${p.employees ? escapeHtml(p.employees.name) : '—'}</td>
+                    <td>${pr && pr.total ? pct + '% (' + pr.done + '/' + pr.total + ')' : 'No tasks yet'}</td>
+                    <td><span class="status-badge ${statusClass[p.status] || 'status-pending'}">${escapeHtml((p.status || 'planning').replace('_',' '))}</span></td>
+                    <td>${p.due_date ? new Date(p.due_date).toLocaleDateString() : '—'}</td>
+                    <td>
+                        <select onchange="updateProjectStatus('${p.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px;">
+                            <option value="planning" ${p.status==='planning'?'selected':''}>Planning</option>
+                            <option value="active" ${p.status==='active'?'selected':''}>Active</option>
+                            <option value="review" ${p.status==='review'?'selected':''}>Review</option>
+                            <option value="completed" ${p.status==='completed'?'selected':''}>Completed</option>
+                            <option value="on_hold" ${p.status==='on_hold'?'selected':''}>On Hold</option>
+                        </select>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ---------- TEAM CAPACITY ----------
+        async function renderCapacity() {
+            const body = document.getElementById('capacityTableBody');
+            if (!body) return;
+            const { data, error } = await db.from('task_assignments').select('employee_id, employee_name, employee_role, status, due_date');
+            if (error) { body.innerHTML = `<tr><td colspan="6">Error: ${escapeHtml(error.message)}</td></tr>`; return; }
+
+            const today = new Date().toISOString().slice(0, 10);
+            const byEmp = {};
+            allEmployees.filter(e => e.active).forEach(e => {
+                byEmp[e.id] = { name: e.name, role: e.role, open: 0, overdue: 0, done: 0 };
+            });
+            (data || []).forEach(t => {
+                if (!t.employee_id) return;
+                if (!byEmp[t.employee_id]) byEmp[t.employee_id] = { name: t.employee_name, role: t.employee_role, open: 0, overdue: 0, done: 0 };
+                if (t.status === 'done') { byEmp[t.employee_id].done++; return; }
+                byEmp[t.employee_id].open++;
+                if (t.due_date && t.due_date < today) byEmp[t.employee_id].overdue++;
+            });
+            const rows = Object.values(byEmp).sort((a, b) => b.open - a.open);
+            document.getElementById('statCapTotal').textContent = rows.length;
+            document.getElementById('statCapOverloaded').textContent = rows.filter(r => r.open >= 6).length;
+            document.getElementById('statCapAvailable').textContent = rows.filter(r => r.open <= 2).length;
+
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No active team members yet.</td></tr>';
+                return;
+            }
+            body.innerHTML = rows.map(r => {
+                const dot = r.open >= 6 ? 'var(--danger-red)' : (r.open >= 3 ? 'var(--warning-amber)' : 'var(--success-green)');
+                const label = r.open >= 6 ? 'At capacity' : (r.open >= 3 ? 'Busy' : 'Available');
+                return `
+                <tr>
+                    <td><strong>${escapeHtml(r.name)}</strong></td>
+                    <td>${escapeHtml(r.role)}</td>
+                    <td>${r.open}</td>
+                    <td>${r.overdue ? '<span style="color:var(--danger-red); font-weight:600;">' + r.overdue + '</span>' : '0'}</td>
+                    <td>${r.done}</td>
+                    <td><span class="capacity-dot" style="background:${dot};"></span>${label}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ---------- CREATIVE DELIVERABLES ----------
+        async function loadDeliverables() {
+            const { data, error } = await db.from('creative_deliverables')
+                .select('*, clients(name), employees!creative_deliverables_assigned_to_fkey(name)')
+                .order('created_at', { ascending: false });
+            allDeliverables = data || [];
+            const { data: items } = await db.from('creative_checklist_items').select('*').order('created_at');
+            deliverableChecklists = {};
+            (items || []).forEach(i => {
+                if (!deliverableChecklists[i.deliverable_id]) deliverableChecklists[i.deliverable_id] = [];
+                deliverableChecklists[i.deliverable_id].push(i);
+            });
+        }
+
+        async function createDeliverable(event) {
+            event.preventDefault();
+            const title = document.getElementById('newDeliverableTitle').value.trim();
+            const client_id = document.getElementById('newDeliverableClient').value || null;
+            const deliverable_type = document.getElementById('newDeliverableType').value.trim();
+            const assigned_to = document.getElementById('newDeliverableAssignee').value;
+            const due_date = document.getElementById('newDeliverableDue').value || null;
+            if (!title || !assigned_to) return;
+
+            const { error } = await db.from('creative_deliverables').insert({
+                title, client_id, deliverable_type: deliverable_type || null, assigned_to, due_date, created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not add deliverable: ' + error.message); return; }
+            document.getElementById('deliverableForm').reset();
+            await renderDeliverables();
+        }
+
+        function filterDeliverablesByStage(stage) {
+            deliverableStageFilter = stage;
+            document.querySelectorAll('#deliverableStageFilters .stage-pill').forEach(p => p.classList.toggle('active', p.dataset.stage === stage));
+            renderDeliverablesList();
+        }
+
+        async function renderDeliverables() {
+            await loadDeliverables();
+            renderDeliverablesList();
+        }
+
+        function renderDeliverablesList() {
+            const container = document.getElementById('deliverablesList');
+            if (!container) return;
+            const rows = deliverableStageFilter === 'all' ? allDeliverables : allDeliverables.filter(d => d.status === deliverableStageFilter);
+            if (!rows.length) {
+                container.innerHTML = '<div class="approval-item" style="text-align:center; color:var(--text-secondary);">No deliverables in this stage.</div>';
+                return;
+            }
+            container.innerHTML = rows.map(d => {
+                const items = deliverableChecklists[d.id] || [];
+                const done = items.filter(i => i.done).length;
+                const next = DELIVERABLE_NEXT_STAGE[d.status];
+                return `
+                <div class="approval-item">
+                    <div class="approval-header">
+                        <div>
+                            <div class="approval-title">${escapeHtml(d.title)}${d.deliverable_type ? ' <span style="font-weight:400; color:var(--text-secondary); font-size:12px;">— ' + escapeHtml(d.deliverable_type) + '</span>' : ''}</div>
+                            <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+                                ${d.clients ? escapeHtml(d.clients.name) : 'Internal'} · Assigned to ${d.employees ? escapeHtml(d.employees.name) : '—'}
+                                ${d.due_date ? ' · Due ' + new Date(d.due_date).toLocaleDateString() : ''}
+                                ${items.length ? ' · ' + done + '/' + items.length + ' checklist items done' : ''}
+                            </div>
+                        </div>
+                        <span class="status-badge ${DELIVERABLE_STAGE_CLASS[d.status] || 'status-pending'}">${DELIVERABLE_STAGE_LABELS[d.status] || d.status}</span>
+                    </div>
+                    <div class="deliverable-checklist">
+                        ${items.map(i => `
+                            <div class="checklist-row ${i.done ? 'done' : ''}">
+                                <input type="checkbox" ${i.done ? 'checked' : ''} onchange="toggleChecklistItem('${i.id}', this.checked)">
+                                <span>${escapeHtml(i.label)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="checklist-add">
+                        <input type="text" placeholder="Add a checklist item…" onkeydown="if(event.key==='Enter'){event.preventDefault(); addChecklistItem('${d.id}', this);}">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="addChecklistItem('${d.id}', this.previousElementSibling)">+ Add</button>
+                    </div>
+                    <div style="margin-top:12px; display:flex; gap:8px;">
+                        ${next ? `<button class="btn btn-sm btn-primary" onclick="advanceDeliverable('${d.id}', '${next}')">Move to ${DELIVERABLE_STAGE_LABELS[next]}</button>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function addChecklistItem(deliverableId, inputEl) {
+            const label = inputEl.value.trim();
+            if (!label) return;
+            const { error } = await db.from('creative_checklist_items').insert({ deliverable_id: deliverableId, label });
+            if (error) { alert('Could not add checklist item: ' + error.message); return; }
+            await renderDeliverables();
+        }
+
+        async function toggleChecklistItem(id, done) {
+            const { error } = await db.from('creative_checklist_items').update({ done }).eq('id', id);
+            if (error) { alert('Could not update item: ' + error.message); return; }
+            await renderDeliverables();
+        }
+
+        async function advanceDeliverable(id, nextStage) {
+            const { error } = await db.from('creative_deliverables').update({ status: nextStage, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await renderDeliverables();
+        }
+
+        // ---------- MARKETING CAMPAIGNS ----------
+        async function loadCampaigns() {
+            const { data, error } = await db.from('campaigns').select('*, clients(name)').order('created_at', { ascending: false });
+            if (!error) allCampaigns = data || [];
+        }
+
+        async function createCampaign(event) {
+            event.preventDefault();
+            const name = document.getElementById('newCampaignName').value.trim();
+            const client_id = document.getElementById('newCampaignClient').value || null;
+            const channel = document.getElementById('newCampaignChannel').value;
+            const budget = parseFloat(document.getElementById('newCampaignBudget').value) || null;
+            const start_date = document.getElementById('newCampaignStart').value || null;
+            const end_date = document.getElementById('newCampaignEnd').value || null;
+            if (!name) return;
+
+            const { error } = await db.from('campaigns').insert({
+                name, client_id, channel, budget, start_date, end_date, owner_id: currentEmployee.id, created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not add campaign: ' + error.message); return; }
+            document.getElementById('campaignForm').reset();
+            await renderCampaigns();
+        }
+
+        async function updateCampaignStatus(id, status) {
+            const { error } = await db.from('campaigns').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update campaign: ' + error.message); return; }
+            await renderCampaigns();
+        }
+
+        async function renderCampaigns() {
+            await loadCampaigns();
+            const body = document.getElementById('campaignsTableBody');
+            if (!body) return;
+            document.getElementById('campaignsCount').textContent = allCampaigns.length + (allCampaigns.length === 1 ? ' campaign' : ' campaigns');
+            const active = allCampaigns.filter(c => c.status === 'active');
+            document.getElementById('statActiveCampaigns').textContent = active.length;
+            document.getElementById('statCampaignBudget').textContent = '₹' + active.reduce((s, c) => s + (Number(c.budget) || 0), 0).toLocaleString('en-IN');
+            document.getElementById('statTotalCampaigns').textContent = allCampaigns.length;
+
+            if (!allCampaigns.length) {
+                body.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No campaigns yet — add the first one above.</td></tr>';
+                return;
+            }
+            const statusClass = { planning: 'status-pending', active: 'status-in-progress', paused: 'status-overdue', completed: 'status-active' };
+            body.innerHTML = allCampaigns.map(c => `
+                <tr>
+                    <td><strong>${escapeHtml(c.name)}</strong></td>
+                    <td>${c.clients ? escapeHtml(c.clients.name) : 'Internal'}</td>
+                    <td>${escapeHtml(c.channel) || '—'}</td>
+                    <td>${c.budget ? '₹' + Number(c.budget).toLocaleString('en-IN') : '—'}</td>
+                    <td>${c.start_date ? new Date(c.start_date).toLocaleDateString() : '—'}${c.end_date ? ' → ' + new Date(c.end_date).toLocaleDateString() : ''}</td>
+                    <td><span class="status-badge ${statusClass[c.status] || 'status-pending'}">${escapeHtml(c.status)}</span></td>
+                    <td>
+                        <select onchange="updateCampaignStatus('${c.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px;">
+                            <option value="planning" ${c.status==='planning'?'selected':''}>Planning</option>
+                            <option value="active" ${c.status==='active'?'selected':''}>Active</option>
+                            <option value="paused" ${c.status==='paused'?'selected':''}>Paused</option>
+                            <option value="completed" ${c.status==='completed'?'selected':''}>Completed</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ---------- WEBSITE TRACKER ----------
+        async function loadWebsitePages() {
+            const { data, error } = await db.from('website_pages').select('*, employees(name)').order('page_name');
+            if (!error) allWebsitePages = data || [];
+        }
+
+        async function createWebsitePage(event) {
+            event.preventDefault();
+            const page_name = document.getElementById('newPageName').value.trim();
+            const page_url = document.getElementById('newPageUrl').value.trim();
+            const status = document.getElementById('newPageStatus').value;
+            const assigned_to = document.getElementById('newPageAssignee').value || null;
+            if (!page_name) return;
+
+            const { error } = await db.from('website_pages').insert({
+                page_name, page_url: page_url || null, status, assigned_to, created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not add page: ' + error.message); return; }
+            document.getElementById('websitePageForm').reset();
+            await renderWebsitePages();
+        }
+
+        async function updateWebsitePageStatus(id, status) {
+            const { error } = await db.from('website_pages').update({ status, last_updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update page: ' + error.message); return; }
+            await renderWebsitePages();
+        }
+
+        async function renderWebsitePages() {
+            await loadWebsitePages();
+            const body = document.getElementById('websitePagesTableBody');
+            if (!body) return;
+            document.getElementById('websitePagesCount').textContent = allWebsitePages.length + (allWebsitePages.length === 1 ? ' page' : ' pages');
+            if (!allWebsitePages.length) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No pages tracked yet — add the first one above.</td></tr>';
+                return;
+            }
+            const statusClass = { live: 'status-active', needs_update: 'status-overdue', in_progress: 'status-in-progress', review: 'status-in-progress' };
+            body.innerHTML = allWebsitePages.map(p => `
+                <tr>
+                    <td><strong>${escapeHtml(p.page_name)}</strong></td>
+                    <td>${p.page_url ? '<code style="font-size:11px;">' + escapeHtml(p.page_url) + '</code>' : '—'}</td>
+                    <td>${p.employees ? escapeHtml(p.employees.name) : '— Unassigned —'}</td>
+                    <td><span class="status-badge ${statusClass[p.status] || 'status-pending'}">${escapeHtml((p.status||'live').replace('_',' '))}</span></td>
+                    <td>${p.last_updated_at ? new Date(p.last_updated_at).toLocaleDateString() : '—'}</td>
+                    <td>
+                        <select onchange="updateWebsitePageStatus('${p.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px;">
+                            <option value="live" ${p.status==='live'?'selected':''}>Live</option>
+                            <option value="needs_update" ${p.status==='needs_update'?'selected':''}>Needs Update</option>
+                            <option value="in_progress" ${p.status==='in_progress'?'selected':''}>In Progress</option>
+                            <option value="review" ${p.status==='review'?'selected':''}>In Review</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
         }
 
         boot();
