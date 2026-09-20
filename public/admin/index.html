@@ -244,6 +244,29 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
+        .header-left { display: flex; align-items: center; gap: 12px; }
+
+        .hamburger-btn {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--wain-border);
+            color: var(--wain-navy);
+            font-size: 18px;
+            line-height: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.55);
+            z-index: 1150;
+        }
+
         .header-content h1 {
             font-size: 24px;
             font-weight: 700;
@@ -774,13 +797,25 @@
         }
 
         @media (max-width: 768px) {
-            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .hamburger-btn { display: inline-flex; align-items: center; justify-content: center; }
+            .sidebar {
+                width: 280px;
+                max-width: 85vw;
+                transform: translateX(-100%);
+                transition: transform 0.25s ease;
+                z-index: 1300;
+                box-shadow: 4px 0 24px rgba(0,0,0,0.35);
+            }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-backdrop.open { display: block; }
             .main { margin-left: 0; }
-            .sidebar-nav { display: flex; overflow-x: auto; padding: 0; }
-            .nav-section { padding: 0; display: inline-flex; gap: 0; border: none; }
-            .nav-section-title { display: none; }
-            .nav-item { flex-shrink: 0; border-left: none; border-bottom: 3px solid transparent; border-radius: 0; }
-            .nav-item.active { border-bottom-color: var(--wain-cyan); }
+            .sidebar-nav { display: block; overflow-x: visible; padding: 16px 0; }
+            .nav-section { padding: 16px 0; display: block; gap: 0; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .nav-section-title { display: block; }
+            .nav-item { flex-shrink: unset; border-left: 3px solid transparent; border-bottom: none; border-radius: 0; }
+            .nav-item.active { border-left-color: var(--wain-cyan); border-bottom-color: transparent; }
+            .header { padding: 16px; }
+            .header-content h1 { font-size: 18px; }
             .content { padding: 20px; }
             .grid { grid-template-columns: 1fr; }
             .grid-2col, .grid-3col { grid-template-columns: 1fr; }
@@ -1016,12 +1051,17 @@
         </nav>
     </div>
 
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileNav()"></div>
+
     <!-- MAIN CONTENT -->
     <div class="main">
         <div class="header">
-            <div class="header-content">
-                <h1 id="pageTitle">My Dashboard</h1>
-                <div class="header-subtitle" id="pageSubtitle">Personalized view for your role</div>
+            <div class="header-left">
+                <button class="hamburger-btn" onclick="toggleMobileNav()" aria-label="Open menu">☰</button>
+                <div class="header-content">
+                    <h1 id="pageTitle">My Dashboard</h1>
+                    <div class="header-subtitle" id="pageSubtitle">Personalized view for your role</div>
+                </div>
             </div>
             <div class="header-actions">
                 <button class="btn btn-secondary btn-sm" onclick="switchView('overview')">Refresh</button>
@@ -2464,6 +2504,16 @@
             } catch (e) { /* ignore */ }
         }
 
+        function toggleMobileNav() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.getElementById('sidebarBackdrop').classList.toggle('open');
+        }
+
+        function closeMobileNav() {
+            document.querySelector('.sidebar').classList.remove('open');
+            document.getElementById('sidebarBackdrop').classList.remove('open');
+        }
+
         function switchView(viewName) {
             if (!currentEmployee) return;
             const modules = currentEmployee.modules || [];
@@ -2480,6 +2530,7 @@
             document.querySelectorAll('.content-view').forEach(v => v.classList.remove('active'));
             const view = document.getElementById(viewName);
             if (view) view.classList.add('active');
+            closeMobileNav();
 
             document.querySelectorAll('.nav-item[onclick]').forEach(item => {
                 const m = item.getAttribute('onclick').match(/switchView\('([^']+)'\)/);
