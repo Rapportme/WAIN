@@ -2217,6 +2217,28 @@
                             Name, role, department and module access are managed by Team & HR — ask your admin to change those.
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">Change Password</div></div>
+                        <form onsubmit="changeOwnPassword(event)">
+                            <div class="form-group">
+                                <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Current Password</label>
+                                <input type="password" id="pwCurrent" autocomplete="current-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">New Password</label>
+                                <input type="password" id="pwNew" autocomplete="new-password" minlength="8" required>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Confirm New Password</label>
+                                <input type="password" id="pwConfirm" autocomplete="new-password" minlength="8" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Update Password</button>
+                            <div id="pwChangeStatus" style="font-size:12px; margin-top:8px;"></div>
+                        </form>
+                        <div style="margin-top:16px; font-size:12px; color:var(--text-secondary); border-top:1px solid var(--wain-border); padding-top:12px;">
+                            At least 8 characters. You'll stay logged in on this device after changing it.
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -4241,6 +4263,56 @@
             statusEl.textContent = 'Photo updated.';
             input.value = '';
             renderProfile();
+        }
+
+        async function changeOwnPassword(event) {
+            event.preventDefault();
+            const currentPw = document.getElementById('pwCurrent').value;
+            const newPw = document.getElementById('pwNew').value;
+            const confirmPw = document.getElementById('pwConfirm').value;
+            const statusEl = document.getElementById('pwChangeStatus');
+            const btn = event.target.querySelector('button[type="submit"]');
+
+            statusEl.style.color = 'var(--danger-red)';
+
+            if (newPw.length < 8) { statusEl.textContent = 'New password must be at least 8 characters.'; return; }
+            if (newPw !== confirmPw) { statusEl.textContent = 'New passwords do not match.'; return; }
+            if (newPw === currentPw) { statusEl.textContent = 'New password must be different from your current password.'; return; }
+
+            btn.disabled = true;
+            statusEl.style.color = 'var(--text-secondary)';
+            statusEl.textContent = 'Checking current password…';
+
+            const { data: { user } } = await db.auth.getUser();
+            if (!user || !user.email) {
+                statusEl.style.color = 'var(--danger-red)';
+                statusEl.textContent = 'Could not verify your session. Please log out and log back in, then try again.';
+                btn.disabled = false;
+                return;
+            }
+
+            const { error: verifyErr } = await db.auth.signInWithPassword({ email: user.email, password: currentPw });
+            if (verifyErr) {
+                statusEl.style.color = 'var(--danger-red)';
+                statusEl.textContent = 'Current password is incorrect.';
+                btn.disabled = false;
+                return;
+            }
+
+            statusEl.textContent = 'Updating password…';
+            const { error: updateErr } = await db.auth.updateUser({ password: newPw });
+            btn.disabled = false;
+            if (updateErr) {
+                statusEl.style.color = 'var(--danger-red)';
+                statusEl.textContent = 'Could not update password: ' + updateErr.message;
+                return;
+            }
+
+            statusEl.style.color = 'var(--success-green)';
+            statusEl.textContent = 'Password updated.';
+            document.getElementById('pwCurrent').value = '';
+            document.getElementById('pwNew').value = '';
+            document.getElementById('pwConfirm').value = '';
         }
 
         boot();
