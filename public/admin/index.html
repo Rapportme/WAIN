@@ -1196,99 +1196,218 @@
             <div id="social" class="content-view">
                 <div class="section-header">
                     <div class="section-titles">
-                        <h2>Social Media Posting</h2>
-                        <div class="section-subtitle">Client accounts, content calendar, and post management</div>
+                        <h2>Social Media</h2>
+                        <div class="section-subtitle">Channels, publishing queue and performance — per client. Content is produced in Creative Work; this is where it goes out and gets measured.</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
 
-                <div class="grid grid-full">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Add a Social Account</div>
+                <div class="kpi-row" id="socialStats">
+                    <div class="kpi-card" onclick="switchSocialTab('channels')"><div class="stat-label">Active channels</div><div class="stat-value" id="statSocialChannels">—</div></div>
+                    <div class="kpi-card" onclick="switchSocialTab('queue')"><div class="stat-label">Scheduled (next 7 days)</div><div class="stat-value" id="statSocialScheduled">—</div></div>
+                    <div class="kpi-card" onclick="switchSocialTab('queue')"><div class="stat-label">Overdue (not published)</div><div class="stat-value" id="statSocialOverdue" style="color:var(--warning-amber);">—</div></div>
+                    <div class="kpi-card" onclick="switchSocialTab('performance')"><div class="stat-label">Published this month</div><div class="stat-value" id="statSocialPublished">—</div></div>
+                    <div class="kpi-card" onclick="switchSocialTab('performance')"><div class="stat-label">Awaiting metrics</div><div class="stat-value" id="statSocialNoMetrics">—</div></div>
+                </div>
+
+                <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;" id="socialTabs">
+                    <span class="stage-pill active" data-stab="queue" onclick="switchSocialTab('queue')">Publishing Queue</span>
+                    <span class="stage-pill" data-stab="channels" onclick="switchSocialTab('channels')">Channels</span>
+                    <span class="stage-pill" data-stab="performance" onclick="switchSocialTab('performance')">Performance</span>
+                </div>
+
+                <!-- QUEUE -->
+                <div id="socialTabQueue">
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Schedule a Post</div>
+                                <span style="font-size:11px; color:var(--text-secondary);">Pick the client, tick the channels it goes out on, optionally link the Creative Work deliverable it came from</span>
+                            </div>
+                            <form id="postForm" onsubmit="createPost(event)" style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:12px; align-items:end;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Client</label>
+                                    <select id="newPostClient" required onchange="onPostClientChange()"><option value="">— Select client —</option></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>From deliverable (optional)</label>
+                                    <select id="newPostDeliverable" onchange="onPostDeliverableChange()"><option value="">— None / quick post —</option></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Post type</label>
+                                    <select id="newPostType">
+                                        <option value="">— Select —</option>
+                                        <option value="Story">Story</option>
+                                        <option value="Post">Post</option>
+                                        <option value="Carousel">Carousel</option>
+                                        <option value="AI Video">AI Video</option>
+                                        <option value="Article">Article</option>
+                                        <option value="Reels">Reels</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Scheduled for</label>
+                                    <input type="datetime-local" id="newPostSchedule">
+                                </div>
+                                <div class="form-group" style="margin:0; grid-column: 1 / -1;">
+                                    <label>Channels</label>
+                                    <div id="newPostChannels" class="check-group"><span style="color:var(--text-secondary); font-size:12px;">Select a client to see its channels</span></div>
+                                </div>
+                                <div class="form-group" style="margin:0; grid-column: 1 / 4;">
+                                    <label>Caption / content</label>
+                                    <textarea id="newPostContent" rows="2" style="padding:10px 12px; border:1px solid var(--wain-border); border-radius:6px; font-family:inherit; font-size:14px;" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">+ Add to Queue</button>
+                            </form>
                         </div>
-                        <form id="socialAccountForm" onsubmit="createSocialAccount(event)" style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap:12px; align-items:end;">
-                            <div class="form-group" style="margin:0;">
-                                <label>Client</label>
-                                <select id="newSocialClient" required></select>
+                    </div>
+
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                                <div class="card-title">Publishing Queue <span class="card-badge" id="postsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span></div>
+                                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                                    <select id="queueClientFilter" onchange="renderPostQueue()" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;"><option value="">All clients</option></select>
+                                    <select id="queuePlatformFilter" onchange="renderPostQueue()" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;"><option value="">All platforms</option></select>
+                                    <select id="queueStatusFilter" onchange="renderPostQueue()" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;">
+                                        <option value="open">Open (draft + scheduled)</option>
+                                        <option value="draft">Draft</option>
+                                        <option value="scheduled">Scheduled</option>
+                                        <option value="published">Published</option>
+                                        <option value="all">All</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Platform</label>
-                                <select id="newSocialPlatform">
-                                    <option value="instagram">Instagram</option>
-                                    <option value="facebook">Facebook</option>
-                                    <option value="linkedin">LinkedIn</option>
-                                    <option value="twitter">Twitter/X</option>
-                                    <option value="tiktok">TikTok</option>
-                                    <option value="youtube">YouTube</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Handle</label>
-                                <input type="text" id="newSocialHandle" placeholder="@handle">
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Followers</label>
-                                <input type="number" id="newSocialFollowers" value="0">
-                            </div>
-                            <button type="submit" class="btn btn-primary">+ Add Account</button>
-                        </form>
+                            <div id="postsList" style="margin-top:12px;">Loading posts…</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-full">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Client Social Accounts</div>
+                <!-- CHANNELS -->
+                <div id="socialTabChannels" style="display:none;">
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Add a Channel</div>
+                            </div>
+                            <form id="socialAccountForm" onsubmit="createSocialAccount(event)" style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap:12px; align-items:end;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Client</label>
+                                    <select id="newSocialClient" required></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Platform</label>
+                                    <select id="newSocialPlatform">
+                                        <option value="instagram">Instagram</option>
+                                        <option value="facebook">Facebook</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                        <option value="twitter">Twitter / X</option>
+                                        <option value="youtube">YouTube</option>
+                                        <option value="tiktok">TikTok</option>
+                                        <option value="google_business">Google Business</option>
+                                        <option value="whatsapp">WhatsApp</option>
+                                        <option value="pinterest">Pinterest</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Handle</label>
+                                    <input type="text" id="newSocialHandle" placeholder="@handle">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Followers</label>
+                                    <input type="number" id="newSocialFollowers" value="0" min="0">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Manager</label>
+                                    <select id="newSocialManager"></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Cadence</label>
+                                    <select id="newSocialCadence">
+                                        <option value="">— Not set —</option>
+                                        <option value="Daily">Daily</option>
+                                        <option value="3x / week">3x / week</option>
+                                        <option value="2x / week">2x / week</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Fortnightly">Fortnightly</option>
+                                        <option value="Monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">+ Add</button>
+                            </form>
                         </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Client</th>
-                                        <th>Platform</th>
-                                        <th>Handle</th>
-                                        <th>Followers</th>
-                                        <th>Manager</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="socialAccountsTableBody">
-                                    <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading accounts…</td></tr>
-                                </tbody>
-                            </table>
+                    </div>
+
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Client Channels</div>
+                                <span style="font-size:11px; color:var(--text-secondary);">Platforms ticked on a client's Onboarding tab but with no channel here show as gaps</span>
+                            </div>
+                            <div id="channelGaps" style="margin-top:10px;"></div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Client</th>
+                                            <th>Platform</th>
+                                            <th>Handle</th>
+                                            <th>Followers</th>
+                                            <th>Cadence</th>
+                                            <th>This month</th>
+                                            <th>Manager</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="socialAccountsTableBody">
+                                        <tr><td colspan="9" style="text-align:center; color:var(--text-secondary);">Loading channels…</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-2col">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">New Post</div>
+                <!-- PERFORMANCE -->
+                <div id="socialTabPerformance" style="display:none;">
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                                <div class="card-title">Client Summary</div>
+                                <select id="perfMonthFilter" onchange="renderSocialPerformance()" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;"></select>
+                            </div>
+                            <div id="perfClientSummary" style="margin-top:12px;"></div>
                         </div>
-                        <form id="postForm" onsubmit="createPost(event)" style="display:flex; flex-direction:column; gap:12px;">
-                            <div class="form-group" style="margin:0;">
-                                <label>Social Account</label>
-                                <select id="newPostAccount" required></select>
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Content</label>
-                                <textarea id="newPostContent" rows="3" style="padding:10px 12px; border:1px solid var(--wain-border); border-radius:6px; font-family:inherit; font-size:14px;" required></textarea>
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Schedule For</label>
-                                <input type="datetime-local" id="newPostSchedule">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save as Draft</button>
-                        </form>
                     </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Content Calendar</div>
-                            <span class="card-badge" id="postsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                    <div class="grid grid-full">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Published Posts</div>
+                                <span style="font-size:11px; color:var(--text-secondary);">Log reach / likes / comments / shares / saves a few days after each post goes live</span>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Published</th>
+                                            <th>Client</th>
+                                            <th>Channel</th>
+                                            <th>Type</th>
+                                            <th>Caption</th>
+                                            <th>Reach</th>
+                                            <th>Likes</th>
+                                            <th>Comments</th>
+                                            <th>Shares</th>
+                                            <th>Saves</th>
+                                            <th>Eng. rate</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="perfPostsBody"></tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div id="postsList" style="margin-top:12px;">Loading posts…</div>
                     </div>
                 </div>
             </div>
@@ -2773,7 +2892,7 @@
             if (viewName === 'overview') renderMyOverview();
             if (viewName === 'clients') renderClients();
             if (viewName === 'reviews') renderReviewsReferrals();
-            if (viewName === 'social') { renderSocialAccounts(); renderPosts(); }
+            if (viewName === 'social') { renderSocial(); }
             if (viewName === 'tasks') renderTasks();
             if (viewName === 'team') renderEmployees();
             if (viewName === 'sales') renderLeads();
@@ -3232,123 +3351,469 @@
         }
 
         // ---------- SOCIAL ACCOUNTS ----------
+        // ---------- SOCIAL MEDIA: channels, publishing queue, performance ----------
+        // Creative Work produces the content (deliverables + content calendar). This module is the
+        // publishing layer: which client channels exist, what goes out when, and how it performed.
+        let allPosts = [];
+        let socialTab = 'queue';
+        const SOCIAL_PLATFORM_LABELS = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn', twitter: 'Twitter / X', youtube: 'YouTube', tiktok: 'TikTok', google_business: 'Google Business', whatsapp: 'WhatsApp', pinterest: 'Pinterest' };
+        // Map client onboarding platform names (PLATFORM_OPTIONS) -> social_accounts.platform keys
+        const PLATFORM_KEY_FROM_LABEL = { 'Instagram': 'instagram', 'Facebook': 'facebook', 'LinkedIn': 'linkedin', 'Twitter / X': 'twitter', 'YouTube': 'youtube', 'TikTok': 'tiktok', 'Google Business': 'google_business', 'WhatsApp': 'whatsapp', 'Pinterest': 'pinterest' };
+        const POST_STATUS_LABELS = { draft: 'Draft', pending_approval: 'Awaiting approval', approved: 'Approved', scheduled: 'Scheduled', published: 'Published' };
+        const POST_STATUS_CLASS = { draft: 'status-pending', pending_approval: 'status-in-progress', approved: 'status-in-progress', scheduled: 'status-in-progress', published: 'status-active' };
+
+        function platformLabel(key) { return SOCIAL_PLATFORM_LABELS[key] || (key ? key.charAt(0).toUpperCase() + key.slice(1) : '—'); }
+
+        async function renderSocial() {
+            await Promise.all([loadSocialAccounts(), loadPosts()]);
+            renderSocialStats();
+            renderSocialAccounts();
+            renderPostQueue();
+            renderSocialPerformance();
+            populatePostFormDropdowns();
+        }
+
+        function switchSocialTab(tab) {
+            socialTab = tab;
+            document.querySelectorAll('#socialTabs .stage-pill').forEach(p => p.classList.toggle('active', p.dataset.stab === tab));
+            document.getElementById('socialTabQueue').style.display = tab === 'queue' ? '' : 'none';
+            document.getElementById('socialTabChannels').style.display = tab === 'channels' ? '' : 'none';
+            document.getElementById('socialTabPerformance').style.display = tab === 'performance' ? '' : 'none';
+        }
+
+        async function loadSocialAccounts() {
+            const { data, error } = await db.from('social_accounts').select('*, clients(name), employees(name)').order('created_at', { ascending: false });
+            if (!error) allSocialAccounts = data || [];
+        }
+
+        async function loadPosts() {
+            const { data, error } = await db.from('posts')
+                .select('*, social_accounts(platform, handle, client_id, clients(name)), creative_deliverables(title, deliverable_type)')
+                .order('scheduled_for', { ascending: true, nullsFirst: false });
+            if (!error) allPosts = data || [];
+        }
+
+        function postClientName(p) { return p.social_accounts && p.social_accounts.clients ? p.social_accounts.clients.name : ''; }
+        function postClientId(p) { return p.social_accounts ? p.social_accounts.client_id : p.client_id; }
+        function postPlatform(p) { return p.social_accounts ? p.social_accounts.platform : ''; }
+        function postsThisMonthForAccount(accountId) {
+            const m = new Date().toISOString().slice(0, 7);
+            return allPosts.filter(p => p.social_account_id === accountId && p.status === 'published' && (p.published_at || p.scheduled_for || '').slice(0, 7) === m).length;
+        }
+
+        function renderSocialStats() {
+            const now = new Date();
+            const in7 = new Date(now.getTime() + 7 * 86400000);
+            const month = now.toISOString().slice(0, 7);
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            set('statSocialChannels', allSocialAccounts.filter(a => a.status === 'active').length);
+            set('statSocialScheduled', allPosts.filter(p => p.status !== 'published' && p.scheduled_for && new Date(p.scheduled_for) >= now && new Date(p.scheduled_for) <= in7).length);
+            set('statSocialOverdue', allPosts.filter(p => p.status !== 'published' && p.scheduled_for && new Date(p.scheduled_for) < now).length);
+            set('statSocialPublished', allPosts.filter(p => p.status === 'published' && (p.published_at || p.scheduled_for || '').slice(0, 7) === month).length);
+            set('statSocialNoMetrics', allPosts.filter(p => p.status === 'published' && !p.metrics_updated_at && p.published_at && (now - new Date(p.published_at)) > 3 * 86400000).length);
+        }
+
+        // ----- Channels -----
         async function createSocialAccount(event) {
             event.preventDefault();
             const client_id = document.getElementById('newSocialClient').value;
             const platform = document.getElementById('newSocialPlatform').value;
             const handle = document.getElementById('newSocialHandle').value.trim();
             const followers = parseInt(document.getElementById('newSocialFollowers').value, 10) || 0;
+            const managed_by = document.getElementById('newSocialManager').value || currentEmployee.id;
+            const posting_cadence = document.getElementById('newSocialCadence').value || null;
             if (!client_id) { alert('Add a client first.'); return; }
-
             const { error } = await db.from('social_accounts').insert({
-                client_id, platform, handle: handle || null, followers, managed_by: currentEmployee.id
+                client_id, platform, handle: handle || null, followers, managed_by, posting_cadence, followers_updated_at: new Date().toISOString()
             });
-            if (error) { alert('Could not add account: ' + error.message); return; }
+            if (error) { alert('Could not add channel: ' + error.message); return; }
             document.getElementById('socialAccountForm').reset();
-            await renderSocialAccounts();
+            await renderSocial();
         }
 
-        async function renderSocialAccounts() {
+        function renderSocialAccounts() {
             const body = document.getElementById('socialAccountsTableBody');
             if (!body) return;
-            const { data, error } = await db
-                .from('social_accounts')
-                .select('*, clients(name), employees(name)')
-                .order('created_at', { ascending: false });
-            if (error) { body.innerHTML = `<tr><td colspan="6">Error: ${escapeHtml(error.message)}</td></tr>`; return; }
-            allSocialAccounts = data || [];
-            populatePostAccountDropdown();
+            populatePostFormDropdowns();
+            // Coverage gaps: platforms ticked on the client's onboarding but no channel here
+            const gapsEl = document.getElementById('channelGaps');
+            if (gapsEl) {
+                const gaps = [];
+                allClients.forEach(c => {
+                    (c.platforms || []).forEach(label => {
+                        const key = PLATFORM_KEY_FROM_LABEL[label];
+                        if (key && !allSocialAccounts.some(a => a.client_id === c.id && a.platform === key)) gaps.push(`${escapeHtml(c.name)} · ${escapeHtml(label)}`);
+                    });
+                });
+                gapsEl.innerHTML = gaps.length
+                    ? `<div style="font-size:12px; color:var(--warning-amber); background:rgba(245,166,35,0.08); padding:8px 10px; border-radius:6px;">⚠ No channel yet for: ${gaps.join(' · ')}</div>`
+                    : '';
+            }
             if (!allSocialAccounts.length) {
-                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No social accounts yet.</td></tr>';
+                body.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-secondary);">No channels yet — add the first one above.</td></tr>';
                 return;
             }
-            body.innerHTML = allSocialAccounts.map(a => `
+            const sorted = [...allSocialAccounts].sort((a, b) => ((a.clients && a.clients.name) || '').localeCompare((b.clients && b.clients.name) || '') || a.platform.localeCompare(b.platform));
+            body.innerHTML = sorted.map(a => `
                 <tr>
                     <td><strong>${a.clients ? escapeHtml(a.clients.name) : '—'}</strong></td>
-                    <td>${escapeHtml(a.platform)}</td>
-                    <td>${escapeHtml(a.handle) || '—'}</td>
-                    <td>${(a.followers || 0).toLocaleString()}</td>
+                    <td>${platformLabel(a.platform)}</td>
+                    <td>${a.handle ? (a.profile_url ? `<a href="${escapeHtml(a.profile_url)}" target="_blank" rel="noopener">${escapeHtml(a.handle)}</a>` : escapeHtml(a.handle)) : '—'}</td>
+                    <td>${(a.followers || 0).toLocaleString()}${a.followers_updated_at ? `<div style="font-size:10px; color:var(--text-secondary);">as of ${new Date(a.followers_updated_at).toLocaleDateString()}</div>` : ''}</td>
+                    <td>${escapeHtml(a.posting_cadence) || '—'}</td>
+                    <td>${postsThisMonthForAccount(a.id)} published</td>
                     <td>${a.employees ? escapeHtml(a.employees.name) : '—'}</td>
-                    <td><span class="status-badge ${a.status === 'active' ? 'status-active' : 'status-pending'}">${escapeHtml(a.status)}</span></td>
+                    <td><span class="status-badge ${a.status === 'active' ? 'status-active' : 'status-pending'}">${escapeHtml((a.status || 'active').replace('_', ' '))}</span></td>
+                    <td><button class="btn btn-sm btn-secondary" onclick="openSocialAccountEdit('${a.id}')">Edit</button></td>
                 </tr>
             `).join('');
         }
 
-        function populatePostAccountDropdown() {
-            const sel = document.getElementById('newPostAccount');
-            if (!sel) return;
-            sel.innerHTML = allSocialAccounts.map(a =>
-                `<option value="${a.id}">${a.clients ? escapeHtml(a.clients.name) : '—'} — ${escapeHtml(a.platform)}${a.handle ? ' (' + escapeHtml(a.handle) + ')' : ''}</option>`
-            ).join('');
+        function openSocialAccountEdit(id) {
+            const a = allSocialAccounts.find(x => x.id === id);
+            if (!a) return;
+            openModal('Edit Channel', `
+                <form onsubmit="saveSocialAccountEdit(event, '${id}')">
+                    <div class="form-group"><label>Client</label><div>${a.clients ? escapeHtml(a.clients.name) : '—'} · ${platformLabel(a.platform)}</div></div>
+                    <div class="form-group"><label>Handle</label><input type="text" id="editAcctHandle" value="${escapeHtml(a.handle) || ''}"></div>
+                    <div class="form-group"><label>Profile URL</label><input type="url" id="editAcctUrl" placeholder="https://…" value="${escapeHtml(a.profile_url) || ''}"></div>
+                    <div class="form-group"><label>Followers (update when you check)</label><input type="number" id="editAcctFollowers" min="0" value="${a.followers || 0}"></div>
+                    <div class="form-group"><label>Manager</label>
+                        <select id="editAcctManager">${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${e.id === a.managed_by ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Posting cadence</label>
+                        <select id="editAcctCadence"><option value="">— Not set —</option>${['Daily', '3x / week', '2x / week', 'Weekly', 'Fortnightly', 'Monthly'].map(c => `<option value="${c}" ${a.posting_cadence === c ? 'selected' : ''}>${c}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Status</label>
+                        <select id="editAcctStatus">${['active', 'pending_setup', 'paused'].map(st => `<option value="${st}" ${(a.status || 'active') === st ? 'selected' : ''}>${st.replace('_', ' ')}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Notes</label><textarea id="editAcctNotes" rows="2">${escapeHtml(a.notes) || ''}</textarea></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>
+            `);
         }
 
-        // ---------- POSTS ----------
+        async function saveSocialAccountEdit(event, id) {
+            event.preventDefault();
+            const a = allSocialAccounts.find(x => x.id === id);
+            const followers = parseInt(document.getElementById('editAcctFollowers').value, 10) || 0;
+            const patch = {
+                handle: document.getElementById('editAcctHandle').value.trim() || null,
+                profile_url: document.getElementById('editAcctUrl').value.trim() || null,
+                followers,
+                managed_by: document.getElementById('editAcctManager').value,
+                posting_cadence: document.getElementById('editAcctCadence').value || null,
+                status: document.getElementById('editAcctStatus').value,
+                notes: document.getElementById('editAcctNotes').value.trim() || null
+            };
+            if (!a || followers !== (a.followers || 0)) patch.followers_updated_at = new Date().toISOString();
+            const { error } = await db.from('social_accounts').update(patch).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            await renderSocial();
+        }
+
+        // ----- Publishing queue -----
+        function populatePostFormDropdowns() {
+            const clientOpts = allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+            const postClient = document.getElementById('newPostClient');
+            if (postClient) { const v = postClient.value; postClient.innerHTML = '<option value="">— Select client —</option>' + clientOpts; postClient.value = v; }
+            const qc = document.getElementById('queueClientFilter');
+            if (qc) { const v = qc.value; qc.innerHTML = '<option value="">All clients</option>' + clientOpts; qc.value = v; }
+            const sc = document.getElementById('newSocialClient');
+            if (sc) { const v = sc.value; sc.innerHTML = clientOpts; if (v) sc.value = v; }
+            const qp = document.getElementById('queuePlatformFilter');
+            if (qp) {
+                const v = qp.value;
+                const platforms = [...new Set(allSocialAccounts.map(a => a.platform))].sort();
+                qp.innerHTML = '<option value="">All platforms</option>' + platforms.map(k => `<option value="${k}">${platformLabel(k)}</option>`).join('');
+                qp.value = v;
+            }
+            const mgr = document.getElementById('newSocialManager');
+            if (mgr && !mgr.options.length) mgr.innerHTML = allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${currentEmployee && e.id === currentEmployee.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('');
+        }
+
+        function onPostClientChange() {
+            const clientId = document.getElementById('newPostClient').value;
+            const box = document.getElementById('newPostChannels');
+            const accts = allSocialAccounts.filter(a => a.client_id === clientId && a.status !== 'paused');
+            box.innerHTML = accts.length
+                ? accts.map(a => `<label><input type="checkbox" value="${a.id}" class="newPostChannelCheckbox" checked> ${platformLabel(a.platform)}${a.handle ? ' (' + escapeHtml(a.handle) + ')' : ''}</label>`).join('')
+                : '<span style="color:var(--warning-amber); font-size:12px;">This client has no channels yet — add them on the Channels tab first.</span>';
+            const delSel = document.getElementById('newPostDeliverable');
+            const dels = allDeliverables.filter(d => d.client_id === clientId);
+            delSel.innerHTML = '<option value="">— None / quick post —</option>' + dels
+                .sort((a, b) => (b.due_date || '').localeCompare(a.due_date || ''))
+                .map(d => `<option value="${d.id}">${escapeHtml(d.title)}${d.deliverable_type ? ' · ' + escapeHtml(d.deliverable_type) : ''}${d.due_date ? ' · ' + new Date(d.due_date).toLocaleDateString() : ''} [${DELIVERABLE_STAGE_LABELS[d.status] || d.status}]</option>`).join('');
+        }
+
+        function onPostDeliverableChange() {
+            const d = allDeliverables.find(x => x.id === document.getElementById('newPostDeliverable').value);
+            if (!d) return;
+            const content = document.getElementById('newPostContent');
+            if (!content.value.trim()) content.value = d.title;
+            if (d.deliverable_type) document.getElementById('newPostType').value = d.deliverable_type;
+            if (d.due_date && !document.getElementById('newPostSchedule').value) document.getElementById('newPostSchedule').value = d.due_date + 'T10:00';
+            // Pre-tick channels matching the deliverable's platforms
+            if (d.platforms && d.platforms.length) {
+                document.querySelectorAll('.newPostChannelCheckbox').forEach(cb => {
+                    const a = allSocialAccounts.find(x => x.id === cb.value);
+                    cb.checked = !!(a && d.platforms.map(p => PLATFORM_KEY_FROM_LABEL[p]).includes(a.platform));
+                });
+            }
+        }
+
+        // Called from Creative Work: jump to the queue with this deliverable pre-selected
+        async function scheduleDeliverableOnSocial(deliverableId) {
+            const d = allDeliverables.find(x => x.id === deliverableId);
+            if (!d) return;
+            switchView('social');
+            await renderSocial();
+            switchSocialTab('queue');
+            document.getElementById('newPostClient').value = d.client_id || '';
+            onPostClientChange();
+            document.getElementById('newPostDeliverable').value = d.id;
+            onPostDeliverableChange();
+            document.getElementById('postForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         async function createPost(event) {
             event.preventDefault();
-            const social_account_id = document.getElementById('newPostAccount').value;
+            const client_id = document.getElementById('newPostClient').value;
+            const channelIds = Array.from(document.querySelectorAll('.newPostChannelCheckbox:checked')).map(cb => cb.value);
+            const deliverable_id = document.getElementById('newPostDeliverable').value || null;
+            const post_type = document.getElementById('newPostType').value || null;
             const content = document.getElementById('newPostContent').value.trim();
             const scheduleRaw = document.getElementById('newPostSchedule').value;
-            if (!social_account_id) { alert('Add a social account first.'); return; }
+            if (!client_id) { alert('Pick a client.'); return; }
+            if (!channelIds.length) { alert('Tick at least one channel.'); return; }
             if (!content) return;
-
-            const { data: acct } = await db.from('social_accounts').select('client_id').eq('id', social_account_id).single();
-
-            const { error } = await db.from('posts').insert({
-                social_account_id,
-                client_id: acct ? acct.client_id : null,
-                content,
+            const rows = channelIds.map(social_account_id => ({
+                social_account_id, client_id, deliverable_id, post_type, content,
                 status: scheduleRaw ? 'scheduled' : 'draft',
                 scheduled_for: scheduleRaw ? new Date(scheduleRaw).toISOString() : null,
                 created_by: currentEmployee.id
-            });
+            }));
+            const { error } = await db.from('posts').insert(rows);
             if (error) { alert('Could not save post: ' + error.message); return; }
             document.getElementById('postForm').reset();
-            await renderPosts();
+            document.getElementById('newPostChannels').innerHTML = '<span style="color:var(--text-secondary); font-size:12px;">Select a client to see its channels</span>';
+            await renderSocial();
         }
 
-        async function renderPosts() {
+        function queueBucket(p, now) {
+            if (!p.scheduled_for) return 'Unscheduled';
+            const d = new Date(p.scheduled_for);
+            if (p.status !== 'published' && d < now) return 'Overdue';
+            const day = d.toDateString();
+            if (day === now.toDateString()) return 'Today';
+            const tomorrow = new Date(now.getTime() + 86400000);
+            if (day === tomorrow.toDateString()) return 'Tomorrow';
+            if (d <= new Date(now.getTime() + 7 * 86400000)) return 'This week';
+            return 'Later';
+        }
+
+        function renderPostQueue() {
             const list = document.getElementById('postsList');
             if (!list) return;
-            const { data, error } = await db
-                .from('posts')
-                .select('*, social_accounts(platform, handle, clients(name))')
-                .order('created_at', { ascending: false })
-                .limit(20);
-            if (error) { list.innerHTML = `Error: ${escapeHtml(error.message)}`; return; }
-            document.getElementById('postsCount').textContent = (data || []).length + ' posts';
-            if (!data || !data.length) { list.innerHTML = '<div style="color:var(--text-secondary); font-size:13px;">No posts yet.</div>'; return; }
-
-            const statusColors = {
-                draft: 'background: rgba(245,158,11,0.1); color: var(--warning-amber);',
-                pending_approval: 'background: rgba(0,184,212,0.1); color: var(--wain-cyan);',
-                approved: 'background: rgba(34,197,94,0.1); color: var(--success-green);',
-                scheduled: 'background: rgba(34,197,94,0.1); color: var(--success-green);',
-                published: 'background: rgba(26,33,56,0.1); color: var(--wain-navy);'
-            };
-
-            list.innerHTML = data.map(p => `
-                <div class="post-item">
-                    <div class="post-header">
-                        <div class="post-platform">${p.social_accounts ? escapeHtml(p.social_accounts.platform) : ''}${p.social_accounts && p.social_accounts.clients ? ' — ' + escapeHtml(p.social_accounts.clients.name) : ''}</div>
-                        <span class="post-status" style="${statusColors[p.status] || ''} padding: 4px 8px; border-radius: 12px;">${escapeHtml(p.status.replace('_',' '))}</span>
+            const clientF = document.getElementById('queueClientFilter').value;
+            const platF = document.getElementById('queuePlatformFilter').value;
+            const statusF = document.getElementById('queueStatusFilter').value;
+            let rows = allPosts.filter(p => {
+                if (clientF && postClientId(p) !== clientF) return false;
+                if (platF && postPlatform(p) !== platF) return false;
+                if (statusF === 'open') return p.status !== 'published';
+                if (statusF === 'all') return true;
+                return p.status === statusF;
+            });
+            document.getElementById('postsCount').textContent = rows.length + (rows.length === 1 ? ' post' : ' posts');
+            if (!rows.length) { list.innerHTML = '<div style="color:var(--text-secondary); font-size:13px;">Nothing in the queue for this filter.</div>'; return; }
+            const now = new Date();
+            const order = ['Overdue', 'Today', 'Tomorrow', 'This week', 'Later', 'Unscheduled'];
+            const groups = {};
+            rows.forEach(p => { const b = statusF === 'published' ? 'Published' : queueBucket(p, now); (groups[b] = groups[b] || []).push(p); });
+            const keys = Object.keys(groups).sort((a, b) => (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) - (order.indexOf(b) === -1 ? 99 : order.indexOf(b)));
+            list.innerHTML = keys.map(k => `
+                <div style="font-size:12px; font-weight:600; color:${k === 'Overdue' ? 'var(--warning-amber)' : 'var(--text-secondary)'}; margin:12px 0 6px; text-transform:uppercase; letter-spacing:0.5px;">${k} · ${groups[k].length}</div>
+                ${groups[k].map(p => `
+                    <div class="post-item" style="${k === 'Overdue' ? 'border-left:3px solid var(--warning-amber);' : ''}">
+                        <div class="post-header">
+                            <div class="post-platform">${escapeHtml(postClientName(p)) || 'Internal'} · ${platformLabel(postPlatform(p))}${p.social_accounts && p.social_accounts.handle ? ' <span style="font-weight:400; color:var(--text-secondary);">' + escapeHtml(p.social_accounts.handle) + '</span>' : ''}${p.post_type ? ' · <span style="font-weight:400;">' + escapeHtml(p.post_type) + '</span>' : ''}</div>
+                            <span class="status-badge ${POST_STATUS_CLASS[p.status] || 'status-pending'}">${POST_STATUS_LABELS[p.status] || p.status}</span>
+                        </div>
+                        <div class="post-content">${escapeHtml(p.content)}</div>
+                        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
+                            ${p.scheduled_for ? '📅 ' + new Date(p.scheduled_for).toLocaleString() : 'Not scheduled'}
+                            ${p.creative_deliverables ? ' · from Creative Work: <em>' + escapeHtml(p.creative_deliverables.title) + '</em>' : ''}
+                            ${p.status === 'published' && p.published_at ? ' · published ' + new Date(p.published_at).toLocaleString() : ''}
+                            ${p.post_url ? ' · <a href="' + escapeHtml(p.post_url) + '" target="_blank" rel="noopener">View post ↗</a>' : ''}
+                        </div>
+                        <div class="post-actions">
+                            ${p.status !== 'published' && !p.scheduled_for ? `<button onclick="openPostEdit('${p.id}')">Set date</button>` : ''}
+                            ${p.status !== 'published' ? `<button onclick="markPostPublished('${p.id}')">Mark Published</button>` : `<button onclick="openPostMetrics('${p.id}')">${p.metrics_updated_at ? 'Update metrics' : 'Log metrics'}</button>`}
+                            <button onclick="openPostEdit('${p.id}')">Edit</button>
+                            <button onclick="deletePost('${p.id}')" style="color:var(--danger-red, #c0392b);">Delete</button>
+                        </div>
                     </div>
-                    <div class="post-content">${escapeHtml(p.content)}</div>
-                    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">${p.scheduled_for ? '📅 ' + new Date(p.scheduled_for).toLocaleString() : 'Not scheduled'}</div>
-                    <div class="post-actions">
-                        ${p.status === 'draft' ? `<button onclick="updatePostStatus('${p.id}','pending_approval')">Submit for Approval</button>` : ''}
-                        ${p.status === 'pending_approval' ? `<button onclick="updatePostStatus('${p.id}','approved')">Approve</button>` : ''}
-                        ${(p.status === 'approved' || p.status === 'scheduled') ? `<button onclick="updatePostStatus('${p.id}','published')">Mark Published</button>` : ''}
-                    </div>
-                </div>
+                `).join('')}
             `).join('');
         }
 
+        function openPostEdit(id) {
+            const p = allPosts.find(x => x.id === id);
+            if (!p) return;
+            const local = p.scheduled_for ? new Date(new Date(p.scheduled_for).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
+            const clientAccts = allSocialAccounts.filter(a => a.client_id === postClientId(p));
+            openModal('Edit Post', `
+                <form onsubmit="savePostEdit(event, '${id}')">
+                    <div class="form-group"><label>Channel</label>
+                        <select id="editPostAccount">${clientAccts.map(a => `<option value="${a.id}" ${a.id === p.social_account_id ? 'selected' : ''}>${platformLabel(a.platform)}${a.handle ? ' (' + escapeHtml(a.handle) + ')' : ''}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Post type</label>
+                        <select id="editPostType"><option value="">— Select —</option>${DELIVERABLE_TYPE_OPTIONS.map(o => `<option value="${o}" ${p.post_type === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Caption / content</label><textarea id="editPostContent" rows="4">${escapeHtml(p.content)}</textarea></div>
+                    <div class="form-group"><label>Scheduled for</label><input type="datetime-local" id="editPostSchedule" value="${local}"></div>
+                    <div class="form-group"><label>Status</label>
+                        <select id="editPostStatus">${['draft', 'scheduled', 'published'].map(st => `<option value="${st}" ${p.status === st ? 'selected' : ''}>${POST_STATUS_LABELS[st]}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Post URL (after publishing)</label><input type="url" id="editPostUrl" placeholder="https://…" value="${escapeHtml(p.post_url) || ''}"></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        async function savePostEdit(event, id) {
+            event.preventDefault();
+            const p = allPosts.find(x => x.id === id) || {};
+            const scheduleRaw = document.getElementById('editPostSchedule').value;
+            const status = document.getElementById('editPostStatus').value;
+            const patch = {
+                social_account_id: document.getElementById('editPostAccount').value,
+                post_type: document.getElementById('editPostType').value || null,
+                content: document.getElementById('editPostContent').value.trim(),
+                scheduled_for: scheduleRaw ? new Date(scheduleRaw).toISOString() : null,
+                status,
+                post_url: document.getElementById('editPostUrl').value.trim() || null,
+                updated_at: new Date().toISOString()
+            };
+            if (status === 'published' && !p.published_at) patch.published_at = new Date().toISOString();
+            if (status !== 'published') patch.published_at = null;
+            const { error } = await db.from('posts').update(patch).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            await renderSocial();
+        }
+
+        async function markPostPublished(id) {
+            const url = prompt('Published — paste the live post link (optional):', '');
+            if (url === null) return;
+            const patch = { status: 'published', published_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+            if (url.trim()) patch.post_url = url.trim();
+            const { error } = await db.from('posts').update(patch).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await renderSocial();
+        }
+
+        async function deletePost(id) {
+            if (!confirm('Remove this post from the queue?')) return;
+            const { error } = await db.from('posts').delete().eq('id', id);
+            if (error) { alert('Could not delete: ' + error.message); return; }
+            await renderSocial();
+        }
+
+        // Legacy entry point kept for any old handlers
         async function updatePostStatus(id, status) {
             const patch = { status, updated_at: new Date().toISOString() };
-            if (status === 'approved') patch.approved_by = currentEmployee.id;
+            if (status === 'published') patch.published_at = new Date().toISOString();
             const { error } = await db.from('posts').update(patch).eq('id', id);
             if (error) { alert('Could not update post: ' + error.message); return; }
-            renderPosts();
+            await renderSocial();
+        }
+
+        // ----- Performance -----
+        function postEngagement(p) { return (p.likes || 0) + (p.comments || 0) + (p.shares || 0) + (p.saves || 0); }
+        function postEngRate(p) { return p.reach ? (postEngagement(p) / p.reach * 100) : null; }
+
+        function renderSocialPerformance() {
+            const body = document.getElementById('perfPostsBody');
+            const summary = document.getElementById('perfClientSummary');
+            const monthSel = document.getElementById('perfMonthFilter');
+            if (!body || !summary || !monthSel) return;
+            const published = allPosts.filter(p => p.status === 'published');
+            const months = [...new Set(published.map(p => (p.published_at || p.scheduled_for || p.created_at || '').slice(0, 7)).filter(Boolean))].sort().reverse();
+            const thisMonth = new Date().toISOString().slice(0, 7);
+            const prev = monthSel.value;
+            monthSel.innerHTML = '<option value="">All time</option>' + months.map(m => `<option value="${m}">${new Date(m + '-01T00:00:00').toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</option>`).join('');
+            monthSel.value = months.includes(prev) ? prev : (months.includes(thisMonth) ? thisMonth : '');
+            const rows = published.filter(p => !monthSel.value || (p.published_at || p.scheduled_for || p.created_at || '').startsWith(monthSel.value))
+                .sort((a, b) => (b.published_at || b.scheduled_for || '').localeCompare(a.published_at || a.scheduled_for || ''));
+
+            // Per-client summary
+            const byClient = {};
+            rows.forEach(p => {
+                const k = postClientName(p) || 'Internal';
+                const c = byClient[k] = byClient[k] || { posts: 0, reach: 0, eng: 0, withMetrics: 0 };
+                c.posts++; c.reach += p.reach || 0; c.eng += postEngagement(p); if (p.metrics_updated_at) c.withMetrics++;
+            });
+            const names = Object.keys(byClient).sort();
+            summary.innerHTML = names.length ? '<div class="kpi-row">' + names.map(n => { const c = byClient[n]; return `
+                <div class="kpi-card" style="cursor:default;">
+                    <div class="stat-label">${escapeHtml(n)}</div>
+                    <div class="stat-value">${c.posts} <span style="font-size:12px; font-weight:400; color:var(--text-secondary);">posts</span></div>
+                    <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Reach ${c.reach.toLocaleString()} · Eng. ${c.eng.toLocaleString()}${c.reach ? ' · ' + (c.eng / c.reach * 100).toFixed(1) + '%' : ''}${c.withMetrics < c.posts ? ` · <span style="color:var(--warning-amber);">${c.posts - c.withMetrics} without metrics</span>` : ''}</div>
+                </div>`; }).join('') + '</div>' : '<div style="color:var(--text-secondary); font-size:13px;">No published posts yet — mark posts as published from the queue and they show up here.</div>';
+
+            body.innerHTML = rows.length ? rows.map(p => { const er = postEngRate(p); return `
+                <tr>
+                    <td style="white-space:nowrap;">${p.published_at ? new Date(p.published_at).toLocaleDateString() : (p.scheduled_for ? new Date(p.scheduled_for).toLocaleDateString() : '—')}</td>
+                    <td><strong>${escapeHtml(postClientName(p)) || 'Internal'}</strong></td>
+                    <td>${platformLabel(postPlatform(p))}</td>
+                    <td>${escapeHtml(p.post_type) || '—'}</td>
+                    <td>${escapeHtml(p.content.length > 50 ? p.content.slice(0, 50) + '…' : p.content)}${p.post_url ? ' <a href="' + escapeHtml(p.post_url) + '" target="_blank" rel="noopener">↗</a>' : ''}</td>
+                    <td>${p.reach != null ? p.reach.toLocaleString() : '—'}</td>
+                    <td>${p.likes != null ? p.likes.toLocaleString() : '—'}</td>
+                    <td>${p.comments != null ? p.comments.toLocaleString() : '—'}</td>
+                    <td>${p.shares != null ? p.shares.toLocaleString() : '—'}</td>
+                    <td>${p.saves != null ? p.saves.toLocaleString() : '—'}</td>
+                    <td>${er != null ? er.toFixed(1) + '%' : '—'}</td>
+                    <td><button class="btn btn-sm btn-secondary" onclick="openPostMetrics('${p.id}')">${p.metrics_updated_at ? 'Update' : 'Log metrics'}</button></td>
+                </tr>`; }).join('') : '<tr><td colspan="12" style="text-align:center; color:var(--text-secondary);">No published posts in this period.</td></tr>';
+        }
+
+        function openPostMetrics(id) {
+            const p = allPosts.find(x => x.id === id);
+            if (!p) return;
+            const f = (label, key) => `<div class="form-group"><label>${label}</label><input type="number" min="0" id="metric_${key}" value="${p[key] != null ? p[key] : ''}"></div>`;
+            openModal('Post Metrics', `
+                <form onsubmit="savePostMetrics(event, '${id}')">
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">${escapeHtml(postClientName(p))} · ${platformLabel(postPlatform(p))} · ${escapeHtml(p.content.length > 80 ? p.content.slice(0, 80) + '…' : p.content)}</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 12px;">
+                        ${f('Reach', 'reach')}${f('Impressions', 'impressions')}${f('Likes', 'likes')}${f('Comments', 'comments')}${f('Shares', 'shares')}${f('Saves', 'saves')}
+                    </div>
+                    <div class="form-group"><label>Post URL</label><input type="url" id="metric_url" placeholder="https://…" value="${escapeHtml(p.post_url) || ''}"></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        async function savePostMetrics(event, id) {
+            event.preventDefault();
+            const num = key => { const v = document.getElementById('metric_' + key).value; return v === '' ? null : parseInt(v, 10); };
+            const patch = { reach: num('reach'), impressions: num('impressions'), likes: num('likes'), comments: num('comments'), shares: num('shares'), saves: num('saves'), post_url: document.getElementById('metric_url').value.trim() || null, metrics_updated_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+            const { error } = await db.from('posts').update(patch).eq('id', id);
+            if (error) { alert('Could not save metrics: ' + error.message); return; }
+            closeModal();
+            await renderSocial();
         }
 
         // ---------- TASKS ----------
@@ -4430,6 +4895,7 @@
                     <div style="margin-top:12px; display:flex; gap:8px;">
                         ${next ? `<button class="btn btn-sm btn-primary" onclick="advanceDeliverable('${d.id}', '${next}')">Move to ${DELIVERABLE_STAGE_LABELS[next]}</button>` : ''}
                         <button class="btn btn-sm btn-secondary" onclick="openDeliverableEdit('${d.id}')">Edit</button>
+                        ${(d.status === 'approved' || d.status === 'delivered') && d.client_id ? `<button class="btn btn-sm btn-secondary" onclick="scheduleDeliverableOnSocial('${d.id}')">Schedule on social →</button>` : ''}
                     </div>
                 </div>`;
             }).join('');
