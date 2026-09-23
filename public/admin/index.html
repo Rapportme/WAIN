@@ -983,6 +983,10 @@
                     <span class="nav-icon">👥</span>
                     <span>Clients</span>
                 </div>
+                <div class="nav-item" id="reviewsNav" style="display: none;" onclick="switchView('reviews')">
+                    <span class="nav-icon">⭐</span>
+                    <span>Reviews & Referrals</span>
+                </div>
             </div>
 
             <div class="nav-section" id="departmentSection" style="display: none;">
@@ -1340,6 +1344,7 @@
                             <span class="stage-pill" data-stage="negotiation" onclick="filterLeadsByStage('negotiation')">Negotiation</span>
                             <span class="stage-pill" data-stage="won" onclick="filterLeadsByStage('won')">Won</span>
                             <span class="stage-pill" data-stage="lost" onclick="filterLeadsByStage('lost')">Lost</span>
+                            <span class="stage-pill" data-stage="stale" onclick="filterLeadsByStage('stale')" style="border-color:var(--warning-amber);">⚠ Needs Follow-up</span>
                         </div>
                         <div class="table-container">
                             <table>
@@ -1457,6 +1462,138 @@
                                 </thead>
                                 <tbody id="clientsTableBody">
                                     <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading clients…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reviews" class="content-view">
+                <div class="section-header">
+                    <div class="section-titles">
+                        <h2>Reviews & Referrals</h2>
+                        <div class="section-subtitle">Review requests sent to clients, and referrals worked to conversion</div>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+
+                <div class="grid grid-3col">
+                    <div class="card">
+                        <div class="stat-label">Review Requests Sent</div>
+                        <div class="stat-value" id="statReviewsSent">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Reviews Left</div>
+                        <div class="stat-value" id="statReviewsLeft">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Referrals Converted</div>
+                        <div class="stat-value" id="statReferralsConverted">—</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Request a Review</div>
+                        </div>
+                        <form id="reviewRequestForm" onsubmit="createReviewRequest(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Client</label>
+                                <select id="newReviewClient" required></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Method</label>
+                                <select id="newReviewMethod">
+                                    <option value="email">Email</option>
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="call">Call</option>
+                                    <option value="in_person">In Person</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Review Link (optional)</label>
+                                <input type="text" id="newReviewLink" placeholder="Google review link, etc.">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Notes</label>
+                                <input type="text" id="newReviewNotes">
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Log Review Request</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Log a Referral</div>
+                        </div>
+                        <form id="referralForm" onsubmit="createReferral(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label>Referred By (client, optional)</label>
+                                <select id="newReferralClient"><option value="">— Not from a client —</option></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Referred Contact Name</label>
+                                <input type="text" id="newReferralName" required>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Contact (phone/email)</label>
+                                <input type="text" id="newReferralContact">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Notes</label>
+                                <input type="text" id="newReferralNotes">
+                            </div>
+                            <button type="submit" class="btn btn-primary">+ Log Referral</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Review Requests</div>
+                            <span class="card-badge" id="reviewRequestsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Method</th>
+                                        <th>Requested</th>
+                                        <th>Requested By</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reviewRequestsTableBody">
+                                    <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-full">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Referrals</div>
+                            <span class="card-badge" id="referralsCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Referred Name</th>
+                                        <th>Contact</th>
+                                        <th>Referred By</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="referralsTableBody">
+                                    <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2312,6 +2449,12 @@
         let allClientRequirements = [];
         let deliverableFiles = {};
         let clientDetailId = null;
+        let allReviewRequests = [];
+        let allReferrals = [];
+        const REVIEW_STATUS_LABELS = { requested: 'Requested', left_review: 'Left Review', declined: 'Declined', no_response: 'No Response' };
+        const REVIEW_STATUS_CLASS = { requested: 'status-pending', left_review: 'status-active', declined: 'status-overdue', no_response: 'status-in-progress' };
+        const REFERRAL_STATUS_LABELS = { new: 'New', contacted: 'Contacted', converted: 'Converted', declined: 'Declined' };
+        const REFERRAL_STATUS_CLASS = { new: 'status-pending', contacted: 'status-in-progress', converted: 'status-active', declined: 'status-overdue' };
         const REQ_CATEGORY_LABELS = { pain_point: 'Pain Point', requirement: 'Requirement', expectation: 'Expectation' };
         const DELIVERABLE_STAGE_LABELS = { brief: 'Brief', in_progress: 'In Progress', review: 'Review', approved: 'Approved', delivered: 'Delivered' };
         const DELIVERABLE_STAGE_CLASS = { brief: 'status-pending', in_progress: 'status-in-progress', review: 'status-in-progress', approved: 'status-active', delivered: 'status-active' };
@@ -2319,6 +2462,7 @@
         const OVERVIEW_MODULE_CARDS = [
             { module: 'sales', view: 'sales', icon: '🎯', label: 'CRM & Pipeline' },
             { module: 'clients', view: 'clients', icon: '🏢', label: 'Clients' },
+            { module: 'reviews', view: 'reviews', icon: '⭐', label: 'Reviews & Referrals' },
             { module: 'creative', view: 'creative', icon: '🎨', label: 'Creative' },
             { module: 'social', view: 'social', icon: '📱', label: 'Social Media' },
             { module: 'marketing', view: 'marketing', icon: '📣', label: 'Marketing' },
@@ -2340,6 +2484,7 @@
             'marketing': { title: 'Marketing Operations', subtitle: 'Campaigns by channel, budget, and status' },
             'sales': { title: 'CRM & Pipeline', subtitle: 'Leads, deals, and the path to becoming a client' },
             'clients': { title: 'Client Management', subtitle: 'Every WAIN client, live from the database' },
+            'reviews': { title: 'Reviews & Referrals', subtitle: 'Review requests sent to clients, and referrals worked to conversion' },
             'projects': { title: 'All Projects', subtitle: 'Named projects, grouping the tasks under them' },
             'tasks': { title: 'Tasks & Cost Centers', subtitle: "Who's assigned to what, and under which cost center" },
             'resources': { title: 'Team Capacity', subtitle: "Who's overloaded, who has room — from live task assignments" },
@@ -2448,7 +2593,8 @@
         function updateNavigation(modules) {
             const isSuperadmin = currentEmployee && currentEmployee.role === 'Superadmin';
             document.getElementById('businessSection').style.display =
-                modules.includes('sales') || modules.includes('clients') ? 'block' : 'none';
+                modules.includes('sales') || modules.includes('clients') || modules.includes('reviews') ? 'block' : 'none';
+            document.getElementById('reviewsNav').style.display = modules.includes('reviews') ? 'flex' : 'none';
             document.getElementById('departmentSection').style.display =
                 modules.some(m => ['creative', 'social', 'marketing', 'website'].includes(m)) ? 'block' : 'none';
             document.getElementById('operationsSection').style.display =
@@ -2548,6 +2694,7 @@
         function switchViewData(viewName) {
             if (viewName === 'overview') renderMyOverview();
             if (viewName === 'clients') renderClients();
+            if (viewName === 'reviews') renderReviewsReferrals();
             if (viewName === 'social') { renderSocialAccounts(); renderPosts(); }
             if (viewName === 'tasks') renderTasks();
             if (viewName === 'team') renderEmployees();
@@ -2583,9 +2730,34 @@
             if (!error) allCostCenters = data || [];
         }
 
+        let clientLastActivity = {};
+        const LAPSED_CLIENT_DAYS = 60;
+
         async function loadClients() {
             const { data, error } = await db.from('clients').select('*, cost_centers(name, code)').order('name');
             if (!error) allClients = data || [];
+            await loadClientActivity();
+        }
+
+        async function loadClientActivity() {
+            const [{ data: projs }, { data: camps }, { data: creatives }, { data: invs }] = await Promise.all([
+                db.from('projects').select('client_id, updated_at'),
+                db.from('campaigns').select('client_id, updated_at'),
+                db.from('creative_deliverables').select('client_id, updated_at'),
+                db.from('invoices').select('client_id, updated_at')
+            ]);
+            const map = {};
+            [...(projs || []), ...(camps || []), ...(creatives || []), ...(invs || [])].forEach(r => {
+                if (!r.client_id || !r.updated_at) return;
+                const t = new Date(r.updated_at).getTime();
+                if (!map[r.client_id] || t > map[r.client_id]) map[r.client_id] = t;
+            });
+            clientLastActivity = map;
+        }
+
+        function clientDaysSinceActivity(client) {
+            const lastTouch = Math.max(new Date(client.created_at).getTime(), clientLastActivity[client.id] || 0);
+            return Math.floor((Date.now() - lastTouch) / 86400000);
         }
 
         function populateClientDropdowns() {
@@ -2603,6 +2775,10 @@
             if (deliverableSel) deliverableSel.innerHTML = internalOpts;
             const campaignSel = document.getElementById('newCampaignClient');
             if (campaignSel) campaignSel.innerHTML = internalOpts;
+            const reviewSel = document.getElementById('newReviewClient');
+            if (reviewSel) reviewSel.innerHTML = opts;
+            const referralClientSel = document.getElementById('newReferralClient');
+            if (referralClientSel) referralClientSel.innerHTML = '<option value="">— Not from a client —</option>' + opts;
         }
 
         function populateAssigneeDropdowns() {
@@ -2701,9 +2877,12 @@
                 return;
             }
             const statusClass = { active: 'status-active', paused: 'status-pending', churned: 'status-overdue' };
-            body.innerHTML = allClients.map(c => `
-                <tr>
-                    <td><strong>${escapeHtml(c.name)}</strong></td>
+            body.innerHTML = allClients.map(c => {
+                const daysSince = clientDaysSinceActivity(c);
+                const isLapsed = c.status === 'active' && daysSince >= LAPSED_CLIENT_DAYS;
+                return `
+                <tr${isLapsed ? ' style="background: rgba(245,166,35,0.06);"' : ''}>
+                    <td><strong>${escapeHtml(c.name)}</strong>${isLapsed ? ` <span title="No project/campaign/creative/invoice activity in ${daysSince} days" style="color:var(--warning-amber); font-size:11px;">⚠ Reconnect (${daysSince}d)</span>` : ''}</td>
                     <td>${escapeHtml(c.industry) || '—'}</td>
                     <td><span class="status-badge ${statusClass[c.status] || 'status-active'}">${escapeHtml(c.status)}</span></td>
                     <td>${c.cost_centers ? escapeHtml(c.cost_centers.name) : '—'}</td>
@@ -2711,7 +2890,8 @@
                     <td>${new Date(c.created_at).toLocaleDateString()}</td>
                     <td><button class="btn btn-sm btn-secondary" onclick="openClientDetail('${c.id}')">View</button></td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // ---------- CLIENT DETAIL (projects, creative, campaigns, requirements) ----------
@@ -3095,6 +3275,7 @@
         const ALL_MODULES = [
             { key: 'clients', label: 'Clients' },
             { key: 'sales', label: 'CRM & Pipeline' },
+            { key: 'reviews', label: 'Reviews & Referrals' },
             { key: 'creative', label: 'Creative Work' },
             { key: 'social', label: 'Social Media' },
             { key: 'marketing', label: 'Marketing' },
@@ -3159,12 +3340,32 @@
             await renderLeads();
         }
 
+        let leadLastActivity = {};
+        const FOLLOWUP_STALE_DAYS = 5;
+
         async function loadLeads() {
             const { data, error } = await db
                 .from('leads')
                 .select('*, employees!leads_owner_id_fkey(name), clients(name)')
                 .order('created_at', { ascending: false });
             if (!error) allLeads = data || [];
+            await loadLeadActivityMap();
+        }
+
+        async function loadLeadActivityMap() {
+            const { data, error } = await db.from('crm_activities').select('lead_id, created_at');
+            if (error) { leadLastActivity = {}; return; }
+            const map = {};
+            (data || []).forEach(a => {
+                const t = new Date(a.created_at).getTime();
+                if (!map[a.lead_id] || t > map[a.lead_id]) map[a.lead_id] = t;
+            });
+            leadLastActivity = map;
+        }
+
+        function leadDaysSinceContact(lead) {
+            const lastTouch = Math.max(new Date(lead.created_at).getTime(), leadLastActivity[lead.id] || 0);
+            return Math.floor((Date.now() - lastTouch) / 86400000);
         }
 
         function computePipelineStats() {
@@ -3194,14 +3395,21 @@
         function renderLeadsTable() {
             const body = document.getElementById('leadsTableBody');
             if (!body) return;
-            const rows = leadStageFilter === 'all' ? allLeads : allLeads.filter(l => l.stage === leadStageFilter);
+            let rows;
+            if (leadStageFilter === 'all') rows = allLeads;
+            else if (leadStageFilter === 'stale') rows = allLeads.filter(l => l.stage !== 'won' && l.stage !== 'lost' && leadDaysSinceContact(l) >= FOLLOWUP_STALE_DAYS);
+            else rows = allLeads.filter(l => l.stage === leadStageFilter);
             if (!rows.length) {
                 body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No leads in this stage.</td></tr>';
                 return;
             }
-            body.innerHTML = rows.map(l => `
-                <tr>
-                    <td><strong>${escapeHtml(l.company_name)}</strong>${l.converted_client_id ? ' <span style="color:var(--success-green); font-size:11px;">→ Client</span>' : ''}</td>
+            body.innerHTML = rows.map(l => {
+                const isOpen = l.stage !== 'won' && l.stage !== 'lost';
+                const daysSince = isOpen ? leadDaysSinceContact(l) : 0;
+                const isStale = isOpen && daysSince >= FOLLOWUP_STALE_DAYS;
+                return `
+                <tr${isStale ? ' style="background: rgba(245,166,35,0.06);"' : ''}>
+                    <td><strong>${escapeHtml(l.company_name)}</strong>${l.converted_client_id ? ' <span style="color:var(--success-green); font-size:11px;">→ Client</span>' : ''}${isStale ? ` <span title="No activity logged in ${daysSince} days" style="color:var(--warning-amber); font-size:11px;">⚠ Needs follow-up (${daysSince}d)</span>` : ''}</td>
                     <td>${escapeHtml(l.contact_name) || '—'}${l.contact_email ? '<br><span style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(l.contact_email) + '</span>' : ''}</td>
                     <td>${l.employees ? escapeHtml(l.employees.name) : '—'}</td>
                     <td>${l.estimated_value ? '₹' + Number(l.estimated_value).toLocaleString('en-IN') : '—'}</td>
@@ -3211,7 +3419,8 @@
                         ${(l.stage !== 'won' && l.stage !== 'lost') ? `<button class="btn btn-sm btn-secondary" onclick="markLeadLost('${l.id}')">Lost</button>` : ''}
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
         async function advanceLead(id, nextStage) {
@@ -3294,6 +3503,122 @@
                     <div style="margin-top:4px;">${escapeHtml(a.notes)}</div>
                 </div>
             `).join('');
+        }
+
+        // ---------- REVIEWS & REFERRALS ----------
+        async function loadReviewRequests() {
+            const { data, error } = await db
+                .from('review_requests')
+                .select('*, clients(name), employees(name)')
+                .order('requested_at', { ascending: false });
+            if (!error) allReviewRequests = data || [];
+        }
+
+        async function loadReferrals() {
+            const { data, error } = await db
+                .from('referrals')
+                .select('*, clients:referred_by_client_id(name)')
+                .order('created_at', { ascending: false });
+            if (!error) allReferrals = data || [];
+        }
+
+        async function renderReviewsReferrals() {
+            await Promise.all([loadReviewRequests(), loadReferrals()]);
+            document.getElementById('statReviewsSent').textContent = allReviewRequests.length;
+            document.getElementById('statReviewsLeft').textContent = allReviewRequests.filter(r => r.status === 'left_review').length;
+            document.getElementById('statReferralsConverted').textContent = allReferrals.filter(r => r.status === 'converted').length;
+            renderReviewRequestsTable();
+            renderReferralsTable();
+        }
+
+        function renderReviewRequestsTable() {
+            const body = document.getElementById('reviewRequestsTableBody');
+            document.getElementById('reviewRequestsCount').textContent = allReviewRequests.length + (allReviewRequests.length === 1 ? ' request' : ' requests');
+            if (!allReviewRequests.length) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No review requests logged yet.</td></tr>';
+                return;
+            }
+            body.innerHTML = allReviewRequests.map(r => `
+                <tr>
+                    <td><strong>${r.clients ? escapeHtml(r.clients.name) : '—'}</strong></td>
+                    <td>${escapeHtml(r.method)}</td>
+                    <td>${new Date(r.requested_at).toLocaleDateString()}</td>
+                    <td>${r.employees ? escapeHtml(r.employees.name) : '—'}</td>
+                    <td><span class="status-badge ${REVIEW_STATUS_CLASS[r.status] || 'status-pending'}">${REVIEW_STATUS_LABELS[r.status] || r.status}</span></td>
+                    <td style="white-space:nowrap;">
+                        ${r.status === 'requested' ? `
+                            <button class="btn btn-sm btn-secondary" onclick="updateReviewStatus('${r.id}','left_review')">Left Review</button>
+                            <button class="btn btn-sm btn-secondary" onclick="updateReviewStatus('${r.id}','declined')">Declined</button>
+                            <button class="btn btn-sm btn-secondary" onclick="updateReviewStatus('${r.id}','no_response')">No Response</button>
+                        ` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderReferralsTable() {
+            const body = document.getElementById('referralsTableBody');
+            document.getElementById('referralsCount').textContent = allReferrals.length + (allReferrals.length === 1 ? ' referral' : ' referrals');
+            if (!allReferrals.length) {
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No referrals logged yet.</td></tr>';
+                return;
+            }
+            body.innerHTML = allReferrals.map(r => `
+                <tr>
+                    <td><strong>${escapeHtml(r.referred_name)}</strong>${r.notes ? '<br><span style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(r.notes) + '</span>' : ''}</td>
+                    <td>${escapeHtml(r.referred_contact) || '—'}</td>
+                    <td>${r.clients ? escapeHtml(r.clients.name) : '—'}</td>
+                    <td><span class="status-badge ${REFERRAL_STATUS_CLASS[r.status] || 'status-pending'}">${REFERRAL_STATUS_LABELS[r.status] || r.status}</span></td>
+                    <td style="white-space:nowrap;">
+                        ${r.status === 'new' ? `<button class="btn btn-sm btn-secondary" onclick="updateReferralStatus('${r.id}','contacted')">Contacted</button>` : ''}
+                        ${r.status === 'contacted' ? `<button class="btn btn-sm btn-secondary" onclick="updateReferralStatus('${r.id}','converted')">Mark Converted</button>` : ''}
+                        ${(r.status === 'new' || r.status === 'contacted') ? `<button class="btn btn-sm btn-secondary" onclick="updateReferralStatus('${r.id}','declined')">Declined</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function createReviewRequest(event) {
+            event.preventDefault();
+            const client_id = document.getElementById('newReviewClient').value;
+            const method = document.getElementById('newReviewMethod').value;
+            const review_link = document.getElementById('newReviewLink').value.trim();
+            const notes = document.getElementById('newReviewNotes').value.trim();
+            if (!client_id) return;
+            const { error } = await db.from('review_requests').insert({
+                client_id, method, review_link: review_link || null, notes: notes || null, requested_by: currentEmployee.id
+            });
+            if (error) { alert('Could not log review request: ' + error.message); return; }
+            document.getElementById('reviewRequestForm').reset();
+            await renderReviewsReferrals();
+        }
+
+        async function updateReviewStatus(id, status) {
+            const { error } = await db.from('review_requests').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await renderReviewsReferrals();
+        }
+
+        async function createReferral(event) {
+            event.preventDefault();
+            const referred_by_client_id = document.getElementById('newReferralClient').value || null;
+            const referred_name = document.getElementById('newReferralName').value.trim();
+            const referred_contact = document.getElementById('newReferralContact').value.trim();
+            const notes = document.getElementById('newReferralNotes').value.trim();
+            if (!referred_name) return;
+            const { error } = await db.from('referrals').insert({
+                referred_by_client_id, referred_name, referred_contact: referred_contact || null,
+                notes: notes || null, created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not log referral: ' + error.message); return; }
+            document.getElementById('referralForm').reset();
+            await renderReviewsReferrals();
+        }
+
+        async function updateReferralStatus(id, status) {
+            const { error } = await db.from('referrals').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await renderReviewsReferrals();
         }
 
         // ---------- ACCOUNTS ----------
