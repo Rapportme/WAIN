@@ -1100,7 +1100,15 @@
                             </div>
                             <div class="form-group" style="margin:0;">
                                 <label>Type</label>
-                                <input type="text" id="newDeliverableType" placeholder="Logo, video, post…">
+                                <select id="newDeliverableType">
+                                    <option value="">— Select —</option>
+                                    <option value="Story">Story</option>
+                                    <option value="Post">Post</option>
+                                    <option value="Carousel">Carousel</option>
+                                    <option value="AI Video">AI Video</option>
+                                    <option value="Article">Article</option>
+                                    <option value="Reels">Reels</option>
+                                </select>
                             </div>
                             <div class="form-group" style="margin:0;">
                                 <label>Assign To</label>
@@ -1111,6 +1119,14 @@
                                 <input type="date" id="newDeliverableDue">
                             </div>
                             <button type="submit" class="btn btn-primary">+ Add</button>
+                            <div class="form-group" style="margin:0; grid-column: 1 / -1;">
+                                <label>Assigned Date</label>
+                                <input type="date" id="newDeliverableAssignedDate">
+                            </div>
+                            <div class="form-group" style="margin:0; grid-column: 1 / -1;">
+                                <label>Additional Team (optional, beyond primary Assign To)</label>
+                                <div id="newDeliverableTeamCheckboxes" style="display:flex; flex-wrap:wrap; gap:10px; border:1px solid var(--wain-border); border-radius:6px; padding:8px;"></div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -2456,6 +2472,12 @@
         const REFERRAL_STATUS_LABELS = { new: 'New', contacted: 'Contacted', converted: 'Converted', declined: 'Declined' };
         const REFERRAL_STATUS_CLASS = { new: 'status-pending', contacted: 'status-in-progress', converted: 'status-active', declined: 'status-overdue' };
         const REQ_CATEGORY_LABELS = { pain_point: 'Pain Point', requirement: 'Requirement', expectation: 'Expectation' };
+        const INDUSTRY_OPTIONS = ['Retail', 'F&B / Restaurant', 'Healthcare', 'Real Estate', 'Education', 'Fashion & Apparel', 'Automotive', 'Technology / SaaS', 'Finance & Insurance', 'Hospitality & Travel', 'Beauty & Wellness', 'Home & Interior', 'Manufacturing', 'Professional Services', 'Non-profit', 'Other'];
+        const CLIENT_CATEGORY_OPTIONS = ['Enterprise', 'SMB', 'Startup', 'Individual / Personal Brand', 'Non-profit', 'Other'];
+        const PLATFORM_OPTIONS = ['Instagram', 'Facebook', 'LinkedIn', 'Twitter / X', 'YouTube', 'TikTok', 'Google Business', 'Website', 'WhatsApp', 'Pinterest', 'Other'];
+        const GENDER_TARGET_OPTIONS = ['All', 'Male', 'Female', 'Non-binary'];
+        const BILLING_PERIOD_OPTIONS = ['Weekly', 'Monthly', 'Quarterly', 'Custom'];
+        const DELIVERABLE_TYPE_OPTIONS = ['Story', 'Post', 'Carousel', 'AI Video', 'Article', 'Reels'];
         const DELIVERABLE_STAGE_LABELS = { brief: 'Brief', in_progress: 'In Progress', review: 'Review', approved: 'Approved', delivered: 'Delivered' };
         const DELIVERABLE_STAGE_CLASS = { brief: 'status-pending', in_progress: 'status-in-progress', review: 'status-in-progress', approved: 'status-active', delivered: 'status-active' };
         const DELIVERABLE_NEXT_STAGE = { brief: 'in_progress', in_progress: 'review', review: 'approved', approved: 'delivered' };
@@ -2791,6 +2813,15 @@
             if (deliverableSel) deliverableSel.innerHTML = opts;
             const pageSel = document.getElementById('newPageAssignee');
             if (pageSel) pageSel.innerHTML = '<option value="">— Unassigned —</option>' + opts;
+            const teamCheckboxes = document.getElementById('newDeliverableTeamCheckboxes');
+            if (teamCheckboxes) {
+                teamCheckboxes.innerHTML = allEmployees.filter(e => e.active).map(e => `
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px;">
+                        <input type="checkbox" value="${e.id}" class="newDeliverableTeamCheckbox">
+                        ${escapeHtml(e.name)}
+                    </label>
+                `).join('');
+            }
         }
 
         function populateCostCenterDropdowns() {
@@ -2912,6 +2943,7 @@
             openModal(client.name, `
                 <div class="modal-tabs">
                     <div class="modal-tab active" data-tab="overview" onclick="switchModalTab('overview')">Overview</div>
+                    <div class="modal-tab" data-tab="onboarding" onclick="switchModalTab('onboarding')">Onboarding</div>
                     <div class="modal-tab" data-tab="projects" onclick="switchModalTab('projects')">Projects (${projList.length})</div>
                     <div class="modal-tab" data-tab="creative" onclick="switchModalTab('creative')">Creative (${(deliverables||[]).length})</div>
                     <div class="modal-tab" data-tab="campaigns" onclick="switchModalTab('campaigns')">Campaigns (${(campaigns||[]).length})</div>
@@ -2922,6 +2954,80 @@
                     <div class="form-group"><label>Status</label><div>${escapeHtml(client.status)}</div></div>
                     <div class="form-group"><label>Cost Center</label><div>${client.cost_centers ? escapeHtml(client.cost_centers.name) : '—'}</div></div>
                     <div class="form-group"><label>Notes</label><div>${escapeHtml(client.notes) || '—'}</div></div>
+                </div>
+                <div class="modal-tab-panel" data-tab="onboarding">
+                    <form onsubmit="saveClientOnboarding(event, '${clientId}')">
+                        <div style="font-weight:600; font-size:13px; margin:4px 0 10px; color:var(--wain-cyan);">Business Info</div>
+                        <div class="form-group"><label>Industry</label>
+                            <select id="obIndustry"><option value="">— Select —</option>${INDUSTRY_OPTIONS.map(o => `<option value="${o}" ${client.industry === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>Client Category</label>
+                            <select id="obCategory"><option value="">— Select —</option>${CLIENT_CATEGORY_OPTIONS.map(o => `<option value="${o}" ${client.client_category === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>On-board Date</label><input type="date" id="obOnboardDate" value="${client.onboard_date || ''}"></div>
+
+                        <div style="font-weight:600; font-size:13px; margin:18px 0 10px; color:var(--wain-cyan);">WAIN Team</div>
+                        <div class="form-group"><label>Accounts Manager</label>
+                            <select id="obAccountManager"><option value="">— Unassigned —</option>${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${client.account_manager_id === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>Supervisor</label>
+                            <select id="obSupervisor"><option value="">— Unassigned —</option>${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${client.supervisor_id === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>Content Team</label>
+                            <select id="obContentTeam"><option value="">— Unassigned —</option>${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${client.content_team_id === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>Execution Team</label>
+                            <select id="obExecutionTeam"><option value="">— Unassigned —</option>${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${client.execution_team_id === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>Primary Team Members</label>
+                            <div style="max-height:120px; overflow-y:auto; border:1px solid var(--wain-border); border-radius:6px; padding:8px;">
+                                ${allEmployees.filter(e => e.active).map(e => `
+                                    <label style="display:flex; align-items:center; gap:8px; padding:4px 0; font-size:13px;">
+                                        <input type="checkbox" value="${e.id}" class="obPrimaryTeamCheckbox" ${(client.primary_team_members || []).includes(e.id) ? 'checked' : ''}>
+                                        ${escapeHtml(e.name)}
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Backup Person</label>
+                            <select id="obBackupPerson"><option value="">— Unassigned —</option>${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${client.backup_person_id === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
+                        </div>
+
+                        <div style="font-weight:600; font-size:13px; margin:18px 0 10px; color:var(--wain-cyan);">Client Contact</div>
+                        <div class="form-group"><label>Person Responsible (Client Side)</label><input type="text" id="obContactName" value="${escapeHtml(client.client_contact_name) || ''}"></div>
+                        <div class="form-group"><label>Contact Number</label><input type="text" id="obContactPhone" value="${escapeHtml(client.client_contact_phone) || ''}"></div>
+
+                        <div style="font-weight:600; font-size:13px; margin:18px 0 10px; color:var(--wain-cyan);">Brief</div>
+                        <div class="form-group"><label>Needs</label><textarea id="obNeeds" rows="2">${escapeHtml(client.needs_summary) || ''}</textarea></div>
+                        <div class="form-group"><label>Platforms</label>
+                            <div style="display:flex; flex-wrap:wrap; gap:10px; border:1px solid var(--wain-border); border-radius:6px; padding:8px;">
+                                ${PLATFORM_OPTIONS.map(p => `
+                                    <label style="display:flex; align-items:center; gap:6px; font-size:13px;">
+                                        <input type="checkbox" value="${p}" class="obPlatformCheckbox" ${(client.platforms || []).includes(p) ? 'checked' : ''}>
+                                        ${p}
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Target Age Group</label><input type="text" id="obTargetAge" placeholder="e.g. 18–24" value="${escapeHtml(client.target_age_group) || ''}"></div>
+                        <div class="form-group"><label>Target Location</label><input type="text" id="obTargetLocation" value="${escapeHtml(client.target_location) || ''}"></div>
+                        <div class="form-group"><label>Target Gender</label>
+                            <select id="obTargetGender"><option value="">— Select —</option>${GENDER_TARGET_OPTIONS.map(o => `<option value="${o}" ${client.target_gender === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group"><label>Execution Tone</label><input type="text" id="obTone" placeholder="e.g. Professional, playful, luxury…" value="${escapeHtml(client.execution_tone) || ''}"></div>
+
+                        <div style="font-weight:600; font-size:13px; margin:18px 0 10px; color:var(--wain-cyan);">Production</div>
+                        <div class="form-group" style="flex-direction:row; align-items:center; gap:8px;"><label style="margin:0;">Shoot Required</label><input type="checkbox" id="obShootRequired" ${client.shoot_required ? 'checked' : ''} style="width:auto;"></div>
+                        <div class="form-group"><label>Suitable Time of Posting</label><input type="text" id="obPostingTime" placeholder="e.g. 9–11am weekdays" value="${escapeHtml(client.suitable_posting_time) || ''}"></div>
+                        <div class="form-group"><label>Number of Posts Needed</label><input type="number" id="obPostsNeeded" min="0" value="${client.posts_per_period || ''}"></div>
+                        <div class="form-group"><label>Billing Period</label>
+                            <select id="obBillingPeriod"><option value="">— Select —</option>${BILLING_PERIOD_OPTIONS.map(o => `<option value="${o}" ${client.billing_period === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                        </div>
+
+                        <div class="modal-footer" style="padding:16px 0 0; margin-top:14px; border-top:1px solid var(--wain-border);">
+                            <button type="submit" class="btn btn-primary btn-sm">Save Onboarding Details</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-tab-panel" data-tab="projects">
                     ${projList.length ? projList.map(p => `
@@ -3007,6 +3113,40 @@
             if (error) { alert('Could not update: ' + error.message); return; }
             allClientRequirements = allClientRequirements.map(r => r.id === id ? { ...r, status: 'addressed' } : r);
             document.getElementById('clientReqList').innerHTML = renderClientRequirementsList(allClientRequirements);
+        }
+
+        async function saveClientOnboarding(event, clientId) {
+            event.preventDefault();
+            const primary_team_members = Array.from(document.querySelectorAll('.obPrimaryTeamCheckbox:checked')).map(cb => cb.value);
+            const platforms = Array.from(document.querySelectorAll('.obPlatformCheckbox:checked')).map(cb => cb.value);
+            const patch = {
+                industry: document.getElementById('obIndustry').value || null,
+                client_category: document.getElementById('obCategory').value || null,
+                onboard_date: document.getElementById('obOnboardDate').value || null,
+                account_manager_id: document.getElementById('obAccountManager').value || null,
+                supervisor_id: document.getElementById('obSupervisor').value || null,
+                content_team_id: document.getElementById('obContentTeam').value || null,
+                execution_team_id: document.getElementById('obExecutionTeam').value || null,
+                primary_team_members,
+                backup_person_id: document.getElementById('obBackupPerson').value || null,
+                client_contact_name: document.getElementById('obContactName').value.trim() || null,
+                client_contact_phone: document.getElementById('obContactPhone').value.trim() || null,
+                needs_summary: document.getElementById('obNeeds').value.trim() || null,
+                platforms,
+                target_age_group: document.getElementById('obTargetAge').value.trim() || null,
+                target_location: document.getElementById('obTargetLocation').value.trim() || null,
+                target_gender: document.getElementById('obTargetGender').value || null,
+                execution_tone: document.getElementById('obTone').value.trim() || null,
+                shoot_required: document.getElementById('obShootRequired').checked,
+                suitable_posting_time: document.getElementById('obPostingTime').value.trim() || null,
+                posts_per_period: parseInt(document.getElementById('obPostsNeeded').value, 10) || null,
+                billing_period: document.getElementById('obBillingPeriod').value || null
+            };
+            const { error } = await db.from('clients').update(patch).eq('id', clientId);
+            if (error) { alert('Could not save onboarding details: ' + error.message); return; }
+            await loadClients();
+            renderClients();
+            alert('Onboarding details saved.');
         }
 
         // ---------- SOCIAL ACCOUNTS ----------
@@ -4114,16 +4254,19 @@
             event.preventDefault();
             const title = document.getElementById('newDeliverableTitle').value.trim();
             const client_id = document.getElementById('newDeliverableClient').value || null;
-            const deliverable_type = document.getElementById('newDeliverableType').value.trim();
+            const deliverable_type = document.getElementById('newDeliverableType').value;
             const assigned_to = document.getElementById('newDeliverableAssignee').value;
             const due_date = document.getElementById('newDeliverableDue').value || null;
+            const assigned_date = document.getElementById('newDeliverableAssignedDate').value || null;
+            const team_ids = Array.from(document.querySelectorAll('.newDeliverableTeamCheckbox:checked')).map(cb => cb.value);
             if (!title || !assigned_to) return;
 
             const { error } = await db.from('creative_deliverables').insert({
-                title, client_id, deliverable_type: deliverable_type || null, assigned_to, due_date, created_by: currentEmployee.id
+                title, client_id, deliverable_type: deliverable_type || null, assigned_to, due_date, assigned_date, team_ids, created_by: currentEmployee.id
             });
             if (error) { alert('Could not add deliverable: ' + error.message); return; }
             document.getElementById('deliverableForm').reset();
+            document.querySelectorAll('.newDeliverableTeamCheckbox').forEach(cb => cb.checked = false);
             await renderDeliverables();
         }
 
@@ -4158,6 +4301,8 @@
                             <div class="approval-title">${escapeHtml(d.title)}${d.deliverable_type ? ' <span style="font-weight:400; color:var(--text-secondary); font-size:12px;">— ' + escapeHtml(d.deliverable_type) + '</span>' : ''}</div>
                             <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
                                 ${d.clients ? escapeHtml(d.clients.name) : 'Internal'} · Assigned to ${d.employees ? escapeHtml(d.employees.name) : '—'}
+                                ${(d.team_ids && d.team_ids.length) ? ' +' + d.team_ids.map(id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name) : null; }).filter(Boolean).join(', ') : ''}
+                                ${d.assigned_date ? ' · Assigned ' + new Date(d.assigned_date).toLocaleDateString() : ''}
                                 ${d.due_date ? ' · Due ' + new Date(d.due_date).toLocaleDateString() : ''}
                                 ${items.length ? ' · ' + done + '/' + items.length + ' checklist items done' : ''}
                                 ${d.campaigns ? ' · Campaign: ' + escapeHtml(d.campaigns.name) : ''}
@@ -4205,16 +4350,29 @@
             openModal('Edit Deliverable', `
                 <form onsubmit="saveDeliverableEdit(event, '${id}')">
                     <div class="form-group"><label>Title</label><input type="text" id="editDelTitle" value="${escapeHtml(d.title)}" required></div>
-                    <div class="form-group"><label>Type</label><input type="text" id="editDelType" value="${escapeHtml(d.deliverable_type) || ''}"></div>
+                    <div class="form-group"><label>Type</label>
+                        <select id="editDelType"><option value="">— Select —</option>${DELIVERABLE_TYPE_OPTIONS.map(o => `<option value="${o}" ${d.deliverable_type === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                    </div>
                     <div class="form-group"><label>Client</label>
                         <select id="editDelClient"><option value="">— Internal —</option>${allClients.map(c => `<option value="${c.id}" ${c.id === d.client_id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}</select>
                     </div>
                     <div class="form-group"><label>Campaign (optional)</label>
                         <select id="editDelCampaign"><option value="">— None —</option>${(campaigns || []).map(c => `<option value="${c.id}" ${c.id === d.campaign_id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}</select>
                     </div>
-                    <div class="form-group"><label>Assigned To</label>
+                    <div class="form-group"><label>Assigned To (primary)</label>
                         <select id="editDelAssignee">${allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${e.id === d.assigned_to ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select>
                     </div>
+                    <div class="form-group"><label>Additional Team</label>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px; border:1px solid var(--wain-border); border-radius:6px; padding:8px;">
+                            ${allEmployees.filter(e => e.active).map(e => `
+                                <label style="display:flex; align-items:center; gap:6px; font-size:13px;">
+                                    <input type="checkbox" value="${e.id}" class="editDelTeamCheckbox" ${(d.team_ids || []).includes(e.id) ? 'checked' : ''}>
+                                    ${escapeHtml(e.name)}
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Assigned Date</label><input type="date" id="editDelAssignedDate" value="${d.assigned_date || ''}"></div>
                     <div class="form-group"><label>Due Date</label><input type="date" id="editDelDue" value="${d.due_date || ''}"></div>
                     <div class="form-group"><label>Notes</label><textarea id="editDelNotes" rows="3">${escapeHtml(d.notes) || ''}</textarea></div>
                     <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
@@ -4227,12 +4385,15 @@
 
         async function saveDeliverableEdit(event, id) {
             event.preventDefault();
+            const team_ids = Array.from(document.querySelectorAll('.editDelTeamCheckbox:checked')).map(cb => cb.value);
             const patch = {
                 title: document.getElementById('editDelTitle').value.trim(),
-                deliverable_type: document.getElementById('editDelType').value.trim() || null,
+                deliverable_type: document.getElementById('editDelType').value || null,
                 client_id: document.getElementById('editDelClient').value || null,
                 campaign_id: document.getElementById('editDelCampaign').value || null,
                 assigned_to: document.getElementById('editDelAssignee').value,
+                team_ids,
+                assigned_date: document.getElementById('editDelAssignedDate').value || null,
                 due_date: document.getElementById('editDelDue').value || null,
                 notes: document.getElementById('editDelNotes').value.trim() || null,
                 updated_at: new Date().toISOString()
