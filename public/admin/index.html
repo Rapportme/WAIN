@@ -145,6 +145,28 @@
         .prio-preview { width:100%; margin-top:12px; font-family: ui-monospace, Menlo, monospace; font-size:12px; line-height:1.5; background: var(--wain-light-gray); border:1px solid var(--wain-border); border-radius:6px; padding:10px; resize:vertical; }
         .prio-form-row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
         @media (max-width: 640px) { .prio-board { grid-template-columns: 1fr; } .prio-form-row { grid-template-columns: 1fr; } }
+        .pbadge { display:inline-block; font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; letter-spacing:.3px; white-space:nowrap; }
+        .pbadge.p-p1 { background: rgba(239,68,68,0.12); color: var(--danger-red); }
+        .pbadge.p-p2 { background: rgba(245,166,35,0.15); color: #b7791f; }
+        .pbadge.p-p3 { background: var(--wain-light-gray); color: var(--text-secondary); }
+        .pbadge.p-none { background: transparent; color: var(--text-secondary); }
+        .pscore { font-size:10px; color: var(--text-secondary); margin-left:5px; }
+        .fchip { display:inline-block; font-size:10.5px; font-weight:600; padding:1px 7px; border-radius:999px; margin:2px 2px 0 0; white-space:nowrap; }
+        .fchip.f-good { background: rgba(16,185,129,0.12); color: #0f8a5f; }
+        .fchip.f-mid { background: rgba(245,166,35,0.15); color: #b7791f; }
+        .fchip.f-low { background: rgba(0,184,212,0.1); color: var(--wain-cyan); }
+        .fchip.f-bad { background: rgba(239,68,68,0.12); color: var(--danger-red); }
+        .fchip.f-none { background: var(--wain-light-gray); color: var(--text-secondary); }
+        .fin-table td.num { white-space:nowrap; font-variant-numeric: tabular-nums; }
+        .fbar { height:4px; background: var(--wain-light-gray); border-radius:2px; margin-top:4px; min-width:70px; overflow:hidden; }
+        .fbar span { display:block; height:100%; background: var(--wain-cyan); }
+        .fbar.over span { background: var(--danger-red); }
+        .fin-summary { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; font-size:13px; margin-bottom:12px; }
+        #accounts .grid-2col > .card { min-width:0; }
+        #accounts select { max-width:100%; }
+        .fin-howto { font-size:12px; color: var(--text-secondary); margin: 4px 0 12px; }
+        .fin-howto summary { cursor:pointer; color: var(--wain-cyan); font-weight:600; }
+        .fin-howto p { margin-top:8px; line-height:1.6; }
         .check-group { display: flex; flex-wrap: wrap; gap: 6px 14px; border: 1px solid var(--wain-border); border-radius: 6px; padding: 8px 10px; }
         .check-group label { display: flex !important; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; margin: 0; white-space: nowrap; color: var(--text-primary); cursor: pointer; }
         .check-group input[type="checkbox"] { width: auto; padding: 0; margin: 0; flex: 0 0 auto; }
@@ -1733,6 +1755,7 @@
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Priority</th>
                                         <th>Client</th>
                                         <th>Industry</th>
                                         <th>Status</th>
@@ -1743,7 +1766,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="clientsTableBody">
-                                    <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading clients…</td></tr>
+                                    <tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">Loading clients…</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2035,6 +2058,7 @@
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Priority</th>
                                         <th>Project</th>
                                         <th>Client</th>
                                         <th>Owner</th>
@@ -2045,7 +2069,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="projectsTableBody">
-                                    <tr><td colspan="7" class="skeleton-row">Loading projects…</td></tr>
+                                    <tr><td colspan="8" class="skeleton-row">Loading projects…</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2263,6 +2287,35 @@
                 </div>
                 <div class="accent-line"></div>
 
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-title">Client Priorities &amp; Profitability</div>
+                        <span class="card-badge" id="finPriorityCounts" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                    </div>
+                    <details class="fin-howto">
+                        <summary>How priority is worked out</summary>
+                        <p>Each client gets a score out of 100: <strong>revenue band</strong> up to 30 (A = the clients making up the top 70% of paid revenue in the last 12 months, B = the next 20%, C = the rest), <strong>margin</strong> up to 20 (revenue minus costs logged to the client, its cost center or its projects: High ≥ 40%, OK 15–40%, Thin 0–15%, Loss), <strong>payment health</strong> up to 15 (On time, Slow = paid 7+ days late on average, Overdue), <strong>segment</strong> up to 20 (Strategic, Growth, Partner/Retainer, One-off) and <strong>tier</strong> up to 15 (Premium to Starter). 65+ is P1, 40–64 is P2, below 40 is P3; paused or churned clients are always P3. Projects take 60% of their client's score, plus 25 if billable (12 pitch, 5 internal) and 15 if due within two weeks. Pin a different priority with a reason whenever the numbers miss something. The team sees only the P1/P2/P3 badge, never the money.</p>
+                    </details>
+                    <div class="table-container">
+                        <table class="fin-table">
+                            <thead><tr><th>Priority</th><th>Client</th><th>Billing</th><th>Revenue (12m)</th><th>Outstanding</th><th>Costs (12m)</th><th>Margin</th><th></th></tr></thead>
+                            <tbody id="finClientsBody"><tr><td colspan="8" class="skeleton-row">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-title">Project Priorities &amp; Budgets</div>
+                    </div>
+                    <div class="table-container">
+                        <table class="fin-table">
+                            <thead><tr><th>Priority</th><th>Project</th><th>Billing</th><th>Value</th><th>Invoiced / Collected</th><th>Spend / Budget</th><th>Flags</th><th></th></tr></thead>
+                            <tbody id="finProjectsBody"><tr><td colspan="8" class="skeleton-row">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="grid grid-3col">
                     <div class="card">
                         <div class="stat-label">Revenue (Paid)</div>
@@ -2286,7 +2339,11 @@
                         <form id="invoiceForm" onsubmit="createInvoice(event)" style="display:flex; flex-direction:column; gap:12px;">
                             <div class="form-group" style="margin:0;">
                                 <label>Client</label>
-                                <select id="newInvoiceClient" required></select>
+                                <select id="newInvoiceClient" required onchange="populateFinanceProjectSelect('newInvoiceProject', this.value)"></select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label>Project (optional)</label>
+                                <select id="newInvoiceProject"><option value="">— No project —</option></select>
                             </div>
                             <div class="form-group" style="margin:0;">
                                 <label>Invoice Number</label>
@@ -2303,7 +2360,7 @@
                                 </div>
                             </div>
                             <div id="invoiceLineItems">
-                                <div class="form-group" style="margin:0; display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px;">
+                                <div class="form-group" style="margin:0; display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr); gap:8px;">
                                     <input type="text" class="lineDesc" placeholder="Description" required>
                                     <input type="number" class="lineQty" placeholder="Qty" value="1" min="1">
                                     <input type="number" class="lineRate" placeholder="Rate" required>
@@ -2322,6 +2379,16 @@
                             <div class="form-group" style="margin:0;">
                                 <label>Cost Center</label>
                                 <select id="newExpenseCostCenter" required></select>
+                            </div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Client (optional)</label>
+                                    <select id="newExpenseClient" onchange="populateFinanceProjectSelect('newExpenseProject', this.value)"><option value="">— None —</option></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Project (optional)</label>
+                                    <select id="newExpenseProject"><option value="">— No project —</option></select>
+                                </div>
                             </div>
                             <div class="form-group" style="margin:0;">
                                 <label>Category</label>
@@ -3165,6 +3232,203 @@
             `).join('') + '</div>';
         }
 
+        // ---------- FINANCE LAYERS & PRIORITY ----------
+        // client_finance() / project_finance() are security-definer SQL functions:
+        // everyone gets the P1/P2/P3 priority; only Superadmin gets the money figures and bands.
+        let clientFin = {};
+        let projectFin = {};
+        const BILLING_MODEL_OPTIONS = ['Retainer', 'Project fee', 'Hourly', 'Barter / Free'];
+        const PROJECT_BILLING_TYPES = { billable: 'Billable', internal: 'Internal (WAIN)', pitch: 'Pitch / Free' };
+        const PROJECT_FEE_TYPES = { retainer: 'Retainer', fixed: 'Fixed fee', hourly: 'Hourly' };
+        const PRIORITY_RANK = { P1: 1, P2: 2, P3: 3 };
+
+        function isSuperadminUser() { return !!(currentEmployee && currentEmployee.role === 'Superadmin'); }
+
+        async function loadFinance() {
+            const [{ data: cf, error: e1 }, { data: pf, error: e2 }] = await Promise.all([db.rpc('client_finance'), db.rpc('project_finance')]);
+            clientFin = {}; projectFin = {};
+            if (!e1) (cf || []).forEach(r => { clientFin[r.client_id] = r; });
+            if (!e2) (pf || []).forEach(r => { projectFin[r.project_id] = r; });
+        }
+
+        function inr(n) {
+            if (n === null || n === undefined || n === '') return '—';
+            const v = Number(n);
+            if (Math.abs(v) >= 100000) return '₹' + (v / 100000).toFixed(v % 100000 === 0 ? 0 : 1) + 'L';
+            if (Math.abs(v) >= 1000) return '₹' + (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k';
+            return '₹' + v.toLocaleString('en-IN');
+        }
+
+        function priorityBadge(f, withScore) {
+            if (!f || !f.priority) return '<span class="pbadge p-none">—</span>';
+            const pinned = f.priority !== f.auto_priority;
+            const title = pinned ? `Pinned to ${f.priority} (auto would be ${f.auto_priority}, score ${f.score})${f.priority_reason ? ': ' + f.priority_reason : ''}` : `Auto priority — score ${f.score}/100`;
+            return `<span class="pbadge p-${f.priority.toLowerCase()}" title="${escapeHtml(title)}">${f.priority}${pinned ? ' 📌' : ''}</span>${withScore ? `<span class="pscore">${f.score}</span>` : ''}`;
+        }
+
+        function bandChip(kind, value) {
+            if (!value) return '';
+            const cls = {
+                rev: { A: 'good', B: 'mid', C: 'low', None: 'none' },
+                pay: { 'On time': 'good', Slow: 'mid', Overdue: 'bad', 'No history': 'none' },
+                margin: { High: 'good', OK: 'mid', Thin: 'low', Loss: 'bad', Unknown: 'none' }
+            }[kind][value] || 'none';
+            const label = kind === 'rev' ? (value === 'None' ? 'No revenue' : 'Band ' + value) : kind === 'margin' ? (value === 'Unknown' ? 'Margin ?' : value + ' margin') : value;
+            return `<span class="fchip f-${cls}">${escapeHtml(label)}</span>`;
+        }
+
+        function sortByPriority(list, finMap) {
+            return list.slice().sort((a, b) => {
+                const fa = finMap[a.id], fb = finMap[b.id];
+                const ra = fa ? PRIORITY_RANK[fa.priority] || 9 : 9, rb = fb ? PRIORITY_RANK[fb.priority] || 9 : 9;
+                if (ra !== rb) return ra - rb;
+                const sa = fa ? fa.score : 0, sb = fb ? fb.score : 0;
+                if (sa !== sb) return sb - sa;
+                return (a.name || '').localeCompare(b.name || '');
+            });
+        }
+
+        // Accounts → Priorities & Profitability
+        async function renderFinanceLayers() {
+            const cBody = document.getElementById('finClientsBody');
+            const pBody = document.getElementById('finProjectsBody');
+            if (!cBody || !pBody) return;
+            if (!allProjects.length) await loadProjects();
+            await loadFinance();
+            const clients = sortByPriority(allClients, clientFin);
+            const counts = { P1: 0, P2: 0, P3: 0 };
+            clients.forEach(c => { const f = clientFin[c.id]; if (f && counts[f.priority] !== undefined) counts[f.priority]++; });
+            document.getElementById('finPriorityCounts').textContent = `${counts.P1} P1 · ${counts.P2} P2 · ${counts.P3} P3`;
+            cBody.innerHTML = clients.length ? clients.map(c => {
+                const f = clientFin[c.id] || {};
+                return `<tr>
+                    <td>${priorityBadge(f, true)}</td>
+                    <td><strong>${escapeHtml(c.name)}</strong><div style="font-size:11px; color:var(--text-secondary);">${[c.client_segment, c.client_tier].filter(Boolean).map(escapeHtml).join(' · ') || 'Segment/tier not set'}</div></td>
+                    <td>${escapeHtml(f.billing_model) || '<span style="color:var(--text-secondary);">—</span>'}</td>
+                    <td class="num">${inr(f.revenue_12m)}<div>${bandChip('rev', f.revenue_band)}</div></td>
+                    <td class="num">${Number(f.outstanding) ? inr(f.outstanding) : '—'}<div>${bandChip('pay', f.payment_health)}</div></td>
+                    <td class="num">${inr(f.expenses_12m)}</td>
+                    <td class="num">${f.margin_pct !== null && f.margin_pct !== undefined ? f.margin_pct + '%' : '—'}<div>${bandChip('margin', f.margin_band)}</div></td>
+                    <td><button class="btn btn-sm btn-secondary" onclick="openClientFinanceEdit('${c.id}')">Edit</button></td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No clients yet.</td></tr>';
+
+            const projects = sortByPriority(allProjects, projectFin);
+            pBody.innerHTML = projects.length ? projects.map(p => {
+                const f = projectFin[p.id] || {};
+                const value = Number(f.project_value) || 0, invoiced = Number(f.invoiced) || 0, collected = Number(f.collected) || 0, spend = Number(f.spend) || 0, budget = Number(f.budget) || 0;
+                const flags = [];
+                if (budget && spend > budget) flags.push('<span class="fchip f-bad">Over budget</span>');
+                else if (budget && spend > budget * 0.8) flags.push('<span class="fchip f-mid">80% of budget</span>');
+                if (value && invoiced < value && ['review', 'completed'].includes(p.status)) flags.push('<span class="fchip f-mid">Not fully invoiced</span>');
+                if (invoiced > collected) flags.push(`<span class="fchip f-low">${inr(invoiced - collected)} to collect</span>`);
+                return `<tr>
+                    <td>${priorityBadge(f, true)}</td>
+                    <td><strong>${escapeHtml(p.name)}</strong><div style="font-size:11px; color:var(--text-secondary);">${p.clients ? escapeHtml(p.clients.name) : 'Internal'} · ${escapeHtml((p.status || '').replace('_', ' '))}</div></td>
+                    <td>${escapeHtml(PROJECT_BILLING_TYPES[f.billing_type] || '—')}${f.fee_type ? '<div style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(PROJECT_FEE_TYPES[f.fee_type]) + '</div>' : ''}</td>
+                    <td class="num">${value ? inr(value) : '—'}</td>
+                    <td class="num">${inr(invoiced)} / ${inr(collected)}${value ? `<div class="fbar"><span style="width:${Math.min(100, Math.round(collected / value * 100))}%"></span></div>` : ''}</td>
+                    <td class="num">${inr(spend)}${budget ? ' / ' + inr(budget) : ''}${budget ? `<div class="fbar ${spend > budget ? 'over' : ''}"><span style="width:${Math.min(100, Math.round(spend / budget * 100))}%"></span></div>` : ''}</td>
+                    <td>${flags.join(' ') || '<span style="color:var(--text-secondary);">—</span>'}</td>
+                    <td><button class="btn btn-sm btn-secondary" onclick="openProjectFinanceEdit('${p.id}')">Edit</button></td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No projects yet.</td></tr>';
+        }
+
+        function priorityOverrideSelect(id, current) {
+            return `<select id="${id}"><option value="">Auto (recommended)</option>${['P1', 'P2', 'P3'].map(p => `<option value="${p}" ${current === p ? 'selected' : ''}>Pin to ${p}</option>`).join('')}</select>`;
+        }
+
+        async function openClientFinanceEdit(clientId) {
+            const c = allClients.find(x => x.id === clientId);
+            if (!c) return;
+            const { data } = await db.from('client_financials').select('*').eq('client_id', clientId).maybeSingle();
+            const row = data || {};
+            const f = clientFin[clientId] || {};
+            openModal('Finance & Priority — ' + c.name, `
+                <form onsubmit="saveClientFinance(event, '${clientId}')">
+                    <div class="fin-summary">${priorityBadge(f, true)} ${bandChip('rev', f.revenue_band)} ${bandChip('pay', f.payment_health)} ${bandChip('margin', f.margin_band)}</div>
+                    <div class="form-group"><label>Billing model</label>
+                        <select id="finBillingModel"><option value="">— Not set —</option>${BILLING_MODEL_OPTIONS.map(o => `<option ${row.billing_model === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Priority (auto = ${f.auto_priority || '—'}, score ${f.score ?? '—'}/100)</label>${priorityOverrideSelect('finPriorityOverride', row.priority_override)}</div>
+                    <div class="form-group"><label>Reason for pinning (shown on hover)</label><input type="text" id="finPriorityReason" value="${escapeHtml(row.priority_reason || '')}" placeholder="e.g. big referral potential, founder relationship"></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>`);
+        }
+
+        async function saveClientFinance(event, clientId) {
+            event.preventDefault();
+            const override = document.getElementById('finPriorityOverride').value || null;
+            const { error } = await db.from('client_financials').upsert({
+                client_id: clientId,
+                billing_model: document.getElementById('finBillingModel').value || null,
+                priority_override: override,
+                priority_reason: override ? (document.getElementById('finPriorityReason').value.trim() || null) : null,
+                updated_at: new Date().toISOString()
+            });
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            renderFinanceLayers();
+        }
+
+        async function openProjectFinanceEdit(projectId) {
+            const p = allProjects.find(x => x.id === projectId);
+            if (!p) return;
+            const { data } = await db.from('project_financials').select('*').eq('project_id', projectId).maybeSingle();
+            const row = data || {};
+            const f = projectFin[projectId] || {};
+            openModal('Finance & Priority — ' + p.name, `
+                <form onsubmit="saveProjectFinance(event, '${projectId}')">
+                    <div class="fin-summary">${priorityBadge(f, true)} <span style="font-size:12px; color:var(--text-secondary);">Invoiced ${inr(f.invoiced)} · Collected ${inr(f.collected)} · Spend ${inr(f.spend)}</span></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Billing</label><select id="finProjBilling">${Object.entries(PROJECT_BILLING_TYPES).map(([k, v]) => `<option value="${k}" ${(row.billing_type || 'billable') === k ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Fee type</label><select id="finProjFee"><option value="">— Not set —</option>${Object.entries(PROJECT_FEE_TYPES).map(([k, v]) => `<option value="${k}" ${row.fee_type === k ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Project value (₹)</label><input type="number" id="finProjValue" min="0" step="1" value="${row.project_value ?? ''}" placeholder="Agreed fee for the whole project"></div>
+                        <div class="form-group"><label>Budget (₹)</label><input type="number" id="finProjBudget" min="0" step="1" value="${row.budget ?? ''}" placeholder="What we can spend on it"></div>
+                    </div>
+                    <div class="form-group"><label>Priority (auto = ${f.auto_priority || '—'}, score ${f.score ?? '—'}/100)</label>${priorityOverrideSelect('finProjOverride', row.priority_override)}</div>
+                    <div class="form-group"><label>Reason for pinning</label><input type="text" id="finProjReason" value="${escapeHtml(row.priority_reason || '')}"></div>
+                    <div style="font-size:11px; color:var(--text-secondary);">Tag invoices and expenses to this project in Accounts so invoiced, collected and spend fill in.</div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>`);
+        }
+
+        async function saveProjectFinance(event, projectId) {
+            event.preventDefault();
+            const num = id => { const v = document.getElementById(id).value; return v === '' ? null : Number(v); };
+            const override = document.getElementById('finProjOverride').value || null;
+            const { error } = await db.from('project_financials').upsert({
+                project_id: projectId,
+                billing_type: document.getElementById('finProjBilling').value,
+                fee_type: document.getElementById('finProjFee').value || null,
+                project_value: num('finProjValue'),
+                budget: num('finProjBudget'),
+                priority_override: override,
+                priority_reason: override ? (document.getElementById('finProjReason').value.trim() || null) : null,
+                updated_at: new Date().toISOString()
+            });
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            if (document.getElementById('accounts').classList.contains('active')) renderFinanceLayers(); else renderProjects();
+        }
+
+        // Invoice / expense forms: project list follows the chosen client
+        function populateFinanceProjectSelect(selId, clientId) {
+            const sel = document.getElementById(selId);
+            if (!sel) return;
+            const list = allProjects.filter(p => !clientId || p.client_id === clientId || !p.client_id);
+            sel.innerHTML = '<option value="">— No project —</option>' + list.map(p => `<option value="${p.id}">${escapeHtml(p.name)}${p.clients ? ' — ' + escapeHtml(p.clients.name) : ' (internal)'}</option>`).join('');
+        }
+
         // ---------- DAILY PRIORITIES ----------
         // A priority is just a task with priority_date set to the day it matters.
         // Planners (Superadmin or anyone with the Projects module) set them per person;
@@ -3529,21 +3793,25 @@
             return parts.length ? `<div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:4px;">${parts.join('')}</div>` : '';
         }
 
-        function renderClients() {
+        async function renderClients() {
             const body = document.getElementById('clientsTableBody');
             if (!body) return;
+            await loadFinance();
             document.getElementById('clientsCount').textContent = allClients.length + (allClients.length === 1 ? ' client' : ' clients');
             if (!allClients.length) {
-                body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No clients yet — add the first one above.</td></tr>';
+                body.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No clients yet — add the first one above.</td></tr>';
                 return;
             }
             const statusClass = { active: 'status-active', paused: 'status-pending', churned: 'status-overdue' };
-            body.innerHTML = allClients.map(c => {
+            const showMoney = isSuperadminUser();
+            body.innerHTML = sortByPriority(allClients, clientFin).map(c => {
                 const daysSince = clientDaysSinceActivity(c);
+                const f = clientFin[c.id];
                 const isLapsed = c.status === 'active' && daysSince >= LAPSED_CLIENT_DAYS;
                 return `
                 <tr${isLapsed ? ' style="background: rgba(245,166,35,0.06);"' : ''}>
-                    <td><strong>${escapeHtml(c.name)}</strong>${isLapsed ? ` <span title="No project/campaign/creative/invoice activity in ${daysSince} days" style="color:var(--warning-amber); font-size:11px;">⚠ Reconnect (${daysSince}d)</span>` : ''}</td>
+                    <td>${priorityBadge(f)}</td>
+                    <td><strong>${escapeHtml(c.name)}</strong>${showMoney && f ? '<div style="margin-top:3px;">' + bandChip('rev', f.revenue_band) + ' ' + bandChip('pay', f.payment_health) + ' ' + bandChip('margin', f.margin_band) + '</div>' : ''}${isLapsed ? ` <span title="No project/campaign/creative/invoice activity in ${daysSince} days" style="color:var(--warning-amber); font-size:11px;">⚠ Reconnect (${daysSince}d)</span>` : ''}</td>
                     <td>${escapeHtml(c.industry) || '—'}${clientCategoryBadges(c)}</td>
                     <td><span class="status-badge ${statusClass[c.status] || 'status-active'}">${escapeHtml(c.status)}</span></td>
                     <td>${c.cost_centers ? escapeHtml(c.cost_centers.name) : '—'}</td>
@@ -3560,6 +3828,7 @@
             clientDetailId = clientId;
             const client = allClients.find(c => c.id === clientId);
             if (!client) return;
+            if (!clientFin[clientId]) await loadFinance();
 
             const [{ data: projects }, { data: deliverables }, { data: campaigns }, { data: requirements }] = await Promise.all([
                 db.from('projects').select('*, employees!projects_owner_id_fkey(name)').eq('client_id', clientId).order('created_at', { ascending: false }),
@@ -3582,6 +3851,15 @@
                 <div class="modal-tab-panel active" data-tab="overview">
                     <div class="form-group"><label>Industry</label><div>${escapeHtml(client.industry) || '—'}</div></div>
                     <div class="form-group"><label>Categorisation</label><div>${clientCategoryBadges(client) || '<span style="color:var(--text-secondary);">Not set — fill in the Onboarding tab</span>'}</div></div>
+                    <div class="form-group"><label>Priority</label><div>${priorityBadge(clientFin[clientId])}${clientFin[clientId] && clientFin[clientId].priority_reason ? ' <span style="font-size:12px; color:var(--text-secondary);">' + escapeHtml(clientFin[clientId].priority_reason) + '</span>' : ''}</div></div>
+                    ${isSuperadminUser() && clientFin[clientId] ? `<div class="form-group"><label>Finance (last 12 months)</label><div class="fin-summary">
+                        <span>Revenue <strong>${inr(clientFin[clientId].revenue_12m)}</strong></span>
+                        <span>Outstanding <strong>${inr(clientFin[clientId].outstanding)}</strong></span>
+                        <span>Costs <strong>${inr(clientFin[clientId].expenses_12m)}</strong></span>
+                        <span>Margin <strong>${clientFin[clientId].margin_pct !== null ? clientFin[clientId].margin_pct + '%' : '—'}</strong></span>
+                        ${bandChip('rev', clientFin[clientId].revenue_band)} ${bandChip('pay', clientFin[clientId].payment_health)} ${bandChip('margin', clientFin[clientId].margin_band)}
+                        <a href="#" style="font-size:12px;" onclick="closeModal(); openClientFinanceEdit('${clientId}'); return false;">Edit billing / priority →</a>
+                    </div></div>` : ''}
                     <div class="form-group"><label>Primary Team</label><div>${(client.primary_team_members || []).map(id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name) : null; }).filter(Boolean).join(', ') || '<span style="color:var(--text-secondary);">Not set — fill in the Onboarding tab</span>'}</div></div>
                     <div class="form-group"><label>Status</label><div>${escapeHtml(client.status)}</div></div>
                     <div class="form-group"><label>Cost Center</label><div>${client.cost_centers ? escapeHtml(client.cost_centers.name) : '—'}</div></div>
@@ -4741,7 +5019,7 @@
             const wrap = document.getElementById('invoiceLineItems');
             const row = document.createElement('div');
             row.className = 'form-group';
-            row.style.cssText = 'margin:0; display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px; margin-top:8px;';
+            row.style.cssText = 'margin:0; display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr); gap:8px; margin-top:8px;';
             row.innerHTML = `<input type="text" class="lineDesc" placeholder="Description" required><input type="number" class="lineQty" placeholder="Qty" value="1" min="1"><input type="number" class="lineRate" placeholder="Rate" required>`;
             wrap.appendChild(row);
         }
@@ -4752,6 +5030,7 @@
             const invoice_number = document.getElementById('newInvoiceNumber').value.trim();
             const due_date = document.getElementById('newInvoiceDue').value || null;
             const tax = parseFloat(document.getElementById('newInvoiceTax').value) || 0;
+            const project_id = document.getElementById('newInvoiceProject').value || null;
             if (!client_id || !invoice_number) return;
 
             const client = allClients.find(c => c.id === client_id);
@@ -4772,7 +5051,7 @@
             if (!items.length) { alert('Add at least one line item.'); return; }
 
             const { data: invoice, error } = await db.from('invoices').insert({
-                invoice_number, client_id, cost_center_id: client ? client.cost_center_id : null,
+                invoice_number, client_id, project_id, cost_center_id: client ? client.cost_center_id : null,
                 issue_date: new Date().toISOString().slice(0, 10), due_date,
                 subtotal, tax, total: subtotal + tax, created_by: currentEmployee.id
             }).select().single();
@@ -4783,12 +5062,14 @@
             if (itemsErr) { alert('Invoice created, but line items failed to save: ' + itemsErr.message); }
 
             document.getElementById('invoiceForm').reset();
-            document.getElementById('invoiceLineItems').innerHTML = `<div class="form-group" style="margin:0; display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px;"><input type="text" class="lineDesc" placeholder="Description" required><input type="number" class="lineQty" placeholder="Qty" value="1" min="1"><input type="number" class="lineRate" placeholder="Rate" required></div>`;
+            document.getElementById('invoiceLineItems').innerHTML = `<div class="form-group" style="margin:0; display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr); gap:8px;"><input type="text" class="lineDesc" placeholder="Description" required><input type="number" class="lineQty" placeholder="Qty" value="1" min="1"><input type="number" class="lineRate" placeholder="Rate" required></div>`;
             renderAccounts();
         }
 
         async function updateInvoiceStatus(id, status) {
-            const { error } = await db.from('invoices').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+            const patch = { status, updated_at: new Date().toISOString() };
+            if (status === 'paid') patch.paid_at = localISO();
+            const { error } = await db.from('invoices').update(patch).eq('id', id);
             if (error) { alert('Could not update invoice: ' + error.message); return; }
             renderAccounts();
         }
@@ -4801,8 +5082,10 @@
             const amount = parseFloat(document.getElementById('newExpenseAmount').value);
             const expense_date = document.getElementById('newExpenseDate').value || new Date().toISOString().slice(0, 10);
             if (!cost_center_id || !amount) return;
+            const client_id = document.getElementById('newExpenseClient').value || null;
+            const project_id = document.getElementById('newExpenseProject').value || null;
             const { error } = await db.from('expenses').insert({
-                cost_center_id, category, description: description || null, amount, expense_date, logged_by: currentEmployee.id
+                cost_center_id, client_id, project_id, category, description: description || null, amount, expense_date, logged_by: currentEmployee.id
             });
             if (error) { alert('Could not log expense: ' + error.message); return; }
             document.getElementById('expenseForm').reset();
@@ -4814,6 +5097,12 @@
             const expBody = document.getElementById('expensesTableBody');
             const plBody = document.getElementById('plTableBody');
             if (!invBody) return;
+            if (!allProjects.length) await loadProjects();
+            renderFinanceLayers();
+            const expClientSel = document.getElementById('newExpenseClient');
+            if (expClientSel) { const v = expClientSel.value; expClientSel.innerHTML = '<option value="">— None —</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join(''); expClientSel.value = v; }
+            populateFinanceProjectSelect('newInvoiceProject', (document.getElementById('newInvoiceClient') || {}).value);
+            populateFinanceProjectSelect('newExpenseProject', (document.getElementById('newExpenseClient') || {}).value);
 
             const [{ data: invoices, error: invErr }, { data: expenses, error: expErr }] = await Promise.all([
                 db.from('invoices').select('*, clients(name), cost_centers(name)').order('issue_date', { ascending: false }),
@@ -5082,10 +5371,10 @@
         async function renderProjects() {
             const body = document.getElementById('projectsTableBody');
             if (!body) return;
-            await loadProjects();
+            await Promise.all([loadProjects(), loadFinance()]);
             document.getElementById('projectsCount').textContent = allProjects.length + (allProjects.length === 1 ? ' project' : ' projects');
             if (!allProjects.length) {
-                body.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No projects yet — add the first one above.</td></tr>';
+                body.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No projects yet — add the first one above.</td></tr>';
                 return;
             }
             const { data: projTasks } = await db.from('tasks').select('project_id, status').not('project_id', 'is', null);
@@ -5096,12 +5385,15 @@
                 if (t.status === 'done') progress[t.project_id].done++;
             });
             const statusClass = { planning: 'status-pending', active: 'status-in-progress', review: 'status-in-progress', completed: 'status-active', on_hold: 'status-overdue' };
-            body.innerHTML = allProjects.map(p => {
+            const showMoney = isSuperadminUser();
+            body.innerHTML = sortByPriority(allProjects, projectFin).map(p => {
                 const pr = progress[p.id];
+                const f = projectFin[p.id];
                 const pct = pr && pr.total ? Math.round((pr.done / pr.total) * 100) : 0;
                 return `
                 <tr>
-                    <td><strong>${escapeHtml(p.name)}</strong>${p.brief ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">' + escapeHtml(p.brief) + '</div>' : ''}</td>
+                    <td>${priorityBadge(f)}</td>
+                    <td><strong>${escapeHtml(p.name)}</strong>${showMoney && f && (Number(f.project_value) || Number(f.spend) || Number(f.invoiced)) ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Value ' + inr(f.project_value) + ' · Collected ' + inr(f.collected) + ' · Spend ' + inr(f.spend) + (Number(f.budget) ? ' / ' + inr(f.budget) : '') + (Number(f.budget) && Number(f.spend) > Number(f.budget) ? ' <span class="fchip f-bad">Over budget</span>' : '') + '</div>' : ''}${p.brief ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">' + escapeHtml(p.brief) + '</div>' : ''}</td>
                     <td>${p.clients ? escapeHtml(p.clients.name) : 'Internal'}</td>
                     <td>${p.employees ? escapeHtml(p.employees.name) : '—'}${(p.primary_team_members && p.primary_team_members.length) ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Team: ' + employeeNames(p.primary_team_members) + '</div>' : ''}</td>
                     <td>${pr && pr.total ? pct + '% (' + pr.done + '/' + pr.total + ')' : 'No tasks yet'}</td>
@@ -5116,6 +5408,7 @@
                             <option value="on_hold" ${p.status==='on_hold'?'selected':''}>On Hold</option>
                         </select><br>
                         <button class="btn btn-sm btn-secondary" onclick="openProjectEdit('${p.id}')">Edit</button>
+                        ${showMoney ? `<button class="btn btn-sm btn-secondary" title="Billing, value, budget, priority" onclick="openProjectFinanceEdit('${p.id}')">₹</button>` : ''}
                     </td>
                 </tr>`;
             }).join('');
