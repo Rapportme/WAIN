@@ -108,6 +108,43 @@
         }
 
         /* Checkbox groups (team members / platforms) — override the full-width text-input styling */
+        .prio-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+        .prio-datenav { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+        .prio-datenav input[type=date] { width:auto; padding:6px 8px; }
+        .prio-board { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:16px; }
+        .prio-card { background: var(--wain-white, #fff); border:1px solid var(--wain-border); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+        .prio-card.is-empty { background: var(--wain-light-gray); }
+        .prio-card-head { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+        .prio-role { display:block; font-size:11px; color:var(--text-secondary); font-weight:400; margin-top:2px; }
+        .prio-count { font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px; background: rgba(0,184,212,0.1); color: var(--wain-cyan); white-space:nowrap; }
+        .prio-count.all-done { background: rgba(16,185,129,0.12); color: var(--success-green, #10b981); }
+        .prio-list { display:flex; flex-direction:column; gap:4px; }
+        .prio-item { display:flex; align-items:flex-start; gap:10px; padding:7px 4px; border-bottom:1px solid var(--wain-border); }
+        .prio-item:last-child { border-bottom:none; }
+        .prio-item input[type=checkbox] { width:18px; height:18px; margin-top:2px; flex:0 0 auto; cursor:pointer; }
+        .prio-text { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+        .prio-title { font-size:13px; font-weight:500; line-height:1.4; word-break:break-word; }
+        .prio-item.done .prio-title { text-decoration: line-through; color: var(--text-secondary); }
+        .prio-meta { display:flex; flex-wrap:wrap; gap:4px; }
+        .prio-chip { font-size:10.5px; padding:1px 7px; border-radius:999px; background: var(--wain-light-gray); color: var(--text-secondary); }
+        .prio-chip.important { background: rgba(239,68,68,0.12); color: var(--danger-red); font-weight:700; }
+        .prio-actions { display:flex; gap:2px; flex:0 0 auto; }
+        .prio-actions button { border:none; background:none; cursor:pointer; color:var(--text-secondary); font-size:13px; padding:2px 5px; border-radius:4px; }
+        .prio-actions button:hover { background: var(--wain-light-gray); color: var(--text-primary); }
+        .prio-add { display:flex; flex-direction:column; gap:6px; border-top:1px dashed var(--wain-border); padding-top:10px; margin-top:auto; }
+        .prio-add input[type=text] { width:100%; padding:8px 10px; border:1px solid var(--wain-border); border-radius:6px; font-size:13px; font-family:inherit; background:#fff; }
+        .prio-add input[type=text]:focus { outline:none; border-color: var(--wain-cyan); box-shadow: 0 0 0 3px rgba(0,184,212,0.12); }
+        .prio-add-row select, .prio-add-row input[type=time], .prio-pull, #prioMsgKind, .prio-datenav input[type=date] { border:1px solid var(--wain-border); border-radius:6px; background:#fff; font-family:inherit; }
+        #prioMsgKind { padding:6px 8px; font-size:12px; }
+        .prio-add-row { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+        .prio-add-row select { flex:1 1 110px; min-width:0; width:auto; padding:5px 6px; font-size:12px; }
+        .prio-add-row input[type=time] { width:auto; padding:5px 6px; font-size:12px; }
+        .prio-add-row label { display:flex; align-items:center; gap:4px; font-size:12px; margin:0; white-space:nowrap; }
+        .prio-add-row label input { width:auto; }
+        .prio-pull { font-size:12px; padding:5px 6px; color: var(--text-secondary); }
+        .prio-preview { width:100%; margin-top:12px; font-family: ui-monospace, Menlo, monospace; font-size:12px; line-height:1.5; background: var(--wain-light-gray); border:1px solid var(--wain-border); border-radius:6px; padding:10px; resize:vertical; }
+        .prio-form-row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+        @media (max-width: 640px) { .prio-board { grid-template-columns: 1fr; } .prio-form-row { grid-template-columns: 1fr; } }
         .check-group { display: flex; flex-wrap: wrap; gap: 6px 14px; border: 1px solid var(--wain-border); border-radius: 6px; padding: 8px 10px; }
         .check-group label { display: flex !important; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; margin: 0; white-space: nowrap; color: var(--text-primary); cursor: pointer; }
         .check-group input[type="checkbox"] { width: auto; padding: 0; margin: 0; flex: 0 0 auto; }
@@ -972,6 +1009,10 @@
                     <span class="nav-icon">📊</span>
                     <span>My Dashboard</span>
                 </div>
+                <div class="nav-item" id="prioritiesNav" style="display: none;" onclick="switchView('priorities')">
+                    <span class="nav-icon">🎯</span>
+                    <span>Daily Priorities</span>
+                </div>
                 <div class="nav-item" onclick="switchView('profile')">
                     <span class="nav-icon">🪪</span>
                     <span>My Profile</span>
@@ -1422,6 +1463,17 @@
                 </div>
                 <div class="accent-line"></div>
 
+                <div class="card" id="myPrioritiesCard" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <div class="card-title">🎯 Today's Priorities</div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <a href="#" id="myPrioritiesPlanLink" style="display:none; font-size:12px; color:var(--wain-cyan); font-weight:600;" onclick="switchView('priorities'); return false;">Plan the team's day →</a>
+                            <span class="card-badge" id="myPrioritiesBadge" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                        </div>
+                    </div>
+                    <div id="myPrioritiesList" class="prio-list" style="margin-top: 12px;">Loading…</div>
+                </div>
+
                 <div class="grid grid-2col">
                     <div class="card">
                         <div class="card-header">
@@ -1454,6 +1506,53 @@
                     <h3 style="color: var(--wain-navy); margin-bottom: 4px;">Welcome, <span id="welcomeName">there</span>.</h3>
                     <p style="color: var(--text-secondary); margin-bottom: 20px;">Jump straight to a module below, or use the sidebar.</p>
                     <div id="overviewModuleCards"></div>
+                </div>
+            </div>
+
+            <!-- DAILY PRIORITIES -->
+            <div id="priorities" class="content-view">
+                <div class="section-header">
+                    <div class="section-titles">
+                        <h2>Daily Priorities</h2>
+                        <div class="section-subtitle">Set each person's priorities for the day. They see them on My Dashboard and tick them off; you share the list to the team group in one tap.</div>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+
+                <div class="prio-toolbar">
+                    <div class="prio-datenav">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="shiftPrioDate(-1)">←</button>
+                        <input type="date" id="prioDate" onchange="renderPriorities()">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="shiftPrioDate(1)">→</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="prioToday()">Today</button>
+                        <strong id="prioDateHeading" style="margin-left:8px;">—</strong>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary" id="prioCarryBtn" onclick="carryOverPriorities()">↻ Carry over unfinished</button>
+                </div>
+
+                <div class="kpi-row">
+                    <div class="kpi-card"><div class="stat-label">People with priorities</div><div class="stat-value" id="prioStatPeople">—</div></div>
+                    <div class="kpi-card"><div class="stat-label">Priorities</div><div class="stat-value" id="prioStatTotal">—</div></div>
+                    <div class="kpi-card"><div class="stat-label">Done</div><div class="stat-value" id="prioStatDone">—</div></div>
+                    <div class="kpi-card"><div class="stat-label">Important, still open</div><div class="stat-value" id="prioStatImportant" style="color:var(--danger-red);">—</div></div>
+                </div>
+
+                <div id="prioBoard" class="prio-board"></div>
+
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <div class="card-title">Share to the team group</div>
+                        <select id="prioMsgKind" onchange="renderPriorityPreview()" style="width:auto;">
+                            <option value="plan">Morning list</option>
+                            <option value="progress">Progress update (✅ / ⏳)</option>
+                        </select>
+                    </div>
+                    <textarea id="prioMessagePreview" readonly rows="10" class="prio-preview"></textarea>
+                    <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-primary btn-sm" id="prioCopyBtn" onclick="copyPriorityMessage()">📋 Copy message</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="sharePriorityWhatsApp()">Open in WhatsApp</button>
+                        <span style="font-size:12px; color:var(--text-secondary); align-self:center;">Paste into Team WeAreIn. Names are bold, not @tags. Tag people in WhatsApp if you want them notified.</span>
+                    </div>
                 </div>
             </div>
 
@@ -2676,6 +2775,7 @@
 
         const MODULE_TITLES = {
             'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
+            'priorities': { title: 'Daily Priorities', subtitle: "Set each person's priorities for the day, then share them to the team group" },
             'creative': { title: 'Creative Work', subtitle: 'Deliverables per client, with a checklist for each' },
             'social': { title: 'Social Media Posting', subtitle: 'Client accounts, content calendar, and post management' },
             'marketing': { title: 'Marketing Operations', subtitle: 'Campaigns by channel, budget, and status' },
@@ -2806,6 +2906,7 @@
             document.getElementById('websiteNav').style.display = modules.includes('website') ? 'flex' : 'none';
             document.getElementById('projectsNav').style.display = modules.includes('projects') ? 'flex' : 'none';
             document.getElementById('tasksNav').style.display = (modules.includes('projects') || isSuperadmin) ? 'flex' : 'none';
+            document.getElementById('prioritiesNav').style.display = (modules.includes('projects') || isSuperadmin) ? 'flex' : 'none';
             document.getElementById('resourcesNav').style.display = modules.includes('resources') ? 'flex' : 'none';
             document.getElementById('hrNav').style.display = modules.includes('hr') ? 'flex' : 'none';
             document.getElementById('financeSection').style.display = modules.includes('accounts') ? 'block' : 'none';
@@ -2864,6 +2965,7 @@
             const allowed = modules.includes(viewName) || viewName === 'overview' || viewName === 'profile' ||
                 (viewName === 'team' && isSuperadmin) ||
                 (viewName === 'tasks' && (modules.includes('projects') || isSuperadmin)) ||
+                (viewName === 'priorities' && (modules.includes('projects') || isSuperadmin)) ||
                 (viewName === 'creativetimeline' && modules.some(m => ['creative', 'social', 'marketing', 'website'].includes(m)));
             if (!allowed) {
                 alert('You do not have access to this module');
@@ -2890,6 +2992,7 @@
 
         function switchViewData(viewName) {
             if (viewName === 'overview') renderMyOverview();
+            if (viewName === 'priorities') renderPriorities();
             if (viewName === 'clients') renderClients();
             if (viewName === 'reviews') renderReviewsReferrals();
             if (viewName === 'social') { renderSocial(); }
@@ -3029,6 +3132,7 @@
         async function renderMyOverview() {
             if (!currentEmployee) return;
             document.getElementById('welcomeName').textContent = currentEmployee.name;
+            renderMyPriorities();
             const { data, error } = await db.from('task_assignments').select('*').eq('employee_id', currentEmployee.id);
             const list = document.getElementById('myTasksList');
             if (error) { list.innerHTML = 'Could not load tasks.'; return; }
@@ -3059,6 +3163,330 @@
                     <div class="stat-value" style="font-size: 14px; color: var(--wain-cyan);">Open →</div>
                 </div>
             `).join('') + '</div>';
+        }
+
+        // ---------- DAILY PRIORITIES ----------
+        // A priority is just a task with priority_date set to the day it matters.
+        // Planners (Superadmin or anyone with the Projects module) set them per person;
+        // everyone sees and ticks off their own on My Dashboard.
+        let prioTasks = [];
+        let prioOpenTasks = [];
+
+        function localISO(d) {
+            const x = d || new Date();
+            return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+        }
+
+        function canPlanPriorities() {
+            if (!currentEmployee) return false;
+            return currentEmployee.role === 'Superadmin' || (currentEmployee.modules || []).includes('projects');
+        }
+
+        function prioDateLabel(iso) {
+            const d = new Date(iso + 'T00:00:00');
+            return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+
+        function formatPrioTime(t) {
+            if (!t) return '';
+            const [h, m] = t.split(':').map(Number);
+            const ampm = h >= 12 ? 'pm' : 'am';
+            const h12 = ((h + 11) % 12) + 1;
+            return h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+        }
+
+        function prioPlanners() {
+            return allEmployees.filter(e => e.active !== false && e.role !== 'View Only');
+        }
+
+        function shiftPrioDate(days) {
+            const el = document.getElementById('prioDate');
+            const d = new Date((el.value || localISO()) + 'T00:00:00');
+            d.setDate(d.getDate() + days);
+            el.value = localISO(d);
+            renderPriorities();
+        }
+
+        function prioToday() {
+            document.getElementById('prioDate').value = localISO();
+            renderPriorities();
+        }
+
+        async function renderPriorities() {
+            const dateEl = document.getElementById('prioDate');
+            if (!dateEl) return;
+            if (!dateEl.value) dateEl.value = localISO();
+            const date = dateEl.value;
+            const [{ data: day, error: e1 }, { data: open, error: e2 }] = await Promise.all([
+                db.from('tasks').select('*, clients(name)').eq('priority_date', date).order('created_at'),
+                db.from('tasks').select('id, title, assigned_to, client_id, priority_date, due_date, status, clients(name)').neq('status', 'done').order('due_date', { ascending: true, nullsFirst: false })
+            ]);
+            if (e1 || e2) {
+                document.getElementById('prioBoard').innerHTML = `<div class="approval-item" style="color:var(--danger-red);">Could not load priorities: ${escapeHtml((e1 || e2).message)}</div>`;
+                return;
+            }
+            prioTasks = day || [];
+            prioOpenTasks = (open || []).filter(t => t.priority_date !== date);
+            document.getElementById('prioDateHeading').textContent = (date === localISO() ? 'Today · ' : '') + prioDateLabel(date);
+            renderPriorityStats();
+            renderPriorityBoard();
+            renderPriorityPreview();
+        }
+
+        function renderPriorityStats() {
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            const people = new Set(prioTasks.map(t => t.assigned_to)).size;
+            const done = prioTasks.filter(t => t.status === 'done').length;
+            set('prioStatPeople', people);
+            set('prioStatTotal', prioTasks.length);
+            set('prioStatDone', prioTasks.length ? done + ' / ' + prioTasks.length : '0');
+            set('prioStatImportant', prioTasks.filter(t => t.is_important && t.status !== 'done').length);
+            const carry = document.getElementById('prioCarryBtn');
+            if (carry) {
+                const date = document.getElementById('prioDate').value;
+                const n = prioOpenTasks.filter(t => t.priority_date && t.priority_date < date).length;
+                carry.textContent = n ? `↻ Carry over ${n} unfinished` : '↻ Nothing to carry over';
+                carry.disabled = !n;
+            }
+        }
+
+        function renderPriorityBoard() {
+            const board = document.getElementById('prioBoard');
+            const clientOpts = '<option value="">— Client —</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+            const people = prioPlanners();
+            // People with priorities first, then everyone else
+            people.sort((a, b) => {
+                const ca = prioTasks.filter(t => t.assigned_to === a.id).length;
+                const cb = prioTasks.filter(t => t.assigned_to === b.id).length;
+                return (cb > 0) - (ca > 0) || a.name.localeCompare(b.name);
+            });
+            board.innerHTML = people.map(e => {
+                const mine = prioTasks.filter(t => t.assigned_to === e.id);
+                const done = mine.filter(t => t.status === 'done').length;
+                const openForPerson = prioOpenTasks.filter(t => t.assigned_to === e.id);
+                return `
+                <div class="prio-card ${mine.length ? '' : 'is-empty'}">
+                    <div class="prio-card-head">
+                        <div><strong>${escapeHtml(e.name)}</strong><span class="prio-role">${escapeHtml(e.role || '')}</span></div>
+                        <span class="prio-count ${mine.length && done === mine.length ? 'all-done' : ''}">${mine.length ? done + '/' + mine.length : '—'}</span>
+                    </div>
+                    <div class="prio-list">
+                        ${mine.map(t => `
+                            <div class="prio-item ${t.status === 'done' ? 'done' : ''}">
+                                <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="Mark done">
+                                <div class="prio-text">
+                                    <span class="prio-title">${escapeHtml(t.title)}</span>
+                                    <span class="prio-meta">
+                                        ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
+                                        ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
+                                        ${t.is_important ? '<span class="prio-chip important">Important</span>' : ''}
+                                        ${t.status !== 'done' && t.status !== 'todo' ? '<span class="prio-chip">' + escapeHtml(t.status.replace('_', ' ')) + '</span>' : ''}
+                                    </span>
+                                </div>
+                                <div class="prio-actions">
+                                    <button type="button" title="Edit" onclick="openPriorityEdit('${t.id}')">✎</button>
+                                    <button type="button" title="Remove from this day (keeps the task)" onclick="removePriority('${t.id}')">✕</button>
+                                </div>
+                            </div>`).join('')}
+                    </div>
+                    <div class="prio-add">
+                        <input type="text" id="prioNew_${e.id}" placeholder="Add a priority for ${escapeHtml(e.name.split(' ')[0])}…" onkeydown="if(event.key==='Enter'){event.preventDefault(); addPriority('${e.id}');}">
+                        <div class="prio-add-row">
+                            <select id="prioClient_${e.id}">${clientOpts}</select>
+                            <input type="time" id="prioTime_${e.id}" title="By what time">
+                            <label title="Mark as important"><input type="checkbox" id="prioImp_${e.id}"> Important</label>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="addPriority('${e.id}')">+ Add</button>
+                        </div>
+                        ${openForPerson.length ? `
+                        <select class="prio-pull" onchange="if(this.value){flagTaskAsPriority(this.value);}">
+                            <option value="">＋ Pick from ${escapeHtml(e.name.split(' ')[0])}'s open tasks (${openForPerson.length})</option>
+                            ${openForPerson.map(t => `<option value="${t.id}">${escapeHtml(t.title)}${t.clients ? ' — ' + escapeHtml(t.clients.name) : ''}${t.due_date ? ' · due ' + prioDateLabel(t.due_date) : ''}</option>`).join('')}
+                        </select>` : ''}
+                    </div>
+                </div>`;
+            }).join('') || '<div class="approval-item">No active team members.</div>';
+        }
+
+        async function addPriority(empId) {
+            const titleEl = document.getElementById('prioNew_' + empId);
+            const title = titleEl.value.trim();
+            if (!title) { titleEl.focus(); return; }
+            const date = document.getElementById('prioDate').value || localISO();
+            const row = {
+                title,
+                assigned_to: empId,
+                client_id: document.getElementById('prioClient_' + empId).value || null,
+                due_time: document.getElementById('prioTime_' + empId).value || null,
+                is_important: document.getElementById('prioImp_' + empId).checked,
+                priority_date: date,
+                due_date: date,
+                status: 'todo',
+                created_by: currentEmployee.id
+            };
+            const { error } = await db.from('tasks').insert(row);
+            if (error) { alert('Could not add: ' + error.message); return; }
+            await renderPriorities();
+            const again = document.getElementById('prioNew_' + empId);
+            if (again) again.focus();
+        }
+
+        async function flagTaskAsPriority(taskId) {
+            const date = document.getElementById('prioDate').value || localISO();
+            const { error } = await db.from('tasks').update({ priority_date: date, updated_at: new Date().toISOString() }).eq('id', taskId);
+            if (error) { alert('Could not add: ' + error.message); return; }
+            renderPriorities();
+        }
+
+        async function togglePriorityDone(taskId, checked) {
+            const patch = { status: checked ? 'done' : 'todo', completed_at: checked ? new Date().toISOString() : null, updated_at: new Date().toISOString() };
+            const { error } = await db.from('tasks').update(patch).eq('id', taskId);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            const onPlanner = document.getElementById('priorities') && document.getElementById('priorities').classList.contains('active');
+            if (onPlanner) renderPriorities(); else renderMyOverview();
+        }
+
+        async function removePriority(taskId) {
+            const { error } = await db.from('tasks').update({ priority_date: null, updated_at: new Date().toISOString() }).eq('id', taskId);
+            if (error) { alert('Could not remove: ' + error.message); return; }
+            renderPriorities();
+        }
+
+        async function carryOverPriorities() {
+            const date = document.getElementById('prioDate').value || localISO();
+            const stale = prioOpenTasks.filter(t => t.priority_date && t.priority_date < date);
+            if (!stale.length) return;
+            if (!confirm(`Move ${stale.length} unfinished priorit${stale.length === 1 ? 'y' : 'ies'} from earlier days onto ${prioDateLabel(date)}?`)) return;
+            const { error } = await db.from('tasks').update({ priority_date: date, updated_at: new Date().toISOString() }).in('id', stale.map(t => t.id));
+            if (error) { alert('Could not carry over: ' + error.message); return; }
+            renderPriorities();
+        }
+
+        function openPriorityEdit(taskId) {
+            const t = prioTasks.find(x => x.id === taskId);
+            if (!t) return;
+            openModal('Edit Priority', `
+                <form onsubmit="savePriorityEdit(event, '${taskId}')">
+                    <div class="form-group"><label>Task</label><input type="text" id="editPrioTitle" value="${escapeHtml(t.title)}" required></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Person</label><select id="editPrioAssignee">${prioPlanners().map(e => `<option value="${e.id}" ${e.id === t.assigned_to ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Client</label><select id="editPrioClient"><option value="">— None —</option>${allClients.map(c => `<option value="${c.id}" ${c.id === t.client_id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Day</label><input type="date" id="editPrioDate" value="${t.priority_date || ''}"></div>
+                        <div class="form-group"><label>By (time)</label><input type="time" id="editPrioTime" value="${t.due_time ? t.due_time.slice(0, 5) : ''}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Status</label><select id="editPrioStatus">
+                            ${['todo', 'in_progress', 'review', 'done'].map(s => `<option value="${s}" ${t.status === s ? 'selected' : ''}>${{ todo: 'To Do', in_progress: 'In Progress', review: 'Review', done: 'Done' }[s]}</option>`).join('')}
+                        </select></div>
+                        <div class="form-group"><label>&nbsp;</label><label style="display:flex; align-items:center; gap:8px; font-weight:500;"><input type="checkbox" id="editPrioImportant" style="width:auto;" ${t.is_important ? 'checked' : ''}> Important</label></div>
+                    </div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Save</button></div>
+                </form>`);
+        }
+
+        async function savePriorityEdit(event, taskId) {
+            event.preventDefault();
+            const status = document.getElementById('editPrioStatus').value;
+            const patch = {
+                title: document.getElementById('editPrioTitle').value.trim(),
+                assigned_to: document.getElementById('editPrioAssignee').value,
+                client_id: document.getElementById('editPrioClient').value || null,
+                priority_date: document.getElementById('editPrioDate').value || null,
+                due_time: document.getElementById('editPrioTime').value || null,
+                is_important: document.getElementById('editPrioImportant').checked,
+                status,
+                completed_at: status === 'done' ? new Date().toISOString() : null,
+                updated_at: new Date().toISOString()
+            };
+            const { error } = await db.from('tasks').update(patch).eq('id', taskId);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            renderPriorities();
+        }
+
+        // Message in the same shape the team already uses on WhatsApp.
+        // *text* is bold on WhatsApp. Names are plain (WhatsApp only makes a real
+        // @mention when you pick the person from its own list).
+        function buildPriorityMessage(kind) {
+            const date = (document.getElementById('prioDate') || {}).value || localISO();
+            const isToday = date === localISO();
+            const people = prioPlanners().filter(e => prioTasks.some(t => t.assigned_to === e.id));
+            const lines = [];
+            if (kind === 'progress') {
+                lines.push(`*Priorities update${isToday ? '' : ' — ' + prioDateLabel(date)}*`);
+            } else {
+                lines.push(isToday ? `*Today's priority tasks* (${prioDateLabel(date)})` : `*Priority tasks for ${prioDateLabel(date)}*`);
+            }
+            people.forEach(e => {
+                const mine = prioTasks.filter(t => t.assigned_to === e.id);
+                const done = mine.filter(t => t.status === 'done').length;
+                lines.push('');
+                lines.push(`*${e.name}*` + (kind === 'progress' ? ` — ${done}/${mine.length} done` : ''));
+                mine.forEach(t => {
+                    let text = t.title.trim().replace(/[.\s]+$/, '');
+                    if (t.due_time && !/\bby\b/i.test(text)) {
+                        // "Post MGM Reel by 11:00 am. Cross-check…" — time goes after the first sentence
+                        const cut = text.search(/[.!?]\s/);
+                        const by = ' by ' + formatPrioTime(t.due_time);
+                        text = cut > 0 ? text.slice(0, cut) + by + text.slice(cut) : text + by;
+                    }
+                    if (t.clients && !text.toLowerCase().includes(t.clients.name.split(' ')[0].toLowerCase())) text += ` (${t.clients.name})`;
+                    if (t.is_important) text += ' [Important]';
+                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : '⏳') : '•';
+                    lines.push(`${bullet} ${text}`);
+                });
+            });
+            if (!people.length) lines.push('', '(no priorities set yet)');
+            return lines.join('\n');
+        }
+
+        function renderPriorityPreview() {
+            const el = document.getElementById('prioMessagePreview');
+            if (el) el.value = buildPriorityMessage(document.getElementById('prioMsgKind').value);
+        }
+
+        async function copyPriorityMessage() {
+            const msg = buildPriorityMessage(document.getElementById('prioMsgKind').value);
+            const btn = document.getElementById('prioCopyBtn');
+            try {
+                await navigator.clipboard.writeText(msg);
+            } catch (e) {
+                const ta = document.getElementById('prioMessagePreview');
+                ta.value = msg; ta.select(); document.execCommand('copy');
+            }
+            if (btn) { const old = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = old; }, 1600); }
+        }
+
+        function sharePriorityWhatsApp() {
+            const msg = buildPriorityMessage(document.getElementById('prioMsgKind').value);
+            window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        }
+
+        // My Dashboard: the logged-in person's own priorities for today
+        async function renderMyPriorities() {
+            const card = document.getElementById('myPrioritiesCard');
+            const list = document.getElementById('myPrioritiesList');
+            if (!card || !list || !currentEmployee) return;
+            const planLink = document.getElementById('myPrioritiesPlanLink');
+            if (planLink) planLink.style.display = canPlanPriorities() ? '' : 'none';
+            const { data, error } = await db.from('tasks').select('*, clients(name)').eq('assigned_to', currentEmployee.id).eq('priority_date', localISO()).order('created_at');
+            if (error) { list.innerHTML = '<div style="color:var(--text-secondary);">Could not load priorities.</div>'; return; }
+            const rows = data || [];
+            const done = rows.filter(t => t.status === 'done').length;
+            document.getElementById('myPrioritiesBadge').textContent = rows.length ? `${done}/${rows.length} done` : 'None set';
+            list.innerHTML = rows.length ? rows.map(t => `
+                <div class="prio-item ${t.status === 'done' ? 'done' : ''}">
+                    <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="Mark done">
+                    <div class="prio-text">
+                        <span class="prio-title">${escapeHtml(t.title)}</span>
+                        <span class="prio-meta">
+                            ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
+                            ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
+                            ${t.is_important ? '<span class="prio-chip important">Important</span>' : ''}
+                        </span>
+                    </div>
+                </div>`).join('') : '<div style="color:var(--text-secondary); padding: 6px 0;">No priorities set for you today. Your open tasks are below.</div>';
         }
 
         // ---------- CLIENTS ----------
