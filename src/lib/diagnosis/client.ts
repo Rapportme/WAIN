@@ -16,8 +16,46 @@
 
 import { localDetailed, localInstant } from "./localRead";
 import type { Answers, DetailedDiagnosis, InstantDiagnosis, LeadDetails } from "./types";
+import { submitToCrm } from "@/lib/crm";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_DIAGNOSIS_API || "";
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "";
+
+/** One line the team reads in the CRM and in the alert email. */
+function summarise(answers: Answers, lead: LeadDetails): string {
+  const first = localInstant(answers);
+  const lines = [
+    `Business Health Index ${first.bhi}/100 · Readiness ${first.brr} · ${first.maturityLevel}`,
+    first.topAttentionAreas.length ? `Needs attention: ${first.topAttentionAreas.join("; ")}` : "",
+    first.topStrengths.length ? `Strengths: ${first.topStrengths.join("; ")}` : "",
+    lead.phone ? `Phone: ${lead.phone}` : "",
+  ];
+  return lines.filter(Boolean).join("\n");
+}
+
+/** Tells the WAIN inbox a diagnosis came in (only when a Web3Forms key is set). */
+async function alertTeam(lead: LeadDetails, summary: string): Promise<void> {
+  if (!WEB3FORMS_KEY) return;
+  try {
+    await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: `Growth Diagnosis — ${lead.name}, ${lead.company}`,
+        from_name: "wearein.in — Growth Diagnosis",
+        replyto: lead.email,
+        Name: lead.name,
+        Company: lead.company,
+        Email: lead.email,
+        Phone: lead.phone || "—",
+        Result: summary,
+      }),
+    });
+  } catch (err) {
+    console.warn("[diagnosis] the team alert could not be sent:", err);
+  }
+}
 
 export interface Diagnosed<T> {
   data: T;
@@ -37,6 +75,15 @@ export async function runDetailed(
   // Computed first and independently of the send: the founder gets their report
   // on screen whether or not the email goes out.
   const data = localDetailed(answers);
+
+  // Every detailed-report request becomes a lead in the admin CRM, with the
+  // scores and the raw answers attached, and pings the WAIN inbox if configured.
+  const summary = summarise(answers, lead);
+  await Promise.all([
+    submitToCrm("diagnosis", { ...lead, summary, answers }),
+    alertTeam(lead, summary),
+  ]);
+
   if (!ENDPOINT) return { data, emailed: false };
 
   try {

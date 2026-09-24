@@ -24,6 +24,7 @@
    ========================================================================= */
 
 import type { ContactMessage } from "./types";
+import { submitToCrm } from "@/lib/crm";
 
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "";
 const WORKER_ENDPOINT =
@@ -42,8 +43,9 @@ export const transport: Transport = WORKER_ENDPOINT
     ? "web3forms"
     : "none";
 
-/** Whether a send path exists at all — drives the form's copy. */
-export const hasEndpoint = transport !== "none";
+/** Every message is stored in the admin CRM, so a send path always exists.
+    `transport` above only decides whether an email alert goes out as well. */
+export const hasEndpoint = true;
 
 export interface SendResult {
   sent: boolean;
@@ -119,14 +121,19 @@ async function sendViaWorker(msg: ContactMessage): Promise<SendResult> {
 }
 
 export async function sendContact(msg: ContactMessage, botcheck = ""): Promise<SendResult> {
-  if (transport === "none") return { sent: false, error: "not-configured" };
+  // 1. Always store it in the admin CRM (CRM & Pipeline → new lead).
+  const saved = await submitToCrm("contact", { ...msg, botcheck });
 
-  try {
-    return transport === "worker"
-      ? await sendViaWorker(msg)
-      : await sendViaWeb3Forms(msg, botcheck);
-  } catch (err) {
-    console.warn("[contact] the message could not be sent:", err);
-    return { sent: false, error: "failed" };
+  // 2. Email alert, when a transport is configured (Web3Forms key or the Worker).
+  let emailed = false;
+  if (transport !== "none") {
+    try {
+      const r = transport === "worker" ? await sendViaWorker(msg) : await sendViaWeb3Forms(msg, botcheck);
+      emailed = r.sent;
+    } catch (err) {
+      console.warn("[contact] the email alert could not be sent:", err);
+    }
   }
+
+  return saved || emailed ? { sent: true } : { sent: false, error: "failed" };
 }

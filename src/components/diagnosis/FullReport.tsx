@@ -58,7 +58,7 @@ export function FullReport({ report, name, email = "", emailed }: FullReportProp
       <Reveal as="p" className="note">
         {emailed
           ? `This is your full report, on screen. A copy is on its way to ${email || "your inbox"}.`
-          : "This is your full report, on screen. We couldn't email a copy this time — use Download to keep one."}
+          : "This is your full report, on screen — use Download to keep a copy. We've noted your details and someone from the collective will be in touch."}
       </Reveal>
 
       <Reveal as="section">

@@ -167,6 +167,69 @@
         .fin-howto { font-size:12px; color: var(--text-secondary); margin: 4px 0 12px; }
         .fin-howto summary { cursor:pointer; color: var(--wain-cyan); font-weight:600; }
         .fin-howto p { margin-top:8px; line-height:1.6; }
+        .pbar { display:inline-block; vertical-align:middle; width:110px; height:6px; background: var(--wain-light-gray); border-radius:3px; overflow:hidden; }
+        .pbar span { display:block; height:100%; background: var(--wain-cyan); border-radius:3px; }
+        .pbar.blocked span { background: var(--danger-red); }
+        .pbar.good span { background: #10b981; }
+        .pbar.big { display:block; width:100%; height:9px; margin:6px 0; }
+        .pbar-label { font-size:11px; color: var(--text-secondary); margin-left:6px; vertical-align:middle; }
+        .task-sub-prog { margin-top:4px; }
+        .task-link { color: inherit; text-decoration:none; }
+        .task-link:hover strong, .prio-link:hover { color: var(--wain-cyan); text-decoration: underline; cursor:pointer; }
+        .task-detail .task-meta { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; font-size:13px; margin-bottom:12px; }
+        .blocked-box { background: rgba(239,68,68,0.08); border-left:3px solid var(--danger-red); padding:8px 12px; border-radius:6px; font-size:13px; margin-bottom:12px; }
+        .closed-box { background: rgba(16,185,129,0.08); border-left:3px solid #10b981; padding:8px 12px; border-radius:6px; font-size:13px; margin-bottom:12px; }
+        .td-section { border-top:1px solid var(--wain-border); padding-top:12px; margin-top:12px; }
+        .td-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:14px; }
+        .td-progress { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+        .td-progress .pbar { width:200px; }
+        .td-x { border:none; background:none; color: var(--text-secondary); cursor:pointer; margin-left:auto; font-size:12px; padding:2px 6px; border-radius:4px; }
+        .td-x:hover { background: var(--wain-light-gray); color: var(--danger-red); }
+        .task-detail textarea { width:100%; border:1px solid var(--wain-border); border-radius:6px; padding:8px 10px; font-family:inherit; font-size:13px; resize:vertical; }
+        .task-detail select { border:1px solid var(--wain-border); border-radius:6px; padding:6px 8px; font-family:inherit; margin-left:6px; }
+        .td-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+        .td-history { max-height:220px; overflow:auto; }
+        .td-h-item { display:flex; gap:8px; padding:6px 0; border-bottom:1px solid var(--wain-border); font-size:13px; }
+        .td-h-meta { font-size:11px; color: var(--text-secondary); }
+        .pt-row { display:grid; grid-template-columns: minmax(0,1fr) 170px auto; gap:10px; align-items:center; padding:9px 6px; border-bottom:1px solid var(--wain-border); cursor:pointer; }
+        .pt-row:hover { background: var(--wain-light-gray); }
+        .pt-title { font-size:13px; font-weight:600; }
+        .pt-sub { font-size:11px; color: var(--text-secondary); font-weight:400; margin-top:2px; }
+        .pt-add { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+        .pt-add input[type=text] { flex:2 1 220px; }
+        .pt-add input, .pt-add select { border:1px solid var(--wain-border); border-radius:6px; padding:7px 9px; font-family:inherit; font-size:13px; width:auto !important; flex:1 1 140px; min-width:0; }
+        .pt-add input[type=text] { flex:3 1 240px; }
+        .pt-add button { flex:0 0 auto; }
+        .prio-extra { font-size:12px; color: var(--text-secondary); background: var(--wain-light-gray); border-radius:6px; padding:6px 8px; }
+        .prio-chip.wfh { background: rgba(142,120,199,0.15); color:#6b54b3; }
+        .wd-state { font-size:14px; margin-bottom:8px; }
+        .wd-actions { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+        .wd-week { font-size:12px; color: var(--text-secondary); margin-bottom:12px; }
+        .wd-extra { border-top:1px dashed var(--wain-border); padding-top:10px; }
+        .wd-extra-row { font-size:13px; padding:3px 0; }
+        .wd-extra input, .wd-extra select { border:1px solid var(--wain-border); border-radius:6px; padding:7px 9px; font-family:inherit; font-size:13px; }
+        .ml-row, .doc-row { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--wain-border); font-size:13px; }
+        .doc-upload { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+        .doc-upload select { border:1px solid var(--wain-border); border-radius:6px; padding:6px 8px; font-family:inherit; }
+        .goals-layout { display:grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap:20px; align-items:start; }
+        .goals-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:14px; }
+        .goal-card { border:1px solid var(--wain-border); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:6px; background:#fff; }
+        .goal-card.achieved { border-color:#10b981; box-shadow: 0 0 0 2px rgba(16,185,129,0.15); }
+        .goal-card.missed, .goal-card.cancelled { opacity:.65; }
+        .goal-head { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+        .goal-sub { font-size:11px; color: var(--text-secondary); margin-top:2px; }
+        .goal-nums { display:flex; align-items:baseline; gap:6px; }
+        .goal-cur { font-size:22px; font-weight:800; }
+        .goal-target { font-size:12px; color: var(--text-secondary); }
+        .goal-reward, .goal-team { font-size:12px; }
+        .goal-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+        .lb-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--wain-border); font-size:13px; }
+        .lb-rank { width:26px; text-align:center; font-size:16px; }
+        .lb-name { flex:1; font-weight:600; }
+        .lb-goals { font-size:11px; color: var(--text-secondary); }
+        .inline-form { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+        .inline-form input, .inline-form select { border:1px solid var(--wain-border); border-radius:6px; padding:7px 9px; font-family:inherit; font-size:13px; flex:1 1 120px; min-width:0; }
+        @media (max-width: 900px) { .goals-layout { grid-template-columns: 1fr; } .pt-row { grid-template-columns: 1fr; } }
         .check-group { display: flex; flex-wrap: wrap; gap: 6px 14px; border: 1px solid var(--wain-border); border-radius: 6px; padding: 8px 10px; }
         .check-group label { display: flex !important; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; margin: 0; white-space: nowrap; color: var(--text-primary); cursor: pointer; }
         .check-group input[type="checkbox"] { width: auto; padding: 0; margin: 0; flex: 0 0 auto; }
@@ -1035,6 +1098,10 @@
                     <span class="nav-icon">🎯</span>
                     <span>Daily Priorities</span>
                 </div>
+                <div class="nav-item" onclick="switchView('goals')">
+                    <span class="nav-icon">🏆</span>
+                    <span>Team Goals</span>
+                </div>
                 <div class="nav-item" onclick="switchView('profile')">
                     <span class="nav-icon">🪪</span>
                     <span>My Profile</span>
@@ -1496,6 +1563,11 @@
                     <div id="myPrioritiesList" class="prio-list" style="margin-top: 12px;">Loading…</div>
                 </div>
 
+                <div class="card" id="myWorkdayCard" style="margin-bottom: 24px;">
+                    <div class="card-header"><div class="card-title">🕘 My Workday</div><span style="font-size:12px; color:var(--text-secondary);">Start and end your day — office or work from home — and log anything extra you did</span></div>
+                    <div id="myWorkdayBody" style="margin-top:12px;">Loading…</div>
+                </div>
+
                 <div class="grid grid-2col">
                     <div class="card">
                         <div class="card-header">
@@ -1528,6 +1600,56 @@
                     <h3 style="color: var(--wain-navy); margin-bottom: 4px;">Welcome, <span id="welcomeName">there</span>.</h3>
                     <p style="color: var(--text-secondary); margin-bottom: 20px;">Jump straight to a module below, or use the sidebar.</p>
                     <div id="overviewModuleCards"></div>
+                </div>
+            </div>
+
+            <!-- TEAM GOALS -->
+            <div id="goals" class="content-view">
+                <div class="section-header">
+                    <div class="section-titles">
+                        <h2>Team Goals</h2>
+                        <div class="section-subtitle">Targets on client followers, engagement rate or ROI. Hit one and everyone on it earns the reward and the points.</div>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+                <div class="goals-layout">
+                    <div>
+                        <div class="card" id="goalFormCard" style="margin-bottom:20px;">
+                            <div class="card-header"><div class="card-title">Set a goal</div></div>
+                            <form id="goalForm" onsubmit="createGoal(event)">
+                                <div class="form-group"><label>Goal</label><input type="text" id="goalTitle" placeholder="e.g. MGM Instagram to 5,000 followers" required></div>
+                                <div class="prio-form-row">
+                                    <div class="form-group"><label>Client</label><select id="goalClient" onchange="onGoalClientChange()"><option value="">— Client —</option></select></div>
+                                    <div class="form-group"><label>Measure</label><select id="goalMetric"><option value="followers">Followers</option><option value="engagement_rate">Engagement rate %</option><option value="roi">ROI %</option></select></div>
+                                </div>
+                                <div class="prio-form-row">
+                                    <div class="form-group"><label>Channel</label><select id="goalAccount" onchange="onGoalAccountChange()"><option value="">— Channel (optional) —</option></select></div>
+                                    <div class="form-group"><label>Deadline</label><input type="date" id="goalDeadline"></div>
+                                </div>
+                                <div class="prio-form-row">
+                                    <div class="form-group"><label>Starting value</label><input type="number" step="any" id="goalBaseline" placeholder="Today's number"></div>
+                                    <div class="form-group"><label>Target</label><input type="number" step="any" id="goalTarget" required></div>
+                                </div>
+                                <div class="prio-form-row">
+                                    <div class="form-group"><label>Reward</label><input type="text" id="goalReward" placeholder="e.g. ₹2,000 each, team lunch, a day off"></div>
+                                    <div class="form-group"><label>Points each</label><input type="number" min="0" id="goalPoints" value="10"></div>
+                                </div>
+                                <div class="form-group"><label>Team on this goal (leave empty for everyone)</label><div class="check-group" id="goalMembers"></div></div>
+                                <div style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">Followers update from the channel's follower count, engagement rate from post metrics logged in Social Media, ROI from spend and return you enter.</div>
+                                <button type="submit" class="btn btn-primary btn-sm">+ Add goal</button>
+                            </form>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><div class="card-title">Goals</div><span class="card-badge" id="goalsStats" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span></div>
+                            <div id="goalsList" class="goals-grid" style="margin-top:12px;">Loading…</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card">
+                            <div class="card-header"><div class="card-title">🏆 Leaderboard</div></div>
+                            <div id="goalsLeaderboard" style="margin-top:10px;">Loading…</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -2183,6 +2305,7 @@
                                 <label>Status</label>
                                 <select id="newAttendanceStatus">
                                     <option value="present">Present</option>
+                                    <option value="wfh">Work from home</option>
                                     <option value="half_day">Half Day</option>
                                     <option value="absent">Absent</option>
                                     <option value="leave">On Leave</option>
@@ -2237,6 +2360,9 @@
                                         <th>Employee</th>
                                         <th>Date</th>
                                         <th>Status</th>
+                                        <th>Mode</th>
+                                        <th>In – Out</th>
+                                        <th>Hours</th>
                                         <th>Note</th>
                                     </tr>
                                 </thead>
@@ -2382,6 +2508,30 @@
                             </div>
                             <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px;">
                                 <div class="form-group" style="margin:0;">
+                                    <label>Type</label>
+                                    <select id="newExpenseType"><option value="expense">Expense</option><option value="purchase">Purchase (item bought)</option></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Paid from</label>
+                                    <select id="newExpenseAccount"><option value="">— Paid from —</option></select>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:12px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Mode</label>
+                                    <select id="newExpenseMode"><option value="">—</option><option>UPI</option><option>Card</option><option>Bank transfer</option><option>Cash</option><option>Cheque</option><option>Cred</option><option>Other</option></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Paid by</label>
+                                    <select id="newExpensePaidBy"><option value="">— Paid by —</option></select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Paid to</label>
+                                    <input type="text" id="newExpensePayee" placeholder="Vendor / person">
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px;">
+                                <div class="form-group" style="margin:0;">
                                     <label>Client (optional)</label>
                                     <select id="newExpenseClient" onchange="populateFinanceProjectSelect('newExpenseProject', this.value)"><option value="">— None —</option></select>
                                 </div>
@@ -2394,7 +2544,13 @@
                                 <label>Category</label>
                                 <select id="newExpenseCategory">
                                     <option>Salaries</option>
+                                    <option>Freelance/Contractor</option>
                                     <option>Software & Tools</option>
+                                    <option>Office Supplies</option>
+                                    <option>Office Setup & Furniture</option>
+                                    <option>Equipment</option>
+                                    <option>Recruitment</option>
+                                    <option>Training</option>
                                     <option>Ad Spend</option>
                                     <option>Travel</option>
                                     <option>Rent & Utilities</option>
@@ -2418,6 +2574,55 @@
                             </div>
                             <button type="submit" class="btn btn-primary">+ Log Expense</button>
                         </form>
+                    </div>
+                </div>
+
+                <div class="grid grid-2col" style="margin-top:24px;">
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">💳 Money Accounts</div></div>
+                        <div class="table-container">
+                            <table class="fin-table">
+                                <thead><tr><th>Account</th><th>Opening</th><th>In</th><th>Out</th><th>Balance</th></tr></thead>
+                                <tbody id="moneyAccountsBody"><tr><td colspan="5" class="skeleton-row">Loading…</td></tr></tbody>
+                            </table>
+                        </div>
+                        <form id="moneyAccountForm" onsubmit="createMoneyAccount(event)" class="inline-form">
+                            <input type="text" id="maName" placeholder="Account name, e.g. HDFC current" required>
+                            <select id="maType"><option value="bank">Bank</option><option value="cash">Cash</option><option value="card">Card</option><option value="upi">UPI</option><option value="wallet">Wallet</option><option value="other">Other</option></select>
+                            <select id="maHolder"><option value="">— Held by —</option></select>
+                            <input type="number" step="0.01" id="maOpening" placeholder="Opening ₹">
+                            <button type="submit" class="btn btn-sm btn-secondary">+ Add account</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">🔁 Transfers, deposits &amp; money in</div></div>
+                        <form id="movementForm" onsubmit="createMovement(event)" style="display:flex; flex-direction:column; gap:10px;">
+                            <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr); gap:10px;">
+                                <div class="form-group" style="margin:0;"><label>What</label><select id="mvKind"><option value="transfer">Transfer between accounts</option><option value="income">Money in</option><option value="deposit">Deposit / advance paid (refundable)</option><option value="refund">Refund received</option><option value="capital">Owner capital added</option></select></div>
+                                <div class="form-group" style="margin:0;"><label>Amount (₹)</label><input type="number" step="0.01" id="mvAmount" required></div>
+                                <div class="form-group" style="margin:0;"><label>Date</label><input type="date" id="mvDate"></div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px;">
+                                <div class="form-group" style="margin:0;"><label>From</label><select id="mvFrom"></select></div>
+                                <div class="form-group" style="margin:0;"><label>To</label><select id="mvTo"></select></div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:10px;">
+                                <div class="form-group" style="margin:0;"><label>Client</label><select id="mvClient"><option value="">— Client (optional) —</option></select></div>
+                                <div class="form-group" style="margin:0;"><label>Other party</label><input type="text" id="mvCounterparty" placeholder="e.g. landlord"></div>
+                                <div class="form-group" style="margin:0;"><label>Mode</label><select id="mvMode"><option value="">—</option><option>UPI</option><option>Bank transfer</option><option>Cash</option><option>Card</option><option>Cheque</option></select></div>
+                            </div>
+                            <div class="form-group" style="margin:0;"><label>Note</label><input type="text" id="mvDescription"></div>
+                            <button type="submit" class="btn btn-primary btn-sm">Record</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:24px;">
+                    <div class="card-header"><div class="card-title">Money movements</div></div>
+                    <div class="table-container">
+                        <table class="fin-table">
+                            <thead><tr><th>Date</th><th>What</th><th>From</th><th>To</th><th>Note</th><th>Amount</th><th></th></tr></thead>
+                            <tbody id="movementsBody"><tr><td colspan="7" class="skeleton-row">Loading…</td></tr></tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -2460,10 +2665,11 @@
                                     <tr>
                                         <th>Date</th>
                                         <th>Category</th>
-                                        <th>Cost Center</th>
+                                        <th>Paid from</th>
                                         <th>Description</th>
                                         <th>Amount</th>
-                                        <th>Logged By</th>
+                                        <th>Paid by</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="expensesTableBody">
@@ -2750,6 +2956,36 @@
                         </div>
                     </div>
                 </div>
+                <div class="grid grid-2col" style="margin-top:24px;">
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">🌴 Apply for Leave</div></div>
+                        <form id="myLeaveForm" onsubmit="applyMyLeave(event)" style="display:flex; flex-direction:column; gap:10px;">
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px;">
+                                <div class="form-group" style="margin:0;"><label>Type</label><select id="myLeaveType"><option value="casual">Casual</option><option value="sick">Sick</option><option value="earned">Earned</option><option value="unpaid">Unpaid</option></select></div>
+                                <div class="form-group" style="margin:0;"><label>&nbsp;</label><label style="display:flex; align-items:center; gap:6px; font-weight:500;"><input type="checkbox" id="myLeaveHalf" style="width:auto;"> Half day</label></div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px;">
+                                <div class="form-group" style="margin:0;"><label>From</label><input type="date" id="myLeaveStart" required></div>
+                                <div class="form-group" style="margin:0;"><label>To</label><input type="date" id="myLeaveEnd"></div>
+                            </div>
+                            <div class="form-group" style="margin:0;"><label>Reason</label><input type="text" id="myLeaveReason" placeholder="Optional"></div>
+                            <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                        </form>
+                        <div style="margin-top:14px; font-weight:600; font-size:13px;">My leave</div>
+                        <div id="myLeaveList" style="margin-top:6px;">Loading…</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">📄 My Documents</div></div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">ID proof (photo and document), offer letter, certificates. Stored privately — only you, HR and Superadmins can open them.</div>
+                        <div class="doc-upload">
+                            <select id="myDocType"><option value="id_proof_photo">ID proof — photo</option><option value="id_proof">ID proof — document</option><option value="offer_letter">Offer letter</option><option value="contract">Contract / agreement</option><option value="certificate">Certificate</option><option value="other">Other</option></select>
+                            <input type="file" id="myDocFile" accept="image/*,.pdf,.doc,.docx">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="uploadEmployeeDoc(currentEmployee.id, 'myDocType', 'myDocFile', 'myDocStatus')">Upload</button>
+                            <span id="myDocStatus" style="font-size:12px; color:var(--text-secondary);"></span>
+                        </div>
+                        <div id="myDocsList" style="margin-top:12px;">Loading…</div>
+                    </div>
+                </div>
             </div>
 
             <!-- CREATIVE & MARKETING TIMELINE -->
@@ -2842,6 +3078,7 @@
 
         const MODULE_TITLES = {
             'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
+            'goals': { title: 'Team Goals', subtitle: 'Targets on client growth — hit them together, earn the reward' },
             'priorities': { title: 'Daily Priorities', subtitle: "Set each person's priorities for the day, then share them to the team group" },
             'creative': { title: 'Creative Work', subtitle: 'Deliverables per client, with a checklist for each' },
             'social': { title: 'Social Media Posting', subtitle: 'Client accounts, content calendar, and post management' },
@@ -3029,7 +3266,7 @@
             if (!currentEmployee) return;
             const modules = currentEmployee.modules || [];
             const isSuperadmin = currentEmployee.role === 'Superadmin';
-            const allowed = modules.includes(viewName) || viewName === 'overview' || viewName === 'profile' ||
+            const allowed = modules.includes(viewName) || viewName === 'overview' || viewName === 'profile' || viewName === 'goals' ||
                 (viewName === 'team' && isSuperadmin) ||
                 (viewName === 'tasks' && (modules.includes('projects') || isSuperadmin)) ||
                 (viewName === 'priorities' && (modules.includes('projects') || isSuperadmin)) ||
@@ -3060,6 +3297,7 @@
         function switchViewData(viewName) {
             if (viewName === 'overview') renderMyOverview();
             if (viewName === 'priorities') renderPriorities();
+            if (viewName === 'goals') renderGoals();
             if (viewName === 'clients') renderClients();
             if (viewName === 'reviews') renderReviewsReferrals();
             if (viewName === 'social') { renderSocial(); }
@@ -3200,6 +3438,7 @@
             if (!currentEmployee) return;
             document.getElementById('welcomeName').textContent = currentEmployee.name;
             renderMyPriorities();
+            renderMyWorkday();
             const { data, error } = await db.from('task_assignments').select('*').eq('employee_id', currentEmployee.id);
             const list = document.getElementById('myTasksList');
             if (error) { list.innerHTML = 'Could not load tasks.'; return; }
@@ -3208,9 +3447,9 @@
             document.getElementById('myOpenTasksBadge').textContent = open.length + ' active';
             document.getElementById('statOpenTasks').textContent = open.length;
             document.getElementById('statDoneTasks').textContent = done.length;
-            list.innerHTML = open.length ? open.slice(0, 6).map(t => `
+            list.innerHTML = open.length ? open.slice(0, 8).map(t => `
                 <div style="padding: 8px 0; border-bottom: 1px solid var(--wain-border);">
-                    <strong>${escapeHtml(t.title)}</strong>${t.client_name ? ' — ' + escapeHtml(t.client_name) : ''}
+                    <a href="#" class="task-link" onclick="openTaskDetail('${t.task_id}'); return false;"><strong>${escapeHtml(t.title)}</strong></a>${t.status === 'blocked' ? ' <span class="prio-chip important">⏸ Blocked</span>' : ''}${t.client_name ? ' — ' + escapeHtml(t.client_name) : ''}
                     ${t.due_date ? ' <span style="color:var(--text-secondary); font-size:12px;">Due ' + new Date(t.due_date).toLocaleDateString() + '</span>' : ''}
                 </div>
             `).join('') : '<div style="color:var(--text-secondary);">No open tasks assigned to you right now.</div>';
@@ -3230,6 +3469,880 @@
                     <div class="stat-value" style="font-size: 14px; color: var(--wain-cyan);">Open →</div>
                 </div>
             `).join('') + '</div>';
+        }
+
+        // ---------- TASK DETAIL: subtasks, blocked, close with comment ----------
+        const BLOCKED_ON_OPTIONS = ['Client', 'Third party / vendor', 'Another team member', 'Approval pending', 'Other'];
+        const TASK_STATUS_LABELS = { todo: 'To Do', in_progress: 'In Progress', review: 'Review', blocked: 'Blocked', done: 'Done' };
+        const TASK_STATUS_CLASS = { todo: 'status-pending', in_progress: 'status-in-progress', review: 'status-in-progress', blocked: 'status-overdue', done: 'status-active' };
+        let taskExtras = {};   // task id -> { blocked_reason, blocked_on, self_logged, hours_spent, priority_date, sub_total, sub_done }
+        let taskDetailId = null;
+
+        async function loadTaskExtras(taskIds) {
+            taskExtras = {};
+            if (!taskIds || !taskIds.length) return taskExtras;
+            const [{ data: rows }, { data: subs }] = await Promise.all([
+                db.from('tasks').select('id, blocked_reason, blocked_on, blocked_since, self_logged, hours_spent, priority_date, completion_note').in('id', taskIds),
+                db.from('task_subtasks').select('task_id, done').in('task_id', taskIds)
+            ]);
+            (rows || []).forEach(r => { taskExtras[r.id] = Object.assign({ sub_total: 0, sub_done: 0 }, r); });
+            (subs || []).forEach(s => {
+                const x = taskExtras[s.task_id] || (taskExtras[s.task_id] = { sub_total: 0, sub_done: 0 });
+                x.sub_total++; if (s.done) x.sub_done++;
+            });
+            return taskExtras;
+        }
+
+        // 0..1 — subtasks decide it when there are any, otherwise done / not done
+        function taskProgress(status, extra) {
+            if (status === 'done') return 1;
+            if (extra && extra.sub_total) return extra.sub_done / extra.sub_total;
+            return 0;
+        }
+
+        function progressBar(frac, cls) {
+            const pct = Math.round((frac || 0) * 100);
+            return `<div class="pbar ${cls || ''}"><span style="width:${pct}%"></span></div><span class="pbar-label">${pct}%</span>`;
+        }
+
+        function taskStatusBadge(status) {
+            return `<span class="status-badge ${TASK_STATUS_CLASS[status] || 'status-pending'}">${TASK_STATUS_LABELS[status] || escapeHtml((status || 'todo').replace('_', ' '))}</span>`;
+        }
+
+        function refreshTaskViews() {
+            const active = document.querySelector('.content-view.active');
+            if (!active) return;
+            if (active.id === 'tasks') renderTasks();
+            if (active.id === 'priorities') renderPriorities();
+            if (active.id === 'overview') renderMyOverview();
+            if (active.id === 'projects') renderProjects();
+        }
+
+        async function openTaskDetail(taskId) {
+            taskDetailId = taskId;
+            const [{ data: t, error }, { data: subs }, { data: comments }] = await Promise.all([
+                db.from('tasks').select('*, clients(name), projects(name)').eq('id', taskId).maybeSingle(),
+                db.from('task_subtasks').select('*').eq('task_id', taskId).order('position').order('created_at'),
+                db.from('task_comments').select('*, employees(name)').eq('task_id', taskId).order('created_at', { ascending: false })
+            ]);
+            if (error || !t) { alert('Could not open task' + (error ? ': ' + error.message : '')); return; }
+            const who = allEmployees.find(e => e.id === t.assigned_to);
+            const subList = subs || [];
+            const done = subList.filter(s => s.done).length;
+            const frac = taskProgress(t.status, { sub_total: subList.length, sub_done: done });
+            const kindIcon = { comment: '💬', blocked: '⏸', unblocked: '▶', closed: '✅', reopened: '↺' };
+            openModal(t.title, `
+                <div class="task-detail">
+                    <div class="task-meta">
+                        ${taskStatusBadge(t.status)}
+                        <span>👤 ${who ? escapeHtml(who.name) : 'Unassigned'}</span>
+                        ${t.clients ? `<span>🏢 ${escapeHtml(t.clients.name)}</span>` : ''}
+                        ${t.projects ? `<span>📋 ${escapeHtml(t.projects.name)}</span>` : ''}
+                        ${t.due_date ? `<span>📅 ${new Date(t.due_date + 'T00:00:00').toLocaleDateString()}</span>` : ''}
+                        ${t.self_logged ? '<span class="prio-chip">Extra work (self-logged)</span>' : ''}
+                        ${t.hours_spent ? `<span>⏱ ${t.hours_spent} h</span>` : ''}
+                    </div>
+                    ${t.status === 'blocked' ? `<div class="blocked-box">⏸ <strong>Waiting on ${escapeHtml(t.blocked_on || 'someone else')}</strong>${t.blocked_since ? ' since ' + new Date(t.blocked_since).toLocaleDateString() : ''}<div>${escapeHtml(t.blocked_reason || '')}</div></div>` : ''}
+                    ${t.status === 'done' && t.completion_note ? `<div class="closed-box">✅ Closed: ${escapeHtml(t.completion_note)}</div>` : ''}
+
+                    <div class="td-section">
+                        <div class="td-head"><strong>Subtasks</strong> <span style="font-size:12px; color:var(--text-secondary);">${done}/${subList.length} done</span></div>
+                        <div class="td-progress">${progressBar(frac, t.status === 'blocked' ? 'blocked' : '')}</div>
+                        <div class="deliverable-checklist">
+                            ${subList.map(s => `
+                                <div class="checklist-row ${s.done ? 'done' : ''}">
+                                    <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleSubtask('${s.id}', this.checked)">
+                                    <span>${escapeHtml(s.title)}</span>
+                                    <button type="button" class="td-x" title="Remove" onclick="deleteSubtask('${s.id}')">✕</button>
+                                </div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary); padding:4px 0;">No subtasks yet. Break the task into steps and each tick moves the progress bar and the project bar.</div>'}
+                        </div>
+                        <div class="checklist-add">
+                            <input type="text" id="newSubtaskTitle" placeholder="Add a subtask…" onkeydown="if(event.key==='Enter'){event.preventDefault(); addSubtask();}">
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="addSubtask()">+ Add</button>
+                        </div>
+                    </div>
+
+                    <div class="td-section">
+                        <div class="td-head"><strong>Update</strong></div>
+                        <textarea id="taskCommentBody" rows="2" placeholder="Comment, what's blocking it, or a closing note…"></textarea>
+                        <div id="taskBlockFields" style="display:none; margin-top:8px;">
+                            <label style="font-size:12px; font-weight:600;">Waiting on</label>
+                            <select id="taskBlockedOn">${BLOCKED_ON_OPTIONS.map(o => `<option>${o}</option>`).join('')}</select>
+                        </div>
+                        <div class="td-actions">
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="addTaskComment()">💬 Comment</button>
+                            ${t.status === 'blocked'
+                                ? `<button type="button" class="btn btn-sm btn-secondary" onclick="unblockTask()">▶ Unblock</button>`
+                                : t.status !== 'done' ? `<button type="button" class="btn btn-sm btn-secondary" onclick="blockTask()">⏸ Mark blocked</button>` : ''}
+                            ${t.status !== 'done'
+                                ? `<button type="button" class="btn btn-sm btn-primary" onclick="closeTaskWithComment()">✅ Close task</button>`
+                                : `<button type="button" class="btn btn-sm btn-secondary" onclick="reopenTask()">↺ Reopen</button>`}
+                        </div>
+                    </div>
+
+                    <div class="td-section">
+                        <div class="td-head"><strong>History</strong></div>
+                        <div class="td-history">
+                            ${(comments || []).map(c => `
+                                <div class="td-h-item"><span class="td-h-icon">${kindIcon[c.kind] || '💬'}</span>
+                                    <div><div class="td-h-meta">${c.employees ? escapeHtml(c.employees.name) : 'Someone'} · ${new Date(c.created_at).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}${c.kind !== 'comment' ? ' · ' + c.kind : ''}</div>${c.body ? `<div>${escapeHtml(c.body)}</div>` : ''}</div>
+                                </div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary);">Nothing yet.</div>'}
+                        </div>
+                    </div>
+                </div>`, true);
+        }
+
+        async function logTaskComment(kind, body) {
+            await db.from('task_comments').insert({ task_id: taskDetailId, employee_id: currentEmployee.id, kind, body: body || null });
+        }
+
+        async function afterTaskChange() {
+            const id = taskDetailId;
+            await openTaskDetail(id);
+            refreshTaskViews();
+        }
+
+        async function addSubtask() {
+            const el = document.getElementById('newSubtaskTitle');
+            const title = el.value.trim();
+            if (!title) { el.focus(); return; }
+            const { error } = await db.from('task_subtasks').insert({ task_id: taskDetailId, title, created_by: currentEmployee.id, position: Date.now() % 2147483647 });
+            if (error) { alert('Could not add: ' + error.message); return; }
+            await afterTaskChange();
+            const again = document.getElementById('newSubtaskTitle'); if (again) again.focus();
+        }
+
+        async function toggleSubtask(id, checked) {
+            const { error } = await db.from('task_subtasks').update({ done: checked, done_at: checked ? new Date().toISOString() : null, done_by: checked ? currentEmployee.id : null }).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await afterTaskChange();
+        }
+
+        async function deleteSubtask(id) {
+            const { error } = await db.from('task_subtasks').delete().eq('id', id);
+            if (error) { alert('Could not remove: ' + error.message); return; }
+            await afterTaskChange();
+        }
+
+        async function addTaskComment() {
+            const body = document.getElementById('taskCommentBody').value.trim();
+            if (!body) { document.getElementById('taskCommentBody').focus(); return; }
+            await logTaskComment('comment', body);
+            await afterTaskChange();
+        }
+
+        async function blockTask() {
+            const fields = document.getElementById('taskBlockFields');
+            const bodyEl = document.getElementById('taskCommentBody');
+            if (fields.style.display === 'none') {
+                fields.style.display = '';
+                bodyEl.placeholder = "What are you waiting for? e.g. client hasn't sent the logo files";
+                bodyEl.focus();
+                return;
+            }
+            const reason = bodyEl.value.trim();
+            if (!reason) { alert('Add a line on what it is waiting for.'); bodyEl.focus(); return; }
+            const blocked_on = document.getElementById('taskBlockedOn').value;
+            const { error } = await db.from('tasks').update({ status: 'blocked', blocked_reason: reason, blocked_on, blocked_since: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('id', taskDetailId);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await logTaskComment('blocked', `Waiting on ${blocked_on}: ${reason}`);
+            await afterTaskChange();
+        }
+
+        async function unblockTask() {
+            const note = document.getElementById('taskCommentBody').value.trim();
+            const { error } = await db.from('tasks').update({ status: 'in_progress', blocked_reason: null, blocked_on: null, blocked_since: null, updated_at: new Date().toISOString() }).eq('id', taskDetailId);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            await logTaskComment('unblocked', note || null);
+            await afterTaskChange();
+        }
+
+        async function closeTaskWithComment() {
+            const note = document.getElementById('taskCommentBody').value.trim();
+            const { error } = await db.from('tasks').update({ status: 'done', completion_note: note || null, completed_at: new Date().toISOString(), blocked_reason: null, blocked_on: null, blocked_since: null, updated_at: new Date().toISOString() }).eq('id', taskDetailId);
+            if (error) { alert('Could not close: ' + error.message); return; }
+            await logTaskComment('closed', note || null);
+            await afterTaskChange();
+        }
+
+        async function reopenTask() {
+            const note = document.getElementById('taskCommentBody').value.trim();
+            const { error } = await db.from('tasks').update({ status: 'in_progress', completed_at: null, updated_at: new Date().toISOString() }).eq('id', taskDetailId);
+            if (error) { alert('Could not reopen: ' + error.message); return; }
+            await logTaskComment('reopened', note || null);
+            await afterTaskChange();
+        }
+
+        // ---------- PROJECT TASKS (tasks + subtasks → project completion) ----------
+        async function loadProjectProgress(projectIds) {
+            const out = {};
+            if (!projectIds.length) return out;
+            const { data: tasks } = await db.from('tasks').select('id, project_id, status').in('project_id', projectIds);
+            const list = tasks || [];
+            await loadTaskExtras(list.map(t => t.id));
+            list.forEach(t => {
+                const p = out[t.project_id] || (out[t.project_id] = { tasks: 0, done: 0, blocked: 0, sum: 0 });
+                p.tasks++;
+                if (t.status === 'done') p.done++;
+                if (t.status === 'blocked') p.blocked++;
+                p.sum += taskProgress(t.status, taskExtras[t.id]);
+            });
+            Object.values(out).forEach(p => { p.frac = p.tasks ? p.sum / p.tasks : 0; });
+            return out;
+        }
+
+        async function openProjectTasks(projectId) {
+            const p = allProjects.find(x => x.id === projectId);
+            if (!p) return;
+            const { data: tasks } = await db.from('tasks').select('id, title, status, assigned_to, due_date').eq('project_id', projectId).order('created_at');
+            const list = tasks || [];
+            await loadTaskExtras(list.map(t => t.id));
+            const frac = list.length ? list.reduce((s, t) => s + taskProgress(t.status, taskExtras[t.id]), 0) / list.length : 0;
+            const empOpts = allEmployees.filter(e => e.active !== false).map(e => `<option value="${e.id}" ${currentEmployee && e.id === currentEmployee.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('');
+            openModal('Tasks — ' + p.name, `
+                <div class="td-progress" style="margin-bottom:12px;"><strong style="font-size:13px;">Project completion</strong> ${progressBar(frac)}</div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Each task counts equally. A task with subtasks moves as its subtasks are ticked; one without subtasks counts when it's closed.</div>
+                <div class="pt-list">
+                    ${list.map(t => {
+                        const x = taskExtras[t.id] || {};
+                        const who = allEmployees.find(e => e.id === t.assigned_to);
+                        return `<div class="pt-row" onclick="closeModal(); openTaskDetail('${t.id}')">
+                            <div class="pt-title">${escapeHtml(t.title)}<div class="pt-sub">${who ? escapeHtml(who.name) : 'Unassigned'}${t.due_date ? ' · due ' + new Date(t.due_date + 'T00:00:00').toLocaleDateString() : ''}${x.sub_total ? ' · ' + x.sub_done + '/' + x.sub_total + ' subtasks' : ''}${t.status === 'blocked' && x.blocked_reason ? ' · ⏸ ' + escapeHtml(x.blocked_reason) : ''}</div></div>
+                            <div class="pt-bar">${progressBar(taskProgress(t.status, x), t.status === 'blocked' ? 'blocked' : '')}</div>
+                            ${taskStatusBadge(t.status)}
+                        </div>`;
+                    }).join('') || '<div style="font-size:13px; color:var(--text-secondary); padding:8px 0;">No tasks in this project yet.</div>'}
+                </div>
+                <div class="pt-add">
+                    <input type="text" id="ptNewTitle" placeholder="New task in this project…" onkeydown="if(event.key==='Enter'){event.preventDefault(); addProjectTask('${projectId}');}">
+                    <select id="ptNewAssignee">${empOpts}</select>
+                    <input type="date" id="ptNewDue">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="addProjectTask('${projectId}')">+ Add task</button>
+                </div>`, true);
+        }
+
+        async function addProjectTask(projectId) {
+            const p = allProjects.find(x => x.id === projectId);
+            const title = document.getElementById('ptNewTitle').value.trim();
+            if (!title) { document.getElementById('ptNewTitle').focus(); return; }
+            const { error } = await db.from('tasks').insert({
+                title, project_id: projectId, client_id: p ? p.client_id : null,
+                assigned_to: document.getElementById('ptNewAssignee').value,
+                due_date: document.getElementById('ptNewDue').value || null,
+                status: 'todo', created_by: currentEmployee.id
+            });
+            if (error) { alert('Could not add: ' + error.message); return; }
+            await openProjectTasks(projectId);
+            renderProjects();
+        }
+
+        // ---------- MY WORKDAY: attendance / WFH hours, extra work ----------
+        function hoursBetween(a, b) {
+            if (!a || !b) return null;
+            return Math.max(0, Math.round((new Date(b) - new Date(a)) / 36e5 * 100) / 100);
+        }
+
+        async function renderMyWorkday() {
+            const box = document.getElementById('myWorkdayBody');
+            if (!box || !currentEmployee) return;
+            const today = localISO();
+            const weekStart = new Date(); weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+            const [{ data: att }, { data: week }, { data: extra }] = await Promise.all([
+                db.from('attendance').select('*').eq('employee_id', currentEmployee.id).eq('attendance_date', today).maybeSingle(),
+                db.from('attendance').select('attendance_date, hours_worked, work_mode').eq('employee_id', currentEmployee.id).gte('attendance_date', localISO(weekStart)),
+                db.from('tasks').select('id, title, hours_spent, clients(name)').eq('assigned_to', currentEmployee.id).eq('self_logged', true).eq('due_date', today).order('created_at')
+            ]);
+            const weekHours = (week || []).reduce((s, r) => s + (Number(r.hours_worked) || 0), 0);
+            const wfhDays = (week || []).filter(r => r.work_mode === 'wfh').length;
+            const a = att;
+            let state;
+            if (!a || !a.check_in_time) {
+                state = `<div class="wd-state">Not started yet today.</div>
+                    <div class="wd-actions">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="startWorkday('office')">🏢 Start day — office</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="startWorkday('wfh')">🏠 Start day — work from home</button>
+                    </div>`;
+            } else if (!a.check_out_time) {
+                state = `<div class="wd-state"><span class="prio-chip ${a.work_mode === 'wfh' ? 'wfh' : ''}">${a.work_mode === 'wfh' ? '🏠 Working from home' : '🏢 In office'}</span> since ${new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })}</div>
+                    <div class="wd-actions"><button type="button" class="btn btn-primary btn-sm" onclick="endWorkday()">⏹ End day</button></div>`;
+            } else {
+                state = `<div class="wd-state"><span class="prio-chip ${a.work_mode === 'wfh' ? 'wfh' : ''}">${a.work_mode === 'wfh' ? '🏠 WFH' : '🏢 Office'}</span> ${new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })} – ${new Date(a.check_out_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })} · <strong>${a.hours_worked ?? hoursBetween(a.check_in_time, a.check_out_time)} h</strong>
+                    <a href="#" style="font-size:12px; margin-left:6px;" onclick="editWorkdayHours(); return false;">edit hours</a></div>`;
+            }
+            box.innerHTML = `
+                ${state}
+                <div class="wd-week">This week: <strong>${Math.round(weekHours * 10) / 10} h</strong>${wfhDays ? ` · ${wfhDays} WFH day${wfhDays === 1 ? '' : 's'}` : ''}</div>
+                <div class="wd-extra">
+                    <div style="font-weight:600; font-size:13px; margin-bottom:6px;">Extra work today <span style="font-weight:400; font-size:12px; color:var(--text-secondary);">— anything you did that wasn't assigned</span></div>
+                    ${(extra || []).map(t => `<div class="wd-extra-row">✅ ${escapeHtml(t.title)}${t.clients ? ' <span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}${t.hours_spent ? ' <span class="prio-chip">' + t.hours_spent + ' h</span>' : ''}</div>`).join('')}
+                    <div class="prio-add-row" style="margin-top:6px;">
+                        <input type="text" id="extraWorkTitle" placeholder="e.g. Helped Dany edit the EYL reel" style="flex:3 1 220px;" onkeydown="if(event.key==='Enter'){event.preventDefault(); logExtraWork();}">
+                        <select id="extraWorkClient" style="flex:1 1 120px;"><option value="">— Client —</option>${allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('')}</select>
+                        <input type="number" id="extraWorkHours" min="0" step="0.25" placeholder="Hours" style="width:80px;">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="logExtraWork()">+ Log</button>
+                    </div>
+                </div>`;
+        }
+
+        async function startWorkday(mode) {
+            const { error } = await db.from('attendance').upsert({
+                employee_id: currentEmployee.id, attendance_date: localISO(), status: 'present', work_mode: mode, check_in_time: new Date().toISOString(), check_out_time: null
+            }, { onConflict: 'employee_id,attendance_date' });
+            if (error) { alert('Could not start the day: ' + error.message); return; }
+            renderMyWorkday();
+        }
+
+        async function endWorkday() {
+            const { data: a } = await db.from('attendance').select('*').eq('employee_id', currentEmployee.id).eq('attendance_date', localISO()).maybeSingle();
+            if (!a) return;
+            const out = new Date().toISOString();
+            const { error } = await db.from('attendance').update({ check_out_time: out, hours_worked: hoursBetween(a.check_in_time, out) }).eq('id', a.id);
+            if (error) { alert('Could not end the day: ' + error.message); return; }
+            renderMyWorkday();
+        }
+
+        async function editWorkdayHours() {
+            const v = prompt('Hours worked today (e.g. 7.5):');
+            if (v === null) return;
+            const h = Number(v);
+            if (!(h >= 0 && h <= 24)) { alert('Enter a number between 0 and 24.'); return; }
+            const { error } = await db.from('attendance').update({ hours_worked: h }).eq('employee_id', currentEmployee.id).eq('attendance_date', localISO());
+            if (error) { alert('Could not save: ' + error.message); return; }
+            renderMyWorkday();
+        }
+
+        async function logExtraWork() {
+            const titleEl = document.getElementById('extraWorkTitle');
+            const title = titleEl.value.trim();
+            if (!title) { titleEl.focus(); return; }
+            const hours = document.getElementById('extraWorkHours').value;
+            const { error } = await db.from('tasks').insert({
+                title, assigned_to: currentEmployee.id, created_by: currentEmployee.id,
+                client_id: document.getElementById('extraWorkClient').value || null,
+                status: 'done', self_logged: true, hours_spent: hours === '' ? null : Number(hours),
+                due_date: localISO(), completed_at: new Date().toISOString()
+            });
+            if (error) { alert('Could not log: ' + error.message); return; }
+            renderMyWorkday();
+        }
+
+        // ---------- MY LEAVE (everyone) ----------
+        async function renderMyLeave() {
+            const list = document.getElementById('myLeaveList');
+            if (!list || !currentEmployee) return;
+            const { data } = await db.from('leave_requests').select('*').eq('employee_id', currentEmployee.id).order('start_date', { ascending: false }).limit(10);
+            const cls = { pending: 'status-pending', approved: 'status-active', rejected: 'status-overdue' };
+            list.innerHTML = (data || []).map(l => `
+                <div class="ml-row">
+                    <div><strong>${escapeHtml(l.leave_type)}${l.half_day ? ' · half day' : ''}</strong> · ${new Date(l.start_date + 'T00:00:00').toLocaleDateString()}${l.end_date !== l.start_date ? ' – ' + new Date(l.end_date + 'T00:00:00').toLocaleDateString() : ''}
+                        ${l.reason ? `<div style="font-size:12px; color:var(--text-secondary);">${escapeHtml(l.reason)}</div>` : ''}
+                        ${l.reviewer_note ? `<div style="font-size:12px;">HR: ${escapeHtml(l.reviewer_note)}</div>` : ''}</div>
+                    <div style="display:flex; gap:6px; align-items:center;"><span class="status-badge ${cls[l.status] || 'status-pending'}">${escapeHtml(l.status)}</span>${l.status === 'pending' ? `<button type="button" class="btn btn-sm btn-secondary" onclick="cancelMyLeave('${l.id}')">Cancel</button>` : ''}</div>
+                </div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary);">No leave applied yet.</div>';
+        }
+
+        async function applyMyLeave(event) {
+            event.preventDefault();
+            const start_date = document.getElementById('myLeaveStart').value;
+            const end_date = document.getElementById('myLeaveEnd').value || start_date;
+            if (!start_date) return;
+            if (end_date < start_date) { alert('The end date is before the start date.'); return; }
+            const { error } = await db.from('leave_requests').insert({
+                employee_id: currentEmployee.id,
+                leave_type: document.getElementById('myLeaveType').value,
+                start_date, end_date,
+                half_day: document.getElementById('myLeaveHalf').checked,
+                reason: document.getElementById('myLeaveReason').value.trim() || null
+            });
+            if (error) { alert('Could not apply: ' + error.message); return; }
+            document.getElementById('myLeaveForm').reset();
+            renderMyLeave();
+        }
+
+        async function cancelMyLeave(id) {
+            if (!confirm('Cancel this leave request?')) return;
+            const { error } = await db.from('leave_requests').delete().eq('id', id).eq('status', 'pending');
+            if (error) { alert('Could not cancel: ' + error.message); return; }
+            renderMyLeave();
+        }
+
+        // ---------- EMPLOYEE DOCUMENTS (ID proof, offer letter …) ----------
+        const DOC_TYPES = { id_proof_photo: 'ID proof — photo', id_proof: 'ID proof — document', offer_letter: 'Offer letter', contract: 'Contract / agreement', certificate: 'Certificate', other: 'Other' };
+
+        function docRowsHtml(docs, canDeleteFn) {
+            return (docs || []).map(d => `
+                <div class="doc-row">
+                    <div><span class="prio-chip">${escapeHtml(DOC_TYPES[d.doc_type] || d.doc_type)}</span> <a href="#" onclick="openEmployeeDoc('${d.file_path.replace(/'/g, "\\'")}'); return false;">${escapeHtml(d.file_name || 'file')}</a>
+                        <span style="font-size:11px; color:var(--text-secondary);">${new Date(d.created_at).toLocaleDateString()}${d.file_size ? ' · ' + Math.round(d.file_size / 1024) + ' KB' : ''}</span></div>
+                    ${canDeleteFn(d) ? `<button type="button" class="td-x" title="Delete" onclick="deleteEmployeeDoc('${d.id}', '${d.file_path.replace(/'/g, "\\'")}', '${d.employee_id}')">✕</button>` : ''}
+                </div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary);">No documents uploaded yet.</div>';
+        }
+
+        async function renderMyDocuments() {
+            const list = document.getElementById('myDocsList');
+            if (!list || !currentEmployee) return;
+            const { data } = await db.from('employee_documents').select('*').eq('employee_id', currentEmployee.id).order('created_at', { ascending: false });
+            list.innerHTML = docRowsHtml(data, d => d.uploaded_by === currentEmployee.id || canManageHR());
+        }
+
+        async function uploadEmployeeDoc(employeeId, typeSelId, fileInputId, statusId) {
+            const file = document.getElementById(fileInputId).files[0];
+            const status = document.getElementById(statusId);
+            if (!file) { status.textContent = 'Choose a file first.'; return; }
+            if (file.size > 10 * 1024 * 1024) { status.textContent = 'Max 10 MB per file.'; return; }
+            status.textContent = 'Uploading…';
+            const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+            const path = `${employeeId}/${Date.now()}_${safe}`;
+            const { error: upErr } = await db.storage.from('employee-docs').upload(path, file, { upsert: false });
+            if (upErr) { status.textContent = 'Upload failed: ' + upErr.message; return; }
+            const { error } = await db.from('employee_documents').insert({
+                employee_id: employeeId, doc_type: document.getElementById(typeSelId).value,
+                file_path: path, file_name: file.name, file_size: file.size, uploaded_by: currentEmployee.id
+            });
+            if (error) { status.textContent = 'Saved the file but not the record: ' + error.message; return; }
+            status.textContent = 'Uploaded ✓';
+            document.getElementById(fileInputId).value = '';
+            if (employeeId === currentEmployee.id) renderMyDocuments();
+            if (document.getElementById('empDocsList')) openEmployeeDocs(employeeId);
+        }
+
+        async function openEmployeeDoc(path) {
+            const { data, error } = await db.storage.from('employee-docs').createSignedUrl(path, 120);
+            if (error || !data) { alert('Could not open: ' + (error ? error.message : 'no link')); return; }
+            window.open(data.signedUrl, '_blank', 'noopener');
+        }
+
+        async function deleteEmployeeDoc(id, path, employeeId) {
+            if (!confirm('Delete this document? This cannot be undone.')) return;
+            await db.storage.from('employee-docs').remove([path]);
+            const { error } = await db.from('employee_documents').delete().eq('id', id);
+            if (error) { alert('Could not delete: ' + error.message); return; }
+            if (employeeId === currentEmployee.id) renderMyDocuments();
+            if (document.getElementById('empDocsList')) openEmployeeDocs(employeeId);
+        }
+
+        async function openEmployeeDocs(employeeId) {
+            const e = allEmployees.find(x => x.id === employeeId);
+            const { data } = await db.from('employee_documents').select('*').eq('employee_id', employeeId).order('created_at', { ascending: false });
+            openModal('Documents — ' + (e ? e.name : ''), `
+                <div id="empDocsList">${docRowsHtml(data, () => canManageHR())}</div>
+                <div class="doc-upload">
+                    <select id="empDocType">${Object.entries(DOC_TYPES).map(([k, v]) => `<option value="${k}" ${k === 'offer_letter' ? 'selected' : ''}>${v}</option>`).join('')}</select>
+                    <input type="file" id="empDocFile" accept="image/*,.pdf,.doc,.docx">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="uploadEmployeeDoc('${employeeId}', 'empDocType', 'empDocFile', 'empDocStatus')">Upload</button>
+                    <span id="empDocStatus" style="font-size:12px; color:var(--text-secondary);"></span>
+                </div>
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:8px;">Stored privately. Only ${e ? escapeHtml(e.name.split(' ')[0]) : 'the employee'}, HR and Superadmins can open these, through a link that expires after two minutes.</div>`);
+        }
+
+        // ---------- TEAM GOALS & REWARDS ----------
+        const GOAL_METRICS = { followers: 'Followers', engagement_rate: 'Engagement rate %', roi: 'ROI %' };
+        let allGoals = [];
+        let goalMembers = {};
+
+        function goalUnit(metric) { return metric === 'followers' ? '' : '%'; }
+        function fmtGoalValue(metric, v) {
+            if (v === null || v === undefined || v === '') return '—';
+            const n = Number(v);
+            return metric === 'followers' ? n.toLocaleString('en-IN') : (Math.round(n * 10) / 10) + '%';
+        }
+
+        // Live value: followers from the linked channel, engagement from logged post metrics, ROI from spend/return
+        async function computeGoalCurrent(g) {
+            if (g.metric === 'followers') {
+                if (g.social_account_id) {
+                    const acct = allSocialAccounts.find(a => a.id === g.social_account_id);
+                    if (acct && acct.followers !== null && acct.followers !== undefined) return Number(acct.followers);
+                }
+                return g.current_value;
+            }
+            if (g.metric === 'engagement_rate') {
+                let q = db.from('posts').select('reach, likes, comments, shares, saves, social_account_id, client_id, published_at').eq('status', 'published').gte('published_at', g.start_date);
+                if (g.social_account_id) q = q.eq('social_account_id', g.social_account_id); else if (g.client_id) q = q.eq('client_id', g.client_id);
+                const { data } = await q;
+                const rows = (data || []).filter(p => Number(p.reach));
+                if (!rows.length) return g.current_value;
+                const reach = rows.reduce((s, p) => s + Number(p.reach), 0);
+                const eng = rows.reduce((s, p) => s + (Number(p.likes) || 0) + (Number(p.comments) || 0) + (Number(p.shares) || 0) + (Number(p.saves) || 0), 0);
+                return Math.round(eng / reach * 1000) / 10;
+            }
+            if (g.metric === 'roi' && Number(g.roi_spend)) return Math.round((Number(g.roi_return) - Number(g.roi_spend)) / Number(g.roi_spend) * 1000) / 10;
+            return g.current_value;
+        }
+
+        function goalProgress(g, current) {
+            const target = Number(g.target), base = Number(g.baseline) || 0;
+            if (current === null || current === undefined || !target) return 0;
+            if (g.metric === 'followers' && target > base) return Math.max(0, Math.min(1, (current - base) / (target - base)));
+            return Math.max(0, Math.min(1, current / target));
+        }
+
+        async function renderGoals() {
+            const wrap = document.getElementById('goalsList');
+            if (!wrap) return;
+            if (!allSocialAccounts.length) await loadSocialAccounts();
+            const [{ data: goals }, { data: members }] = await Promise.all([
+                db.from('team_goals').select('*, clients(name)').order('created_at', { ascending: false }),
+                db.from('team_goal_members').select('*')
+            ]);
+            allGoals = goals || [];
+            goalMembers = {};
+            (members || []).forEach(m => { (goalMembers[m.goal_id] = goalMembers[m.goal_id] || []).push(m.employee_id); });
+            const planner = canPlanPriorities();
+            document.getElementById('goalFormCard').style.display = planner ? '' : 'none';
+            populateGoalForm();
+
+            const today = localISO();
+            for (const g of allGoals) g._current = await computeGoalCurrent(g);
+            // Auto-mark achieved when a planner is looking and the target is reached
+            if (planner) {
+                for (const g of allGoals.filter(x => x.status === 'active' && x._current !== null && x._current !== undefined && Number(x._current) >= Number(x.target))) {
+                    await db.from('team_goals').update({ status: 'achieved', achieved_at: new Date().toISOString(), current_value: g._current, updated_at: new Date().toISOString() }).eq('id', g.id);
+                    g.status = 'achieved'; g.achieved_at = new Date().toISOString();
+                }
+            }
+            const order = { active: 0, achieved: 1, rewarded: 2, missed: 3, cancelled: 4 };
+            allGoals.sort((a, b) => (order[a.status] - order[b.status]) || ((a.deadline || '9') < (b.deadline || '9') ? -1 : 1));
+            const counts = { active: 0, achieved: 0, rewarded: 0 };
+            allGoals.forEach(g => { if (counts[g.status] !== undefined) counts[g.status]++; });
+            document.getElementById('goalsStats').textContent = `${counts.active} active · ${counts.achieved} hit, reward due · ${counts.rewarded} rewarded`;
+
+            wrap.innerHTML = allGoals.map(g => {
+                const cur = g._current;
+                const frac = goalProgress(g, cur);
+                const overdue = g.status === 'active' && g.deadline && g.deadline < today;
+                const people = (goalMembers[g.id] || []).map(id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name.split(' ')[0]) : null; }).filter(Boolean);
+                const statusChip = { active: overdue ? '<span class="fchip f-bad">Deadline passed</span>' : '<span class="fchip f-low">In progress</span>', achieved: '<span class="fchip f-good">🎉 Target hit — reward due</span>', rewarded: '<span class="fchip f-good">🏆 Rewarded</span>', missed: '<span class="fchip f-none">Missed</span>', cancelled: '<span class="fchip f-none">Cancelled</span>' }[g.status];
+                return `<div class="goal-card ${g.status}">
+                    <div class="goal-head"><div><strong>${escapeHtml(g.title)}</strong><div class="goal-sub">${g.clients ? escapeHtml(g.clients.name) + ' · ' : ''}${GOAL_METRICS[g.metric]}${g.deadline ? ' · by ' + new Date(g.deadline + 'T00:00:00').toLocaleDateString() : ''}</div></div>${statusChip}</div>
+                    <div class="goal-nums"><span class="goal-cur">${fmtGoalValue(g.metric, cur)}</span><span class="goal-target">/ ${fmtGoalValue(g.metric, g.target)} target${g.metric === 'followers' && g.baseline ? ' (from ' + fmtGoalValue(g.metric, g.baseline) + ')' : ''}</span></div>
+                    <div class="pbar big ${g.status === 'achieved' || g.status === 'rewarded' ? 'good' : overdue ? 'blocked' : ''}"><span style="width:${Math.round(frac * 100)}%"></span></div>
+                    <div class="goal-reward">🎁 ${escapeHtml(g.reward || 'No reward set')}${g.points ? ` · <strong>${g.points} pts</strong> each` : ''}</div>
+                    <div class="goal-team">👥 ${people.join(', ') || 'Whole team'}</div>
+                    ${planner ? `<div class="goal-actions">
+                        ${g.metric !== 'followers' || !g.social_account_id ? `<button class="btn btn-sm btn-secondary" onclick="openGoalUpdate('${g.id}')">Update value</button>` : ''}
+                        ${g.status === 'active' ? `<button class="btn btn-sm btn-secondary" onclick="setGoalStatus('${g.id}', 'achieved')">Mark hit</button>` : ''}
+                        ${g.status === 'achieved' ? `<button class="btn btn-sm btn-primary" onclick="setGoalStatus('${g.id}', 'rewarded')">🎁 Reward given</button>` : ''}
+                        ${g.status === 'active' && overdue ? `<button class="btn btn-sm btn-secondary" onclick="setGoalStatus('${g.id}', 'missed')">Mark missed</button>` : ''}
+                        <button class="btn btn-sm btn-secondary" onclick="openGoalEdit('${g.id}')">Edit</button>
+                    </div>` : ''}
+                </div>`;
+            }).join('') || '<div class="approval-item" style="text-align:center; color:var(--text-secondary);">No goals yet.' + (planner ? ' Set the first one above.' : '') + '</div>';
+
+            // Leaderboard: points from goals hit or rewarded, per team member
+            const pts = {};
+            allGoals.filter(g => g.status === 'achieved' || g.status === 'rewarded').forEach(g => {
+                const ids = (goalMembers[g.id] && goalMembers[g.id].length) ? goalMembers[g.id] : allEmployees.filter(e => e.active !== false && e.role !== 'View Only').map(e => e.id);
+                ids.forEach(id => { const p = pts[id] || (pts[id] = { points: 0, goals: 0 }); p.points += Number(g.points) || 0; p.goals++; });
+            });
+            const board = Object.entries(pts).sort((a, b) => b[1].points - a[1].points || b[1].goals - a[1].goals);
+            document.getElementById('goalsLeaderboard').innerHTML = board.map(([id, v], i) => {
+                const e = allEmployees.find(x => x.id === id);
+                return `<div class="lb-row"><span class="lb-rank">${['🥇', '🥈', '🥉'][i] || (i + 1)}</span><span class="lb-name">${e ? escapeHtml(e.name) : '—'}</span><span class="lb-goals">${v.goals} goal${v.goals === 1 ? '' : 's'}</span><strong>${v.points} pts</strong></div>`;
+            }).join('') || '<div style="font-size:12px; color:var(--text-secondary);">Points show up here once the first goal is hit.</div>';
+        }
+
+        function populateGoalForm() {
+            const cSel = document.getElementById('goalClient');
+            if (cSel && cSel.options.length <= 1) cSel.innerHTML = '<option value="">— Client —</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+            const box = document.getElementById('goalMembers');
+            if (box && !box.children.length) box.innerHTML = employeeCheckboxes('goalMemberCheckbox', []);
+            onGoalClientChange();
+        }
+
+        function onGoalClientChange() {
+            const clientId = (document.getElementById('goalClient') || {}).value;
+            const aSel = document.getElementById('goalAccount');
+            if (!aSel) return;
+            const accts = allSocialAccounts.filter(a => !clientId || a.client_id === clientId);
+            aSel.innerHTML = '<option value="">— Channel (optional) —</option>' + accts.map(a => `<option value="${a.id}">${platformLabel(a.platform)}${a.handle ? ' ' + escapeHtml(a.handle) : ''}${a.followers ? ' · ' + Number(a.followers).toLocaleString('en-IN') : ''}</option>`).join('');
+        }
+
+        function onGoalAccountChange() {
+            const a = allSocialAccounts.find(x => x.id === document.getElementById('goalAccount').value);
+            const base = document.getElementById('goalBaseline');
+            if (a && a.followers && document.getElementById('goalMetric').value === 'followers' && !base.value) base.value = a.followers;
+        }
+
+        async function createGoal(event) {
+            event.preventDefault();
+            const num = id => { const v = document.getElementById(id).value; return v === '' ? null : Number(v); };
+            const row = {
+                title: document.getElementById('goalTitle').value.trim(),
+                client_id: document.getElementById('goalClient').value || null,
+                social_account_id: document.getElementById('goalAccount').value || null,
+                metric: document.getElementById('goalMetric').value,
+                baseline: num('goalBaseline'), target: num('goalTarget'),
+                deadline: document.getElementById('goalDeadline').value || null,
+                reward: document.getElementById('goalReward').value.trim() || null,
+                points: num('goalPoints') || 0,
+                created_by: currentEmployee.id
+            };
+            if (!row.title || row.target === null) { alert('Give the goal a title and a target.'); return; }
+            const { data, error } = await db.from('team_goals').insert(row).select().single();
+            if (error) { alert('Could not create goal: ' + error.message); return; }
+            const ids = Array.from(document.querySelectorAll('.goalMemberCheckbox:checked')).map(cb => cb.value);
+            if (ids.length) await db.from('team_goal_members').insert(ids.map(employee_id => ({ goal_id: data.id, employee_id })));
+            document.getElementById('goalForm').reset();
+            renderGoals();
+        }
+
+        async function setGoalStatus(id, status) {
+            const patch = { status, updated_at: new Date().toISOString() };
+            if (status === 'achieved') patch.achieved_at = new Date().toISOString();
+            if (status === 'rewarded') patch.rewarded_at = new Date().toISOString();
+            const { error } = await db.from('team_goals').update(patch).eq('id', id);
+            if (error) { alert('Could not update: ' + error.message); return; }
+            renderGoals();
+        }
+
+        function openGoalUpdate(id) {
+            const g = allGoals.find(x => x.id === id);
+            if (!g) return;
+            openModal('Update — ' + g.title, `
+                <form onsubmit="saveGoalUpdate(event, '${id}')">
+                    ${g.metric === 'roi' ? `
+                        <div class="prio-form-row">
+                            <div class="form-group"><label>Spend so far (₹)</label><input type="number" id="goalRoiSpend" min="0" value="${g.roi_spend ?? ''}"></div>
+                            <div class="form-group"><label>Return so far (₹)</label><input type="number" id="goalRoiReturn" min="0" value="${g.roi_return ?? ''}"></div>
+                        </div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">ROI % = (return − spend) ÷ spend.</div>`
+                    : `<div class="form-group"><label>Current ${GOAL_METRICS[g.metric].toLowerCase()}</label><input type="number" step="any" id="goalNewValue" value="${g._current ?? ''}"></div>`}
+                    <div class="form-group"><label>Note (optional)</label><input type="text" id="goalUpdateNote"></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>`);
+        }
+
+        async function saveGoalUpdate(event, id) {
+            event.preventDefault();
+            const g = allGoals.find(x => x.id === id);
+            const patch = { updated_at: new Date().toISOString() };
+            let value;
+            if (g.metric === 'roi') {
+                patch.roi_spend = Number(document.getElementById('goalRoiSpend').value) || 0;
+                patch.roi_return = Number(document.getElementById('goalRoiReturn').value) || 0;
+                value = patch.roi_spend ? Math.round((patch.roi_return - patch.roi_spend) / patch.roi_spend * 1000) / 10 : 0;
+            } else {
+                value = Number(document.getElementById('goalNewValue').value);
+            }
+            patch.current_value = value;
+            const { error } = await db.from('team_goals').update(patch).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            await db.from('team_goal_updates').insert({ goal_id: id, value, note: document.getElementById('goalUpdateNote').value.trim() || null, recorded_by: currentEmployee.id });
+            closeModal();
+            renderGoals();
+        }
+
+        function openGoalEdit(id) {
+            const g = allGoals.find(x => x.id === id);
+            if (!g) return;
+            openModal('Edit goal', `
+                <form onsubmit="saveGoalEdit(event, '${id}')">
+                    <div class="form-group"><label>Title</label><input type="text" id="goalEditTitle" value="${escapeHtml(g.title)}" required></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Target</label><input type="number" step="any" id="goalEditTarget" value="${g.target}" required></div>
+                        <div class="form-group"><label>Deadline</label><input type="date" id="goalEditDeadline" value="${g.deadline || ''}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Reward</label><input type="text" id="goalEditReward" value="${escapeHtml(g.reward || '')}"></div>
+                        <div class="form-group"><label>Points each</label><input type="number" min="0" id="goalEditPoints" value="${g.points || 0}"></div>
+                    </div>
+                    <div class="form-group"><label>Team</label><div class="check-group">${employeeCheckboxes('goalEditMember', goalMembers[id] || [])}</div></div>
+                    <div class="form-group"><label>Status</label><select id="goalEditStatus">${['active', 'achieved', 'rewarded', 'missed', 'cancelled'].map(s => `<option ${g.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>`);
+        }
+
+        async function saveGoalEdit(event, id) {
+            event.preventDefault();
+            const { error } = await db.from('team_goals').update({
+                title: document.getElementById('goalEditTitle').value.trim(),
+                target: Number(document.getElementById('goalEditTarget').value),
+                deadline: document.getElementById('goalEditDeadline').value || null,
+                reward: document.getElementById('goalEditReward').value.trim() || null,
+                points: Number(document.getElementById('goalEditPoints').value) || 0,
+                status: document.getElementById('goalEditStatus').value,
+                updated_at: new Date().toISOString()
+            }).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            const ids = Array.from(document.querySelectorAll('.goalEditMember:checked')).map(cb => cb.value);
+            await db.from('team_goal_members').delete().eq('goal_id', id);
+            if (ids.length) await db.from('team_goal_members').insert(ids.map(employee_id => ({ goal_id: id, employee_id })));
+            closeModal();
+            renderGoals();
+        }
+
+        // ---------- MONEY ACCOUNTS, MOVEMENTS, EXPENSE DETAILS ----------
+        let allMoneyAccounts = [];
+        let allMovements = [];
+        const PAYMENT_MODES = ['UPI', 'Card', 'Bank transfer', 'Cash', 'Cheque', 'Cred', 'Other'];
+        const MOVEMENT_KINDS = { transfer: 'Transfer between accounts', income: 'Money in', deposit: 'Deposit / advance paid (refundable)', refund: 'Refund received', capital: 'Owner capital added' };
+
+        async function loadMoneyAccounts() {
+            const [{ data: accts }, { data: moves }] = await Promise.all([
+                db.from('money_accounts').select('*, employees(name)').order('name'),
+                db.from('money_movements').select('*, clients(name)').order('movement_date', { ascending: false })
+            ]);
+            allMoneyAccounts = accts || [];
+            allMovements = moves || [];
+        }
+
+        function accountOptions(selected, blankLabel) {
+            return `<option value="">${blankLabel || '— Account —'}</option>` + allMoneyAccounts.filter(a => a.active !== false).map(a => `<option value="${a.id}" ${a.id === selected ? 'selected' : ''}>${escapeHtml(a.name)}</option>`).join('');
+        }
+
+        function accountBalances() {
+            const bal = {};
+            allMoneyAccounts.forEach(a => { bal[a.id] = { opening: Number(a.opening_balance) || 0, in: 0, out: 0 }; });
+            allMovements.forEach(m => {
+                if (m.to_account_id && bal[m.to_account_id]) bal[m.to_account_id].in += Number(m.amount);
+                if (m.from_account_id && bal[m.from_account_id]) bal[m.from_account_id].out += Number(m.amount);
+            });
+            allExpenses.forEach(e => { if (e.paid_from_account_id && bal[e.paid_from_account_id]) bal[e.paid_from_account_id].out += Number(e.amount) || 0; });
+            return bal;
+        }
+
+        function renderMoneyAccounts() {
+            const body = document.getElementById('moneyAccountsBody');
+            if (!body) return;
+            const bal = accountBalances();
+            body.innerHTML = allMoneyAccounts.map(a => {
+                const b = bal[a.id];
+                const net = b.opening + b.in - b.out;
+                return `<tr><td><strong>${escapeHtml(a.name)}</strong><div style="font-size:11px; color:var(--text-secondary);">${escapeHtml(a.account_type)}${a.employees ? ' · ' + escapeHtml(a.employees.name) : ''}</div></td>
+                    <td class="num">${inr(b.opening)}</td><td class="num">${inr(b.in)}</td><td class="num">${inr(b.out)}</td>
+                    <td class="num"><strong style="color:${net < 0 ? 'var(--danger-red)' : 'inherit'}">${net < 0 ? '−' + inr(-net) : inr(net)}</strong></td></tr>`;
+            }).join('') || '<tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No accounts yet — add cash, bank, card or UPI accounts below.</td></tr>';
+            const mBody = document.getElementById('movementsBody');
+            const name = id => { const a = allMoneyAccounts.find(x => x.id === id); return a ? escapeHtml(a.name) : '—'; };
+            mBody.innerHTML = allMovements.slice(0, 50).map(m => `<tr>
+                <td>${new Date(m.movement_date + 'T00:00:00').toLocaleDateString()}</td>
+                <td>${escapeHtml(MOVEMENT_KINDS[m.kind] || m.kind)}${m.needs_review ? ' <span class="fchip f-mid">check</span>' : ''}</td>
+                <td>${m.from_account_id ? name(m.from_account_id) : (m.counterparty && m.kind !== 'deposit' ? escapeHtml(m.counterparty) : '—')}</td>
+                <td>${m.to_account_id ? name(m.to_account_id) : (m.counterparty ? escapeHtml(m.counterparty) : '—')}</td>
+                <td>${escapeHtml(m.description || '')}${m.clients ? ' <span class="prio-chip">' + escapeHtml(m.clients.name) + '</span>' : ''}</td>
+                <td class="num">${inr(m.amount)}</td>
+                <td><button class="td-x" title="Delete" onclick="deleteMovement('${m.id}')">✕</button></td></tr>`).join('') || '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No transfers, deposits or money in yet.</td></tr>';
+            ['newExpenseAccount', 'mvFrom', 'mvTo'].forEach(id => { const el = document.getElementById(id); if (el) { const v = el.value; el.innerHTML = accountOptions(v, id === 'newExpenseAccount' ? '— Paid from —' : id === 'mvFrom' ? '— From (none) —' : '— To (none) —'); el.value = v; } });
+            const hSel = document.getElementById('maHolder');
+            if (hSel && hSel.options.length <= 1) hSel.innerHTML = '<option value="">— Held by —</option>' + allEmployees.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');
+            const pb = document.getElementById('newExpensePaidBy');
+            if (pb && pb.options.length <= 1) pb.innerHTML = '<option value="">— Paid by —</option>' + allEmployees.map(e => `<option value="${e.id}" ${e.id === currentEmployee.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('');
+            const mvc = document.getElementById('mvClient');
+            if (mvc && mvc.options.length <= 1) mvc.innerHTML = '<option value="">— Client (optional) —</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+        }
+
+        async function createMoneyAccount(event) {
+            event.preventDefault();
+            const { error } = await db.from('money_accounts').insert({
+                name: document.getElementById('maName').value.trim(),
+                account_type: document.getElementById('maType').value,
+                holder_id: document.getElementById('maHolder').value || null,
+                opening_balance: Number(document.getElementById('maOpening').value) || 0
+            });
+            if (error) { alert('Could not add account: ' + error.message); return; }
+            document.getElementById('moneyAccountForm').reset();
+            renderAccounts();
+        }
+
+        async function createMovement(event) {
+            event.preventDefault();
+            const kind = document.getElementById('mvKind').value;
+            const row = {
+                kind, amount: Number(document.getElementById('mvAmount').value),
+                movement_date: document.getElementById('mvDate').value || localISO(),
+                from_account_id: document.getElementById('mvFrom').value || null,
+                to_account_id: document.getElementById('mvTo').value || null,
+                client_id: document.getElementById('mvClient').value || null,
+                counterparty: document.getElementById('mvCounterparty').value.trim() || null,
+                description: document.getElementById('mvDescription').value.trim() || null,
+                payment_mode: document.getElementById('mvMode').value || null,
+                recorded_by: currentEmployee.id
+            };
+            if (!(row.amount > 0)) { alert('Enter an amount.'); return; }
+            if (kind === 'transfer' && (!row.from_account_id || !row.to_account_id)) { alert('A transfer needs both a from and a to account.'); return; }
+            const { error } = await db.from('money_movements').insert(row);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            document.getElementById('movementForm').reset();
+            renderAccounts();
+        }
+
+        async function deleteMovement(id) {
+            if (!confirm('Delete this entry?')) return;
+            const { error } = await db.from('money_movements').delete().eq('id', id);
+            if (error) { alert('Could not delete: ' + error.message); return; }
+            renderAccounts();
+        }
+
+        function openExpenseEdit(id) {
+            const e = allExpenses.find(x => x.id === id);
+            if (!e) return;
+            const cats = Array.from(document.querySelectorAll('#newExpenseCategory option')).map(o => o.value);
+            openModal('Edit expense', `
+                <form onsubmit="saveExpenseEdit(event, '${id}')">
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Type</label><select id="exEditType"><option value="expense" ${e.entry_type !== 'purchase' ? 'selected' : ''}>Expense</option><option value="purchase" ${e.entry_type === 'purchase' ? 'selected' : ''}>Purchase</option></select></div>
+                        <div class="form-group"><label>Category</label><select id="exEditCategory">${cats.map(c => `<option ${c === e.category ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}${cats.includes(e.category) ? '' : `<option selected>${escapeHtml(e.category)}</option>`}</select></div>
+                    </div>
+                    <div class="form-group"><label>Description</label><input type="text" id="exEditDescription" value="${escapeHtml(e.description || '')}"></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Amount (₹)</label><input type="number" step="0.01" id="exEditAmount" value="${e.amount}" required></div>
+                        <div class="form-group"><label>Date</label><input type="date" id="exEditDate" value="${e.expense_date}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Paid from</label><select id="exEditAccount">${accountOptions(e.paid_from_account_id, '— Not set —')}</select></div>
+                        <div class="form-group"><label>Payment mode</label><select id="exEditMode"><option value="">—</option>${PAYMENT_MODES.map(m => `<option ${m === e.payment_mode ? 'selected' : ''}>${m}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Paid by</label><select id="exEditPaidBy"><option value="">—</option>${allEmployees.map(x => `<option value="${x.id}" ${x.id === e.paid_by ? 'selected' : ''}>${escapeHtml(x.name)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Paid to (payee)</label><input type="text" id="exEditPayee" value="${escapeHtml(e.payee || '')}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Client</label><select id="exEditClient"><option value="">— None —</option>${allClients.map(c => `<option value="${c.id}" ${c.id === e.client_id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Project</label><select id="exEditProject"><option value="">— None —</option>${allProjects.map(p => `<option value="${p.id}" ${p.id === e.project_id ? 'selected' : ''}>${escapeHtml(p.name)}</option>`).join('')}</select></div>
+                    </div>
+                    <label style="display:flex; gap:8px; align-items:center; font-size:13px;"><input type="checkbox" id="exEditReview" style="width:auto;" ${e.needs_review ? 'checked' : ''}> Needs checking</label>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:8px; border-top:1px solid var(--wain-border); display:flex; justify-content:space-between;">
+                        <button type="button" class="btn btn-secondary btn-sm" style="color:var(--danger-red);" onclick="deleteExpense('${id}')">Delete</button>
+                        <span><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button></span>
+                    </div>
+                </form>`);
+        }
+
+        async function saveExpenseEdit(event, id) {
+            event.preventDefault();
+            const { error } = await db.from('expenses').update({
+                entry_type: document.getElementById('exEditType').value,
+                category: document.getElementById('exEditCategory').value,
+                description: document.getElementById('exEditDescription').value.trim() || null,
+                amount: Number(document.getElementById('exEditAmount').value),
+                expense_date: document.getElementById('exEditDate').value,
+                paid_from_account_id: document.getElementById('exEditAccount').value || null,
+                payment_mode: document.getElementById('exEditMode').value || null,
+                paid_by: document.getElementById('exEditPaidBy').value || null,
+                payee: document.getElementById('exEditPayee').value.trim() || null,
+                client_id: document.getElementById('exEditClient').value || null,
+                project_id: document.getElementById('exEditProject').value || null,
+                needs_review: document.getElementById('exEditReview').checked
+            }).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            renderAccounts();
+        }
+
+        async function deleteExpense(id) {
+            if (!confirm('Delete this expense?')) return;
+            const { error } = await db.from('expenses').delete().eq('id', id);
+            if (error) { alert('Could not delete: ' + error.message); return; }
+            closeModal();
+            renderAccounts();
         }
 
         // ---------- FINANCE LAYERS & PRIORITY ----------
@@ -3435,6 +4548,7 @@
         // everyone sees and ticks off their own on My Dashboard.
         let prioTasks = [];
         let prioOpenTasks = [];
+        let prioExtra = [];
 
         function localISO(d) {
             const x = d || new Date();
@@ -3491,6 +4605,8 @@
             }
             prioTasks = day || [];
             prioOpenTasks = (open || []).filter(t => t.priority_date !== date);
+            const { data: extra } = await db.from('tasks').select('id, title, assigned_to, hours_spent').eq('self_logged', true).eq('due_date', date);
+            prioExtra = extra || [];
             document.getElementById('prioDateHeading').textContent = (date === localISO() ? 'Today · ' : '') + prioDateLabel(date);
             renderPriorityStats();
             renderPriorityBoard();
@@ -3539,12 +4655,12 @@
                             <div class="prio-item ${t.status === 'done' ? 'done' : ''}">
                                 <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="Mark done">
                                 <div class="prio-text">
-                                    <span class="prio-title">${escapeHtml(t.title)}</span>
+                                    <span class="prio-title prio-link" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)}</span>
                                     <span class="prio-meta">
                                         ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
                                         ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
                                         ${t.is_important ? '<span class="prio-chip important">Important</span>' : ''}
-                                        ${t.status !== 'done' && t.status !== 'todo' ? '<span class="prio-chip">' + escapeHtml(t.status.replace('_', ' ')) + '</span>' : ''}
+                                        ${t.status === 'blocked' ? '<span class="prio-chip important" title="' + escapeHtml(t.blocked_reason || '') + '">⏸ Waiting on ' + escapeHtml(t.blocked_on || 'someone') + '</span>' : t.status !== 'done' && t.status !== 'todo' ? '<span class="prio-chip">' + escapeHtml(t.status.replace('_', ' ')) + '</span>' : ''}
                                     </span>
                                 </div>
                                 <div class="prio-actions">
@@ -3553,6 +4669,7 @@
                                 </div>
                             </div>`).join('')}
                     </div>
+                    ${prioExtra.filter(x => x.assigned_to === e.id).length ? `<div class="prio-extra">＋ Also did: ${prioExtra.filter(x => x.assigned_to === e.id).map(x => escapeHtml(x.title) + (x.hours_spent ? ' (' + x.hours_spent + 'h)' : '')).join(' · ')}</div>` : ''}
                     <div class="prio-add">
                         <input type="text" id="prioNew_${e.id}" placeholder="Add a priority for ${escapeHtml(e.name.split(' ')[0])}…" onkeydown="if(event.key==='Enter'){event.preventDefault(); addPriority('${e.id}');}">
                         <div class="prio-add-row">
@@ -3697,9 +4814,11 @@
                     }
                     if (t.clients && !text.toLowerCase().includes(t.clients.name.split(' ')[0].toLowerCase())) text += ` (${t.clients.name})`;
                     if (t.is_important) text += ' [Important]';
-                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : '⏳') : '•';
+                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : t.status === 'blocked' ? '⏸' : '⏳') : '•';
+                    if (kind === 'progress' && t.status === 'blocked') text += ` — waiting on ${(t.blocked_on || 'someone').toLowerCase()}${t.blocked_reason ? ': ' + t.blocked_reason : ''}`;
                     lines.push(`${bullet} ${text}`);
                 });
+                if (kind === 'progress') prioExtra.filter(x => x.assigned_to === e.id).forEach(x => lines.push(`➕ ${x.title}${x.hours_spent ? ' (' + x.hours_spent + 'h)' : ''}`));
             });
             if (!people.length) lines.push('', '(no priorities set yet)');
             return lines.join('\n');
@@ -3743,7 +4862,7 @@
                 <div class="prio-item ${t.status === 'done' ? 'done' : ''}">
                     <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="Mark done">
                     <div class="prio-text">
-                        <span class="prio-title">${escapeHtml(t.title)}</span>
+                        <span class="prio-title prio-link" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)}</span>
                         <span class="prio-meta">
                             ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
                             ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
@@ -4547,23 +5666,23 @@
             const { data, error } = await db.from('task_assignments').select('*').order('due_date', { ascending: true, nullsFirst: false });
             if (error) { body.innerHTML = `<tr><td colspan="7">Error: ${escapeHtml(error.message)}</td></tr>`; return; }
             allTasks = data || [];
+            await loadTaskExtras(allTasks.map(t => t.task_id));
 
             document.getElementById('tasksCount').textContent = (data || []).length + ' tasks';
             if (!data || !data.length) {
                 body.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No tasks yet — add one above.</td></tr>';
             } else {
-                const statusClass = { todo: 'status-pending', in_progress: 'status-in-progress', review: 'status-in-progress', done: 'status-active' };
-                body.innerHTML = data.map(t => `
+                body.innerHTML = data.map(t => { const x = taskExtras[t.task_id] || {}; return `
                     <tr>
-                        <td><strong>${escapeHtml(t.title)}</strong>${t.project_name ? '<div style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(t.project_name) + '</div>' : ''}</td>
+                        <td><a href="#" class="task-link" onclick="openTaskDetail('${t.task_id}'); return false;"><strong>${escapeHtml(t.title)}</strong></a>${x.priority_date === localISO() ? ' <span title="Today\'s priority">🎯</span>' : ''}${x.self_logged ? ' <span class="prio-chip">Extra</span>' : ''}${t.project_name ? '<div style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(t.project_name) + '</div>' : ''}${x.sub_total ? '<div class="task-sub-prog">' + progressBar(taskProgress(t.status, x), t.status === 'blocked' ? 'blocked' : '') + ' <span style="font-size:11px; color:var(--text-secondary);">' + x.sub_done + '/' + x.sub_total + ' subtasks</span></div>' : ''}</td>
                         <td>${escapeHtml(t.employee_name) || '—'}</td>
                         <td>${escapeHtml(t.client_name) || 'Internal'}</td>
                         <td>${escapeHtml(t.cost_center_name) || '—'}</td>
-                        <td><span class="status-badge ${statusClass[t.status] || 'status-pending'}">${escapeHtml((t.status||'todo').replace('_',' '))}</span></td>
+                        <td>${taskStatusBadge(t.status)}${t.status === 'blocked' && x.blocked_reason ? '<div style="font-size:11px; color:var(--danger-red); margin-top:3px;">⏸ ' + escapeHtml(x.blocked_on || '') + ': ' + escapeHtml(x.blocked_reason) + '</div>' : ''}</td>
                         <td>${t.due_date ? new Date(t.due_date).toLocaleDateString() : '—'}</td>
-                        <td><button class="btn btn-sm btn-secondary" onclick="openTaskEdit('${t.task_id}')">Edit</button></td>
+                        <td style="white-space:nowrap;"><button class="btn btn-sm btn-primary" onclick="openTaskDetail('${t.task_id}')">Open</button> <button class="btn btn-sm btn-secondary" onclick="openTaskEdit('${t.task_id}')">Edit</button></td>
                     </tr>
-                `).join('');
+                `; }).join('');
             }
 
             if (ccBody) {
@@ -4607,6 +5726,7 @@
                             <option value="todo" ${t.status==='todo'?'selected':''}>To Do</option>
                             <option value="in_progress" ${t.status==='in_progress'?'selected':''}>In Progress</option>
                             <option value="review" ${t.status==='review'?'selected':''}>Review</option>
+                            <option value="blocked" ${t.status==='blocked'?'selected':''}>Blocked (waiting on someone)</option>
                             <option value="done" ${t.status==='done'?'selected':''}>Done</option>
                         </select>
                     </div>
@@ -5085,7 +6205,12 @@
             const client_id = document.getElementById('newExpenseClient').value || null;
             const project_id = document.getElementById('newExpenseProject').value || null;
             const { error } = await db.from('expenses').insert({
-                cost_center_id, client_id, project_id, category, description: description || null, amount, expense_date, logged_by: currentEmployee.id
+                cost_center_id, client_id, project_id, category, description: description || null, amount, expense_date, logged_by: currentEmployee.id,
+                entry_type: document.getElementById('newExpenseType').value,
+                paid_from_account_id: document.getElementById('newExpenseAccount').value || null,
+                payment_mode: document.getElementById('newExpenseMode').value || null,
+                paid_by: document.getElementById('newExpensePaidBy').value || null,
+                payee: document.getElementById('newExpensePayee').value.trim() || null
             });
             if (error) { alert('Could not log expense: ' + error.message); return; }
             document.getElementById('expenseForm').reset();
@@ -5098,6 +6223,7 @@
             const plBody = document.getElementById('plTableBody');
             if (!invBody) return;
             if (!allProjects.length) await loadProjects();
+            await loadMoneyAccounts();
             renderFinanceLayers();
             const expClientSel = document.getElementById('newExpenseClient');
             if (expClientSel) { const v = expClientSel.value; expClientSel.innerHTML = '<option value="">— None —</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join(''); expClientSel.value = v; }
@@ -5106,11 +6232,12 @@
 
             const [{ data: invoices, error: invErr }, { data: expenses, error: expErr }] = await Promise.all([
                 db.from('invoices').select('*, clients(name), cost_centers(name)').order('issue_date', { ascending: false }),
-                db.from('expenses').select('*, cost_centers(name), employees(name)').order('expense_date', { ascending: false })
+                db.from('expenses').select('*, cost_centers(name), employees!expenses_logged_by_fkey(name), payer:employees!expenses_paid_by_fkey(name), clients(name)').order('expense_date', { ascending: false })
             ]);
 
             allInvoices = invoices || [];
             allExpenses = expenses || [];
+            renderMoneyAccounts();
 
             const revenue = allInvoices.filter(i => i.status === 'paid').reduce((s, i) => s + Number(i.total || 0), 0);
             const outstanding = allInvoices.filter(i => i.status === 'sent' || i.status === 'overdue').reduce((s, i) => s + Number(i.total || 0), 0);
@@ -5145,18 +6272,20 @@
 
             document.getElementById('expensesCount').textContent = allExpenses.length + (allExpenses.length === 1 ? ' expense' : ' expenses');
             if (expErr) {
-                expBody.innerHTML = `<tr><td colspan="6">Error: ${escapeHtml(expErr.message)}</td></tr>`;
+                expBody.innerHTML = `<tr><td colspan="7">Error: ${escapeHtml(expErr.message)}</td></tr>`;
             } else if (!allExpenses.length) {
-                expBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No expenses logged yet.</td></tr>';
+                expBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No expenses logged yet.</td></tr>';
             } else {
+                const acctName = id => { const a = allMoneyAccounts.find(x => x.id === id); return a ? escapeHtml(a.name) : '—'; };
                 expBody.innerHTML = allExpenses.map(e => `
                     <tr>
                         <td>${e.expense_date ? new Date(e.expense_date).toLocaleDateString() : '—'}</td>
-                        <td>${escapeHtml(e.category)}</td>
-                        <td>${e.cost_centers ? escapeHtml(e.cost_centers.name) : '—'}</td>
-                        <td>${escapeHtml(e.description) || '—'}</td>
-                        <td>₹${Number(e.amount || 0).toLocaleString('en-IN')}</td>
-                        <td>${e.employees ? escapeHtml(e.employees.name) : '—'}</td>
+                        <td>${escapeHtml(e.category)}${e.entry_type === 'purchase' ? ' <span class="prio-chip">Purchase</span>' : ''}${e.needs_review ? ' <span class="fchip f-mid">check</span>' : ''}</td>
+                        <td>${acctName(e.paid_from_account_id)}${e.payment_mode ? '<div style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(e.payment_mode) + '</div>' : ''}</td>
+                        <td>${escapeHtml(e.description) || '—'}${e.payee ? '<div style="font-size:11px; color:var(--text-secondary);">To ' + escapeHtml(e.payee) + '</div>' : ''}${e.clients ? ' <span class="prio-chip">' + escapeHtml(e.clients.name) + '</span>' : ''}</td>
+                        <td class="num">₹${Number(e.amount || 0).toLocaleString('en-IN')}</td>
+                        <td>${e.payer ? escapeHtml(e.payer.name) : (e.employees ? escapeHtml(e.employees.name) : '—')}</td>
+                        <td><button class="btn btn-sm btn-secondary" onclick="openExpenseEdit('${e.id}')">Edit</button></td>
                     </tr>
                 `).join('');
             }
@@ -5215,7 +6344,7 @@
             const note = document.getElementById('newAttendanceNote').value.trim();
             const today = new Date().toISOString().slice(0, 10);
             const { error } = await db.from('attendance').upsert({
-                employee_id: currentEmployee.id, attendance_date: today, status, note: note || null
+                employee_id: currentEmployee.id, attendance_date: today, status: status === 'wfh' ? 'present' : status, work_mode: status === 'wfh' ? 'wfh' : 'office', note: note || null
             }, { onConflict: 'employee_id,attendance_date' });
             if (error) { alert('Could not mark attendance: ' + error.message); return; }
             document.getElementById('todayAttendanceStatus').textContent = `Marked ${status.replace('_', ' ')} for today.`;
@@ -5248,7 +6377,7 @@
                 leaveBody.innerHTML = allLeaveRequests.map(l => `
                     <tr>
                         <td><strong>${l.employees ? escapeHtml(l.employees.name) : '—'}</strong></td>
-                        <td>${escapeHtml(l.leave_type)}</td>
+                        <td>${escapeHtml(l.leave_type)}${l.half_day ? ' · half day' : ''}</td>
                         <td>${new Date(l.start_date).toLocaleDateString()}</td>
                         <td>${new Date(l.end_date).toLocaleDateString()}</td>
                         <td>${escapeHtml(l.reason) || '—'}</td>
@@ -5261,13 +6390,16 @@
             if (attErr) {
                 attBody.innerHTML = `<tr><td colspan="4">Error: ${escapeHtml(attErr.message)}</td></tr>`;
             } else if (!allAttendance.length) {
-                attBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No attendance marked yet.</td></tr>';
+                attBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No attendance marked yet.</td></tr>';
             } else {
                 attBody.innerHTML = allAttendance.map(a => `
                     <tr>
                         <td>${a.employees ? escapeHtml(a.employees.name) : '—'}</td>
                         <td>${new Date(a.attendance_date).toLocaleDateString()}</td>
                         <td>${escapeHtml((a.status || '').replace('_', ' '))}</td>
+                        <td>${a.work_mode === 'wfh' ? '<span class="prio-chip wfh">🏠 WFH</span>' : a.work_mode === 'field' ? 'Field' : 'Office'}</td>
+                        <td style="white-space:nowrap;">${a.check_in_time ? new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : '—'}${a.check_out_time ? ' – ' + new Date(a.check_out_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : ''}</td>
+                        <td>${a.hours_worked !== null && a.hours_worked !== undefined ? a.hours_worked + ' h' : '—'}</td>
                         <td>${escapeHtml(a.note) || '—'}</td>
                     </tr>
                 `).join('');
@@ -5281,7 +6413,7 @@
                         <td>${escapeHtml(e.phone) || '—'}</td>
                         <td>${e.join_date ? new Date(e.join_date).toLocaleDateString() : '—'}</td>
                         <td>${escapeHtml(e.emergency_contact_name) || '—'}${e.emergency_contact_phone ? ' (' + escapeHtml(e.emergency_contact_phone) + ')' : ''}</td>
-                        <td>${manage ? `<button class="btn btn-sm btn-secondary" onclick="openEmployeeEdit('${e.id}')">Edit</button>` : '—'}</td>
+                        <td style="white-space:nowrap;">${manage ? `<button class="btn btn-sm btn-secondary" onclick="openEmployeeEdit('${e.id}')">Edit</button> <button class="btn btn-sm btn-secondary" onclick="openEmployeeDocs('${e.id}')">📄 Docs</button>` : '—'}</td>
                     </tr>
                 `).join('');
             }
@@ -5377,26 +6509,20 @@
                 body.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No projects yet — add the first one above.</td></tr>';
                 return;
             }
-            const { data: projTasks } = await db.from('tasks').select('project_id, status').not('project_id', 'is', null);
-            const progress = {};
-            (projTasks || []).forEach(t => {
-                if (!progress[t.project_id]) progress[t.project_id] = { total: 0, done: 0 };
-                progress[t.project_id].total++;
-                if (t.status === 'done') progress[t.project_id].done++;
-            });
+            const progress = await loadProjectProgress(allProjects.map(p => p.id));
             const statusClass = { planning: 'status-pending', active: 'status-in-progress', review: 'status-in-progress', completed: 'status-active', on_hold: 'status-overdue' };
             const showMoney = isSuperadminUser();
             body.innerHTML = sortByPriority(allProjects, projectFin).map(p => {
                 const pr = progress[p.id];
                 const f = projectFin[p.id];
-                const pct = pr && pr.total ? Math.round((pr.done / pr.total) * 100) : 0;
+                const pct = pr ? Math.round(pr.frac * 100) : 0;
                 return `
                 <tr>
                     <td>${priorityBadge(f)}</td>
                     <td><strong>${escapeHtml(p.name)}</strong>${showMoney && f && (Number(f.project_value) || Number(f.spend) || Number(f.invoiced)) ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Value ' + inr(f.project_value) + ' · Collected ' + inr(f.collected) + ' · Spend ' + inr(f.spend) + (Number(f.budget) ? ' / ' + inr(f.budget) : '') + (Number(f.budget) && Number(f.spend) > Number(f.budget) ? ' <span class="fchip f-bad">Over budget</span>' : '') + '</div>' : ''}${p.brief ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">' + escapeHtml(p.brief) + '</div>' : ''}</td>
                     <td>${p.clients ? escapeHtml(p.clients.name) : 'Internal'}</td>
                     <td>${p.employees ? escapeHtml(p.employees.name) : '—'}${(p.primary_team_members && p.primary_team_members.length) ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Team: ' + employeeNames(p.primary_team_members) + '</div>' : ''}</td>
-                    <td>${pr && pr.total ? pct + '% (' + pr.done + '/' + pr.total + ')' : 'No tasks yet'}</td>
+                    <td style="min-width:150px;">${pr && pr.tasks ? '<div class="task-sub-prog">' + progressBar(pr.frac, pr.blocked ? 'blocked' : '') + '</div><div style="font-size:11px; color:var(--text-secondary);">' + pr.done + '/' + pr.tasks + ' tasks done' + (pr.blocked ? ' · <span style="color:var(--danger-red);">' + pr.blocked + ' blocked</span>' : '') + '</div>' : '<span style="font-size:12px; color:var(--text-secondary);">No tasks yet</span>'}<div><a href="#" style="font-size:12px;" onclick="openProjectTasks('${p.id}'); return false;">Tasks &amp; subtasks →</a></div></td>
                     <td><span class="status-badge ${statusClass[p.status] || 'status-pending'}">${escapeHtml((p.status || 'planning').replace('_',' '))}</span></td>
                     <td>${p.due_date ? new Date(p.due_date).toLocaleDateString() : '—'}</td>
                     <td>
@@ -6359,6 +7485,8 @@
             document.getElementById('idCardContainer').innerHTML = buildIdCardHtml(currentEmployee);
             document.getElementById('profilePhone').value = currentEmployee.phone || '';
             document.getElementById('profilePersonalEmail').value = currentEmployee.personal_email || '';
+            renderMyLeave();
+            renderMyDocuments();
         }
 
         async function saveOwnProfile(event) {

@@ -107,7 +107,7 @@ export function LeadForm({ onSubmit, onCancel, submitting, willEmail }: LeadForm
           <p className="fine" style={{ marginTop: 18 }}>
             {willEmail
               ? "We use these details to send the report and, if you want it, to follow up once. Nothing else, and never to anyone outside the collective."
-              : "Your report opens on the next screen. Email delivery isn't switched on yet, so these details stay in your browser and reach no one — use Download to keep a copy."}
+              : "Your report opens on the next screen — use Download to keep a copy. We keep these details so someone from the collective can follow up once. Nothing else, and never to anyone outside the collective."}
           </p>
         </form>
       </Reveal>
