@@ -46,7 +46,7 @@ while ((m = re.exec(blog))) posts.push({ slug: m[1], date: m[2] });
 /* ---- priorities: the cover first, then the pages people land on ---- */
 const priority = (route) => {
   if (route === "/") return "1.0";
-  if (/^\/(diagnosis|contact|growth-partner|before-you-hire-an-agency)\/$/.test(route)) return "0.9";
+  if (/^\/(diagnosis|contact|growth-partner|before-you-hire-an-agency|branding|social-media-marketing|digital-marketing)\/$/.test(route)) return "0.9";
   if (route.startsWith("/thinking/") && route !== "/thinking/") return "0.6";
   return "0.8";
 };

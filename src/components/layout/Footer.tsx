@@ -75,6 +75,9 @@ export function Footer() {
             <a href={withBase("/how-we-exist/#think")}>How we think</a>
             <a href={h("#method")}>How we work</a>
             <a href={withBase("/experience/")}>Experience</a>
+            <a href={withBase("/branding/")}>Branding</a>
+            <a href={withBase("/social-media-marketing/")}>Social media marketing</a>
+            <a href={withBase("/digital-marketing/")}>Digital marketing</a>
           </div>
 
           <div className="f-col ink-lav">

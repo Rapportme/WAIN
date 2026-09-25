@@ -935,3 +935,18 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 .art-cta p a{text-decoration:underline;text-underline-offset:3px}
 .direct-lines a{text-decoration:none}
 .art-cta .art-cta-more{font-size:.92em;opacity:.85}
+
+/* ---- Service pages (branding, social media, digital marketing) ---- */
+.svc-list li{align-items:flex-start}
+.svc-list li strong{font-weight:700}
+.svc-steps{list-style:none;margin:clamp(30px,5vh,56px) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(18px,2.5vw,32px)}
+.svc-steps li{border-top:2px solid var(--sig);padding-top:18px}
+.svc-steps .n{font-family:var(--ui);font-size:.72rem;letter-spacing:.2em;font-weight:700;color:var(--sig-ink)}
+.svc-steps h3{font-size:clamp(1.25rem,1.8vw,1.5rem);margin:10px 0 8px}
+.svc-steps p{color:var(--muted);line-height:1.6;margin:0}
+.svc-price{margin-top:clamp(40px,6vh,70px);padding:24px 26px;background:var(--paper-2);border-left:4px solid var(--sig);max-width:70ch}
+.svc-price .k{font-family:var(--ui);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin:0 0 10px}
+.svc-price p{margin:0;line-height:1.65}
+.svc-related{margin-top:28px;font-size:.92rem;color:var(--muted)}
+.svc-related a{text-decoration:underline;text-underline-offset:3px}
+.svc-list{display:grid !important;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px clamp(24px,4vw,56px);max-width:none !important}

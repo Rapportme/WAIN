@@ -52,6 +52,9 @@ const COLUMNS: MenuColumn[] = [
       { route: "/how-we-exist/", hash: "#believe", title: "What we believe", note: "The positions we're willing to defend." },
       { route: "/how-we-exist/", hash: "#think", title: "How we think", note: "The questions we ask before anything else." },
       { route: "/", hash: "#method", title: "How we work", note: "Six movements. In order. No skipping." },
+      { route: "/branding/", title: "Branding", note: "Strategy, identity and messaging, in that order." },
+      { route: "/social-media-marketing/", title: "Social media marketing", note: "Planned, produced, published and measured." },
+      { route: "/digital-marketing/", title: "Digital marketing", note: "Ads, SEO and AI search, judged on customers." },
     ],
   },
   {
