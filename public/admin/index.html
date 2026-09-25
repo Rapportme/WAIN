@@ -200,6 +200,69 @@
         .pt-add input, .pt-add select { border:1px solid var(--wain-border); border-radius:6px; padding:7px 9px; font-family:inherit; font-size:13px; width:auto !important; flex:1 1 140px; min-width:0; }
         .pt-add input[type=text] { flex:3 1 240px; }
         .pt-add button { flex:0 0 auto; }
+        /* Company overview */
+        .co-sub { font-size:12px; color: var(--text-secondary); }
+        .co-red { color: var(--danger-red); font-weight:600; }
+        .co-amber { color:#b45309; font-weight:600; }
+        .co-attn { background:#fff; border:1px solid var(--wain-border); border-left:4px solid var(--danger-red); border-radius:10px; padding:14px 16px; margin-bottom:18px; }
+        .co-attn-head { font-weight:700; font-size:14px; margin-bottom:10px; }
+        .co-attn-list { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:8px; }
+        .co-attn-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; text-decoration:none; color: var(--text-primary); font-size:13px; background: rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.18); }
+        .co-attn-item.tone-amber { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); }
+        .co-attn-item:hover { border-color: var(--wain-cyan); }
+        .co-attn-n { font-weight:800; font-size:16px; min-width:24px; color: var(--danger-red); }
+        .co-attn-item.tone-amber .co-attn-n { color:#b45309; }
+        .co-attn-go { margin-left:auto; color: var(--text-secondary); }
+        .co-allclear { font-size:13px; color: var(--success-green, #10b981); font-weight:600; }
+        .co-kpis { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:12px; margin-bottom:18px; }
+        .co-kpis .co-stat { background:#fff; border:1px solid var(--wain-border); border-radius:10px; padding:14px; }
+        .co-kpis .co-stat-v { font-size:22px; }
+        .co-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:16px; }
+        .co-card { background:#fff; border:1px solid var(--wain-border); border-radius:10px; padding:16px; min-width:0; }
+        .co-span2 { grid-column: span 2; }
+        .co-card-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px; }
+        .co-card-title { font-weight:700; font-size:14px; }
+        .co-open { font-size:12px; font-weight:600; color: var(--wain-cyan); text-decoration:none; white-space:nowrap; }
+        .co-stats { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; }
+        .co-stat { background: var(--wain-light-gray); border-radius:8px; padding:9px 10px; min-width:0; }
+        .co-stat-v { font-size:18px; font-weight:800; font-variant-numeric: tabular-nums; line-height:1.2; }
+        .co-stat-l { font-size:11px; color: var(--text-secondary); margin-top:2px; }
+        .co-stat.tone-red .co-stat-v { color: var(--danger-red); }
+        .co-stat.tone-amber .co-stat-v { color:#b45309; }
+        .co-stat.tone-good .co-stat-v { color:#047857; }
+        .co-list { display:flex; flex-direction:column; margin-top:10px; border-top:1px solid var(--wain-border); }
+        .co-li { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--wain-border); font-size:13px; }
+        .co-li:last-child { border-bottom:none; }
+        .co-li-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+        .co-li-main > span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .co-empty { font-size:12.5px; color: var(--text-secondary); padding:8px 0; }
+        .co-mini-bar { display:inline-block; width:60px; height:6px; border-radius:3px; background: var(--wain-light-gray); overflow:hidden; vertical-align:middle; margin-right:6px; }
+        .co-mini-bar.wide { width:90px; flex:0 0 90px; margin:0; }
+        .co-mini-bar span { display:block; height:100%; background:#0097A7; border-radius:3px; }
+        .co-mini-bar.late span { background: var(--danger-red); }
+        .co-mini-bar.full span { background:#059669; }
+        .co-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .co-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color: var(--text-secondary); padding:6px 8px; border-bottom:1px solid var(--wain-border); }
+        .co-table td { padding:7px 8px; border-bottom:1px solid var(--wain-border); vertical-align:middle; }
+        .co-table .num { text-align:right; font-variant-numeric: tabular-nums; }
+        .co-pill { font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+        .co-pill.in { background: rgba(5,150,105,0.12); color:#047857; }
+        .co-pill.wfh { background: rgba(142,120,199,0.15); color:#6b54b3; }
+        .co-pill.leave { background: rgba(245,158,11,0.15); color:#b45309; }
+        .co-pill.off { background: var(--wain-light-gray); color: var(--text-secondary); }
+        .co-hbars { display:flex; flex-direction:column; gap:5px; margin-top:10px; }
+        .co-hbar { display:grid; grid-template-columns: 84px 1fr 26px; align-items:center; gap:8px; font-size:12px; }
+        .co-hbar-l { color: var(--text-secondary); }
+        .co-hbar-track { height:8px; background: var(--wain-light-gray); border-radius:4px; overflow:hidden; }
+        .co-hbar-track span { display:block; height:100%; background:#0097A7; border-radius:0 4px 4px 0; }
+        .co-hbar-n { text-align:right; font-weight:700; font-variant-numeric: tabular-nums; }
+        .co-chart { width:100%; height:auto; display:block; margin-bottom:6px; }
+        .co-bar { fill:#0097A7; }
+        .co-bar-g:hover .co-bar { fill:#00B8D4; }
+        .co-base { stroke: var(--wain-border); stroke-width:1; }
+        .co-ax { font-size:13px; fill: var(--text-secondary); }
+        .co-val { font-size:14px; font-weight:700; fill: var(--text-primary); }
+        @media (max-width: 760px) { .co-span2 { grid-column: auto; } .co-grid { grid-template-columns: 1fr; } .co-table th:nth-child(6), .co-table td:nth-child(6) { display:none; } }
         .handover-box { background: rgba(142,120,199,0.1); border-left:3px solid #8e78c7; border-radius:6px; padding:8px 10px; font-size:13px; margin:10px 0; }
         .prio-item.carried { background: rgba(245,158,11,0.08); border-left:3px solid #f59e0b; padding-left:8px; border-radius:4px; }
         .prio-chip.carried { background: rgba(245,158,11,0.16); color:#b45309; font-weight:700; }
@@ -1138,6 +1201,10 @@
                     <span class="nav-icon">📊</span>
                     <span>My Dashboard</span>
                 </div>
+                <div class="nav-item" id="companyNav" style="display: none;" onclick="switchView('company')">
+                    <span class="nav-icon">🏢</span>
+                    <span>Company Overview</span>
+                </div>
                 <div class="nav-item" id="prioritiesNav" style="display: none;" onclick="switchView('priorities')">
                     <span class="nav-icon">🎯</span>
                     <span>Daily Priorities</span>
@@ -1698,6 +1765,21 @@
             </div>
 
             <!-- DAILY PRIORITIES -->
+            <div id="company" class="content-view">
+                <div class="section-header">
+                    <div class="section-titles">
+                        <h2>Company Overview</h2>
+                        <div class="section-subtitle">Every department on one screen: what needs attention, who's working on what, and where the money stands. Click any card to open that module.</div>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <span id="coUpdated" class="co-sub" style="white-space:nowrap;"></span>
+                        <button type="button" class="btn btn-sm btn-secondary" style="white-space:nowrap;" id="coRefresh" onclick="renderCompanyOverview()">↻ Refresh</button>
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+                <div id="coBody"><div class="skeleton-row">Loading the company overview…</div></div>
+            </div>
+
             <div id="priorities" class="content-view">
                 <div class="section-header">
                     <div class="section-titles">
@@ -3138,6 +3220,7 @@
         const MODULE_TITLES = {
             'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
             'goals': { title: 'Team Goals', subtitle: 'Targets on client growth — hit them together, earn the reward' },
+            'company': { title: 'Company Overview', subtitle: "What's happening across every department, live" },
             'priorities': { title: 'Daily Priorities', subtitle: "Set each person's priorities for the day, then share them to the team group" },
             'creative': { title: 'Creative Work', subtitle: 'Deliverables per client, with a checklist for each' },
             'social': { title: 'Social Media Posting', subtitle: 'Client accounts, content calendar, and post management' },
@@ -3270,6 +3353,7 @@
             document.getElementById('projectsNav').style.display = modules.includes('projects') ? 'flex' : 'none';
             document.getElementById('tasksNav').style.display = (modules.includes('projects') || isSuperadmin) ? 'flex' : 'none';
             document.getElementById('prioritiesNav').style.display = (modules.includes('projects') || isSuperadmin) ? 'flex' : 'none';
+            document.getElementById('companyNav').style.display = isSuperadmin ? 'flex' : 'none';
             document.getElementById('resourcesNav').style.display = modules.includes('resources') ? 'flex' : 'none';
             document.getElementById('hrNav').style.display = modules.includes('hr') ? 'flex' : 'none';
             document.getElementById('financeSection').style.display = modules.includes('accounts') ? 'block' : 'none';
@@ -3329,6 +3413,7 @@
                 (viewName === 'team' && isSuperadmin) ||
                 (viewName === 'tasks' && (modules.includes('projects') || isSuperadmin)) ||
                 (viewName === 'priorities' && (modules.includes('projects') || isSuperadmin)) ||
+                (viewName === 'company' && isSuperadmin) ||
                 (viewName === 'creativetimeline' && modules.some(m => ['creative', 'social', 'marketing', 'website'].includes(m)));
             if (!allowed) {
                 alert('You do not have access to this module');
@@ -3356,6 +3441,7 @@
         function switchViewData(viewName) {
             if (viewName === 'overview') renderMyOverview();
             if (viewName === 'priorities') renderPriorities();
+            if (viewName === 'company') renderCompanyOverview();
             if (viewName === 'goals') renderGoals();
             if (viewName === 'clients') renderClients();
             if (viewName === 'reviews') renderReviewsReferrals();
@@ -4608,6 +4694,302 @@
             if (!sel) return;
             const list = allProjects.filter(p => !clientId || p.client_id === clientId || !p.client_id);
             sel.innerHTML = '<option value="">— No project —</option>' + list.map(p => `<option value="${p.id}">${escapeHtml(p.name)}${p.clients ? ' — ' + escapeHtml(p.clients.name) : ' (internal)'}</option>`).join('');
+        }
+
+        // ---------- COMPANY OVERVIEW (Superadmin) ----------
+        // One screen across every department. Reads live from every module; nothing is stored here.
+        let coData = null;
+
+        function coMonthStart() { const d = new Date(); return localISO(new Date(d.getFullYear(), d.getMonth(), 1)); }
+        function coDaysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d; }
+        function coShortInr(n) {
+            const v = Number(n) || 0;
+            if (Math.abs(v) >= 1e7) return '₹' + (v / 1e7).toFixed(1).replace(/\.0$/, '') + ' Cr';
+            if (Math.abs(v) >= 1e5) return '₹' + (v / 1e5).toFixed(1).replace(/\.0$/, '') + ' L';
+            if (Math.abs(v) >= 1e3) return '₹' + (v / 1e3).toFixed(1).replace(/\.0$/, '') + 'k';
+            return '₹' + Math.round(v).toLocaleString('en-IN');
+        }
+        function coStat(label, value, tone, hint) {
+            return `<div class="co-stat ${tone ? 'tone-' + tone : ''}" ${hint ? 'title="' + escapeHtml(hint) + '"' : ''}><div class="co-stat-v">${value}</div><div class="co-stat-l">${escapeHtml(label)}</div></div>`;
+        }
+        function coCard(icon, title, view, body) {
+            return `<div class="co-card"><div class="co-card-head"><div class="co-card-title">${icon} ${escapeHtml(title)}</div>${view ? `<a href="#" class="co-open" onclick="switchView('${view}'); return false;">Open →</a>` : ''}</div>${body}</div>`;
+        }
+
+        async function renderCompanyOverview() {
+            const wrap = document.getElementById('coBody');
+            if (!wrap) return;
+            if (!currentEmployee || currentEmployee.role !== 'Superadmin') { wrap.innerHTML = '<div class="approval-item">Only Superadmins can see the company overview.</div>'; return; }
+            const btn = document.getElementById('coRefresh');
+            if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+            const today = localISO();
+            const monthStart = coMonthStart();
+            const since30 = coDaysAgo(30).toISOString();
+            const errors = [];
+            const q = async (label, p) => { const { data, error } = await p; if (error) errors.push(label + ': ' + error.message); return data || []; };
+            const [tasks, projects, dels, postsOpen, postsMonth, leads, acts, reqs, reviews, refs, camps, pages, invoices, expenses, accts, moves, att, leaves, goals] = await Promise.all([
+                q('tasks', db.from('tasks').select('id, title, status, assigned_to, team_ids, due_date, priority_date, carried_from, completed_at, project_id, self_logged')),
+                q('projects', db.from('projects').select('id, name, status, due_date, client_id, clients(name)')),
+                q('creative', db.from('creative_deliverables').select('id, title, status, due_date, assigned_to, client_id, clients(name)')),
+                q('posts', db.from('posts').select('id, status, scheduled_for, client_id, clients(name), post_type').neq('status', 'published')),
+                q('posts', db.from('posts').select('id, published_at, reach, likes, comments, shares, saves').eq('status', 'published').gte('published_at', monthStart)),
+                q('leads', db.from('leads').select('id, company_name, stage, estimated_value, source, created_at, updated_at')),
+                q('crm', db.from('crm_activities').select('lead_id, created_at').gte('created_at', since30)),
+                q('requirements', db.from('client_requirements').select('id, status, category')),
+                q('reviews', db.from('review_requests').select('id, status')),
+                q('referrals', db.from('referrals').select('id, status')),
+                q('campaigns', db.from('campaigns').select('id, name, status, budget, end_date')),
+                q('website', db.from('website_pages').select('id, page_name, status')),
+                q('invoices', db.from('invoices').select('id, invoice_number, status, total, issue_date, due_date, paid_at, clients(name)')),
+                q('expenses', db.from('expenses').select('id, amount, expense_date, needs_review, paid_from_account_id')),
+                q('money accounts', db.from('money_accounts').select('id, name, opening_balance, active')),
+                q('money movements', db.from('money_movements').select('amount, from_account_id, to_account_id, kind, movement_date, needs_review')),
+                q('attendance', db.from('attendance').select('employee_id, work_mode, check_in_time, check_out_time, status').eq('attendance_date', today)),
+                q('leave', db.from('leave_requests').select('id, employee_id, status, start_date, end_date, leave_type')),
+                q('goals', db.from('team_goals').select('*, clients(name)').eq('status', 'active'))
+            ]);
+            coData = { tasks, projects, dels, postsOpen, postsMonth, leads, acts, reqs, reviews, refs, camps, pages, invoices, expenses, accts, moves, att, leaves, goals, errors, today, monthStart };
+            const prog = await loadProjectProgress(projects.filter(p => p.status !== 'completed').map(p => p.id));
+            if (!allSocialAccounts.length && goals.some(g => g.metric === 'followers')) await loadSocialAccounts();
+            for (const g of goals) { g._current = await computeGoalCurrent(g); g._frac = goalProgress(g, g._current); }
+            coData.prog = prog;
+            drawCompanyOverview();
+            const stamp = document.getElementById('coUpdated');
+            if (stamp) stamp.textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+            if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh'; }
+        }
+
+        function drawCompanyOverview() {
+            const d = coData;
+            const wrap = document.getElementById('coBody');
+            if (!d || !wrap) return;
+            const today = d.today, now = new Date();
+            const weekEnd = localISO(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7));
+            const team = allEmployees.filter(e => e.active !== false && e.role !== 'View Only');
+            const openTasks = d.tasks.filter(t => t.status !== 'done');
+            const overdueTasks = openTasks.filter(t => t.due_date && t.due_date < today);
+            const blocked = openTasks.filter(t => t.status === 'blocked');
+            const doneToday = d.tasks.filter(t => t.status === 'done' && t.completed_at && localISO(new Date(t.completed_at)) === today);
+            const prioToday = d.tasks.filter(t => t.priority_date === today);
+            const carried = prioToday.filter(t => t.carried_from && t.status !== 'done');
+
+            // Team today
+            const onLeave = d.leaves.filter(l => l.status === 'approved' && l.start_date <= today && l.end_date >= today);
+            const leaveIds = new Set(onLeave.map(l => l.employee_id));
+            const attBy = {}; d.att.forEach(a => { attBy[a.employee_id] = a; });
+            const inOffice = team.filter(e => attBy[e.id] && attBy[e.id].work_mode !== 'wfh');
+            const wfh = team.filter(e => attBy[e.id] && attBy[e.id].work_mode === 'wfh');
+            const notStarted = team.filter(e => !attBy[e.id] && !leaveIds.has(e.id));
+            const pendingLeave = d.leaves.filter(l => l.status === 'pending');
+
+            // Projects
+            const activeProjects = d.projects.filter(p => p.status !== 'completed' && p.status !== 'on_hold');
+            const lateProjects = activeProjects.filter(p => p.due_date && p.due_date < today && ((d.prog[p.id] || {}).frac || 0) < 1);
+
+            // Creative
+            const openDels = d.dels.filter(x => x.status !== 'delivered');
+            const lateDels = openDels.filter(x => x.due_date && x.due_date < today);
+            const delsWeek = openDels.filter(x => x.due_date && x.due_date >= today && x.due_date <= weekEnd);
+            const stageCount = s => openDels.filter(x => x.status === s).length;
+
+            // Social
+            const nowIso = now.toISOString();
+            const in7 = new Date(now.getTime() + 7 * 864e5).toISOString();
+            const postsDue7 = d.postsOpen.filter(p => p.scheduled_for && p.scheduled_for >= nowIso && p.scheduled_for <= in7);
+            const postsLate = d.postsOpen.filter(p => p.scheduled_for && p.scheduled_for < nowIso);
+            const withReach = d.postsMonth.filter(p => Number(p.reach));
+            const reach = withReach.reduce((s, p) => s + Number(p.reach), 0);
+            const eng = withReach.reduce((s, p) => s + (Number(p.likes) || 0) + (Number(p.comments) || 0) + (Number(p.shares) || 0) + (Number(p.saves) || 0), 0);
+            const engRate = reach ? (eng / reach * 100).toFixed(1) + '%' : '—';
+
+            // Sales
+            const openStages = ['new', 'contacted', 'proposal', 'negotiation'];
+            const openLeads = d.leads.filter(l => openStages.includes(l.stage));
+            const pipeline = openLeads.reduce((s, l) => s + (Number(l.estimated_value) || 0), 0);
+            const lastAct = {}; d.acts.forEach(a => { if (!lastAct[a.lead_id] || a.created_at > lastAct[a.lead_id]) lastAct[a.lead_id] = a.created_at; });
+            const cutoff5 = coDaysAgo(5).toISOString();
+            const staleLeads = openLeads.filter(l => { const last = [l.updated_at, l.created_at, lastAct[l.id]].filter(Boolean).sort().pop(); return !last || last < cutoff5; });
+            const newLeadsWeek = d.leads.filter(l => l.created_at >= coDaysAgo(7).toISOString());
+            const webLeadsWeek = newLeadsWeek.filter(l => /website|diagnosis|web/i.test(l.source || ''));
+            const wonMonth = d.leads.filter(l => l.stage === 'won' && (l.updated_at || '') >= d.monthStart);
+
+            // Clients & relationships
+            const activeClients = allClients.filter(c => c.status === 'active');
+            const openReqs = d.reqs.filter(r => r.status !== 'addressed');
+            const reviewsWaiting = d.reviews.filter(r => r.status === 'requested');
+            const refsOpen = d.refs.filter(r => r.status === 'new' || r.status === 'contacted');
+
+            // Marketing & website
+            const liveCamps = d.camps.filter(c => c.status === 'active');
+            const campBudget = liveCamps.reduce((s, c) => s + (Number(c.budget) || 0), 0);
+            const pagesToDo = d.pages.filter(p => p.status && p.status !== 'live');
+
+            // Money
+            const inMonth = x => x && x >= d.monthStart;
+            const invoicedMonth = d.invoices.filter(i => i.status !== 'draft' && i.status !== 'cancelled' && inMonth(i.issue_date)).reduce((s, i) => s + (Number(i.total) || 0), 0);
+            const collectedMonth = d.invoices.filter(i => i.status === 'paid' && inMonth(i.paid_at)).reduce((s, i) => s + (Number(i.total) || 0), 0);
+            const unpaid = d.invoices.filter(i => i.status === 'sent' || i.status === 'overdue');
+            const overdueInv = unpaid.filter(i => i.status === 'overdue' || (i.due_date && i.due_date < today));
+            const outstanding = unpaid.reduce((s, i) => s + (Number(i.total) || 0), 0);
+            const overdueAmt = overdueInv.reduce((s, i) => s + (Number(i.total) || 0), 0);
+            const spentMonth = d.expenses.filter(e => inMonth(e.expense_date)).reduce((s, e) => s + (Number(e.amount) || 0), 0);
+            const bal = {}; d.accts.forEach(a => { bal[a.id] = Number(a.opening_balance) || 0; });
+            d.moves.forEach(m => { if (m.to_account_id in bal) bal[m.to_account_id] += Number(m.amount) || 0; if (m.from_account_id in bal) bal[m.from_account_id] -= Number(m.amount) || 0; });
+            d.expenses.forEach(e => { if (e.paid_from_account_id in bal) bal[e.paid_from_account_id] -= Number(e.amount) || 0; });
+            const cash = d.accts.filter(a => a.active !== false).reduce((s, a) => s + bal[a.id], 0);
+            const toCheck = d.expenses.filter(e => e.needs_review).length + d.moves.filter(m => m.needs_review).length;
+
+            // Needs attention — each links to where it gets fixed
+            const attn = [];
+            const add = (n, text, view, tone) => { if (n) attn.push({ n, text, view, tone: tone || 'red' }); };
+            add(blocked.length, `task${blocked.length === 1 ? '' : 's'} blocked, waiting on someone`, 'tasks');
+            add(overdueTasks.length, `task${overdueTasks.length === 1 ? '' : 's'} past due`, 'tasks');
+            add(lateDels.length, `creative piece${lateDels.length === 1 ? '' : 's'} past due`, 'creative');
+            add(postsLate.length, `post${postsLate.length === 1 ? '' : 's'} past their slot, not published`, 'social');
+            add(overdueInv.length, `invoice${overdueInv.length === 1 ? '' : 's'} overdue · ${coShortInr(overdueAmt)}`, 'accounts');
+            add(lateProjects.length, `project${lateProjects.length === 1 ? '' : 's'} past due date, not finished`, 'projects');
+            add(staleLeads.length, `lead${staleLeads.length === 1 ? '' : 's'} with no follow-up in 5+ days`, 'sales', 'amber');
+            add(carried.length, `priorit${carried.length === 1 ? 'y' : 'ies'} carried over from earlier days`, 'priorities', 'amber');
+            add(pendingLeave.length, `leave request${pendingLeave.length === 1 ? '' : 's'} to approve`, 'hr', 'amber');
+            add(toCheck, `money entr${toCheck === 1 ? 'y' : 'ies'} flagged to check`, 'accounts', 'amber');
+            add(openReqs.length, `client ask${openReqs.length === 1 ? '' : 's'} not yet addressed`, 'clients', 'amber');
+
+            const personRow = e => {
+                const mine = prioToday.filter(t => onTask(t, e.id));
+                const done = mine.filter(t => t.status === 'done').length;
+                const open = openTasks.filter(t => onTask(t, e.id));
+                const late = open.filter(t => t.due_date && t.due_date < today).length;
+                const blk = open.filter(t => t.status === 'blocked').length;
+                const a = attBy[e.id];
+                const where = leaveIds.has(e.id) ? '<span class="co-pill leave">On leave</span>'
+                    : a ? `<span class="co-pill ${a.work_mode === 'wfh' ? 'wfh' : 'in'}">${a.work_mode === 'wfh' ? 'WFH' : 'Office'}${a.check_out_time ? ' · done' : ''}</span>`
+                    : '<span class="co-pill off">Not started</span>';
+                const frac = mine.length ? done / mine.length : 0;
+                return `<tr>
+                    <td><strong>${escapeHtml(e.name)}</strong><div class="co-sub">${escapeHtml(e.role || '')}</div></td>
+                    <td>${where}</td>
+                    <td>${mine.length ? `<div class="co-mini-bar"><span style="width:${Math.round(frac * 100)}%"></span></div><span class="co-sub">${done}/${mine.length}</span>` : '<span class="co-sub">—</span>'}</td>
+                    <td class="num">${open.length}</td>
+                    <td class="num ${late ? 'co-red' : ''}">${late || '—'}</td>
+                    <td class="num ${blk ? 'co-red' : ''}">${blk || '—'}</td>
+                </tr>`;
+            };
+
+            const stageBars = () => {
+                const counts = openStages.map(s => ({ s, n: d.leads.filter(l => l.stage === s).length, v: d.leads.filter(l => l.stage === s).reduce((a, l) => a + (Number(l.estimated_value) || 0), 0) }));
+                const max = Math.max(1, ...counts.map(c => c.n));
+                return `<div class="co-hbars">${counts.map(c => `<div class="co-hbar" title="${LEAD_STAGE_LABELS[c.s]}: ${c.n} lead${c.n === 1 ? '' : 's'}${c.v ? ', ' + inr(c.v) : ''}"><span class="co-hbar-l">${LEAD_STAGE_LABELS[c.s]}</span><span class="co-hbar-track"><span style="width:${Math.round(c.n / max * 100)}%"></span></span><span class="co-hbar-n">${c.n}</span></div>`).join('')}</div>`;
+            };
+
+            const projList = activeProjects.slice().sort((a, b) => String(a.due_date || '9999').localeCompare(String(b.due_date || '9999'))).slice(0, 5).map(p => {
+                const pr = d.prog[p.id] || { frac: 0, tasks: 0 };
+                const late = p.due_date && p.due_date < today && pr.frac < 1;
+                return `<div class="co-li"><div class="co-li-main"><span>${escapeHtml(p.name)}</span><span class="co-sub">${p.clients ? escapeHtml(p.clients.name) + ' · ' : ''}${p.due_date ? (late ? '<span class="co-red">due ' + prioDateLabel(p.due_date) + '</span>' : 'due ' + prioDateLabel(p.due_date)) : 'no due date'}</span></div><div class="co-mini-bar wide ${late ? 'late' : ''}"><span style="width:${Math.round(pr.frac * 100)}%"></span></div><span class="co-sub" style="min-width:34px; text-align:right;">${Math.round(pr.frac * 100)}%</span></div>`;
+            }).join('') || '<div class="co-empty">No active projects.</div>';
+
+            const lateDelList = lateDels.slice().sort((a, b) => a.due_date.localeCompare(b.due_date)).slice(0, 3).map(x => `<div class="co-li"><div class="co-li-main"><span>${escapeHtml(x.title)}</span><span class="co-sub">${x.clients ? escapeHtml(x.clients.name) + ' · ' : ''}${escapeHtml(firstName(x.assigned_to))} · <span class="co-red">due ${prioDateLabel(x.due_date)}</span></span></div></div>`).join('');
+
+            const goalList = d.goals.slice().sort((a, b) => String(a.deadline || '9999').localeCompare(String(b.deadline || '9999'))).slice(0, 4).map(g => `<div class="co-li"><div class="co-li-main"><span>${escapeHtml(g.title)}</span><span class="co-sub">${g.deadline ? 'by ' + prioDateLabel(g.deadline) : ''}${g.reward ? ' · 🎁 ' + escapeHtml(g.reward) : ''}</span></div><div class="co-mini-bar wide ${g._frac >= 1 ? 'full' : ''}"><span style="width:${Math.round((g._frac || 0) * 100)}%"></span></div><span class="co-sub" style="min-width:34px; text-align:right;">${Math.round((g._frac || 0) * 100)}%</span></div>`).join('') || '<div class="co-empty">No active goals.</div>';
+
+            const unpaidList = overdueInv.slice().sort((a, b) => String(a.due_date || '').localeCompare(String(b.due_date || ''))).slice(0, 3).map(i => `<div class="co-li"><div class="co-li-main"><span>${escapeHtml(i.clients ? i.clients.name : i.invoice_number || 'Invoice')}</span><span class="co-sub">${escapeHtml(i.invoice_number || '')}${i.due_date ? ' · <span class="co-red">due ' + prioDateLabel(i.due_date) + '</span>' : ''}</span></div><strong>${inr(i.total)}</strong></div>`).join('');
+
+            wrap.innerHTML = `
+                ${d.errors.length ? `<div class="approval-item" style="color:var(--danger-red); margin-bottom:12px;">Some parts couldn't load: ${escapeHtml(d.errors.join(' · '))}</div>` : ''}
+                <div class="co-attn">
+                    <div class="co-attn-head">⚠️ Needs attention</div>
+                    ${attn.length ? `<div class="co-attn-list">${attn.map(a => `<a href="#" class="co-attn-item tone-${a.tone}" onclick="switchView('${a.view}'); return false;"><span class="co-attn-n">${a.n}</span><span>${escapeHtml(a.text)}</span><span class="co-attn-go">→</span></a>`).join('')}</div>` : '<div class="co-allclear">✅ All clear. Nothing overdue, blocked or waiting on you.</div>'}
+                </div>
+
+                <div class="co-kpis">
+                    ${coStat('Team in today', (inOffice.length + wfh.length) + ' / ' + team.length, '', `Office ${inOffice.length}, WFH ${wfh.length}, on leave ${onLeave.length}, not started ${notStarted.length}`)}
+                    ${coStat("Today's priorities done", prioToday.length ? prioToday.filter(t => t.status === 'done').length + ' / ' + prioToday.length : '—')}
+                    ${coStat('Tasks finished today', doneToday.length)}
+                    ${coStat('Open pipeline', coShortInr(pipeline), '', openLeads.length + ' open leads')}
+                    ${coStat('Collected this month', coShortInr(collectedMonth), 'good')}
+                    ${coStat('Cash & bank', coShortInr(cash), cash < 0 ? 'red' : '', 'Across all active money accounts')}
+                </div>
+
+                <div class="co-grid">
+                    <div class="co-card co-span2">
+                        <div class="co-card-head"><div class="co-card-title">👥 Team today</div><a href="#" class="co-open" onclick="switchView('priorities'); return false;">Daily Priorities →</a></div>
+                        <div class="co-sub" style="margin:-4px 0 8px;">Office ${inOffice.length} · WFH ${wfh.length} · On leave ${onLeave.length}${onLeave.length ? ' (' + onLeave.map(l => escapeHtml(firstName(l.employee_id))).join(', ') + ')' : ''} · Not started ${notStarted.length}</div>
+                        <div class="table-wrap"><table class="co-table">
+                            <thead><tr><th>Person</th><th>Today</th><th>Priorities</th><th class="num">Open tasks</th><th class="num">Overdue</th><th class="num">Blocked</th></tr></thead>
+                            <tbody>${team.map(personRow).join('')}</tbody>
+                        </table></div>
+                    </div>
+
+                    <div class="co-card">
+                        <div class="co-card-head"><div class="co-card-title">✅ Work finished, last 14 days</div></div>
+                        ${coWorkChart(d.tasks)}
+                    </div>
+
+                    ${coCard('📋', 'Projects & tasks', 'projects', `
+                        <div class="co-stats">${coStat('Active projects', activeProjects.length)}${coStat('Open tasks', openTasks.length)}${coStat('Overdue', overdueTasks.length, overdueTasks.length ? 'red' : '')}${coStat('Blocked', blocked.length, blocked.length ? 'red' : '')}</div>
+                        <div class="co-list">${projList}</div>`)}
+
+                    ${coCard('🎨', 'Creative', 'creative', `
+                        <div class="co-stats">${coStat('In brief', stageCount('brief'))}${coStat('In progress', stageCount('in_progress'))}${coStat('In review', stageCount('review'), stageCount('review') ? 'amber' : '')}${coStat('Approved, not out', stageCount('approved'))}</div>
+                        <div class="co-sub" style="margin-top:8px;">${delsWeek.length} due in the next 7 days · ${lateDels.length ? '<span class="co-red">' + lateDels.length + ' past due</span>' : 'none past due'}</div>
+                        ${lateDelList ? `<div class="co-list">${lateDelList}</div>` : ''}`)}
+
+                    ${coCard('📱', 'Social media', 'social', `
+                        <div class="co-stats">${coStat('Scheduled, next 7 days', postsDue7.length)}${coStat('Missed slot', postsLate.length, postsLate.length ? 'red' : '')}${coStat('Published this month', d.postsMonth.length)}${coStat('Engagement this month', engRate, '', reach ? reach.toLocaleString('en-IN') + ' reach on posts with metrics' : 'No metrics logged yet')}</div>
+                        <div class="co-sub" style="margin-top:8px;">${d.postsOpen.filter(p => !p.scheduled_for).length} drafts without a date</div>`)}
+
+                    ${coCard('💼', 'Sales & CRM', 'sales', `
+                        <div class="co-stats">${coStat('Open leads', openLeads.length)}${coStat('Pipeline value', coShortInr(pipeline))}${coStat('New this week', newLeadsWeek.length, '', webLeadsWeek.length + ' from the website')}${coStat('Won this month', wonMonth.length, wonMonth.length ? 'good' : '')}</div>
+                        ${stageBars()}
+                        ${staleLeads.length ? `<div class="co-sub" style="margin-top:6px;"><span class="co-amber">${staleLeads.length} need a follow-up</span>: ${staleLeads.slice(0, 3).map(l => escapeHtml(l.company_name || 'Lead')).join(', ')}${staleLeads.length > 3 ? '…' : ''}</div>` : ''}`)}
+
+                    ${coCard('🤝', 'Clients & relationships', 'clients', `
+                        <div class="co-stats">${coStat('Active clients', activeClients.length)}${coStat('Open client asks', openReqs.length, openReqs.length ? 'amber' : '')}${coStat('Reviews requested', reviewsWaiting.length)}${coStat('Referrals in play', refsOpen.length)}</div>`)}
+
+                    ${coCard('💰', 'Accounts', 'accounts', `
+                        <div class="co-stats">${coStat('Invoiced this month', coShortInr(invoicedMonth))}${coStat('Collected this month', coShortInr(collectedMonth), 'good')}${coStat('Outstanding', coShortInr(outstanding), '', unpaid.length + ' unpaid invoice' + (unpaid.length === 1 ? '' : 's'))}${coStat('Spent this month', coShortInr(spentMonth))}</div>
+                        <div class="co-sub" style="margin-top:8px;">Cash & bank now: <strong>${inr(cash)}</strong>${overdueInv.length ? ' · <span class="co-red">' + coShortInr(overdueAmt) + ' overdue</span>' : ''}${toCheck ? ' · <span class="co-amber">' + toCheck + ' entries to check</span>' : ''}</div>
+                        ${unpaidList ? `<div class="co-list">${unpaidList}</div>` : ''}`)}
+
+                    ${coCard('📣', 'Marketing & website', 'marketing', `
+                        <div class="co-stats">${coStat('Live campaigns', liveCamps.length)}${coStat('Their budget', coShortInr(campBudget))}${coStat('Website pages to do', pagesToDo.length, pagesToDo.length ? 'amber' : '')}${coStat('Website leads, 7 days', webLeadsWeek.length)}</div>`)}
+
+                    ${coCard('🏆', 'Team goals', 'goals', `
+                        <div class="co-stats">${coStat('Active goals', d.goals.length)}${coStat('At or past target', d.goals.filter(g => g._frac >= 1).length, d.goals.some(g => g._frac >= 1) ? 'good' : '')}</div>
+                        <div class="co-list">${goalList}</div>`)}
+
+                    ${coCard('🧑‍💼', 'HR', 'hr', `
+                        <div class="co-stats">${coStat('On leave today', onLeave.length)}${coStat('Leave to approve', pendingLeave.length, pendingLeave.length ? 'amber' : '')}${coStat('Working from home', wfh.length)}${coStat('Not started yet', notStarted.length, '', notStarted.map(e => e.name).join(', '))}</div>`)}
+                </div>`;
+        }
+
+        // Tasks completed per day, last 14 days. One series, so no legend; hover each bar for the count.
+        function coWorkChart(tasks) {
+            const days = [];
+            for (let i = 13; i >= 0; i--) days.push(localISO(coDaysAgo(i)));
+            const counts = days.map(day => tasks.filter(t => t.status === 'done' && t.completed_at && localISO(new Date(t.completed_at)) === day).length);
+            const total = counts.reduce((a, b) => a + b, 0);
+            if (!total) return '<div class="co-empty">No finished tasks in the last 14 days yet. Ticks on priorities and closed tasks show up here.</div>';
+            const max = Math.max(...counts);
+            const W = 420, H = 170, padL = 4, padB = 24, padT = 20, gap = 6;
+            const bw = (W - padL * 2 - gap * 13) / 14;
+            const peak = counts.indexOf(max);
+            const bars = counts.map((n, i) => {
+                const x = padL + i * (bw + gap);
+                const h = n ? Math.max(3, (H - padB - padT) * n / max) : 0;
+                const y = H - padB - h;
+                const r = Math.min(4, bw / 2, h);
+                const path = h ? `M${x},${H - padB} L${x},${y + r} Q${x},${y} ${x + r},${y} L${x + bw - r},${y} Q${x + bw},${y} ${x + bw},${y + r} L${x + bw},${H - padB} Z` : '';
+                const label = `${prioDateLabel(days[i])}: ${n} task${n === 1 ? '' : 's'} finished`;
+                const dayLbl = (i % 2 === 1 || i === 13) ? `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" class="co-ax">${new Date(days[i] + 'T00:00:00').getDate()}</text>` : '';
+                return `<g class="co-bar-g"><title>${label}</title><rect x="${x - gap / 2}" y="${padT}" width="${bw + gap}" height="${H - padB - padT}" fill="transparent"></rect>${path ? `<path d="${path}" class="co-bar"></path>` : ''}${i === peak ? `<text x="${x + bw / 2}" y="${y - 4}" text-anchor="middle" class="co-val">${n}</text>` : ''}${dayLbl}</g>`;
+            }).join('');
+            const thisWeek = counts.slice(7).reduce((a, b) => a + b, 0), lastWeek = counts.slice(0, 7).reduce((a, b) => a + b, 0);
+            const diff = lastWeek ? Math.round((thisWeek - lastWeek) / lastWeek * 100) : null;
+            const compare = `<div class="co-stats" style="margin-top:12px;">${coStat('Last 7 days', thisWeek, '', 'Tasks finished')}${coStat('The 7 days before', lastWeek, '', 'Tasks finished')}</div>
+                <div class="co-sub" style="margin-top:6px;">${diff === null ? '' : diff >= 0 ? '▲ ' + diff + '% more than the week before' : '▼ ' + Math.abs(diff) + '% fewer than the week before'}</div>`;
+            return `<svg viewBox="0 0 ${W} ${H}" class="co-chart" role="img" aria-label="Tasks finished per day over the last 14 days, ${total} in total">
+                <line x1="0" x2="${W}" y1="${H - padB}" y2="${H - padB}" class="co-base"></line>${bars}</svg>
+                <div class="co-sub">${total} tasks finished in 14 days · busiest ${prioDateLabel(days[peak])} (${max}) · today ${counts[13]}</div>${compare}`;
         }
 
         // ---------- DAILY PRIORITIES ----------
