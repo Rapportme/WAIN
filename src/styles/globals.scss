@@ -950,3 +950,8 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 .svc-related{margin-top:28px;font-size:.92rem;color:var(--muted)}
 .svc-related a{text-decoration:underline;text-underline-offset:3px}
 .svc-list{display:grid !important;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px clamp(24px,4vw,56px);max-width:none !important}
+
+.svc-reading{margin-top:36px;padding:22px 24px;border:1px solid var(--rule);border-radius:14px;max-width:760px}
+.svc-reading .k{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.svc-reading ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.svc-reading a{text-decoration:underline;text-underline-offset:3px;font-weight:500}

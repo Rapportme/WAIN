@@ -27,7 +27,7 @@ export const AUTHOR = {
   /** Profile URLs. Confirmed only — see the note at the top of this file. */
   sameAs: ["https://www.linkedin.com/in/ananthu-in/"] as readonly string[],
   bio: [
-    "Ananthu writes everything filed under Our Thinking. He works on positioning and market strategy — the part of the job that happens before anyone opens a design file or books a media slot.",
+    "Ananthu writes most of what is filed under Our Thinking. He works on positioning and market strategy — the part of the job that happens before anyone opens a design file or books a media slot.",
     "He has been inside healthcare, education, retail, hospitality, FMCG and emerging tech, usually in the room where the decision gets made rather than the one where it gets executed. That range is why the writing moves between an ayurvedic hospital, a Zomato placement and an AI platform in Gothenburg without changing its footing.",
     "Before the collective existed he spent five years building The Evolvers Project on his own — strategy, identity, content and digital presence — running experiential learning programmes for students, job seekers and professionals.",
   ],
@@ -59,3 +59,56 @@ export const AUTHOR = {
     },
   ],
 } as const;
+
+/**
+ * Divine Abraham — founder of the collective. Writes the practical guides on
+ * branding, social media and digital marketing for Kerala businesses.
+ * Facts here are the ones he has stated; the LinkedIn URL is the one the
+ * founders section already links.
+ */
+export const DIVINE = {
+  slug: "divine-abraham",
+  id: `${SITE_URL}/people/divine-abraham/#person`,
+  name: "Divine Abraham",
+  role: "Founder, We Are In Collective",
+  url: `${SITE_URL}/people/divine-abraham/`,
+  short: "Founder of We Are In. Writes the practical guides on branding, social media and digital marketing for Kerala businesses.",
+  sameAs: ["https://www.linkedin.com/in/divine-abraham-a9b83773/"] as readonly string[],
+  bio: [
+    "Divine started We Are In and brought the collective together with Ananthu and Savio. He writes the practical pieces here: what things cost, what to ask, and what to set up first.",
+    "He writes as an owner rather than an agency. He founded Rapport Group in Doha in 2017 and Refillr in Kottayam in 2025, so most of what he knows about marketing comes from paying for it, measuring it and living with the results.",
+    "He holds an MBA in Finance, which is why his pieces keep coming back to the same question: what did the money bring in?",
+  ],
+  credentials: [
+    {
+      what: "Founder",
+      where: "We Are In Collective, Kottayam",
+      when: "2026 – present",
+      note: "Started the collective with Ananthu Vasudev and Savio to give Kerala businesses one partner for strategy, brand, content and growth.",
+    },
+    {
+      what: "Founder",
+      where: "Refillr Networks Pvt Ltd, Kottayam",
+      when: "2025 – present",
+      note: "A technology-enabled 19-litre drinking water delivery platform for homes and businesses, with DPIIT startup recognition.",
+    },
+    {
+      what: "Founder",
+      where: "Rapport Group, Doha",
+      when: "2017 – present",
+      note: "Fleet management, IT and digital marketing, contracting and warehousing, serving 650+ clients across Qatar, the UAE, Kuwait and Oman. Teltonika Platinum Partner.",
+    },
+    {
+      what: "Earlier roles",
+      where: "Energy Middle East Oil & Gas Services, Bluvalue, Pinobal Telematics, UAE",
+      when: "2013 – 2018",
+      note: "Five years in the UAE across oil and gas services and telematics before starting his own businesses.",
+    },
+  ],
+} as const;
+
+/** Link and schema id for a byline. Unknown names fall back to Ananthu's page. */
+export function personFor(name: string): { name: string; slug: string; id: string } {
+  if (name === DIVINE.name) return { name: DIVINE.name, slug: DIVINE.slug, id: DIVINE.id };
+  return { name: AUTHOR.name, slug: AUTHOR.slug, id: AUTHOR_ID };
+}

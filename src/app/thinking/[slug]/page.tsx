@@ -6,7 +6,8 @@ import { withBase } from "@/lib/withBase";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { POSTS, categoryStyle, neighbours, postBySlug, summary, type BlogCategory } from "@/data/blog";
-import { AUTHOR, AUTHOR_ID } from "@/data/author";
+import { personFor } from "@/data/author";
+import { serviceBySlug } from "@/data/services";
 
 const SITE_URL = "https://wearein.in";
 
@@ -77,6 +78,8 @@ export default async function ArticlePage({ params }: Params) {
   const near = neighbours(post.slug);
   const heads = new Set(post.heads ?? []);
   const url = `${SITE_URL}/thinking/${post.slug}/`;
+  const person = personFor(post.author);
+  const service = post.service ? serviceBySlug(post.service) : undefined;
 
   /* Two graphs on an article: the piece itself, and where it sits. The author
      resolves to a real page rather than a bare name — an author entity search
@@ -90,7 +93,7 @@ export default async function ArticlePage({ params }: Params) {
         description: summary(post),
         datePublished: post.date,
         dateModified: post.date,
-        author: { "@id": AUTHOR_ID },
+        author: { "@id": person.id },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "We Are In Collective" },
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         url,
@@ -141,7 +144,7 @@ export default async function ArticlePage({ params }: Params) {
             <div>
               <div className="k">Written by</div>
               <div className="v">
-                <a href={withBase(`/people/${AUTHOR.slug}/`)}>{post.author}</a>
+                <a href={withBase(`/people/${person.slug}/`)}>{post.author}</a>
               </div>
             </div>
             <div>
@@ -175,6 +178,11 @@ export default async function ArticlePage({ params }: Params) {
             </div>
             <aside className="art-cta" aria-label="Next step">
               <p className="k">If this sounds like your business</p>
+              {service ? (
+                <p>
+                  See how we handle <a href={withBase(`/${service.slug}/`)}>{service.name.toLowerCase()} in Kottayam and across Kerala</a>: what&apos;s included, how the work runs and what it costs.
+                </p>
+              ) : null}
               <p>
                 Start with our free <a href={withBase("/diagnosis/")}>growth diagnosis</a>: fifteen
                 questions, under five minutes, and an honest first read of where the business stands.

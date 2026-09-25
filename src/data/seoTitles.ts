@@ -23,6 +23,12 @@ export const SEO_TITLES: Record<string, string> = {
   "sales-is-not-the-last-department-of-a-business": "Sales Is Not the Last Department of a Business",
   "customer-experience-starts-before-the-product-does": "Customer Experience Starts Before the Product",
   "why-should-businesses-be-the-only-ones-being-rated": "Why Are Only Businesses Being Rated?",
+  "what-branding-costs-in-kerala-in-2026-and-what-you-actually-get": "Branding Cost in Kerala (2026): What You Get",
+  "branding-a-small-business-in-kerala-what-to-decide-before-the-logo": "Branding a Kerala Business: Decide Before the Logo",
+  "social-media-management-packages-in-kerala-what-should-be-included": "Social Media Packages in Kerala: What's Included",
+  "instagram-marketing-for-local-businesses-in-kottayam": "Instagram Marketing for Kottayam Businesses",
+  "how-to-choose-a-digital-marketing-agency-in-kerala-10-questions-to-ask": "Choosing a Digital Marketing Agency in Kerala",
+  "google-business-profile-for-kerala-businesses-a-practical-setup-guide": "Google Business Profile Guide for Kerala",
 };
 
 /** The <title> for a piece: the headline when it fits, else the short form. */

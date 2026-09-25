@@ -59,14 +59,19 @@ const articles = marks.map((mk, idx) => {
   //   "Excerpt:" — the standfirst for the index and the meta description
   //   "Date: YYYY-MM-DD" — the publication date; defaults to the day the
   //   collection shipped
+  //   "Service: <slug>" — the service page the piece supports (branding,
+  //   social-media-marketing, digital-marketing); the article links to it
   let excerpt = "";
   let date = DEFAULT_DATE;
+  let service = "";
   for (;;) {
     while (p < block.length && block[p].trim() === "") p++;
     const line = (block[p] ?? "").trim();
     const xm = /^Excerpt:\s*(.+)$/.exec(line);
     const dm = /^Date:\s*(\d{4}-\d{2}-\d{2})\s*$/.exec(line);
+    const sm = /^Service:\s*([a-z-]+)\s*$/.exec(line);
     if (xm) excerpt = xm[1].trim();
+    else if (sm) service = sm[1];
     else if (dm) date = dm[1];
     else break;
     p++;
@@ -104,6 +109,7 @@ const articles = marks.map((mk, idx) => {
     author,
     excerpt,
     date,
+    service,
     body,
     heads,
     minutes: Math.max(1, Math.round(words / 200)),
@@ -127,7 +133,7 @@ const entries = articles
     title: ${q(a.title)},
     author: ${q(a.author)},
     excerpt: ${q(a.excerpt)},
-    date: ${q(a.date)},
+    date: ${q(a.date)},${a.service ? `\n    service: ${q(a.service)},` : ""}
     minutes: ${a.minutes},
     body: [
 ${a.body.map((pp) => `      ${q(pp)},`).join("\n")}
@@ -166,6 +172,8 @@ export interface BlogPost {
   body: string[];
   /** Indices in \`body\` the author wrote as section headings, if any. */
   heads?: number[];
+  /** The service page this piece supports (e.g. "branding"), if any. */
+  service?: string;
 }
 
 /** How each format is printed: the label, its ink, and its marker shape. */
@@ -215,6 +223,11 @@ export function categoryStyle(key: BlogCategory): CategoryStyle {
 /** The summary shown on the index and in metadata. */
 export function summary(post: BlogPost): string {
   return post.excerpt || post.body[0] || "";
+}
+
+/** Pieces written to support a service page, newest first. */
+export function postsForService(service: string): readonly BlogPost[] {
+  return POSTS.filter((p) => p.service === service).slice().reverse();
 }
 
 export function postBySlug(slug: string): BlogPost | undefined {

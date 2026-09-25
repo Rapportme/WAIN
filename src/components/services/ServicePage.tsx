@@ -7,6 +7,7 @@ import { PageNext } from "@/components/layout/PageNext";
 import { DirectLines } from "@/components/contact/DirectLines";
 import { SERVICES, type Service } from "@/data/services";
 import { CONTACT, hasPhone } from "@/data/contact";
+import { postsForService } from "@/data/blog";
 
 const SITE = "https://wearein.in";
 
@@ -211,6 +212,18 @@ export function ServicePage({ service: s }: { service: Service }) {
             </a>
           </Reveal>
           <DirectLines place={`service-${s.slug}`} />
+          {postsForService(s.slug).length ? (
+            <div className="svc-reading">
+              <p className="k">Read before you decide</p>
+              <ul>
+                {postsForService(s.slug).map((p) => (
+                  <li key={p.slug}>
+                    <a href={withBase(`/thinking/${p.slug}/`)}>{p.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <p className="svc-related">
             Related:{" "}
             {s.related.map((r, k) => (

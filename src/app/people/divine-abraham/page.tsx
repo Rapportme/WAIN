@@ -4,23 +4,24 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHead, type PageIndexEntry } from "@/components/layout/PageHead";
 import { PageNext } from "@/components/layout/PageNext";
-import { AUTHOR, AUTHOR_ID, SITE_URL } from "@/data/author";
+import { DIVINE as AUTHOR, SITE_URL } from "@/data/author";
 import { POSTS as ALL_POSTS, categoryStyle } from "@/data/blog";
 
-/** His pieces only — the practical guides are Divine's. */
+/** His pieces only. */
 const POSTS = ALL_POSTS.filter((p) => p.author === AUTHOR.name);
 
-const TITLE = "Ananthu Vasudev — We Are In Collective";
+const AUTHOR_ID = AUTHOR.id;
+const TITLE = "Divine Abraham — We Are In Collective";
 const DESCRIPTION =
-  "Brand and market strategist at We Are In. He writes most of the Thinking pieces, on marketing, business, sales and growth.";
+  "Founder of We Are In Collective in Kottayam. He writes the practical guides on branding, social media and digital marketing for Kerala businesses.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/people/ananthu-vasudev/" },
+  alternates: { canonical: "/people/divine-abraham/" },
   openGraph: {
     type: "profile",
-    url: "/people/ananthu-vasudev/",
+    url: "/people/divine-abraham/",
     title: TITLE,
     description: DESCRIPTION,
     siteName: "We Are In Collective",
@@ -61,11 +62,11 @@ const JSON_LD = {
       url: AUTHOR.url,
       worksFor: { "@id": `${SITE_URL}/#organization` },
       knowsAbout: [
-        "Brand positioning",
-        "Market strategy",
-        "Marketing strategy",
-        "Customer segmentation",
-        "Go-to-market strategy",
+        "Branding",
+        "Social media marketing",
+        "Digital marketing",
+        "Local SEO",
+        "Small business growth",
       ],
       ...(AUTHOR.sameAs.length ? { sameAs: AUTHOR.sameAs } : {}),
     },
@@ -90,7 +91,7 @@ const JSON_LD = {
 /** First confirmed profile, or undefined while we have none. */
 const PROFILE = AUTHOR.sameAs[0];
 
-/** /people/ananthu-vasudev — the person the Thinking pieces are written by. */
+/** /people/divine-abraham — founder, writes the practical guides. */
 export default function AuthorPage() {
   return (
     <main>
@@ -98,10 +99,10 @@ export default function AuthorPage() {
 
       <PageHead
         ink="ink-lav"
-        kicker="The writer"
+        kicker="The founder"
         shape="mk-sq"
         title={AUTHOR.name}
-        intro={`${AUTHOR.role}. He writes most of what is filed under Our Thinking.`}
+        intro={`${AUTHOR.role}. He writes the practical guides: what things cost, what to ask and what to set up first.`}
         index={INDEX}
       />
 
@@ -109,7 +110,7 @@ export default function AuthorPage() {
         <div className="wrap">
           <div className="two">
             <Reveal as="h2" className="statement">
-              Most of the thinking <span className="soft">starts here.</span>
+              Written as an owner, <span className="soft">not an agency.</span>
             </Reveal>
             <Reveal as="div" className="stack" d={1}>
               {AUTHOR.bio.map((p) => (
@@ -143,7 +144,7 @@ export default function AuthorPage() {
             Roles, not a résumé.
           </Reveal>
           <Reveal as="p" className="lede" d={1} style={{ marginTop: 22 }}>
-            Every piece on this site is written from somewhere. This is where.
+            The businesses behind the guides.
           </Reveal>
           <div className="stack" style={{ marginTop: "clamp(34px,5vh,58px)", gap: 0 }}>
             {AUTHOR.credentials.map((c, i) => (

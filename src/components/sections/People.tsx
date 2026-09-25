@@ -38,7 +38,7 @@ export const PEOPLE: readonly Person[] = [
   },
   {
     name: "Ananthu Vasudev",
-    cred: "Brand & market strategist; writes the Thinking pieces",
+    cred: "Brand & market strategist; writes most of the Thinking pieces",
     lead: "The person who keeps asking,",
     q: "But why are we doing it this way?",
     then: "Then sees what others don't, and brings a different perspective to the room.",

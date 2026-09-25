@@ -2,57 +2,77 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wearein.in/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://wearein.in/before-you-hire-an-agency/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/branding/</loc>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wearein.in/contact/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wearein.in/diagnosis/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/digital-marketing/</loc>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wearein.in/experience/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wearein.in/growth-partner-vs-fractional-cmo/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wearein.in/growth-partner-vs-marketing-agency/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wearein.in/growth-partner/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wearein.in/how-we-exist/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wearein.in/people/ananthu-vasudev/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://wearein.in/people/divine-abraham/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/social-media-marketing/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://wearein.in/thinking/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -86,6 +106,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://wearein.in/thinking/branding-a-small-business-in-kerala-what-to-decide-before-the-logo/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://wearein.in/thinking/creative-teams-need-systems-too/</loc>
     <lastmod>2026-08-27</lastmod>
     <priority>0.6</priority>
@@ -111,6 +136,21 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://wearein.in/thinking/google-business-profile-for-kerala-businesses-a-practical-setup-guide/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/thinking/how-to-choose-a-digital-marketing-agency-in-kerala-10-questions-to-ask/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/thinking/instagram-marketing-for-local-businesses-in-kottayam/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://wearein.in/thinking/most-of-your-customers-arent-ready-to-buy-yet/</loc>
     <lastmod>2026-08-27</lastmod>
     <priority>0.6</priority>
@@ -123,6 +163,11 @@
   <url>
     <loc>https://wearein.in/thinking/sales-is-not-the-last-department-of-a-business/</loc>
     <lastmod>2026-08-27</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/thinking/social-media-management-packages-in-kerala-what-should-be-included/</loc>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
@@ -143,6 +188,11 @@
   <url>
     <loc>https://wearein.in/thinking/the-segmentation-blind-spot-what-people-are-willing-to-spend/</loc>
     <lastmod>2026-08-27</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wearein.in/thinking/what-branding-costs-in-kerala-in-2026-and-what-you-actually-get/</loc>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
@@ -167,7 +217,7 @@
   </url>
   <url>
     <loc>https://wearein.in/why-we-exist/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <priority>0.8</priority>
   </url>
 </urlset>
