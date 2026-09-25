@@ -60,20 +60,6 @@ jobs:
           # Worker both unset, the form says plainly that nothing was sent and
           # offers a prefilled mailto: instead.
           NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
-          # Direct lines. Unset = every call / WhatsApp button stays hidden.
-          # PHONE "+919876543210", PHONE_DISPLAY "+91 98765 43210",
-          # WHATSAPP "919876543210" (digits only).
-          NEXT_PUBLIC_PHONE: ${{ vars.PHONE }}
-          NEXT_PUBLIC_PHONE_DISPLAY: ${{ vars.PHONE_DISPLAY }}
-          NEXT_PUBLIC_WHATSAPP: ${{ vars.WHATSAPP }}
-          # Analytics. Set one or both; unset = no analytics script loads.
-          # GA_ID "G-XXXXXXXXXX" (Google Analytics 4), PLAUSIBLE_DOMAIN "wearein.in".
-          NEXT_PUBLIC_GA_ID: ${{ vars.GA_ID }}
-          NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
-          # Google Search Console HTML-tag verification: only the content="…"
-          # value. (Verifying by DNS TXT record in GoDaddy works too and needs
-          # nothing here.)
-          NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
 
       - name: Ensure Jekyll is bypassed
         run: touch ./out/.nojekyll

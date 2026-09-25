@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import Script from "next/script";
 import { captureAttribution } from "@/lib/attribution";
 
-/* Switched on by repository variables at build time (see .github/workflows/deploy.yml):
+/* Off until an ID is filled in below (or passed as the build variable
+   NEXT_PUBLIC_GA_ID / NEXT_PUBLIC_PLAUSIBLE_DOMAIN):
      GA_ID            → Google Analytics 4, e.g. "G-XXXXXXXXXX"
      PLAUSIBLE_DOMAIN → Plausible, e.g. "wearein.in"
    With neither set, no third-party script loads; the first-visit note used for
    lead sources (lib/attribution) still works, because it never leaves the browser
    until someone sends a form. */
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "" /* ← GA4 measurement ID here */;
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "";
 
 export function Analytics() {
