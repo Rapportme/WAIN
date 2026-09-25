@@ -157,7 +157,7 @@ export function ContentsMenu() {
           const isOpen = open[i] ?? false;
           return (
             <div className={`col ${col.ink}${here ? " here" : ""}${isOpen ? " open" : ""}`} key={col.heading}>
-              <h3>
+              <div className="col-h">
                 <i className={`mk ${col.shape}`} />
                 <a href={withBase(col.route)} aria-current={here ? "page" : undefined}>
                   {col.heading}
@@ -174,7 +174,7 @@ export function ContentsMenu() {
                     <path d="M4 7l6 6 6-6" />
                   </svg>
                 </button>
-              </h3>
+              </div>
               <div className="items">
                 <div>
                   {col.links.map((l) =>

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { seoTitle } from "@/data/seoTitles";
+import { DirectLines } from "@/components/contact/DirectLines";
 import { notFound } from "next/navigation";
 import { withBase } from "@/lib/withBase";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -36,7 +38,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const post = postBySlug(slug);
   if (!post) return {};
 
-  const title = `${post.title} — We Are In Collective`;
+  const title = seoTitle(post.slug, post.title);
+  const shareTitle = `${post.title} — We Are In Collective`;
   const description = summary(post);
   const url = `/thinking/${post.slug}/`;
 
@@ -48,7 +51,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     openGraph: {
       type: "article",
       url,
-      title,
+      title: shareTitle,
       description,
       siteName: "We Are In Collective",
       authors: [post.author],
@@ -59,7 +62,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
          doesn't declare its own. Naming OG_IMAGES would put the shared cover
          back on all twenty-two. */
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title: shareTitle, description },
   };
 }
 
@@ -170,6 +173,23 @@ export default async function ArticlePage({ params }: Params) {
                 Talk to us about this <span className="ar">→</span>
               </a>
             </div>
+            <aside className="art-cta" aria-label="Next step">
+              <p className="k">If this sounds like your business</p>
+              <p>
+                Start with our free <a href={withBase("/diagnosis/")}>growth diagnosis</a>: fifteen
+                questions, under five minutes, and an honest first read of where the business stands.
+                Or <a href={withBase("/contact/")}>tell us what&apos;s going on</a> and a person will
+                reply, usually the same day.
+              </p>
+              <p className="art-cta-more">
+                Not sure what kind of help you need? Read{" "}
+                <a href={withBase("/growth-partner-vs-marketing-agency/")}>
+                  growth partner vs marketing agency
+                </a>
+                .
+              </p>
+              <DirectLines place="article" />
+            </aside>
           </Reveal>
         </div>
 

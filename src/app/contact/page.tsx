@@ -6,6 +6,13 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { PageNext } from "@/components/layout/PageNext";
+import { DirectLines } from "@/components/contact/DirectLines";
+
+/* The Google Maps listing for the office — a search on the name and address
+   rather than a place ID, so it keeps working if the listing is re-created. */
+const MAPS_URL =
+  "https://www.google.com/maps/search/?api=1&query=" +
+  encodeURIComponent("We Are In Collective, Nalumanikkattu, Kottayam, Kerala");
 
 const TITLE = "Contact — We Are In Collective";
 const DESCRIPTION =
@@ -65,6 +72,7 @@ export default function ContactPage() {
               <a className="mail" href="mailto:hello@wearein.in">
                 hello@wearein.in
               </a>
+              <DirectLines place="contact" />
               <address>
                 St. Mary&apos;s Arcade, Near Nalumanikkattu,
                 <br />
@@ -72,11 +80,22 @@ export default function ContactPage() {
                 <br />
                 Kottayam, Kerala, India
               </address>
+              <a className="ct-map" href={MAPS_URL} target="_blank" rel="noopener">
+                Find us on Google Maps ↗
+              </a>
               <p className="ct-note">
                 A person reads every message — usually the same day, and always within one working
                 day. We work with businesses across Kerala and, remotely, wherever the problem is
                 interesting enough.
               </p>
+            </div>
+            <div className="card">
+              <h4>What happens next</h4>
+              <ol className="ct-steps">
+                <li>A person reads your message, usually the same day.</li>
+                <li>We reply with a few questions, or suggest a call or a coffee in Kottayam.</li>
+                <li>You get our honest read on the business before anyone talks about a proposal or fees.</li>
+              </ol>
             </div>
             <div className="card">
               <h4>Elsewhere</h4>

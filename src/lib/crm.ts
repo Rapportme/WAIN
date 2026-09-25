@@ -1,3 +1,6 @@
+import { describeAttribution } from "@/lib/attribution";
+import { track } from "@/lib/analytics";
+
 /* ============================================================================
    Website → admin CRM.
 
@@ -25,9 +28,10 @@ export async function submitToCrm(form: CrmForm, payload: Record<string, unknown
     const res = await fetch(`${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/rpc/submit_website_lead`, {
       method: "POST",
       headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
-      body: JSON.stringify({ p_form: form, p_payload: payload }),
+      body: JSON.stringify({ p_form: form, p_payload: { ...payload, came_from: describeAttribution() } }),
     });
     if (!res.ok) throw new Error(`crm returned ${res.status}: ${await res.text().catch(() => "")}`);
+    track("generate_lead", { form });
     return true;
   } catch (err) {
     console.warn("[crm] the enquiry could not be saved:", err);

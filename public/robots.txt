@@ -3,27 +3,36 @@
 
 User-agent: *
 Allow: /
+# The team's operations dashboard: a login page, nothing for search.
+Disallow: /admin/
 
 # AI search and assistant crawlers — explicitly welcome.
 User-agent: GPTBot
 Allow: /
+Disallow: /admin/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /admin/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin/
 
 Sitemap: https://wearein.in/sitemap.xml
