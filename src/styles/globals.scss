@@ -819,12 +819,12 @@ ul.soc{list-style:none;padding:0;margin:0}ul.soc li{display:contents}
 /* fixes 6 Sep — intro shapes clear the wordmark; method contours readable on mobile */
 #intro .shapes>i{animation:drop .9s var(--ease) forwards,gather .6s var(--ease) 1.25s forwards}
 #intro .shapes{margin-bottom:70px}
-@media (max-width:760px){
-  .s-method .contours{opacity:.28}
-  .s-method .track{position:relative;z-index:1}
-  .s-method .mv{background:rgba(18,38,63,.82);backdrop-filter:blur(2px)}
-  .s-method .m-head{position:relative;z-index:1}
-}
+/* 26 Sep — same on desktop: the contour lines sit quietly behind the heading
+   and the movement cards instead of running across the text. */
+.s-method .contours{opacity:.28}
+.s-method .track{position:relative;z-index:1}
+.s-method .mv{background:rgba(18,38,63,.82);backdrop-filter:blur(2px)}
+.s-method .m-head,.s-method .track-prog{position:relative;z-index:1}
 
 /* contact card: the social links are labelled rows, not the circular icon row */
 .card .soc{display:grid;gap:4px}
