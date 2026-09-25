@@ -127,7 +127,7 @@
         .prio-title { font-size:13px; font-weight:500; line-height:1.4; word-break:break-word; }
         .prio-item.done .prio-title { text-decoration: line-through; color: var(--text-secondary); }
         .prio-meta { display:flex; flex-wrap:wrap; gap:4px; }
-        .prio-chip { font-size:10.5px; padding:1px 7px; border-radius:999px; background: var(--wain-light-gray); color: var(--text-secondary); }
+        .prio-chip { font-size:10.5px; padding:1px 7px; border-radius:999px; white-space:nowrap; background: var(--wain-light-gray); color: var(--text-secondary); }
         .prio-chip.important { background: rgba(239,68,68,0.12); color: var(--danger-red); font-weight:700; }
         .prio-actions { display:flex; gap:2px; flex:0 0 auto; }
         .prio-actions button { border:none; background:none; cursor:pointer; color:var(--text-secondary); font-size:13px; padding:2px 5px; border-radius:4px; }
@@ -310,6 +310,37 @@
         }
         .prio-extra { font-size:12px; color: var(--text-secondary); background: var(--wain-light-gray); border-radius:6px; padding:6px 8px; }
         .prio-chip.wfh { background: rgba(142,120,199,0.15); color:#6b54b3; }
+        .prio-chip.rework { background: rgba(234,88,12,0.13); color:#c2410c; font-weight:700; }
+        .prio-chip.part { background: rgba(234,179,8,0.18); color:#a16207; font-weight:700; }
+        .prio-chip.moved { background: rgba(59,130,246,0.12); color:#1d4ed8; font-weight:600; }
+        .prio-item.rework { background: rgba(234,88,12,0.06); border-left:3px solid #ea580c; padding-left:8px; border-radius:4px; }
+        .prio-update { font-size:11.5px; color:#9a3412; background: rgba(234,88,12,0.08); border-radius:4px; padding:3px 6px; }
+        .prio-actions .prio-upd-btn { font-size:11.5px; font-weight:600; color: var(--wain-cyan); border:1px solid rgba(0,184,212,0.35); padding:2px 7px; white-space:nowrap; }
+        .prio-actions .prio-upd-btn:hover { background: rgba(0,184,212,0.08); color: var(--wain-cyan); }
+        .prio-moved-away { font-size:12px; background: rgba(59,130,246,0.06); border-radius:6px; padding:6px 8px; margin-top:4px; }
+        .prio-moved-head { font-weight:700; color:#1d4ed8; margin-bottom:2px; }
+        .prio-moved-row { cursor:pointer; padding:2px 0; }
+        .prio-moved-row span { color: var(--text-secondary); }
+        .prio-moved-row:hover { text-decoration: underline; }
+        .update-box { background: rgba(234,88,12,0.07); border-left:3px solid #ea580c; border-radius:6px; padding:8px 10px; font-size:13px; margin:10px 0; }
+        .upd-task { font-size:14px; margin-bottom:12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+        .upd-kinds { display:flex; flex-wrap:wrap; gap:6px; }
+        .upd-kind { display:inline-flex !important; align-items:center; border:1px solid var(--wain-border); border-radius:999px; padding:6px 12px; cursor:pointer; font-size:13px; font-weight:500 !important; margin:0 !important; background:#fff; }
+        .upd-kind input { position:absolute; opacity:0; width:0 !important; height:0; pointer-events:none; }
+        .upd-kind.on { border-color: var(--wain-cyan); background: rgba(0,184,212,0.1); color: var(--text-primary); font-weight:700 !important; }
+        .upd-hint, .upd-soft { font-size:12px; color: var(--text-secondary); font-weight:400; }
+        .upd-hint { margin-top:6px; }
+        .upd-block { margin-bottom:14px; }
+        .upd-block > label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+        .upd-count { display:flex; align-items:center; gap:8px; font-size:13px; }
+        .upd-count input { width:72px !important; padding:7px 8px; border:1px solid var(--wain-border); border-radius:6px; font-family:inherit; }
+        .upd-check { display:flex !important; align-items:center; gap:8px; font-size:12.5px; font-weight:400 !important; margin-top:8px; }
+        .upd-check input { width:auto !important; }
+        .upd-subs { display:flex; flex-direction:column; gap:4px; }
+        .upd-preview { background: var(--wain-light-gray); border-radius:8px; padding:10px; }
+        .upd-preview-head { display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700; color: var(--text-secondary); margin-bottom:6px; }
+        .upd-preview textarea { width:100%; border:1px solid var(--wain-border); border-radius:6px; font-family:inherit; font-size:12.5px; padding:8px; background:#fff; resize:vertical; }
+        .upd-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:10px 16px; border-radius:8px; font-size:13px; z-index:3000; box-shadow:0 6px 20px rgba(0,0,0,0.2); }
         .wd-state { font-size:14px; margin-bottom:8px; }
         .wd-actions { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
         .wd-week { font-size:12px; color: var(--text-secondary); margin-bottom:12px; }
@@ -1798,7 +1829,7 @@
                         <button type="button" class="btn btn-sm btn-secondary" onclick="prioToday()">Today</button>
                         <strong id="prioDateHeading" style="margin-left:8px;">—</strong>
                     </div>
-                    <span class="prio-carry-note">↻ Anything not finished moves to the next day on its own, marked in amber</span>
+                    <span class="prio-carry-note">↻ Anything not finished moves to the next day on its own, marked in amber. Use 📝 Update on a task for part done, rework or postponed.</span>
                 </div>
 
                 <div class="kpi-row">
@@ -3681,7 +3712,7 @@
             const subList = subs || [];
             const done = subList.filter(s => s.done).length;
             const frac = taskProgress(t.status, { sub_total: subList.length, sub_done: done });
-            const kindIcon = { comment: '💬', blocked: '⏸', unblocked: '▶', closed: '✅', reopened: '↺', reassigned: '↪', carried: '↻' };
+            const kindIcon = { comment: '💬', blocked: '⏸', unblocked: '▶', closed: '✅', reopened: '↺', reassigned: '↪', carried: '↻', update: '📝' };
             const withIds = (t.team_ids || []).filter(id => id && id !== t.assigned_to);
             openModal(t.title, `
                 <div class="task-detail">
@@ -3697,6 +3728,7 @@
                     </div>
                     ${t.status === 'blocked' ? `<div class="blocked-box">⏸ <strong>Waiting on ${escapeHtml(t.blocked_on || 'someone else')}</strong>${t.blocked_since ? ' since ' + new Date(t.blocked_since).toLocaleDateString() : ''}<div>${escapeHtml(t.blocked_reason || '')}</div></div>` : ''}
                     ${t.reassigned_from && t.handover_note && t.status !== 'done' ? `<div class="handover-box">↪ <strong>Handed over by ${escapeHtml(empName(t.reassigned_from))}</strong>${t.reassigned_at ? ' on ' + new Date(t.reassigned_at).toLocaleDateString() : ''}<div>${escapeHtml(t.handover_note)}</div></div>` : ''}
+                    ${t.status !== 'done' && (t.progress_state || t.postpone_count > 0) ? `<div class="update-box">${t.progress_state === 'rework' ? '✏️ <strong>Needs rework</strong>' : t.progress_state === 'part_done' ? '🟡 <strong>Part done</strong>' : '⏭ <strong>Postponed</strong>'}${t.progress_total ? ` · ${t.progress_done || 0} of ${t.progress_total} ${t.progress_state === 'rework' ? 'fine' : 'done'}` : ''}${t.postpone_count > 0 && t.priority_date ? ` · now on ${prioDateLabel(t.priority_date)}${t.postponed_from ? ' (first planned ' + prioDateLabel(t.postponed_from) + (t.postpone_count > 1 ? ', moved ' + t.postpone_count + '×' : '') + ')' : ''}` : ''}${t.progress_note ? `<div>${escapeHtml(t.progress_note)}</div>` : ''}${t.progress_by ? `<div class="upd-soft">${escapeHtml(empName(t.progress_by))}${t.progress_at ? ', ' + new Date(t.progress_at).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : ''}</div>` : ''}</div>` : ''}
                     ${t.status === 'done' && t.completion_note ? `<div class="closed-box">✅ Closed: ${escapeHtml(t.completion_note)}</div>` : ''}
 
                     <div class="td-section">
@@ -3724,6 +3756,7 @@
                             <select id="taskBlockedOn">${BLOCKED_ON_OPTIONS.map(o => `<option>${o}</option>`).join('')}</select>
                         </div>
                         <div class="td-actions">
+                            ${t.status !== 'done' ? `<button type="button" class="btn btn-sm btn-primary" onclick="openTaskUpdate('${t.id}')">📝 Post update</button>` : ''}
                             <button type="button" class="btn btn-sm btn-secondary" onclick="addTaskComment()">💬 Comment</button>
                             ${t.status !== 'done' ? `<button type="button" class="btn btn-sm btn-secondary" onclick="openReassign('${t.id}')">↪ Hand over</button>` : ''}
                             ${t.status === 'blocked'
@@ -4729,7 +4762,7 @@
             const errors = [];
             const q = async (label, p) => { const { data, error } = await p; if (error) errors.push(label + ': ' + error.message); return data || []; };
             const [tasks, projects, dels, postsOpen, postsMonth, leads, acts, reqs, reviews, refs, camps, pages, invoices, expenses, accts, moves, att, leaves, goals] = await Promise.all([
-                q('tasks', db.from('tasks').select('id, title, status, assigned_to, team_ids, due_date, priority_date, carried_from, completed_at, project_id, self_logged')),
+                q('tasks', db.from('tasks').select('id, title, status, assigned_to, team_ids, due_date, priority_date, carried_from, completed_at, project_id, self_logged, progress_state, postpone_count')),
                 q('projects', db.from('projects').select('id, name, status, due_date, client_id, clients(name)')),
                 q('creative', db.from('creative_deliverables').select('id, title, status, due_date, assigned_to, client_id, clients(name)')),
                 q('posts', db.from('posts').select('id, status, scheduled_for, client_id, clients(name), post_type').neq('status', 'published')),
@@ -4851,6 +4884,10 @@
             add(lateProjects.length, `project${lateProjects.length === 1 ? '' : 's'} past due date, not finished`, 'projects');
             add(staleLeads.length, `lead${staleLeads.length === 1 ? '' : 's'} with no follow-up in 5+ days`, 'sales', 'amber');
             add(carried.length, `priorit${carried.length === 1 ? 'y' : 'ies'} carried over from earlier days`, 'priorities', 'amber');
+            const reworkOpen = openTasks.filter(t => t.progress_state === 'rework');
+            add(reworkOpen.length, `task${reworkOpen.length === 1 ? '' : 's'} sent back for rework`, 'priorities', 'amber');
+            const movedTwice = openTasks.filter(t => (t.postpone_count || 0) >= 2);
+            add(movedTwice.length, `task${movedTwice.length === 1 ? '' : 's'} postponed twice or more`, 'priorities', 'amber');
             add(pendingLeave.length, `leave request${pendingLeave.length === 1 ? '' : 's'} to approve`, 'hr', 'amber');
             add(toCheck, `money entr${toCheck === 1 ? 'y' : 'ies'} flagged to check`, 'accounts', 'amber');
             add(openReqs.length, `client ask${openReqs.length === 1 ? '' : 's'} not yet addressed`, 'clients', 'amber');
@@ -5002,6 +5039,7 @@
         let prioTasks = [];
         let prioOpenTasks = [];
         let prioExtra = [];
+        let prioMovedAway = [];
         let prioDraft = [];
         let prioDraftSkipped = [];
         let carryRanFor = null;
@@ -5089,8 +5127,12 @@
             }
             prioTasks = day || [];
             prioOpenTasks = (open || []).filter(t => t.priority_date !== date);
-            const { data: extra } = await db.from('tasks').select('id, title, assigned_to, hours_spent').eq('self_logged', true).eq('due_date', date);
+            const [{ data: extra }, { data: moved }] = await Promise.all([
+                db.from('tasks').select('id, title, assigned_to, hours_spent').eq('self_logged', true).eq('due_date', date),
+                db.from('tasks').select('*, clients(name)').eq('moved_from', date).neq('priority_date', date)
+            ]);
             prioExtra = extra || [];
+            prioMovedAway = (moved || []).filter(t => t.priority_date && t.priority_date > date);
             document.getElementById('prioDateHeading').textContent = (date === localISO() ? 'Today · ' : '') + prioDateLabel(date);
             renderPriorityStats();
             renderPriorityBoard();
@@ -5117,13 +5159,19 @@
             const carried = t.carried_from && t.status !== 'done';
             const days = carried ? daysBetween(t.carried_from, o.dayIso || today) : 0;
             const mayReassign = canPlanPriorities() || (currentEmployee && onTask(t, currentEmployee.id));
+            const open = t.status !== 'done';
+            const state = open ? t.progress_state : null;
+            const moved = open && t.postpone_count > 0 && t.moved_from;
             return `
-                <div class="prio-item ${t.status === 'done' ? 'done' : ''} ${carried ? 'carried' : ''}">
+                <div class="prio-item ${t.status === 'done' ? 'done' : ''} ${carried ? 'carried' : ''} ${state === 'rework' ? 'rework' : ''}">
                     <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="${others.length ? 'Mark done (for everyone on it)' : 'Mark done'}">
                     <div class="prio-text">
                         <span class="prio-title prio-link" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)}</span>
                         <span class="prio-meta">
                             ${carried ? `<span class="prio-chip carried" title="Not finished on ${prioDateLabel(t.carried_from)} — moved forward automatically">↻ Pending since ${prioDateLabel(t.carried_from)}${days > 1 ? ' · ' + days + ' days' : ''}</span>` : ''}
+                            ${state === 'rework' ? `<span class="prio-chip rework">✏️ Rework${t.progress_total ? ' · ' + (t.progress_total - (t.progress_done || 0)) + ' of ' + t.progress_total + ' to redo' : ''}</span>` : ''}
+                            ${state === 'part_done' ? `<span class="prio-chip part">🟡 Part done${t.progress_total ? ' · ' + (t.progress_done || 0) + '/' + t.progress_total : ''}</span>` : ''}
+                            ${moved ? `<span class="prio-chip moved" title="Moved on purpose${t.postponed_from ? ', first planned for ' + prioDateLabel(t.postponed_from) : ''}">⏭ Moved from ${prioDateLabel(t.moved_from)}${t.postpone_count > 1 ? ' · ' + t.postpone_count + '× moved' : ''}</span>` : ''}
                             ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
                             ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
                             ${others.length ? '<span class="prio-chip shared">👥 with ' + others.map(id => escapeHtml(firstName(id))).join(', ') + '</span>' : ''}
@@ -5131,8 +5179,10 @@
                             ${t.status === 'blocked' ? '<span class="prio-chip important" title="' + escapeHtml(t.blocked_reason || '') + '">⏸ Waiting on ' + escapeHtml(t.blocked_on || 'someone') + '</span>' : t.status !== 'done' && t.status !== 'todo' ? '<span class="prio-chip">' + escapeHtml(t.status.replace('_', ' ')) + '</span>' : ''}
                         </span>
                         ${t.reassigned_from && t.status !== 'done' && t.handover_note ? `<span class="prio-handover">↪ From ${escapeHtml(firstName(t.reassigned_from))}: ${escapeHtml(t.handover_note)}</span>` : ''}
+                        ${open && (state || moved) && t.progress_note ? `<span class="prio-update">📝 ${t.progress_by ? escapeHtml(firstName(t.progress_by)) + ': ' : ''}${escapeHtml(t.progress_note)}</span>` : ''}
                     </div>
                     <div class="prio-actions">
+                        ${mayReassign && open ? `<button type="button" class="prio-upd-btn" title="Post an update: done, part done, needs rework, postponed or waiting" onclick="openTaskUpdate('${t.id}')">${o.planner ? '📝' : '📝 Update'}</button>` : ''}
                         ${mayReassign && t.status !== 'done' ? `<button type="button" title="Hand over to someone else" onclick="openReassign('${t.id}')">↪</button>` : ''}
                         ${o.planner ? `<button type="button" title="Edit" onclick="openPriorityEdit('${t.id}')">✎</button>
                         <button type="button" title="Remove from this day (keeps the task)" onclick="removePriority('${t.id}')">✕</button>` : ''}
@@ -5165,6 +5215,7 @@
                     <div class="prio-list">
                         ${mine.map(t => prioItemHtml(t, e.id, { planner: true })).join('')}
                     </div>
+                    ${prioMovedAway.filter(t => onTask(t, e.id)).length ? `<div class="prio-moved-away"><div class="prio-moved-head">⏭ Moved to another day</div>${prioMovedAway.filter(t => onTask(t, e.id)).map(t => `<div class="prio-moved-row" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)} <span>→ ${prioDateLabel(t.priority_date)}${t.progress_state === 'rework' ? ' · rework' : ''}${t.progress_note ? ' · ' + escapeHtml(t.progress_note) : ''}</span></div>`).join('')}</div>` : ''}
                     ${prioExtra.filter(x => x.assigned_to === e.id).length ? `<div class="prio-extra">＋ Also did: ${prioExtra.filter(x => x.assigned_to === e.id).map(x => escapeHtml(x.title) + (x.hours_spent ? ' (' + x.hours_spent + 'h)' : '')).join(' · ')}</div>` : ''}
                     <div class="prio-add">
                         <input type="text" id="prioNew_${e.id}" placeholder="Add a priority for ${escapeHtml(e.name.split(' ')[0])}…" onkeydown="if(event.key==='Enter'){event.preventDefault(); addPriority('${e.id}');}">
@@ -5291,7 +5342,7 @@
         function buildPriorityMessage(kind) {
             const date = (document.getElementById('prioDate') || {}).value || localISO();
             const isToday = date === localISO();
-            const people = prioPlanners().filter(e => prioTasks.some(t => onTask(t, e.id)));
+            const people = prioPlanners().filter(e => prioTasks.some(t => onTask(t, e.id)) || (kind === 'progress' && prioMovedAway.some(t => onTask(t, e.id))));
             const lines = [];
             if (kind === 'progress') {
                 lines.push(`*Priorities update${isToday ? '' : ' — ' + prioDateLabel(date)}*`);
@@ -5313,13 +5364,22 @@
                         text = cut > 0 ? text.slice(0, cut) + by + text.slice(cut) : text + by;
                     }
                     if (t.clients && !text.toLowerCase().includes(t.clients.name.split(' ')[0].toLowerCase())) text += ` (${t.clients.name})`;
+                    const st = t.status !== 'done' ? t.progress_state : null;
+                    if (st === 'rework') text += ` — rework${t.progress_total ? ', ' + (t.progress_total - (t.progress_done || 0)) + ' of ' + t.progress_total + ' to redo' : ''}`;
+                    if (st === 'part_done' && t.progress_total) text += ` — ${t.progress_done || 0}/${t.progress_total} done`;
                     const others = taskPeople(t).filter(id => id !== e.id);
                     if (others.length) text += ` (with ${others.map(firstName).join(', ')})`;
                     if (t.is_important) text += ' [Important]';
                     if (t.carried_from && t.status !== 'done') text += ` _(pending from ${prioDateLabel(t.carried_from)})_`;
-                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : t.status === 'blocked' ? '⏸' : '⏳') : (t.carried_from && t.status !== 'done' ? '↻' : '•');
+                    else if (t.postpone_count > 0 && t.moved_from && t.status !== 'done' && kind !== 'progress') text += ` _(moved from ${prioDateLabel(t.moved_from)})_`;
+                    if (kind === 'progress' && (st === 'rework' || st === 'part_done') && t.progress_note) text += ` (${t.progress_note})`;
+                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : t.status === 'blocked' ? '⏸' : st === 'rework' ? '✏️' : st === 'part_done' ? '🟡' : '⏳') : (t.carried_from && t.status !== 'done' ? '↻' : st === 'rework' ? '✏️' : '•');
                     if (kind === 'progress' && t.status === 'blocked') text += ` — waiting on ${(t.blocked_on || 'someone').toLowerCase()}${t.blocked_reason ? ': ' + t.blocked_reason : ''}`;
                     lines.push(`${bullet} ${text}`);
+                });
+                if (kind === 'progress') prioMovedAway.filter(t => onTask(t, e.id)).forEach(t => {
+                    const pieces = t.progress_state === 'rework' && t.progress_total ? `${t.progress_done || 0} of ${t.progress_total} fine, ${t.progress_total - (t.progress_done || 0)} to redo. ` : '';
+                    lines.push(`⏭ ${t.title.trim().replace(/[.\s]+$/, '')} — moved to ${prioDateLabel(t.priority_date)}${pieces || t.progress_note ? ' (' + (pieces + (t.progress_note || '')).trim() + ')' : ''}`);
                 });
                 if (kind === 'progress') prioExtra.filter(x => x.assigned_to === e.id).forEach(x => lines.push(`➕ ${x.title}${x.hours_spent ? ' (' + x.hours_spent + 'h)' : ''}`));
             });
@@ -5663,6 +5723,332 @@
             await db.from('task_comments').insert({ task_id: taskId, employee_id: currentEmployee.id, kind: 'reassigned', body: `${empName(from)} → ${empName(to)}: ${note}` });
             closeModal();
             refreshTaskViews();
+        }
+
+
+        // ---------- POST AN UPDATE: done / part done / sent back for rework / postponed / waiting ----------
+        // One place to say what happened to a task, the way people post it on WhatsApp
+        // ("first set is fine, the other three need changes, moving it to tomorrow").
+        // It moves the day, tracks the pieces as subtasks, logs it in the task history
+        // and writes the line for the group.
+        const UPDATE_KINDS = [
+            { v: 'done', icon: '✅', label: 'Done', hint: 'Finished and OK' },
+            { v: 'part_done', icon: '🟡', label: 'Part done', hint: 'Some of it is finished, the rest carries on' },
+            { v: 'rework', icon: '✏️', label: 'Needs rework', hint: 'Checked and sent back for changes' },
+            { v: 'postponed', icon: '⏭', label: 'Postponed', hint: 'Not today, moving it to another day' },
+            { v: 'waiting', icon: '⏸', label: 'Waiting on someone', hint: "Can't move until someone else does their part" }
+        ];
+        const REWORK_BY = ['Internal review', 'Client', 'Both'];
+
+        function addDaysISO(iso, n) {
+            const d = new Date((iso || localISO()) + 'T00:00:00');
+            d.setDate(d.getDate() + n);
+            return localISO(d);
+        }
+
+        async function openTaskUpdate(taskId) {
+            const [{ data: t, error }, { data: subs }] = await Promise.all([
+                db.from('tasks').select('*, clients(name)').eq('id', taskId).maybeSingle(),
+                db.from('task_subtasks').select('id, title, done').eq('task_id', taskId).order('position').order('created_at')
+            ]);
+            if (error || !t) { alert('Could not open task' + (error ? ': ' + error.message : '')); return; }
+            let del = null;
+            if (t.deliverable_id) {
+                const { data } = await db.from('creative_deliverables').select('id, title, status, due_date').eq('id', t.deliverable_id).maybeSingle();
+                del = data || null;
+            }
+            window.__updTask = { t, subs: subs || [], del };
+            const today = localISO();
+            const tomorrow = addDaysISO(today, 1);
+            const onDay = t.priority_date || null;
+            const subList = subs || [];
+            openModal('Post an update', `
+                <form id="updForm" onsubmit="saveTaskUpdate(event)" oninput="renderTaskUpdateForm()" onchange="renderTaskUpdateForm()">
+                    <div class="upd-task"><strong>${escapeHtml(t.title)}</strong>${t.clients ? ' <span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}${onDay ? ' <span class="prio-chip">🎯 ' + (onDay === today ? 'Today' : prioDateLabel(onDay)) + '</span>' : ''}</div>
+                    <div class="form-group"><label>What happened?</label>
+                        <div class="upd-kinds">
+                            ${UPDATE_KINDS.map(k => `<label class="upd-kind" title="${escapeHtml(k.hint)}"><input type="radio" name="updKind" value="${k.v}"><span>${k.icon} ${k.label}</span></label>`).join('')}
+                        </div>
+                        <div class="upd-hint" id="updKindHint">Pick one.</div>
+                    </div>
+
+                    <div id="updPieces" class="upd-block" style="display:none;">
+                        ${subList.length ? `
+                            <label>Which parts are fine? <span class="upd-soft">(ticked = done and OK)</span></label>
+                            <div class="upd-subs">${subList.map(s => `<label class="people-check"><input type="checkbox" class="updSub" value="${s.id}" ${s.done ? 'checked' : ''}> ${escapeHtml(s.title)}</label>`).join('')}</div>`
+                        : `
+                            <label>How much of it is OK? <span class="upd-soft">(optional)</span></label>
+                            <div class="upd-count"><input type="number" id="updDone" min="0" step="1" placeholder="1"> <span>of</span> <input type="number" id="updTotal" min="1" step="1" placeholder="4"> <span>pieces</span></div>
+                            <label class="upd-check"><input type="checkbox" id="updMakeParts" checked> Track the pieces as subtasks, so the progress bar shows it</label>`}
+                    </div>
+
+                    <div id="updReworkByWrap" class="form-group" style="display:none;"><label>Sent back by</label>
+                        <select id="updReworkBy">${REWORK_BY.map(o => `<option>${o}</option>`).join('')}</select>
+                    </div>
+
+                    <div id="updWhenWrap" class="form-group" style="display:none;"><label id="updWhenLabel">When will the rest be done?</label>
+                        <div class="prio-form-row">
+                            <select id="updWhen">
+                                ${onDay ? `<option value="keep">${onDay === today ? 'Still today' : 'Keep on ' + prioDateLabel(onDay)}</option>` : '<option value="keep">No day set</option>'}
+                                <option value="tomorrow">Tomorrow (${prioDateLabel(tomorrow)})</option>
+                                <option value="pick">Pick a day…</option>
+                            </select>
+                            <input type="date" id="updDate" min="${today}" style="display:none;">
+                        </div>
+                    </div>
+
+                    <div id="updWaitWrap" class="form-group" style="display:none;"><label>Waiting on</label>
+                        <select id="updWaitOn">${BLOCKED_ON_OPTIONS.map(o => `<option>${o}</option>`).join('')}</select>
+                    </div>
+
+                    <div class="form-group"><label id="updNoteLabel">Note</label><textarea id="updNote" rows="3" placeholder=""></textarea></div>
+                    ${del ? `<div class="upd-soft" id="updDelNote" style="margin:-4px 0 10px;"></div>` : ''}
+
+                    <div class="upd-preview">
+                        <div class="upd-preview-head"><span>For the team group</span><button type="button" class="btn btn-sm btn-secondary" id="updCopyBtn" onclick="copyTaskUpdateText()">Copy</button></div>
+                        <textarea id="updPreview" rows="5" readonly></textarea>
+                    </div>
+
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:12px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-secondary btn-sm" id="updSaveCopy" onclick="window.__updCopyAfter = true;">Save &amp; copy for WhatsApp</button>
+                        <button type="submit" class="btn btn-primary btn-sm" onclick="window.__updCopyAfter = false;">Save update</button>
+                    </div>
+                </form>`);
+            renderTaskUpdateForm();
+        }
+
+        function readTaskUpdate() {
+            const st = window.__updTask || {};
+            const t = st.t || {};
+            const kindEl = document.querySelector('input[name="updKind"]:checked');
+            const kind = kindEl ? kindEl.value : '';
+            const note = ((document.getElementById('updNote') || {}).value || '').trim();
+            let done = null, total = null;
+            if (st.subs && st.subs.length) {
+                total = st.subs.length;
+                done = document.querySelectorAll('.updSub:checked').length;
+            } else {
+                const d = parseInt((document.getElementById('updDone') || {}).value, 10);
+                const n = parseInt((document.getElementById('updTotal') || {}).value, 10);
+                if (n > 0) { total = n; done = isNaN(d) ? 0 : Math.max(0, d); }
+            }
+            const whenSel = (document.getElementById('updWhen') || {}).value || 'keep';
+            let newDate = t.priority_date || null;
+            if (whenSel === 'tomorrow') newDate = addDaysISO(localISO(), 1);
+            if (whenSel === 'pick') newDate = (document.getElementById('updDate') || {}).value || null;
+            const me = currentEmployee ? currentEmployee.id : null;
+            const who = t.id && onTask(t, me) ? me : t.assigned_to;
+            return {
+                t, kind, note, done, total, whenSel, newDate, who,
+                reworkBy: (document.getElementById('updReworkBy') || {}).value || '',
+                waitOn: (document.getElementById('updWaitOn') || {}).value || '',
+                moves: !!newDate && newDate !== (t.priority_date || null) && ['part_done', 'rework', 'postponed'].includes(kind)
+            };
+        }
+
+        // "1 of 4 fine, 3 need rework" / "2 of 5 done, 3 left"
+        function updPiecesText(u) {
+            if (!u.total) return '';
+            if (u.done > u.total) return '';
+            const left = u.total - u.done;
+            if (u.kind === 'rework') return `${u.done} of ${u.total} fine, ${left} need${left === 1 ? 's' : ''} rework`;
+            return `${u.done} of ${u.total} done, ${left} left`;
+        }
+
+        function updDayText(iso) {
+            if (!iso) return '';
+            if (iso === localISO()) return 'today';
+            if (iso === addDaysISO(localISO(), 1)) return 'tomorrow (' + prioDateLabel(iso) + ')';
+            return prioDateLabel(iso);
+        }
+
+        // Plain one-liner for the task history
+        function updHistoryText(u) {
+            const k = UPDATE_KINDS.find(x => x.v === u.kind);
+            const bits = [k ? k.label : ''];
+            const pieces = updPiecesText(u);
+            if (pieces) bits.push(pieces);
+            if (u.kind === 'rework' && u.reworkBy) bits.push('sent back by ' + u.reworkBy.toLowerCase());
+            if (u.kind === 'waiting') bits.push('waiting on ' + u.waitOn.toLowerCase());
+            if (u.moves) bits.push('moved to ' + updDayText(u.newDate));
+            return bits.filter(Boolean).join(' · ') + (u.note ? ' — ' + u.note : '');
+        }
+
+        // The WhatsApp version (*bold*, _italic_)
+        function updWhatsAppText(u) {
+            if (!u.kind) return '';
+            const k = UPDATE_KINDS.find(x => x.v === u.kind);
+            const t = u.t;
+            let title = t.title.trim().replace(/[.\s]+$/, '');
+            if (t.clients && !title.toLowerCase().includes(t.clients.name.split(' ')[0].toLowerCase())) title += ` (${t.clients.name})`;
+            const lines = [`*Update from ${firstName(u.who)}*`, `${k.icon} *${title}*`];
+            const pieces = updPiecesText(u);
+            if (u.kind === 'done') lines.push('Done ✅');
+            if (u.kind === 'part_done') lines.push(pieces ? pieces[0].toUpperCase() + pieces.slice(1) : 'Part done');
+            if (u.kind === 'rework') lines.push((pieces ? pieces[0].toUpperCase() + pieces.slice(1) : 'Needs rework') + (u.reworkBy ? ` (${u.reworkBy.toLowerCase()})` : ''));
+            if (u.kind === 'postponed') lines.push('Postponed');
+            if (u.kind === 'waiting') lines.push('Waiting on ' + u.waitOn.toLowerCase());
+            if (u.moves) lines.push((u.kind === 'postponed' ? 'Moved to ' : 'Rest moved to ') + updDayText(u.newDate));
+            if (u.note) lines.push(`_${u.note.replace(/_/g, ' ')}_`);
+            return lines.join('\n');
+        }
+
+        function renderTaskUpdateForm() {
+            const u = readTaskUpdate();
+            const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? '' : 'none'; };
+            const k = UPDATE_KINDS.find(x => x.v === u.kind);
+            document.querySelectorAll('.upd-kind').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
+            const hint = document.getElementById('updKindHint');
+            if (hint) hint.textContent = k ? k.hint : 'Pick one.';
+            show('updPieces', u.kind === 'part_done' || u.kind === 'rework');
+            show('updReworkByWrap', u.kind === 'rework');
+            show('updWhenWrap', ['part_done', 'rework', 'postponed'].includes(u.kind));
+            show('updWaitWrap', u.kind === 'waiting');
+            // Postponed means another day: default to tomorrow and hide "keep"
+            const when = document.getElementById('updWhen');
+            if (when) {
+                const keepOpt = when.querySelector('option[value="keep"]');
+                if (keepOpt) keepOpt.hidden = u.kind === 'postponed';
+                if (u.kind === 'postponed' && when.value === 'keep') when.value = 'tomorrow';
+                show('updDate', when.value === 'pick');
+                const wl = document.getElementById('updWhenLabel');
+                if (wl) wl.textContent = u.kind === 'postponed' ? 'Move it to' : 'When will the rest be done?';
+            }
+            const labels = {
+                '': ['Note', ''],
+                done: ['Closing note (optional)', 'e.g. posted on IG and FB, client happy'],
+                part_done: ["What's left (optional)", 'e.g. captions done, the reel still needs music'],
+                rework: ['What needs changing?', 'e.g. the remaining three need to be revised: new route order and shorter captions'],
+                postponed: ['Why?', 'e.g. waiting for the final route list, doing it tomorrow morning'],
+                waiting: ['What are you waiting for?', "e.g. client hasn't sent the logo files"]
+            };
+            const [lab, ph] = labels[u.kind] || labels[''];
+            const nl = document.getElementById('updNoteLabel'); if (nl) nl.textContent = lab;
+            const ne = document.getElementById('updNote'); if (ne) ne.placeholder = ph;
+            const dn = document.getElementById('updDelNote');
+            const st = window.__updTask || {};
+            if (dn && st.del) {
+                const bits = [];
+                if (u.kind === 'rework' && st.del.status !== 'in_progress' && st.del.status !== 'brief') bits.push('goes back to In progress');
+                if (u.moves && st.del.due_date && st.del.due_date < u.newDate) bits.push('due date moves to ' + prioDateLabel(u.newDate));
+                if (u.kind === 'done' && st.del.status !== 'delivered' && st.del.status !== 'approved') bits.push('stays as it is (mark it approved in Creative Work when it is)');
+                dn.textContent = bits.length ? `🎨 Linked creative work “${st.del.title}”: ${bits.join(', ')}.` : '';
+            }
+            const pv = document.getElementById('updPreview');
+            if (pv) pv.value = u.kind ? updWhatsAppText(u) : 'Pick what happened to see the message.';
+        }
+
+        async function copyText(text, btn) {
+            try { await navigator.clipboard.writeText(text); }
+            catch (e) {
+                const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); } catch (e2) { }
+                ta.remove();
+            }
+            if (btn) { const old = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = old; }, 1600); }
+        }
+
+        function copyTaskUpdateText() {
+            const u = readTaskUpdate();
+            if (!u.kind) { alert('Pick what happened first.'); return; }
+            copyText(updWhatsAppText(u), document.getElementById('updCopyBtn'));
+        }
+
+        async function saveTaskUpdate(event) {
+            event.preventDefault();
+            const st = window.__updTask;
+            if (!st || !st.t) return;
+            const u = readTaskUpdate();
+            const t = u.t;
+            const noteEl = document.getElementById('updNote');
+            if (!u.kind) { alert('Pick what happened.'); return; }
+            if (['rework', 'postponed', 'waiting'].includes(u.kind) && u.note.length < 3) { alert('Add a line on ' + (u.kind === 'rework' ? 'what needs changing.' : u.kind === 'postponed' ? 'why it is moving.' : 'what it is waiting for.')); noteEl.focus(); return; }
+            if (u.total && u.done > u.total) { alert(`${u.done} of ${u.total} doesn't add up.`); return; }
+            if (u.whenSel === 'pick' && !u.newDate) { alert('Pick the day.'); document.getElementById('updDate').focus(); return; }
+            if (u.kind === 'postponed' && !u.moves) { alert('Pick a different day to move it to.'); return; }
+            const nowIso = new Date().toISOString();
+            const me = currentEmployee.id;
+            const copyAfter = !!window.__updCopyAfter;
+            const waText = updWhatsAppText(u);
+            if (copyAfter) await copyText(waText);  // copy while the click still counts as a user action
+            let patch, kind = 'update';
+
+            if (u.kind === 'done') {
+                patch = { status: 'done', completed_at: nowIso, completion_note: u.note || null, blocked_reason: null, blocked_on: null, blocked_since: null, updated_at: nowIso };
+                kind = 'closed';
+            } else if (u.kind === 'waiting') {
+                patch = { status: 'blocked', blocked_reason: u.note, blocked_on: u.waitOn, blocked_since: nowIso, updated_at: nowIso };
+                kind = 'blocked';
+            } else {
+                patch = {
+                    progress_state: u.kind,
+                    progress_note: u.note || null,
+                    progress_done: u.total ? u.done : null,
+                    progress_total: u.total || null,
+                    progress_at: nowIso,
+                    progress_by: me,
+                    updated_at: nowIso
+                };
+                if (u.kind === 'postponed') {
+                    if (t.status === 'done') patch.status = 'todo';
+                } else {
+                    patch.status = 'in_progress';
+                    patch.completed_at = null;
+                    patch.blocked_reason = null; patch.blocked_on = null; patch.blocked_since = null;
+                }
+                if (u.moves) {
+                    const from = t.priority_date || localISO();
+                    patch.priority_date = u.newDate;
+                    patch.moved_from = from;
+                    patch.postponed_from = t.postponed_from || t.carried_from || from;
+                    patch.postpone_count = (t.postpone_count || 0) + 1;
+                    patch.carried_from = null;
+                    if (t.due_date && t.due_date < u.newDate) patch.due_date = u.newDate;
+                }
+            }
+
+            const { error } = await db.from('tasks').update(patch).eq('id', t.id);
+            if (error) { alert('Could not save the update: ' + error.message); return; }
+
+            // Pieces → subtasks
+            if (u.kind === 'part_done' || u.kind === 'rework') {
+                if (st.subs.length) {
+                    const ticked = new Set(Array.from(document.querySelectorAll('.updSub:checked')).map(cb => cb.value));
+                    const changes = st.subs.filter(s => !!s.done !== ticked.has(s.id));
+                    await Promise.all(changes.map(s => db.from('task_subtasks').update({ done: ticked.has(s.id), done_at: ticked.has(s.id) ? nowIso : null, done_by: ticked.has(s.id) ? me : null }).eq('id', s.id)));
+                } else if (u.total > 1 && (document.getElementById('updMakeParts') || {}).checked) {
+                    const base = Date.now() % 2000000000;
+                    const rows = Array.from({ length: Math.min(u.total, 30) }, (_, i) => ({
+                        task_id: t.id, title: `Part ${i + 1} of ${u.total}`, position: base + i, created_by: me,
+                        done: i < u.done, done_at: i < u.done ? nowIso : null, done_by: i < u.done ? me : null
+                    }));
+                    const { error: se } = await db.from('task_subtasks').insert(rows);
+                    if (se) console.warn('Subtasks not added:', se.message);
+                }
+            }
+
+            // Linked creative work follows along
+            if (st.del) {
+                const dp = {};
+                if (u.kind === 'rework' && st.del.status !== 'in_progress' && st.del.status !== 'brief') dp.status = 'in_progress';
+                if (u.moves && st.del.due_date && st.del.due_date < u.newDate) dp.due_date = u.newDate;
+                if (Object.keys(dp).length) {
+                    const { error: de } = await db.from('creative_deliverables').update(dp).eq('id', st.del.id);
+                    if (de) console.warn('Creative work not updated:', de.message);
+                }
+            }
+
+            await db.from('task_comments').insert({ task_id: t.id, employee_id: me, kind, body: kind === 'blocked' ? `Waiting on ${u.waitOn}: ${u.note}` : kind === 'closed' ? (u.note || null) : updHistoryText(u) });
+            closeModal();
+            refreshTaskViews();
+            if (copyAfter) {
+                const note = document.createElement('div');
+                note.className = 'upd-toast';
+                note.textContent = 'Update saved and copied. Paste it in the group.';
+                document.body.appendChild(note);
+                setTimeout(() => note.remove(), 3200);
+            }
         }
 
         // My Dashboard: the logged-in person's own priorities for today (their own and shared ones)
