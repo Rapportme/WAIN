@@ -200,6 +200,50 @@
         .pt-add input, .pt-add select { border:1px solid var(--wain-border); border-radius:6px; padding:7px 9px; font-family:inherit; font-size:13px; width:auto !important; flex:1 1 140px; min-width:0; }
         .pt-add input[type=text] { flex:3 1 240px; }
         .pt-add button { flex:0 0 auto; }
+        .handover-box { background: rgba(142,120,199,0.1); border-left:3px solid #8e78c7; border-radius:6px; padding:8px 10px; font-size:13px; margin:10px 0; }
+        .prio-item.carried { background: rgba(245,158,11,0.08); border-left:3px solid #f59e0b; padding-left:8px; border-radius:4px; }
+        .prio-chip.carried { background: rgba(245,158,11,0.16); color:#b45309; font-weight:700; }
+        .prio-chip.shared { background: rgba(0,184,212,0.1); color: var(--wain-cyan); font-weight:600; }
+        .prio-handover { font-size:11.5px; color:#6b54b3; background: rgba(142,120,199,0.1); border-radius:4px; padding:3px 6px; }
+        .prio-carry-note { font-size:12px; color:#b45309; background: rgba(245,158,11,0.1); padding:5px 10px; border-radius:6px; }
+        .prio-plan { margin-bottom:20px; }
+        .prio-plan-help { font-size:12.5px; color: var(--text-secondary); line-height:1.5; margin:4px 0 10px; }
+        .prio-plan-help code { background: var(--wain-light-gray); padding:1px 5px; border-radius:4px; font-size:11.5px; }
+        .prio-plan-text { width:100%; font-family:inherit; font-size:13px; line-height:1.5; border:1px solid var(--wain-border); border-radius:6px; padding:10px; resize:vertical; box-sizing:border-box; }
+        .plan-table { margin-top:14px; border:1px solid var(--wain-border); border-radius:8px; overflow:hidden; }
+        .plan-row { display:grid; grid-template-columns: 24px minmax(0,2.4fr) minmax(0,1.8fr) minmax(0,1.2fr) 96px 34px; gap:8px; align-items:center; padding:7px 10px; border-bottom:1px solid var(--wain-border); }
+        .plan-row:last-child { border-bottom:none; }
+        .plan-row.off { opacity:.45; }
+        .plan-head { background: var(--wain-light-gray); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color: var(--text-secondary); }
+        .plan-row input[type=text], .plan-row select, .plan-row input[type=time] { width:100%; min-width:0; padding:5px 6px; font-size:12.5px; border:1px solid var(--wain-border); border-radius:5px; font-family:inherit; background:#fff; box-sizing:border-box; }
+        .plan-row input[type=checkbox] { width:16px; height:16px; }
+        .plan-people { display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+        .plan-people select { width:auto !important; padding:2px 4px !important; }
+        .plan-person { font-size:11.5px; background: var(--wain-light-gray); border-radius:999px; padding:2px 4px 2px 8px; display:inline-flex; align-items:center; gap:2px; }
+        .plan-person.lead { background: rgba(0,184,212,0.14); color: var(--wain-cyan); font-weight:700; }
+        .plan-person button { border:none; background:none; cursor:pointer; color: var(--text-secondary); font-size:13px; line-height:1; padding:0 3px; }
+        .plan-note { font-size:11px; color:#b45309; margin-top:2px; }
+        .plan-skip { font-size:12px; color:#b45309; margin-top:8px; }
+        .people-checks { display:flex; flex-wrap:wrap; gap:6px 14px; }
+        .people-check { display:flex !important; align-items:center; gap:5px; font-size:13px; font-weight:500; margin:0; }
+        .people-check input { width:auto; }
+        .creative-pick { display:flex; flex-direction:column; gap:4px; max-height:55vh; overflow:auto; }
+        .creative-pick-row { display:flex !important; gap:10px; align-items:flex-start; padding:8px; border:1px solid var(--wain-border); border-radius:6px; font-size:13px; font-weight:400; cursor:pointer; margin:0; }
+        .creative-pick-row input { width:16px !important; height:16px; flex:0 0 auto; margin-top:3px; }
+        .creative-pick-row { flex-direction:row !important; text-transform:none !important; letter-spacing:normal !important; color: var(--text-primary) !important; }
+        .creative-pick-row > span { flex:1; min-width:0; }
+        .creative-pick-meta { font-weight:400; }
+        .people-check { text-transform:none !important; letter-spacing:normal !important; color: var(--text-primary) !important; }
+        .people-check input { width:16px !important; height:16px; flex:0 0 auto; }
+        .creative-pick-row.off { opacity:.5; }
+        .creative-pick-meta { display:block; font-size:11.5px; color: var(--text-secondary); margin-top:2px; }
+        @media (max-width: 760px) {
+            .plan-head { display:none; }
+            .plan-row { grid-template-columns: 24px minmax(0,1fr) 90px 30px; }
+            .plan-row > div:nth-child(2) { grid-column: 2 / 5; }
+            .plan-people { grid-column: 2 / 5; }
+            .plan-row > select { grid-column: 2 / 3; }
+        }
         .prio-extra { font-size:12px; color: var(--text-secondary); background: var(--wain-light-gray); border-radius:6px; padding:6px 8px; }
         .prio-chip.wfh { background: rgba(142,120,199,0.15); color:#6b54b3; }
         .wd-state { font-size:14px; margin-bottom:8px; }
@@ -1671,7 +1715,7 @@
                         <button type="button" class="btn btn-sm btn-secondary" onclick="prioToday()">Today</button>
                         <strong id="prioDateHeading" style="margin-left:8px;">—</strong>
                     </div>
-                    <button type="button" class="btn btn-sm btn-secondary" id="prioCarryBtn" onclick="carryOverPriorities()">↻ Carry over unfinished</button>
+                    <span class="prio-carry-note">↻ Anything not finished moves to the next day on its own, marked in amber</span>
                 </div>
 
                 <div class="kpi-row">
@@ -1679,6 +1723,21 @@
                     <div class="kpi-card"><div class="stat-label">Priorities</div><div class="stat-value" id="prioStatTotal">—</div></div>
                     <div class="kpi-card"><div class="stat-label">Done</div><div class="stat-value" id="prioStatDone">—</div></div>
                     <div class="kpi-card"><div class="stat-label">Important, still open</div><div class="stat-value" id="prioStatImportant" style="color:var(--danger-red);">—</div></div>
+                    <div class="kpi-card"><div class="stat-label">Carried over, still open</div><div class="stat-value" id="prioStatCarried" style="color:#b45309;">—</div></div>
+                </div>
+
+                <div class="card prio-plan">
+                    <div class="card-header">
+                        <div class="card-title">📝 Plan the day in one go</div>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="openCreativePicker()">＋ Add from Creative Work</button>
+                    </div>
+                    <div class="prio-plan-help">Type or paste the list the way you post it in the group: a name on its own line, then that person's tasks. For a task two or three people share, start the line with their names (<code>Akshay + Dani: Refillr shoot at 3pm</code>) or add <code>(with Dani)</code>. Times like <em>by 11am</em>, client names and <em>important</em> are picked up on their own.</div>
+                    <textarea id="prioPlanText" rows="7" class="prio-plan-text" placeholder="Akshay&#10;- Post MGM reel by 11am, cross-check FB and IG&#10;- Coordinate with Jayasree for tomorrow's reel [important]&#10;&#10;Dani&#10;- EYL video&#10;&#10;Akshay + Dani + Ameen: Refillr content plan"></textarea>
+                    <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="readPlanText()">Read list →</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="clearPlanText()">Clear</button>
+                    </div>
+                    <div id="prioPlanPreview"></div>
                 </div>
 
                 <div id="prioBoard" class="prio-board"></div>
@@ -3439,17 +3498,22 @@
             document.getElementById('welcomeName').textContent = currentEmployee.name;
             renderMyPriorities();
             renderMyWorkday();
-            const { data, error } = await db.from('task_assignments').select('*').eq('employee_id', currentEmployee.id);
+            const [{ data, error }, { data: shared }] = await Promise.all([
+                db.from('task_assignments').select('*').eq('employee_id', currentEmployee.id),
+                db.from('tasks').select('id, title, status, due_date, clients(name)').contains('team_ids', [currentEmployee.id])
+            ]);
             const list = document.getElementById('myTasksList');
             if (error) { list.innerHTML = 'Could not load tasks.'; return; }
-            const open = (data || []).filter(t => t.status !== 'done');
-            const done = (data || []).filter(t => t.status === 'done');
+            const mineIds = new Set((data || []).map(t => t.task_id));
+            const all = (data || []).concat((shared || []).filter(t => !mineIds.has(t.id)).map(t => ({ task_id: t.id, title: t.title, status: t.status, due_date: t.due_date, client_name: t.clients ? t.clients.name : null, shared: true })));
+            const open = all.filter(t => t.status !== 'done');
+            const done = all.filter(t => t.status === 'done');
             document.getElementById('myOpenTasksBadge').textContent = open.length + ' active';
             document.getElementById('statOpenTasks').textContent = open.length;
             document.getElementById('statDoneTasks').textContent = done.length;
             list.innerHTML = open.length ? open.slice(0, 8).map(t => `
                 <div style="padding: 8px 0; border-bottom: 1px solid var(--wain-border);">
-                    <a href="#" class="task-link" onclick="openTaskDetail('${t.task_id}'); return false;"><strong>${escapeHtml(t.title)}</strong></a>${t.status === 'blocked' ? ' <span class="prio-chip important">⏸ Blocked</span>' : ''}${t.client_name ? ' — ' + escapeHtml(t.client_name) : ''}
+                    <a href="#" class="task-link" onclick="openTaskDetail('${t.task_id}'); return false;"><strong>${escapeHtml(t.title)}</strong></a>${t.shared ? ' <span class="prio-chip shared">👥 shared</span>' : ''}${t.status === 'blocked' ? ' <span class="prio-chip important">⏸ Blocked</span>' : ''}${t.client_name ? ' — ' + escapeHtml(t.client_name) : ''}
                     ${t.due_date ? ' <span style="color:var(--text-secondary); font-size:12px;">Due ' + new Date(t.due_date).toLocaleDateString() + '</span>' : ''}
                 </div>
             `).join('') : '<div style="color:var(--text-secondary);">No open tasks assigned to you right now.</div>';
@@ -3530,12 +3594,14 @@
             const subList = subs || [];
             const done = subList.filter(s => s.done).length;
             const frac = taskProgress(t.status, { sub_total: subList.length, sub_done: done });
-            const kindIcon = { comment: '💬', blocked: '⏸', unblocked: '▶', closed: '✅', reopened: '↺' };
+            const kindIcon = { comment: '💬', blocked: '⏸', unblocked: '▶', closed: '✅', reopened: '↺', reassigned: '↪', carried: '↻' };
+            const withIds = (t.team_ids || []).filter(id => id && id !== t.assigned_to);
             openModal(t.title, `
                 <div class="task-detail">
                     <div class="task-meta">
                         ${taskStatusBadge(t.status)}
-                        <span>👤 ${who ? escapeHtml(who.name) : 'Unassigned'}</span>
+                        <span>👤 ${who ? escapeHtml(who.name) : 'Unassigned'}${withIds.length ? ' + ' + withIds.map(id => escapeHtml(empName(id))).join(', ') : ''}</span>
+                        ${t.carried_from && t.status !== 'done' ? `<span class="prio-chip carried">↻ Pending since ${prioDateLabel(t.carried_from)}</span>` : ''}
                         ${t.clients ? `<span>🏢 ${escapeHtml(t.clients.name)}</span>` : ''}
                         ${t.projects ? `<span>📋 ${escapeHtml(t.projects.name)}</span>` : ''}
                         ${t.due_date ? `<span>📅 ${new Date(t.due_date + 'T00:00:00').toLocaleDateString()}</span>` : ''}
@@ -3543,6 +3609,7 @@
                         ${t.hours_spent ? `<span>⏱ ${t.hours_spent} h</span>` : ''}
                     </div>
                     ${t.status === 'blocked' ? `<div class="blocked-box">⏸ <strong>Waiting on ${escapeHtml(t.blocked_on || 'someone else')}</strong>${t.blocked_since ? ' since ' + new Date(t.blocked_since).toLocaleDateString() : ''}<div>${escapeHtml(t.blocked_reason || '')}</div></div>` : ''}
+                    ${t.reassigned_from && t.handover_note && t.status !== 'done' ? `<div class="handover-box">↪ <strong>Handed over by ${escapeHtml(empName(t.reassigned_from))}</strong>${t.reassigned_at ? ' on ' + new Date(t.reassigned_at).toLocaleDateString() : ''}<div>${escapeHtml(t.handover_note)}</div></div>` : ''}
                     ${t.status === 'done' && t.completion_note ? `<div class="closed-box">✅ Closed: ${escapeHtml(t.completion_note)}</div>` : ''}
 
                     <div class="td-section">
@@ -3571,6 +3638,7 @@
                         </div>
                         <div class="td-actions">
                             <button type="button" class="btn btn-sm btn-secondary" onclick="addTaskComment()">💬 Comment</button>
+                            ${t.status !== 'done' ? `<button type="button" class="btn btn-sm btn-secondary" onclick="openReassign('${t.id}')">↪ Hand over</button>` : ''}
                             ${t.status === 'blocked'
                                 ? `<button type="button" class="btn btn-sm btn-secondary" onclick="unblockTask()">▶ Unblock</button>`
                                 : t.status !== 'done' ? `<button type="button" class="btn btn-sm btn-secondary" onclick="blockTask()">⏸ Mark blocked</button>` : ''}
@@ -4546,9 +4614,14 @@
         // A priority is just a task with priority_date set to the day it matters.
         // Planners (Superadmin or anyone with the Projects module) set them per person;
         // everyone sees and ticks off their own on My Dashboard.
+        // A task can be shared: assigned_to is the lead, team_ids are the others on it.
+        // Unfinished priorities move to the next day on their own (carried_from keeps the first day).
         let prioTasks = [];
         let prioOpenTasks = [];
         let prioExtra = [];
+        let prioDraft = [];
+        let prioDraftSkipped = [];
+        let carryRanFor = null;
 
         function localISO(d) {
             const x = d || new Date();
@@ -4577,6 +4650,33 @@
             return allEmployees.filter(e => e.active !== false && e.role !== 'View Only');
         }
 
+        // Everyone on a task: the lead first, then the others
+        function taskPeople(t) {
+            return [t.assigned_to, ...((t.team_ids || []).filter(id => id && id !== t.assigned_to))].filter(Boolean);
+        }
+        function onTask(t, empId) {
+            return t.assigned_to === empId || (t.team_ids || []).includes(empId);
+        }
+        function empName(id) {
+            const e = allEmployees.find(x => x.id === id);
+            return e ? e.name : 'someone';
+        }
+        function firstName(id) {
+            return empName(id).split(' ')[0];
+        }
+        function daysBetween(fromIso, toIso) {
+            return Math.round((new Date(toIso + 'T00:00:00') - new Date(fromIso + 'T00:00:00')) / 864e5);
+        }
+
+        // Runs once a day per open admin: moves yesterday's (and older) unfinished priorities to today.
+        async function ensureCarryForward() {
+            const today = localISO();
+            if (carryRanFor === today) return;
+            carryRanFor = today;
+            const { error } = await db.rpc('carry_forward_priorities', { p_today: today });
+            if (error) { carryRanFor = null; console.warn('Carry forward failed:', error.message); }
+        }
+
         function shiftPrioDate(days) {
             const el = document.getElementById('prioDate');
             const d = new Date((el.value || localISO()) + 'T00:00:00');
@@ -4595,9 +4695,10 @@
             if (!dateEl) return;
             if (!dateEl.value) dateEl.value = localISO();
             const date = dateEl.value;
+            if (date >= localISO()) await ensureCarryForward();
             const [{ data: day, error: e1 }, { data: open, error: e2 }] = await Promise.all([
                 db.from('tasks').select('*, clients(name)').eq('priority_date', date).order('created_at'),
-                db.from('tasks').select('id, title, assigned_to, client_id, priority_date, due_date, status, clients(name)').neq('status', 'done').order('due_date', { ascending: true, nullsFirst: false })
+                db.from('tasks').select('id, title, assigned_to, team_ids, client_id, priority_date, due_date, status, clients(name)').neq('status', 'done').order('due_date', { ascending: true, nullsFirst: false })
             ]);
             if (e1 || e2) {
                 document.getElementById('prioBoard').innerHTML = `<div class="approval-item" style="color:var(--danger-red);">Could not load priorities: ${escapeHtml((e1 || e2).message)}</div>`;
@@ -4611,23 +4712,49 @@
             renderPriorityStats();
             renderPriorityBoard();
             renderPriorityPreview();
+            if (prioDraft.length) renderPlanDraft();
         }
 
         function renderPriorityStats() {
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-            const people = new Set(prioTasks.map(t => t.assigned_to)).size;
+            const people = new Set(prioTasks.flatMap(taskPeople)).size;
             const done = prioTasks.filter(t => t.status === 'done').length;
             set('prioStatPeople', people);
             set('prioStatTotal', prioTasks.length);
             set('prioStatDone', prioTasks.length ? done + ' / ' + prioTasks.length : '0');
             set('prioStatImportant', prioTasks.filter(t => t.is_important && t.status !== 'done').length);
-            const carry = document.getElementById('prioCarryBtn');
-            if (carry) {
-                const date = document.getElementById('prioDate').value;
-                const n = prioOpenTasks.filter(t => t.priority_date && t.priority_date < date).length;
-                carry.textContent = n ? `↻ Carry over ${n} unfinished` : '↻ Nothing to carry over';
-                carry.disabled = !n;
-            }
+            set('prioStatCarried', prioTasks.filter(t => t.carried_from && t.status !== 'done').length);
+        }
+
+        // One priority row. viewerId = whose list it sits in (to name the others on a shared task).
+        function prioItemHtml(t, viewerId, opts) {
+            const o = opts || {};
+            const today = (document.getElementById('prioDate') && document.getElementById('prioDate').value) || localISO();
+            const others = taskPeople(t).filter(id => id !== viewerId);
+            const carried = t.carried_from && t.status !== 'done';
+            const days = carried ? daysBetween(t.carried_from, o.dayIso || today) : 0;
+            const mayReassign = canPlanPriorities() || (currentEmployee && onTask(t, currentEmployee.id));
+            return `
+                <div class="prio-item ${t.status === 'done' ? 'done' : ''} ${carried ? 'carried' : ''}">
+                    <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="${others.length ? 'Mark done (for everyone on it)' : 'Mark done'}">
+                    <div class="prio-text">
+                        <span class="prio-title prio-link" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)}</span>
+                        <span class="prio-meta">
+                            ${carried ? `<span class="prio-chip carried" title="Not finished on ${prioDateLabel(t.carried_from)} — moved forward automatically">↻ Pending since ${prioDateLabel(t.carried_from)}${days > 1 ? ' · ' + days + ' days' : ''}</span>` : ''}
+                            ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
+                            ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
+                            ${others.length ? '<span class="prio-chip shared">👥 with ' + others.map(id => escapeHtml(firstName(id))).join(', ') + '</span>' : ''}
+                            ${t.is_important ? '<span class="prio-chip important">Important</span>' : ''}
+                            ${t.status === 'blocked' ? '<span class="prio-chip important" title="' + escapeHtml(t.blocked_reason || '') + '">⏸ Waiting on ' + escapeHtml(t.blocked_on || 'someone') + '</span>' : t.status !== 'done' && t.status !== 'todo' ? '<span class="prio-chip">' + escapeHtml(t.status.replace('_', ' ')) + '</span>' : ''}
+                        </span>
+                        ${t.reassigned_from && t.status !== 'done' && t.handover_note ? `<span class="prio-handover">↪ From ${escapeHtml(firstName(t.reassigned_from))}: ${escapeHtml(t.handover_note)}</span>` : ''}
+                    </div>
+                    <div class="prio-actions">
+                        ${mayReassign && t.status !== 'done' ? `<button type="button" title="Hand over to someone else" onclick="openReassign('${t.id}')">↪</button>` : ''}
+                        ${o.planner ? `<button type="button" title="Edit" onclick="openPriorityEdit('${t.id}')">✎</button>
+                        <button type="button" title="Remove from this day (keeps the task)" onclick="removePriority('${t.id}')">✕</button>` : ''}
+                    </div>
+                </div>`;
         }
 
         function renderPriorityBoard() {
@@ -4636,14 +4763,16 @@
             const people = prioPlanners();
             // People with priorities first, then everyone else
             people.sort((a, b) => {
-                const ca = prioTasks.filter(t => t.assigned_to === a.id).length;
-                const cb = prioTasks.filter(t => t.assigned_to === b.id).length;
+                const ca = prioTasks.filter(t => onTask(t, a.id)).length;
+                const cb = prioTasks.filter(t => onTask(t, b.id)).length;
                 return (cb > 0) - (ca > 0) || a.name.localeCompare(b.name);
             });
             board.innerHTML = people.map(e => {
-                const mine = prioTasks.filter(t => t.assigned_to === e.id);
+                const mine = prioTasks.filter(t => onTask(t, e.id));
+                // unfinished carried ones first, then by time
+                mine.sort((a, b) => (!!b.carried_from && b.status !== 'done') - (!!a.carried_from && a.status !== 'done') || String(a.due_time || '99').localeCompare(String(b.due_time || '99')));
                 const done = mine.filter(t => t.status === 'done').length;
-                const openForPerson = prioOpenTasks.filter(t => t.assigned_to === e.id);
+                const openForPerson = prioOpenTasks.filter(t => onTask(t, e.id));
                 return `
                 <div class="prio-card ${mine.length ? '' : 'is-empty'}">
                     <div class="prio-card-head">
@@ -4651,23 +4780,7 @@
                         <span class="prio-count ${mine.length && done === mine.length ? 'all-done' : ''}">${mine.length ? done + '/' + mine.length : '—'}</span>
                     </div>
                     <div class="prio-list">
-                        ${mine.map(t => `
-                            <div class="prio-item ${t.status === 'done' ? 'done' : ''}">
-                                <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="Mark done">
-                                <div class="prio-text">
-                                    <span class="prio-title prio-link" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)}</span>
-                                    <span class="prio-meta">
-                                        ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
-                                        ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
-                                        ${t.is_important ? '<span class="prio-chip important">Important</span>' : ''}
-                                        ${t.status === 'blocked' ? '<span class="prio-chip important" title="' + escapeHtml(t.blocked_reason || '') + '">⏸ Waiting on ' + escapeHtml(t.blocked_on || 'someone') + '</span>' : t.status !== 'done' && t.status !== 'todo' ? '<span class="prio-chip">' + escapeHtml(t.status.replace('_', ' ')) + '</span>' : ''}
-                                    </span>
-                                </div>
-                                <div class="prio-actions">
-                                    <button type="button" title="Edit" onclick="openPriorityEdit('${t.id}')">✎</button>
-                                    <button type="button" title="Remove from this day (keeps the task)" onclick="removePriority('${t.id}')">✕</button>
-                                </div>
-                            </div>`).join('')}
+                        ${mine.map(t => prioItemHtml(t, e.id, { planner: true })).join('')}
                     </div>
                     ${prioExtra.filter(x => x.assigned_to === e.id).length ? `<div class="prio-extra">＋ Also did: ${prioExtra.filter(x => x.assigned_to === e.id).map(x => escapeHtml(x.title) + (x.hours_spent ? ' (' + x.hours_spent + 'h)' : '')).join(' · ')}</div>` : ''}
                     <div class="prio-add">
@@ -4696,6 +4809,7 @@
             const row = {
                 title,
                 assigned_to: empId,
+                team_ids: [],
                 client_id: document.getElementById('prioClient_' + empId).value || null,
                 due_time: document.getElementById('prioTime_' + empId).value || null,
                 is_important: document.getElementById('prioImp_' + empId).checked,
@@ -4713,7 +4827,7 @@
 
         async function flagTaskAsPriority(taskId) {
             const date = document.getElementById('prioDate').value || localISO();
-            const { error } = await db.from('tasks').update({ priority_date: date, updated_at: new Date().toISOString() }).eq('id', taskId);
+            const { error } = await db.from('tasks').update({ priority_date: date, carried_from: null, updated_at: new Date().toISOString() }).eq('id', taskId);
             if (error) { alert('Could not add: ' + error.message); return; }
             renderPriorities();
         }
@@ -4727,19 +4841,14 @@
         }
 
         async function removePriority(taskId) {
-            const { error } = await db.from('tasks').update({ priority_date: null, updated_at: new Date().toISOString() }).eq('id', taskId);
+            const { error } = await db.from('tasks').update({ priority_date: null, carried_from: null, updated_at: new Date().toISOString() }).eq('id', taskId);
             if (error) { alert('Could not remove: ' + error.message); return; }
             renderPriorities();
         }
 
-        async function carryOverPriorities() {
-            const date = document.getElementById('prioDate').value || localISO();
-            const stale = prioOpenTasks.filter(t => t.priority_date && t.priority_date < date);
-            if (!stale.length) return;
-            if (!confirm(`Move ${stale.length} unfinished priorit${stale.length === 1 ? 'y' : 'ies'} from earlier days onto ${prioDateLabel(date)}?`)) return;
-            const { error } = await db.from('tasks').update({ priority_date: date, updated_at: new Date().toISOString() }).in('id', stale.map(t => t.id));
-            if (error) { alert('Could not carry over: ' + error.message); return; }
-            renderPriorities();
+        function peopleCheckboxes(cls, selectedIds, excludeId) {
+            return prioPlanners().filter(e => e.id !== excludeId).map(e => `
+                <label class="people-check"><input type="checkbox" class="${cls}" value="${e.id}" ${(selectedIds || []).includes(e.id) ? 'checked' : ''}> ${escapeHtml(e.name)}</label>`).join('');
         }
 
         function openPriorityEdit(taskId) {
@@ -4749,9 +4858,10 @@
                 <form onsubmit="savePriorityEdit(event, '${taskId}')">
                     <div class="form-group"><label>Task</label><input type="text" id="editPrioTitle" value="${escapeHtml(t.title)}" required></div>
                     <div class="prio-form-row">
-                        <div class="form-group"><label>Person</label><select id="editPrioAssignee">${prioPlanners().map(e => `<option value="${e.id}" ${e.id === t.assigned_to ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Lead</label><select id="editPrioAssignee">${prioPlanners().map(e => `<option value="${e.id}" ${e.id === t.assigned_to ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select></div>
                         <div class="form-group"><label>Client</label><select id="editPrioClient"><option value="">— None —</option>${allClients.map(c => `<option value="${c.id}" ${c.id === t.client_id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
                     </div>
+                    <div class="form-group"><label>Also working on it</label><div class="people-checks">${peopleCheckboxes('editPrioTeam', t.team_ids)}</div></div>
                     <div class="prio-form-row">
                         <div class="form-group"><label>Day</label><input type="date" id="editPrioDate" value="${t.priority_date || ''}"></div>
                         <div class="form-group"><label>By (time)</label><input type="time" id="editPrioTime" value="${t.due_time ? t.due_time.slice(0, 5) : ''}"></div>
@@ -4768,18 +4878,24 @@
 
         async function savePriorityEdit(event, taskId) {
             event.preventDefault();
+            const t = prioTasks.find(x => x.id === taskId) || {};
             const status = document.getElementById('editPrioStatus').value;
+            const lead = document.getElementById('editPrioAssignee').value;
+            const newDate = document.getElementById('editPrioDate').value || null;
             const patch = {
                 title: document.getElementById('editPrioTitle').value.trim(),
-                assigned_to: document.getElementById('editPrioAssignee').value,
+                assigned_to: lead,
+                team_ids: Array.from(document.querySelectorAll('.editPrioTeam:checked')).map(cb => cb.value).filter(id => id !== lead),
                 client_id: document.getElementById('editPrioClient').value || null,
-                priority_date: document.getElementById('editPrioDate').value || null,
+                priority_date: newDate,
                 due_time: document.getElementById('editPrioTime').value || null,
                 is_important: document.getElementById('editPrioImportant').checked,
                 status,
                 completed_at: status === 'done' ? new Date().toISOString() : null,
                 updated_at: new Date().toISOString()
             };
+            // Moving it to another day on purpose is a reschedule, not a carry-over
+            if (newDate !== t.priority_date) patch.carried_from = null;
             const { error } = await db.from('tasks').update(patch).eq('id', taskId);
             if (error) { alert('Could not save: ' + error.message); return; }
             closeModal();
@@ -4787,12 +4903,12 @@
         }
 
         // Message in the same shape the team already uses on WhatsApp.
-        // *text* is bold on WhatsApp. Names are plain (WhatsApp only makes a real
+        // *text* is bold, _text_ is italic on WhatsApp. Names are plain (WhatsApp only makes a real
         // @mention when you pick the person from its own list).
         function buildPriorityMessage(kind) {
             const date = (document.getElementById('prioDate') || {}).value || localISO();
             const isToday = date === localISO();
-            const people = prioPlanners().filter(e => prioTasks.some(t => t.assigned_to === e.id));
+            const people = prioPlanners().filter(e => prioTasks.some(t => onTask(t, e.id)));
             const lines = [];
             if (kind === 'progress') {
                 lines.push(`*Priorities update${isToday ? '' : ' — ' + prioDateLabel(date)}*`);
@@ -4800,21 +4916,25 @@
                 lines.push(isToday ? `*Today's priority tasks* (${prioDateLabel(date)})` : `*Priority tasks for ${prioDateLabel(date)}*`);
             }
             people.forEach(e => {
-                const mine = prioTasks.filter(t => t.assigned_to === e.id);
+                const mine = prioTasks.filter(t => onTask(t, e.id));
+                mine.sort((a, b) => (!!b.carried_from && b.status !== 'done') - (!!a.carried_from && a.status !== 'done'));
                 const done = mine.filter(t => t.status === 'done').length;
                 lines.push('');
                 lines.push(`*${e.name}*` + (kind === 'progress' ? ` — ${done}/${mine.length} done` : ''));
                 mine.forEach(t => {
                     let text = t.title.trim().replace(/[.\s]+$/, '');
-                    if (t.due_time && !/\bby\b/i.test(text)) {
+                    if (t.due_time && !/\bby\b/i.test(text) && !/\d\s*(am|pm)\b/i.test(text)) {
                         // "Post MGM Reel by 11:00 am. Cross-check…" — time goes after the first sentence
                         const cut = text.search(/[.!?]\s/);
                         const by = ' by ' + formatPrioTime(t.due_time);
                         text = cut > 0 ? text.slice(0, cut) + by + text.slice(cut) : text + by;
                     }
                     if (t.clients && !text.toLowerCase().includes(t.clients.name.split(' ')[0].toLowerCase())) text += ` (${t.clients.name})`;
+                    const others = taskPeople(t).filter(id => id !== e.id);
+                    if (others.length) text += ` (with ${others.map(firstName).join(', ')})`;
                     if (t.is_important) text += ' [Important]';
-                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : t.status === 'blocked' ? '⏸' : '⏳') : '•';
+                    if (t.carried_from && t.status !== 'done') text += ` _(pending from ${prioDateLabel(t.carried_from)})_`;
+                    const bullet = kind === 'progress' ? (t.status === 'done' ? '✅' : t.status === 'blocked' ? '⏸' : '⏳') : (t.carried_from && t.status !== 'done' ? '↻' : '•');
                     if (kind === 'progress' && t.status === 'blocked') text += ` — waiting on ${(t.blocked_on || 'someone').toLowerCase()}${t.blocked_reason ? ': ' + t.blocked_reason : ''}`;
                     lines.push(`${bullet} ${text}`);
                 });
@@ -4846,30 +4966,338 @@
             window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
-        // My Dashboard: the logged-in person's own priorities for today
+        // ---------- PLAN THE DAY IN ONE GO ----------
+        // Type or paste the list the way it goes in the group: a name on its own line, then that
+        // person's tasks. "Akshay + Dani: …" or "(with Dani)" makes one shared task.
+        function nameDistance(a, b) {
+            if (Math.abs(a.length - b.length) > 1) return 2;
+            const dp = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+            for (let j = 1; j <= b.length; j++) dp[0][j] = j;
+            for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+                dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+            return dp[a.length][b.length];
+        }
+
+        // "Akshay" / "akshai" / "Ananthu Vasudev" -> employee id (null when not a clear match)
+        function planMatchName(token) {
+            const t = token.toLowerCase().replace(/[^a-z\s]/g, '').trim();
+            if (!t || t.length < 3) return null;
+            const people = prioPlanners();
+            const exact = people.filter(e => e.name.toLowerCase() === t || e.name.toLowerCase().split(' ')[0] === t);
+            if (exact.length === 1) return exact[0].id;
+            if (t.length < 4 || t.includes(' ')) return null;
+            const near = people.filter(e => nameDistance(e.name.toLowerCase().split(' ')[0], t) <= 1);
+            return near.length === 1 ? near[0].id : null;
+        }
+
+        // "Akshay & Dani" / "Akshay, Dani and Ameen" / "All" -> ids, or null if any part isn't a person
+        function planMatchNames(str) {
+            const s = str.replace(/[*_~@]/g, '').trim();
+            if (!s || s.split(/\s+/).length > 8) return null;
+            if (/^(all|everyone|team|whole team)$/i.test(s)) return prioPlanners().map(e => e.id);
+            const parts = s.split(/\s*(?:,|&|\+|\/|\band\b)\s*/i).filter(Boolean);
+            const ids = [];
+            for (const p of parts) {
+                const id = planMatchName(p);
+                if (!id) return null;
+                if (!ids.includes(id)) ids.push(id);
+            }
+            return ids.length ? ids : null;
+        }
+
+        function planFindClient(text) {
+            const low = text.toLowerCase();
+            let best = null, bestLen = 0;
+            allClients.forEach(c => {
+                const full = c.name.toLowerCase();
+                const first = full.split(/\s+/)[0].replace(/[^a-z0-9]/g, '');
+                const tries = [full];
+                if (first.length >= 3) tries.push(first);
+                tries.forEach(n => {
+                    const re = new RegExp('(^|[^a-z0-9])' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z0-9]|$)');
+                    if (re.test(low) && n.length > bestLen) { best = c.id; bestLen = n.length; }
+                });
+            });
+            return best;
+        }
+
+        function planFindTime(text) {
+            const m = text.match(/\b(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)\b/i);
+            if (!m) return null;
+            let h = parseInt(m[1], 10);
+            const min = m[2] ? parseInt(m[2], 10) : 0;
+            if (h < 1 || h > 12 || min > 59) return null;
+            if (m[3].toLowerCase() === 'pm' && h !== 12) h += 12;
+            if (m[3].toLowerCase() === 'am' && h === 12) h = 0;
+            return String(h).padStart(2, '0') + ':' + String(min).padStart(2, '0');
+        }
+
+        function parsePlanText(text) {
+            const rows = [];
+            const skipped = [];
+            let current = null;
+            const date = (document.getElementById('prioDate') || {}).value || localISO();
+            (text || '').split(/\r?\n/).forEach(rawLine => {
+                let line = rawLine.trim();
+                if (!line) return;
+                // strip bullets, numbering, ticks and emoji at the start
+                line = line.replace(/^[\s>•●◦▪\-–—·*↻✓✔➕⏳⏸✅]+/, '').replace(/^\(?\d{1,2}[.)]\s+/, '').replace(/^[\p{Extended_Pictographic}️‍\s]+/u, '').trim();
+                const plain = line.replace(/[*_~]/g, '').trim();
+                if (!plain) return;
+                // A name on its own line starts that person's list ("*Akshay*", "Akshay:", "*Akshay* — 2/3 done")
+                const header = plain.replace(/\s*[:\-–—]\s*(\d+\s*\/\s*\d+\s*done)?\s*$/i, '').trim();
+                const headIds = planMatchNames(header);
+                if (headIds && header.split(/\s+/).length <= 6) { current = headIds; return; }
+                // "Akshay + Dani: Refillr shoot" — names before a colon are this line's people
+                let people = null;
+                let title = plain;
+                const pre = plain.match(/^([^:]{2,60}?)\s*:\s+(.+)$/) || plain.match(/^([^:\-–—]{2,60}?)\s+[-–—]\s+(.+)$/);
+                if (pre) { const ids = planMatchNames(pre[1]); if (ids) { people = ids; title = pre[2]; } }
+                if (!people) people = current ? current.slice() : null;
+                // "(with Dani, Ameen)" and "@Dani" add people
+                const withM = title.match(/\(\s*with\s+([^)]+)\)/i);
+                if (withM) { const ids = planMatchNames(withM[1]); if (ids) { people = (people || []).concat(ids.filter(id => !(people || []).includes(id))); title = title.replace(withM[0], ''); } }
+                (title.match(/@([A-Za-z]{3,})/g) || []).forEach(m => { const id = planMatchName(m.slice(1)); if (id) { people = people || []; if (!people.includes(id)) people.push(id); } });
+                if (!people || !people.length) { skipped.push(plain); return; }
+                const important = /\[important\]|\bimportant\b|\burgent\b|⭐|❗|‼/i.test(rawLine);
+                title = title.replace(/\[important\]/ig, '').replace(/_?\(pending from[^)]*\)_?/ig, '').replace(/\s{2,}/g, ' ').replace(/[\s,;]+$/, '').trim();
+                const client_id = planFindClient(title);
+                // drop a trailing "(Client Name)" we added ourselves when copying the list out
+                if (client_id) {
+                    const cname = (allClients.find(c => c.id === client_id) || {}).name || '';
+                    title = title.replace(new RegExp('\\s*\\(' + cname.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\)\\s*$', 'i'), '').trim();
+                }
+                if (!title) return;
+                const norm = x => x.trim().toLowerCase().replace(/[.\s]+$/, '');
+                // The same shared task listed under each person's name becomes one task
+                const same = rows.find(r => norm(r.title) === norm(title) && r.people.some(id => people.includes(id)));
+                if (same) {
+                    people.forEach(id => { if (!same.people.includes(id)) same.people.push(id); });
+                    same.is_important = same.is_important || important;
+                    same.client_id = same.client_id || client_id;
+                    same.due_time = same.due_time || planFindTime(title);
+                    return;
+                }
+                const dup = prioTasks.some(t => t.priority_date === date && norm(t.title) === norm(title) && taskPeople(t).some(id => people.includes(id)));
+                rows.push({ include: !dup, dup, title, people, client_id, due_time: planFindTime(title), is_important: important });
+            });
+            return { rows, skipped };
+        }
+
+        function readPlanText() {
+            const text = document.getElementById('prioPlanText').value;
+            const { rows, skipped } = parsePlanText(text);
+            prioDraft = rows;
+            renderPlanDraft(skipped);
+        }
+
+        function clearPlanText() {
+            document.getElementById('prioPlanText').value = '';
+            prioDraft = [];
+            renderPlanDraft([]);
+        }
+
+        function renderPlanDraft(skippedLines) {
+            const box = document.getElementById('prioPlanPreview');
+            if (!box) return;
+            if (skippedLines !== undefined) prioDraftSkipped = skippedLines;
+            const skipped = prioDraftSkipped;
+            const date = (document.getElementById('prioDate') || {}).value || localISO();
+            if (!prioDraft.length) {
+                box.innerHTML = (skipped && skipped.length) ? `<div class="plan-skip">Nothing to add yet — put a person's name on its own line above their tasks. Couldn't place: ${skipped.map(s => '“' + escapeHtml(s) + '”').join(', ')}</div>` : '';
+                return;
+            }
+            const clientOpts = sel => '<option value="">— Client —</option>' + allClients.map(c => `<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('');
+            const n = prioDraft.filter(r => r.include).length;
+            box.innerHTML = `
+                <div class="plan-table">
+                    <div class="plan-row plan-head"><span></span><span>Task</span><span>People (first = lead)</span><span>Client</span><span>By</span><span>Imp.</span></div>
+                    ${prioDraft.map((r, i) => `
+                    <div class="plan-row ${r.include ? '' : 'off'}">
+                        <input type="checkbox" ${r.include ? 'checked' : ''} onchange="setDraftField(${i}, 'include', this.checked)" title="Include">
+                        <div><input type="text" value="${escapeHtml(r.title)}" onchange="setDraftField(${i}, 'title', this.value)">${r.dup ? '<div class="plan-note">Already on the list for this day</div>' : ''}</div>
+                        <div class="plan-people">
+                            ${r.people.map((id, k) => `<span class="plan-person ${k === 0 ? 'lead' : ''}">${escapeHtml(firstName(id))}<button type="button" onclick="removeDraftPerson(${i}, '${id}')" title="Remove">×</button></span>`).join('')}
+                            <select onchange="if(this.value){addDraftPerson(${i}, this.value);}"><option value="">＋</option>${prioPlanners().filter(e => !r.people.includes(e.id)).map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('')}</select>
+                        </div>
+                        <select onchange="setDraftField(${i}, 'client_id', this.value || null)">${clientOpts(r.client_id)}</select>
+                        <input type="time" value="${r.due_time || ''}" onchange="setDraftField(${i}, 'due_time', this.value || null)">
+                        <input type="checkbox" ${r.is_important ? 'checked' : ''} onchange="setDraftField(${i}, 'is_important', this.checked)" title="Important">
+                    </div>`).join('')}
+                </div>
+                ${(skipped && skipped.length) ? `<div class="plan-skip">Skipped (no name above them): ${skipped.map(s => '“' + escapeHtml(s) + '”').join(', ')}</div>` : ''}
+                <div style="display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-primary btn-sm" id="prioPlanSave" onclick="savePlanDraft()" ${n ? '' : 'disabled'}>Add ${n} priorit${n === 1 ? 'y' : 'ies'} to ${prioDateLabel(date)}</button>
+                    <span style="font-size:12px; color:var(--text-secondary);">A task with more than one person shows on each of their lists. One tick finishes it for all.</span>
+                </div>`;
+        }
+
+        function setDraftField(i, key, val) {
+            if (!prioDraft[i]) return;
+            prioDraft[i][key] = val;
+            // only the include tick changes the layout; typing in a field keeps focus
+            if (key === 'include') renderPlanDraft();
+        }
+        function addDraftPerson(i, id) {
+            if (!prioDraft[i] || prioDraft[i].people.includes(id)) return;
+            prioDraft[i].people.push(id);
+            renderPlanDraft();
+        }
+        function removeDraftPerson(i, id) {
+            if (!prioDraft[i]) return;
+            prioDraft[i].people = prioDraft[i].people.filter(x => x !== id);
+            if (!prioDraft[i].people.length) prioDraft[i].include = false;
+            renderPlanDraft();
+        }
+
+        async function savePlanDraft() {
+            const date = document.getElementById('prioDate').value || localISO();
+            const rows = prioDraft.filter(r => r.include && r.title.trim() && r.people.length).map(r => ({
+                title: r.title.trim(),
+                assigned_to: r.people[0],
+                team_ids: r.people.slice(1),
+                client_id: r.client_id || null,
+                due_time: r.due_time || null,
+                is_important: !!r.is_important,
+                priority_date: date,
+                due_date: date,
+                status: 'todo',
+                created_by: currentEmployee.id
+            }));
+            if (!rows.length) return;
+            const btn = document.getElementById('prioPlanSave');
+            if (btn) { btn.disabled = true; btn.textContent = 'Adding…'; }
+            const { error } = await db.from('tasks').insert(rows);
+            if (error) { alert('Could not add: ' + error.message); if (btn) btn.disabled = false; return; }
+            document.getElementById('prioPlanText').value = '';
+            prioDraft = [];
+            renderPlanDraft([]);
+            renderPriorities();
+        }
+
+        // Creative Work -> priorities: the deliverable's person and team come along
+        function deliverableTaskRow(d, date) {
+            return {
+                title: (d.deliverable_type ? d.deliverable_type + ': ' : '') + d.title,
+                assigned_to: d.assigned_to,
+                team_ids: (d.team_ids || []).filter(id => id && id !== d.assigned_to),
+                client_id: d.client_id || null,
+                deliverable_id: d.id,
+                priority_date: date,
+                due_date: date,
+                status: 'todo',
+                created_by: currentEmployee.id
+            };
+        }
+
+        async function openCreativePicker() {
+            const date = document.getElementById('prioDate').value || localISO();
+            const { data, error } = await db.from('creative_deliverables').select('id, title, deliverable_type, status, client_id, assigned_to, team_ids, due_date, clients(name)').neq('status', 'delivered').order('due_date', { ascending: true, nullsFirst: false });
+            if (error) { alert('Could not load Creative Work: ' + error.message); return; }
+            const onList = new Set(prioTasks.map(t => t.deliverable_id).filter(Boolean));
+            const list = (data || []).filter(d => d.assigned_to);
+            openModal('Add from Creative Work', `
+                <div style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">Pick the pieces that matter on ${prioDateLabel(date)}. Each one lands on the lists of everyone assigned to it.</div>
+                <div class="creative-pick">
+                    ${list.map(d => `
+                    <label class="creative-pick-row ${onList.has(d.id) ? 'off' : ''}">
+                        <input type="checkbox" class="creativePick" value="${d.id}" ${onList.has(d.id) ? 'disabled' : ''}>
+                        <span><strong>${escapeHtml(d.title)}</strong>${d.deliverable_type ? ' · ' + escapeHtml(d.deliverable_type) : ''}
+                        <span class="creative-pick-meta">${d.clients ? escapeHtml(d.clients.name) + ' · ' : ''}${[d.assigned_to, ...(d.team_ids || []).filter(x => x !== d.assigned_to)].map(firstName).join(', ')}${d.due_date ? ' · due ' + prioDateLabel(d.due_date) : ''} · ${DELIVERABLE_STAGE_LABELS[d.status] || d.status}${onList.has(d.id) ? ' · already on the list' : ''}</span></span>
+                    </label>`).join('') || '<div style="color:var(--text-secondary);">No open creative work with someone assigned.</div>'}
+                </div>
+                <div class="modal-footer" style="padding:16px 0 0; margin-top:12px; border-top:1px solid var(--wain-border);"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="button" class="btn btn-primary btn-sm" onclick="addDeliverablesToPriorities()">Add to ${prioDateLabel(date)}</button></div>`, true);
+            window.__creativePickList = list;
+        }
+
+        async function addDeliverablesToPriorities() {
+            const date = document.getElementById('prioDate').value || localISO();
+            const ids = Array.from(document.querySelectorAll('.creativePick:checked')).map(cb => cb.value);
+            const list = (window.__creativePickList || []).filter(d => ids.includes(d.id));
+            if (!list.length) { closeModal(); return; }
+            const { error } = await db.from('tasks').insert(list.map(d => deliverableTaskRow(d, date)));
+            if (error) { alert('Could not add: ' + error.message); return; }
+            closeModal();
+            renderPriorities();
+        }
+
+        // Button on a Creative Work card
+        async function pushDeliverableToPriorities(id) {
+            const d = allDeliverables.find(x => x.id === id);
+            if (!d) return;
+            if (!d.assigned_to) { alert('Assign someone to this piece first.'); return; }
+            const today = localISO();
+            const { data: existing } = await db.from('tasks').select('id').eq('deliverable_id', id).eq('priority_date', today);
+            if (existing && existing.length) { alert('Already on today\'s priorities.'); return; }
+            const { error } = await db.from('tasks').insert(deliverableTaskRow(d, today));
+            if (error) { alert('Could not add: ' + error.message); return; }
+            const people = [d.assigned_to, ...(d.team_ids || []).filter(x => x !== d.assigned_to)].map(firstName).join(', ');
+            alert(`Added to today's priorities for ${people}.`);
+        }
+
+        // ---------- REASSIGN (anyone on the task, or a planner) ----------
+        async function openReassign(taskId) {
+            const { data: t, error } = await db.from('tasks').select('id, title, assigned_to, team_ids, priority_date, status').eq('id', taskId).maybeSingle();
+            if (error || !t) { alert('Could not open task' + (error ? ': ' + error.message : '')); return; }
+            const on = taskPeople(t);
+            const me = currentEmployee.id;
+            const from = on.includes(me) ? me : t.assigned_to;
+            const targets = prioPlanners().filter(e => !on.includes(e.id));
+            openModal('Hand over task', `
+                <form onsubmit="saveReassign(event, '${taskId}')">
+                    <div style="font-size:13px; margin-bottom:12px;"><strong>${escapeHtml(t.title)}</strong></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>From</label><select id="reassignFrom">${on.map(id => `<option value="${id}" ${id === from ? 'selected' : ''}>${escapeHtml(empName(id))}${id === t.assigned_to && on.length > 1 ? ' (lead)' : ''}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>To</label><select id="reassignTo" required><option value="">— Pick someone —</option>${targets.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="form-group"><label>Note for them</label><textarea id="reassignNote" rows="3" required minlength="3" placeholder="What's done, what's left, where the files are…"></textarea></div>
+                    ${t.priority_date ? `<label style="display:flex; align-items:center; gap:8px; font-size:13px;"><input type="checkbox" id="reassignKeep" style="width:auto;" checked> Keep it on ${t.priority_date === localISO() ? "today's" : prioDateLabel(t.priority_date) + "'s"} priorities</label>` : ''}
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:12px; border-top:1px solid var(--wain-border);"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">↪ Hand over</button></div>
+                </form>`);
+            window.__reassignTask = t;
+        }
+
+        async function saveReassign(event, taskId) {
+            event.preventDefault();
+            const t = window.__reassignTask;
+            if (!t || t.id !== taskId) return;
+            const from = document.getElementById('reassignFrom').value;
+            const to = document.getElementById('reassignTo').value;
+            const note = document.getElementById('reassignNote').value.trim();
+            if (!to) { document.getElementById('reassignTo').focus(); return; }
+            if (note.length < 3) { document.getElementById('reassignNote').focus(); return; }
+            const patch = { reassigned_from: from, handover_note: note, reassigned_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+            if (from === t.assigned_to) {
+                patch.assigned_to = to;
+                patch.team_ids = (t.team_ids || []).filter(id => id !== to && id !== from);
+            } else {
+                patch.team_ids = (t.team_ids || []).map(id => id === from ? to : id).filter((id, i, a) => id !== t.assigned_to && a.indexOf(id) === i);
+            }
+            const keep = document.getElementById('reassignKeep');
+            if (keep && !keep.checked) { patch.priority_date = null; patch.carried_from = null; }
+            const { error } = await db.from('tasks').update(patch).eq('id', taskId);
+            if (error) { alert('Could not hand over: ' + error.message); return; }
+            await db.from('task_comments').insert({ task_id: taskId, employee_id: currentEmployee.id, kind: 'reassigned', body: `${empName(from)} → ${empName(to)}: ${note}` });
+            closeModal();
+            refreshTaskViews();
+        }
+
+        // My Dashboard: the logged-in person's own priorities for today (their own and shared ones)
         async function renderMyPriorities() {
             const card = document.getElementById('myPrioritiesCard');
             const list = document.getElementById('myPrioritiesList');
             if (!card || !list || !currentEmployee) return;
             const planLink = document.getElementById('myPrioritiesPlanLink');
             if (planLink) planLink.style.display = canPlanPriorities() ? '' : 'none';
-            const { data, error } = await db.from('tasks').select('*, clients(name)').eq('assigned_to', currentEmployee.id).eq('priority_date', localISO()).order('created_at');
+            await ensureCarryForward();
+            const me = currentEmployee.id;
+            const { data, error } = await db.from('tasks').select('*, clients(name)').or(`assigned_to.eq.${me},team_ids.cs.{${me}}`).eq('priority_date', localISO()).order('created_at');
             if (error) { list.innerHTML = '<div style="color:var(--text-secondary);">Could not load priorities.</div>'; return; }
-            const rows = data || [];
+            const rows = (data || []).slice();
+            rows.sort((a, b) => (!!b.carried_from && b.status !== 'done') - (!!a.carried_from && a.status !== 'done') || String(a.due_time || '99').localeCompare(String(b.due_time || '99')));
             const done = rows.filter(t => t.status === 'done').length;
             document.getElementById('myPrioritiesBadge').textContent = rows.length ? `${done}/${rows.length} done` : 'None set';
-            list.innerHTML = rows.length ? rows.map(t => `
-                <div class="prio-item ${t.status === 'done' ? 'done' : ''}">
-                    <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="togglePriorityDone('${t.id}', this.checked)" title="Mark done">
-                    <div class="prio-text">
-                        <span class="prio-title prio-link" onclick="openTaskDetail('${t.id}')">${escapeHtml(t.title)}</span>
-                        <span class="prio-meta">
-                            ${t.due_time ? '<span class="prio-chip">⏰ ' + formatPrioTime(t.due_time) + '</span>' : ''}
-                            ${t.clients ? '<span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}
-                            ${t.is_important ? '<span class="prio-chip important">Important</span>' : ''}
-                        </span>
-                    </div>
-                </div>`).join('') : '<div style="color:var(--text-secondary); padding: 6px 0;">No priorities set for you today. Your open tasks are below.</div>';
+            list.innerHTML = rows.length ? rows.map(t => prioItemHtml(t, me, { dayIso: localISO() })).join('') : '<div style="color:var(--text-secondary); padding: 6px 0;">No priorities set for you today. Your open tasks are below.</div>';
         }
 
         // ---------- CLIENTS ----------
@@ -6739,9 +7167,10 @@
                         <button type="button" class="btn btn-sm btn-secondary" onclick="uploadDeliverableFile('${d.id}')">Upload File</button>
                         <span id="fileUploadStatus_${d.id}" style="font-size:11px; color:var(--text-secondary);"></span>
                     </div>
-                    <div style="margin-top:12px; display:flex; gap:8px;">
+                    <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
                         ${next ? `<button class="btn btn-sm btn-primary" onclick="advanceDeliverable('${d.id}', '${next}')">Move to ${DELIVERABLE_STAGE_LABELS[next]}</button>` : ''}
                         <button class="btn btn-sm btn-secondary" onclick="openDeliverableEdit('${d.id}')">Edit</button>
+                        ${d.status !== 'delivered' && canPlanPriorities() ? `<button class="btn btn-sm btn-secondary" onclick="pushDeliverableToPriorities('${d.id}')" title="Put this on today's priorities for everyone assigned">🎯 Today's priorities</button>` : ''}
                         ${(d.status === 'approved' || d.status === 'delivered') && d.client_id ? `<button class="btn btn-sm btn-secondary" onclick="scheduleDeliverableOnSocial('${d.id}')">Schedule on social →</button>` : ''}
                     </div>
                 </div>`;
