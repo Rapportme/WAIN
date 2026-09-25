@@ -3776,7 +3776,7 @@
                     <div style="font-weight:600; font-size:13px; margin-bottom:6px;">Extra work today <span style="font-weight:400; font-size:12px; color:var(--text-secondary);">— anything you did that wasn't assigned</span></div>
                     ${(extra || []).map(t => `<div class="wd-extra-row">✅ ${escapeHtml(t.title)}${t.clients ? ' <span class="prio-chip">' + escapeHtml(t.clients.name) + '</span>' : ''}${t.hours_spent ? ' <span class="prio-chip">' + t.hours_spent + ' h</span>' : ''}</div>`).join('')}
                     <div class="prio-add-row" style="margin-top:6px;">
-                        <input type="text" id="extraWorkTitle" placeholder="e.g. Helped Dany edit the EYL reel" style="flex:3 1 220px;" onkeydown="if(event.key==='Enter'){event.preventDefault(); logExtraWork();}">
+                        <input type="text" id="extraWorkTitle" placeholder="e.g. Helped Dani edit the EYL reel" style="flex:3 1 220px;" onkeydown="if(event.key==='Enter'){event.preventDefault(); logExtraWork();}">
                         <select id="extraWorkClient" style="flex:1 1 120px;"><option value="">— Client —</option>${allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('')}</select>
                         <input type="number" id="extraWorkHours" min="0" step="0.25" placeholder="Hours" style="width:80px;">
                         <button type="button" class="btn btn-sm btn-primary" onclick="logExtraWork()">+ Log</button>
