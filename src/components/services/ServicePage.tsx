@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PageHead, type PageIndexEntry } from "@/components/layout/PageHead";
 import { PageNext } from "@/components/layout/PageNext";
 import { DirectLines } from "@/components/contact/DirectLines";
-import { SERVICES, type Service } from "@/data/services";
+import { SERVICES, LOCAL_PAGES, type Service } from "@/data/services";
 import { CONTACT, hasPhone } from "@/data/contact";
 import { postsForService } from "@/data/blog";
 
@@ -30,7 +30,7 @@ function jsonLd(s: Service) {
       {
         "@type": "Service",
         "@id": `${url}#service`,
-        name: `${s.name} in Kottayam, Kerala`,
+        name: s.schemaName ?? `${s.name} in Kottayam, Kerala`,
         serviceType: s.serviceType,
         description: s.answer,
         url,
@@ -67,8 +67,9 @@ function jsonLd(s: Service) {
 
 /** One service page: answer, what's included, how it works, fit, pricing, FAQ, next step. */
 export function ServicePage({ service: s }: { service: Service }) {
-  const i = SERVICES.findIndex((x) => x.slug === s.slug);
-  const next = SERVICES[(i + 1) % SERVICES.length] ?? s;
+  const group = SERVICES.some((x) => x.slug === s.slug) ? SERVICES : LOCAL_PAGES;
+  const i = group.findIndex((x) => x.slug === s.slug);
+  const next = group[(i + 1) % group.length] ?? s;
   const index: PageIndexEntry[] = [
     { href: "#included", title: "What's included", note: "Everything that's part of the work, in plain words.", shape: "mk-sq", ink: "ink-teal" },
     { href: "#how", title: "How it works", note: "Five steps, in order, with you at each decision.", shape: "mk-tri", ink: "ink-sage" },
@@ -216,7 +217,7 @@ export function ServicePage({ service: s }: { service: Service }) {
             <div className="svc-reading">
               <p className="k">Read before you decide</p>
               <ul>
-                {postsForService(s.slug).map((p) => (
+                {postsForService(s.slug).slice(0, 4).map((p) => (
                   <li key={p.slug}>
                     <a href={withBase(`/thinking/${p.slug}/`)}>{p.title}</a>
                   </li>

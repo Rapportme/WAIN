@@ -74,6 +74,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Channels are the easy part now. Decide what the brand is trying to mean, who needs to believe it and what behaviour to change — then pick the channel.",
     date: "2026-08-27",
+    service: "branding",
     minutes: 2,
     body: [
       "“Should we do influencer marketing?” “Can we start posting on Instagram?” “Should we run Meta ads?”",
@@ -143,6 +144,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Systems don't tell creative people what idea to have. Clear briefs, approvals and timelines are what give a team the room to take creative risks.",
     date: "2026-08-27",
+    service: "content-production",
     minutes: 2,
     body: [
       "Creative work is often treated as something that should remain free from systems.",
@@ -217,6 +219,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "The next platform battle may be about the social layer around the video, not the video. What that means for how brands brief and measure content.",
     date: "2026-08-27",
+    service: "social-media-marketing",
     minutes: 2,
     body: [
       "Instagram and YouTube are often compared as video platforms. That comparison misses an important difference.",
@@ -253,6 +256,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Most people meet a brand long before they need it. Why some marketing plants a memory rather than triggering a sale, and how to judge each on its terms.",
     date: "2026-08-27",
+    service: "lead-generation",
     minutes: 2,
     body: [
       "A common marketing expectation is that communication should produce an immediate response.",
@@ -289,6 +293,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Running ads or making reels isn't the same as knowing how to market. Why understanding people should decide what the tools are for, not the reverse.",
     date: "2026-08-27",
+    service: "digital-marketing",
     minutes: 2,
     body: [
       "Many digital marketing courses now lead with tools.",
@@ -330,6 +335,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Income tells you what a customer can spend. It doesn't tell you what they're willing to spend on. A more useful way to segment: by priorities and value.",
     date: "2026-08-27",
+    service: "branding",
     minutes: 2,
     body: [
       "Marketing segmentation usually begins with variables that are easy to identify.",
@@ -371,6 +377,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Customers are part of the distribution system, not just the audience. A Maharani Wedding Collections campaign built on how people already sway each other.",
     date: "2026-08-27",
+    service: "social-media-marketing",
     minutes: 1,
     body: [
       "“Why bother convincing people?”",
@@ -409,6 +416,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "How one Malayalam eyewear idea for Allen & Habour Opticals moved from Zomato's order-tracking page to a restaurant screen without being reinvented.",
     date: "2026-08-27",
+    service: "content-production",
     minutes: 3,
     body: [
       "A campaign doesn’t need a new idea every time the placement changes.",
@@ -454,6 +462,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Not liking an ad doesn't make it ineffective. Why marketing judgement needs distance from personal taste, and better questions for a creative review.",
     date: "2026-08-27",
+    service: "branding",
     minutes: 2,
     body: [
       "Marketing professionals are exposed to thousands of campaigns. That makes personal taste almost impossible to separate from professional judgement.",
@@ -497,6 +506,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "A case study on treating a Zomato order-tracking placement as part of the idea, not just inventory, with a Malayalam ad for Allen & Habour Opticals.",
     date: "2026-08-27",
+    service: "digital-marketing",
     minutes: 3,
     body: [
       "A media placement can be bought as inventory.",
@@ -549,6 +559,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "A brand exists in customers' minds, not in the approval meeting. Why a logo should be judged by what it makes people think, not by who likes it.",
     date: "2026-08-27",
+    service: "branding",
     minutes: 2,
     body: [
       "Branding often becomes a matter of personal preference.",
@@ -590,6 +601,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "A Women's Day campaign for Malabar Village Luxe went from idea to client approval in hours. What it shows about fitting the process to the idea.",
     date: "2026-08-27",
+    service: "social-media-marketing",
     minutes: 3,
     body: [
       "Some campaigns are built months ahead.",
@@ -641,6 +653,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "On a road, people see billboards together, not one at a time. Why contextual and reactive outdoor advertising is an underused opportunity in Kerala.",
     date: "2026-08-27",
+    service: "branding",
     minutes: 2,
     body: [
       "Outdoor advertising is usually planned as if every billboard exists independently.",
@@ -679,6 +692,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Avoiding a tool doesn't make work original. Why 'AI-free' is a badge, not a creative strategy, and what actually decides whether work is good.",
     date: "2026-08-27",
+    service: "content-production",
     minutes: 2,
     body: [
       "“AI-free content.”",
@@ -768,6 +782,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "A tyre shop's follow-up trick shows automation doesn't need new software. Start with where the business keeps losing time or follow-up, then build small.",
     date: "2026-08-27",
+    service: "lead-generation",
     minutes: 2,
     body: [
       "One of the smartest low-cost examples of sales automation can look almost too simple to count as automation.",
@@ -811,6 +826,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Insurance is useful, yet widely avoided in India. How the way a product is sold can shape how a whole category is seen, and what that means for trust.",
     date: "2026-08-27",
+    service: "lead-generation",
     minutes: 2,
     body: [
       "Insurance is a useful example of a marketing problem that is not really a product problem.",
@@ -850,6 +866,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Sales is where a business hears what the market actually thinks. Why it belongs alongside marketing and product as a market intelligence function.",
     date: "2026-08-27",
+    service: "lead-generation",
     minutes: 2,
     body: [
       "Sales is often treated as the final stage of business.",
@@ -906,6 +923,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "A visit to River's Kochi showroom shows customer experience begins at the car park, not the product. Every small interaction is part of the brand.",
     date: "2026-08-27",
+    service: "branding",
     minutes: 1,
     body: [
       "A product showroom is usually evaluated by the product on display.",
@@ -955,6 +973,7 @@ export const POSTS: readonly BlogPost[] = [
     author: "Ananthu Vasudev",
     excerpt: "Customers rate businesses, but the rating rarely runs the other way. A case for symmetry, accountability and worker dignity in review systems.",
     date: "2026-08-27",
+    service: "digital-marketing",
     minutes: 1,
     body: [
       "Businesses are increasingly measured through ratings.",

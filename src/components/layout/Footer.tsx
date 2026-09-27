@@ -78,6 +78,11 @@ export function Footer() {
             <a href={withBase("/branding/")}>Branding</a>
             <a href={withBase("/social-media-marketing/")}>Social media marketing</a>
             <a href={withBase("/digital-marketing/")}>Digital marketing</a>
+            <a href={withBase("/content-production/")}>Content production</a>
+            <a href={withBase("/lead-generation/")}>Lead generation</a>
+            <a href={withBase("/healthcare-marketing/")}>Healthcare marketing</a>
+            <a href={withBase("/hotel-resort-marketing/")}>Hotel and resort marketing</a>
+            <a href={withBase("/marketing-agency-kottayam/")}>Marketing agency in Kottayam</a>
           </div>
 
           <div className="f-col ink-lav">

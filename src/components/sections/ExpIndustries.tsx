@@ -1,5 +1,6 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
+import { withBase } from "@/lib/withBase";
 import { INDUSTRIES_ALSO, INDUSTRIES_CORE } from "@/data/experience";
 
 /** Experience · Across industries. The marquee, then two labelled tag sets. */
@@ -50,6 +51,11 @@ export function ExpIndustries() {
         <Reveal as="p" className="aside">
           Some of this is a client relationship. Some of it is a business one of us built, ran, or
           fixed from the inside. We&apos;ve marked which is which, when it matters.
+        </Reveal>
+        <Reveal as="p" className="aside">
+          Two of these have their own pages:{" "}
+          <a href={withBase("/healthcare-marketing/")}>healthcare marketing</a> and{" "}
+          <a href={withBase("/hotel-resort-marketing/")}>hotel and resort marketing</a>.
         </Reveal>
       </div>
     </section>

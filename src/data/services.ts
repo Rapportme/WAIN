@@ -45,6 +45,8 @@ export interface Service {
   pricing: { body: string; ranges?: { item: string; range: string }[] };
   faq: ServiceFaq[];
   related: { href: string; label: string }[];
+  /** Schema `name` when "<name> in Kottayam, Kerala" doesn't read right. */
+  schemaName?: string;
 }
 
 export const SERVICES: Service[] = [
@@ -231,10 +233,326 @@ export const SERVICES: Service[] = [
       { href: "/thinking/digital-marketing-is-still-marketing/", label: "Digital marketing is still marketing" },
     ],
   },
+
+  {
+    slug: "content-production",
+    seoTitle: "Reels & Content Production in Kottayam, Kerala",
+    description:
+      "Reels, product photos, short ad films and brand videos shot and edited in Kottayam for Kerala businesses. Made to be posted, not just to look good.",
+    name: "Content production",
+    serviceType: "Video, reels and photo content production",
+    ink: "ink-amber",
+    shape: "mk-sq",
+    kicker: "Content production",
+    h1: "Reels and content in Kottayam, made to be used.",
+    intro:
+      "Reels, product and team photography, short ad films and brand videos for businesses across Kerala. Planned around what you need to post, shot efficiently, and delivered in every size the platforms want.",
+    answer:
+      "We Are In Collective produces reels, photos, short ad films and brand videos for businesses in Kottayam and across Kerala. Every shoot starts from a list of what the content is for and where it will be posted, so one shoot day gives you weeks of usable posts, ads and website images, not a folder of nice clips nobody uses.",
+    statement: ["Content is a supply problem.", "Plan the shoot around the calendar."],
+    why: [
+      "Most businesses in Kerala run out of good content within a month. The team is busy, the phone photos look like phone photos, and posting becomes whatever was lying around.",
+      "We plan content the other way round: first the month's posts, ads and pages, then one shoot that covers them. Your real place, real people and real product, in Malayalam or English, cut for Instagram, YouTube, WhatsApp and the website at once.",
+    ],
+    included: [
+      { title: "Content plan", body: "The list of reels, photos and videos the business needs for the next month or campaign, and where each one will be used." },
+      { title: "Shoot days", body: "On-location shoots at your shop, clinic, site or office, with a shot list agreed in advance so the day runs to time." },
+      { title: "Reels and short video", body: "Vertical edits with hooks, captions and subtitles, made for Instagram and YouTube Shorts." },
+      { title: "Photography", body: "Product, team, space and behind-the-scenes photos for social media, the website and your Google Business Profile." },
+      { title: "Ad films and brand videos", body: "Short films for launches, festivals and ads, from script to final cut." },
+      { title: "Formats and handover", body: "Every piece exported in the sizes each platform needs, organised and handed over so your team can post without us." },
+    ],
+    steps: [
+      { title: "Brief", body: "What the content is for, who it is for, and where it will run." },
+      { title: "Plan", body: "Ideas, scripts and a shot list, approved by you before the shoot is booked." },
+      { title: "Shoot", body: "One focused day, or a few short sessions, at your location." },
+      { title: "Edit", body: "First cuts for review, one round of changes, then final exports." },
+      { title: "Deliver and reuse", body: "Files in every format, plus a note on how to use them across the month." },
+    ],
+    goodFit: [
+      "You already post, but the content looks tired or inconsistent.",
+      "You have a launch, festival or campaign coming and need content for it.",
+      "Your team can post and reply, but can't shoot and edit well.",
+      "You want real footage of your business instead of stock images.",
+    ],
+    notFit: [
+      "You need a feature-length film or a big studio production. We'll point you to a production house.",
+      "You want content without knowing what it is for. We'll start with the plan first.",
+    ],
+    pricing: {
+      body: "Content production is priced per shoot and per set of deliverables: how many reels, photos and videos, and how many shoot days. It can be a one-off project or a monthly retainer. You get a fixed quote after the brief, before we shoot anything.",
+    },
+    faq: [
+      { q: "How many reels can you make from one shoot day?", a: "It depends on the business and the ideas, but a well-planned shoot day usually covers several reels plus a set of photos. We agree the list before the shoot, so you know what you'll get." },
+      { q: "Do you shoot in Malayalam?", a: "Yes. Scripts, voice-overs and captions can be in Malayalam, English or a mix, whichever your customers respond to." },
+      { q: "Do you also post the content?", a: "We can, as part of social media marketing. Or we hand the files over and your team posts them. Both work." },
+      { q: "Do you work outside Kottayam?", a: "Yes. We shoot across Kerala. Travel beyond Kottayam is added to the quote." },
+      { q: "Who owns the content?", a: "You do. Final files are yours to use on your own channels and ads." },
+    ],
+    related: [
+      { href: "/social-media-marketing/", label: "Social media marketing" },
+      { href: "/thinking/instagram-marketing-for-local-businesses-in-kottayam/", label: "Instagram marketing for Kottayam businesses" },
+      { href: "/thinking/good-ideas-are-not-single-use/", label: "Good ideas are not single-use" },
+    ],
+  },
+  {
+    slug: "lead-generation",
+    seoTitle: "Lead Generation & Follow-up for Kerala Businesses",
+    description:
+      "Lead generation for small businesses in Kerala: more enquiries, answered the same day, tracked from first click to sale. Ads, WhatsApp, CRM and follow-up.",
+    name: "Lead generation",
+    serviceType: "Lead generation, lead handling and sales follow-up",
+    ink: "ink-lav",
+    shape: "mk-a",
+    kicker: "Lead generation",
+    h1: "Lead generation for Kerala businesses, through to the sale.",
+    intro:
+      "More enquiries is only half the job. We set up where leads come from, how fast they are answered, how they are followed up and how you can see which ones turned into customers.",
+    answer:
+      "We Are In Collective helps small and mid-sized businesses in Kerala generate leads and turn them into customers. We set up the sources, usually Google, Instagram, WhatsApp and your website, then the part most agencies skip: same-day replies, a simple CRM, follow-up reminders and a monthly view of which source brought paying customers.",
+    statement: ["Most leads aren't lost to competitors.", "They're lost to slow replies."],
+    why: [
+      "Businesses often ask for more leads when the real problem is what happens after the enquiry. Calls go unanswered, WhatsApp messages wait until the evening, and nobody follows up after the first quote.",
+      "We look at the whole path, from the ad or search to the first reply to the sale, and fix the weakest step first. Sometimes that is more ads. Often it is a faster reply and a follow-up routine.",
+    ],
+    included: [
+      { title: "Lead source setup", body: "Google search ads, Instagram and Facebook lead ads, website forms and a WhatsApp button, chosen to fit the business." },
+      { title: "Landing pages", body: "One page per offer, fast on a phone, with one clear action." },
+      { title: "Lead tracking", body: "Every enquiry tagged with where it came from, so you know which channel pays for itself." },
+      { title: "CRM setup", body: "A simple pipeline your team will actually use, from new enquiry to won or lost, with reminders." },
+      { title: "Reply and follow-up scripts", body: "What to say in the first reply, the quote and the follow-ups, written for your business and your customers." },
+      { title: "Monthly review", body: "Enquiries, response time, conversion and cost per customer, with the one change to make next." },
+    ],
+    steps: [
+      { title: "Map", body: "Where enquiries come from today, who answers them, and where they drop off." },
+      { title: "Fix the follow-up", body: "Reply times, scripts and a CRM before any extra money goes into ads." },
+      { title: "Add sources", body: "Ads and pages on the channels that suit your customers, starting small." },
+      { title: "Track", body: "Every lead followed from first click to sale." },
+      { title: "Improve", body: "Monthly review of what brought customers, and more budget behind it." },
+    ],
+    goodFit: [
+      "You get enquiries but too few turn into customers.",
+      "You're spending on ads and can't tell what they bring in.",
+      "Your team replies late, or leads fall through the cracks.",
+      "You want steady enquiries instead of depending on referrals alone.",
+    ],
+    notFit: [
+      "You want a list of phone numbers to cold-call. We don't buy or sell data.",
+      "Nobody in the business can reply to enquiries on the same day. We'll help set that up first.",
+    ],
+    pricing: {
+      body: "Lead generation is priced as a setup project plus a monthly fee for running and reviewing it. Ad spend is paid directly to Google or Meta and is always separate. You get a fixed quote after we map how enquiries are handled today.",
+    },
+    faq: [
+      { q: "Can you guarantee a number of leads?", a: "No. Anyone who guarantees leads before seeing your business is guessing. What we promise is clear tracking, fast follow-up and honest monthly numbers." },
+      { q: "Do we need a CRM?", a: "If more than a handful of enquiries come in a week, yes. It can be very simple. We set up something your team will actually keep updated." },
+      { q: "Do you handle the calls and WhatsApp replies for us?", a: "We set up the process, scripts and reminders and train your team. The replies should come from your business, because that is who the customer wants to talk to." },
+      { q: "Which is better for leads in Kerala, Google or Instagram?", a: "Google usually works for people already looking for what you sell. Instagram works for creating demand and reaching people nearby. Most local businesses need both, in different proportions." },
+      { q: "How soon do leads start?", a: "Ads can bring enquiries within days of launch. The bigger gains usually come from fixing replies and follow-up, which shows up within the first month." },
+    ],
+    related: [
+      { href: "/digital-marketing/", label: "Digital marketing" },
+      { href: "/thinking/sales-is-not-the-last-department-of-a-business/", label: "Sales is not the last department" },
+      { href: "/thinking/most-of-your-customers-arent-ready-to-buy-yet/", label: "Most customers aren't ready to buy yet" },
+    ],
+  },
+];
+
+/**
+ * Pages for a place or an industry rather than a service: the Kottayam page and
+ * the industries the team has real work in. Same layout as a service page; the
+ * experience cited is the team's own, from /experience.
+ */
+export const LOCAL_PAGES: Service[] = [
+  {
+    slug: "marketing-agency-kottayam",
+    seoTitle: "Marketing & Branding Agency in Kottayam — We Are In",
+    description:
+      "We Are In Collective is a marketing, branding and growth team based in Kottayam, Kerala. Strategy, branding, social media, content and leads in one place.",
+    name: "Marketing agency in Kottayam",
+    schemaName: "Marketing, branding and growth services in Kottayam",
+    serviceType: "Marketing, branding and business growth consultancy",
+    ink: "ink-teal",
+    shape: "mk-cir",
+    kicker: "Kottayam",
+    h1: "A marketing and branding team in Kottayam.",
+    intro:
+      "We Are In Collective works from Kottayam with businesses across the district and the rest of Kerala. One team for strategy, branding, social media, content, digital marketing and lead follow-up, so nothing gets lost between agencies.",
+    answer:
+      "We Are In Collective is a marketing, branding and growth partner based in Kottayam, Kerala, near Nalumanikkattu on the Thiruvalla – Ettumanoor bypass. We work with businesses across Kottayam district and the rest of Kerala on branding, social media, content, digital marketing and lead follow-up, starting with what is actually holding the business back.",
+    statement: ["Local businesses don't need more agencies.", "They need one team that gets the whole picture."],
+    why: [
+      "A typical Kottayam business has a designer for the logo, a freelancer for Instagram, someone else for ads and nobody watching the enquiries. Each does their part, and nobody owns the result.",
+      "We sit down with the owner, look at the business as a whole, and take responsibility for the parts that matter most right now. Being in Kottayam means we can meet in person, visit the shop or site, and shoot content without a travel day.",
+    ],
+    included: [
+      { title: "Branding", body: "Strategy, identity and messaging, in that order. See the branding page for details." },
+      { title: "Social media marketing", body: "Planned, produced, published and measured every month." },
+      { title: "Content production", body: "Reels, photos and short films shot at your location in and around Kottayam." },
+      { title: "Digital marketing", body: "Google and Meta ads, SEO, AI search and your Google Business Profile." },
+      { title: "Lead generation and follow-up", body: "Enquiries tracked, answered the same day and followed through to the sale." },
+      { title: "Growth diagnosis", body: "A free first read of where the business stands, before you commit to anything." },
+    ],
+    steps: [
+      { title: "Meet", body: "A conversation at our office, your place or on a call, about the business and what's not working." },
+      { title: "Diagnose", body: "An honest read of the brand, marketing and sales, including what not to spend on." },
+      { title: "Plan", body: "A short plan with priorities, costs and what success looks like." },
+      { title: "Do the work", body: "Our own team handles the parts you choose, with one person accountable." },
+      { title: "Review", body: "A monthly review in plain language, and changes based on the numbers." },
+    ],
+    goodFit: [
+      "You run a business in Kottayam district and want one team rather than several vendors.",
+      "You want to meet the people doing the work.",
+      "You're growing and marketing has become a patchwork.",
+      "You're launching something new in Kerala and want to get it right the first time.",
+    ],
+    notFit: [
+      "You only want the cheapest possible posts every month.",
+      "You want guaranteed rankings or follower counts. We don't promise those.",
+    ],
+    pricing: {
+      body: "Every engagement is quoted after a first conversation: a fixed fee for projects like branding, or a monthly fee for ongoing work like social media and ads. Ad spend is always separate. The growth diagnosis is free.",
+    },
+    faq: [
+      { q: "Where is your office in Kottayam?", a: "St. Mary's Arcade, near Nalumanikkattu, on the Thiruvalla – Ettumanoor bypass, Kottayam. Call or WhatsApp before visiting so the right person is there." },
+      { q: "Do you work with businesses outside Kottayam?", a: "Yes. Most of our work is in and around Kottayam, but we work across Kerala and remotely beyond it." },
+      { q: "What kinds of businesses do you work with?", a: "Mostly owner-led businesses: clinics and hospitals, hotels and resorts, retail, real estate, education, FMCG and service businesses. See our experience page for the work behind the team." },
+      { q: "Are you a digital marketing agency?", a: "We do digital marketing, but we call ourselves a growth partner, because we start with the business problem and only then pick the channels. Sometimes the answer isn't marketing at all." },
+      { q: "How do we start?", a: "Take the free growth diagnosis online, or call or WhatsApp us. We'll set up a first conversation, usually within the week." },
+    ],
+    related: [
+      { href: "/branding/", label: "Branding" },
+      { href: "/social-media-marketing/", label: "Social media marketing" },
+      { href: "/digital-marketing/", label: "Digital marketing" },
+      { href: "/experience/", label: "Our experience" },
+    ],
+  },
+  {
+    slug: "healthcare-marketing",
+    seoTitle: "Healthcare & Clinic Marketing in Kerala — We Are In",
+    description:
+      "Marketing for hospitals, clinics and Ayurveda centres in Kerala: patient trust, doctor brands, Google reviews and content that stays within medical ethics.",
+    name: "Healthcare marketing",
+    schemaName: "Healthcare and clinic marketing in Kerala",
+    serviceType: "Healthcare marketing and branding",
+    ink: "ink-sage",
+    shape: "mk-tri",
+    kicker: "Healthcare",
+    h1: "Healthcare marketing in Kerala, built on trust.",
+    intro:
+      "Branding, content and patient enquiries for hospitals, clinics, Ayurveda centres and veterinary practices. Healthcare is the sector our team has worked in longest.",
+    answer:
+      "We Are In Collective markets hospitals, clinics and Ayurveda centres in Kerala. In healthcare, patients choose a doctor and a place they trust, so we build the doctor's and institution's reputation first: clear branding, honest educational content, strong Google reviews and fast replies to enquiries. We never make claims that medical ethics or advertising rules don't allow.",
+    statement: ["In healthcare, the doctor is the brand.", "Trust comes before traffic."],
+    why: [
+      "Patients don't compare clinics the way they compare phones. They ask people they know, read Google reviews and look for a doctor they feel they can trust. Discounts and loud ads rarely help and can hurt.",
+      "Our team's healthcare work goes back to 2016. Ananthu led the rebrand of Swetaranya Ayurvedasram and has stayed with it since; more than half its patients now come from outside India. He built a veterinary founder's personal brand to 42,000 organic followers before the hospital opened, and redesigned Sreedhareeyam Eye Hospital's identity.",
+    ],
+    included: [
+      { title: "Institution and doctor branding", body: "Identity and messaging for the hospital or clinic, and personal brands for the doctors patients ask for." },
+      { title: "Patient education content", body: "Reels, posts and articles that answer the questions patients actually ask, reviewed by your doctors." },
+      { title: "Google Business Profile and reviews", body: "Listings set up properly for every location, and a simple routine for asking patients for reviews." },
+      { title: "Website and appointment enquiries", body: "Clear department and doctor pages, with WhatsApp and call buttons that reach the front desk." },
+      { title: "Local and international patients", body: "Separate messages for patients nearby and for those travelling from the Gulf or abroad." },
+      { title: "Ethics check", body: "Every piece checked against medical advertising rules and your own standards before it goes out." },
+    ],
+    steps: [
+      { title: "Listen", body: "Conversations with the doctors and management about who the institution serves and what it is known for." },
+      { title: "Audit", body: "Google listings, reviews, website, social media and how enquiries are handled today." },
+      { title: "Build trust assets", body: "Branding, doctor profiles, listings and a review routine." },
+      { title: "Educate", body: "A steady rhythm of content answering real patient questions." },
+      { title: "Measure", body: "Enquiries, appointments and reviews tracked monthly." },
+    ],
+    goodFit: [
+      "A hospital, clinic, Ayurveda centre or veterinary practice in Kerala.",
+      "A doctor starting a practice who wants to build a reputation early.",
+      "An institution attracting patients from outside Kerala or India.",
+      "A healthcare brand whose online presence doesn't match its reputation.",
+    ],
+    notFit: [
+      "You want before-and-after claims or promises of cures. We won't make them.",
+      "You want to buy reviews. We only help you ask real patients.",
+    ],
+    pricing: {
+      body: "Healthcare work is usually a branding project followed by a monthly retainer for content, listings and enquiries. Quoted after a first conversation with the doctors and management.",
+    },
+    faq: [
+      { q: "Can hospitals and clinics advertise in India?", a: "Healthcare advertising in India is restricted, and doctors have their own ethical rules. That's why we focus on education, reputation and honest information rather than promotional claims, and check every piece before it goes out." },
+      { q: "Should a doctor have a personal brand?", a: "Often, yes. Patients look for a doctor as much as a hospital. A doctor who explains things clearly online earns trust before the first appointment." },
+      { q: "How do we get more Google reviews?", a: "Ask at the right moment, after a good outcome, and make it easy with a direct review link. Reply to every review, good or bad. Never buy reviews." },
+      { q: "Do you work with Ayurveda centres?", a: "Yes. Ayurveda is where our team's healthcare work began, including international patients." },
+    ],
+    related: [
+      { href: "/branding/", label: "Branding" },
+      { href: "/thinking/google-business-profile-for-kerala-businesses-a-practical-setup-guide/", label: "Google Business Profile guide" },
+      { href: "/experience/", label: "Our experience" },
+    ],
+  },
+  {
+    slug: "hotel-resort-marketing",
+    seoTitle: "Hotel & Resort Marketing in Kerala — We Are In",
+    description:
+      "Marketing for hotels, resorts and homestays in Kerala: brand, reels, Google reviews and direct bookings, so fewer guests arrive through commission sites.",
+    name: "Hotel and resort marketing",
+    schemaName: "Hotel, resort and tourism marketing in Kerala",
+    serviceType: "Hospitality and tourism marketing",
+    ink: "ink-coral",
+    shape: "mk-sq",
+    kicker: "Hotels and resorts",
+    h1: "Hotel and resort marketing in Kerala, for direct guests.",
+    intro:
+      "Branding, content, reviews and direct bookings for hotels, resorts, homestays and travel businesses across Kerala, from Kumarakom and Vagamon to Munnar and the coast.",
+    answer:
+      "We Are In Collective markets hotels, resorts, homestays and travel businesses in Kerala. We help properties earn more direct bookings by showing the real stay in reels and photos, building strong Google and platform reviews, and making it easy to book on WhatsApp or the website instead of through commission-heavy portals.",
+    statement: ["Guests book the experience.", "Show it before they arrive."],
+    why: [
+      "Travellers decide on a hotel from photos, reels and reviews long before they compare prices. Properties with the same rooms and rates end up very differently booked because of how they show up online.",
+      "Our team has done this work. A Women's Day guest campaign Ananthu worked on for Malabar Village Luxe brought more than 30 five-star Google reviews in a single day, and his campaign for Alisha Travels built a travel brand around experience rather than discounts.",
+    ],
+    included: [
+      { title: "Property branding", body: "What the stay is known for, who it is for, and how that shows in every photo and message." },
+      { title: "Reels and photography", body: "Rooms, food, views and experiences shot through the seasons, not just once." },
+      { title: "Reviews", body: "Guest-experience moments and a routine that earns reviews on Google and booking platforms." },
+      { title: "Direct booking", body: "A website and WhatsApp booking path that is quicker than the portals." },
+      { title: "Seasonal campaigns", body: "Onam, Christmas, monsoon and holiday campaigns planned months ahead." },
+      { title: "Google Business Profile", body: "Listing, photos, hours and offers kept current for travellers searching nearby." },
+    ],
+    steps: [
+      { title: "Stay", body: "We experience the property and talk to guests and staff." },
+      { title: "Position", body: "What makes the stay worth choosing, written down and agreed." },
+      { title: "Produce", body: "Seasonal shoots for reels and photos." },
+      { title: "Publish and campaign", body: "Social media, listings and campaigns around the travel calendar." },
+      { title: "Track bookings", body: "Direct enquiries and bookings tracked against portal bookings every month." },
+    ],
+    goodFit: [
+      "A resort, hotel, homestay or boutique stay in Kerala.",
+      "You depend heavily on booking portals and their commissions.",
+      "Your photos and reels no longer do the property justice.",
+      "A travel company building a brand rather than competing on price.",
+    ],
+    notFit: [
+      "You want fake reviews or paid follower boosts.",
+      "You want to compete only on being the cheapest room in town.",
+    ],
+    pricing: {
+      body: "Hospitality work is usually a content and branding setup followed by a monthly retainer, with extra shoots around the seasons. Quoted after we visit the property.",
+    },
+    faq: [
+      { q: "How can a hotel get more direct bookings?", a: "Make booking direct easier than booking through a portal: a fast website, a WhatsApp number that replies quickly, and a small reason to book direct. Then show the stay well in reels, photos and reviews." },
+      { q: "How do resorts get more Google reviews?", a: "Create moments guests want to talk about, then ask at checkout with a direct review link. Reply to every review." },
+      { q: "Do you shoot on location?", a: "Yes. We shoot at the property, ideally more than once a year so content reflects the seasons." },
+      { q: "Do you work with travel agencies?", a: "Yes. Travel businesses need the same things: a clear brand, real content and trust." },
+    ],
+    related: [
+      { href: "/content-production/", label: "Content production" },
+      { href: "/social-media-marketing/", label: "Social media marketing" },
+      { href: "/experience/", label: "Our experience" },
+    ],
+  },
 ];
 
 export function serviceBySlug(slug: string): Service {
-  const s = SERVICES.find((x) => x.slug === slug);
+  const s = [...SERVICES, ...LOCAL_PAGES].find((x) => x.slug === slug);
   if (!s) throw new Error(`Unknown service ${slug}`);
   return s;
 }

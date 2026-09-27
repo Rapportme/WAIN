@@ -55,6 +55,8 @@ const COLUMNS: MenuColumn[] = [
       { route: "/branding/", title: "Branding", note: "Strategy, identity and messaging, in that order." },
       { route: "/social-media-marketing/", title: "Social media marketing", note: "Planned, produced, published and measured." },
       { route: "/digital-marketing/", title: "Digital marketing", note: "Ads, SEO and AI search, judged on customers." },
+      { route: "/content-production/", title: "Content production", note: "Reels, photos and films, shot to be posted." },
+      { route: "/lead-generation/", title: "Lead generation", note: "Enquiries answered, followed up and tracked to the sale." },
     ],
   },
   {
@@ -76,6 +78,8 @@ const COLUMNS: MenuColumn[] = [
         title: "Experience behind We Are In",
         note: "Work our people led before the name existed.",
       },
+      { route: "/healthcare-marketing/", title: "Healthcare marketing", note: "Hospitals, clinics and Ayurveda, built on trust." },
+      { route: "/hotel-resort-marketing/", title: "Hotels and resorts", note: "Real stays, real reviews, more direct bookings." },
     ],
   },
   {
@@ -84,7 +88,7 @@ const COLUMNS: MenuColumn[] = [
     shape: "mk-wedge",
     route: "/thinking/",
     links: [
-      { route: "/thinking/", title: "Everything we've published", note: "Twenty-two pieces, in the order they were written." },
+      { route: "/thinking/", title: "Everything we've published", note: "Every piece, in the order it was written." },
       { route: "/thinking/", hash: "#observations", title: "Observations", note: "Short. Things we keep noticing." },
       { route: "/thinking/", hash: "#perspectives", title: "Perspectives", note: "Opinions we'll put our name on." },
       { route: "/thinking/", hash: "#case-studies", title: "Case studies", note: "What we did, including what didn't work." },
@@ -99,6 +103,7 @@ const COLUMNS: MenuColumn[] = [
       { route: "/", hash: "#routes", title: "Three ways in", note: "Pick one, or read it straight through." },
       { route: "/contact/", title: "Let's talk over coffee", note: "A conversation, not a pitch." },
       { route: "/diagnosis/", title: "Growth diagnosis", note: "Fifteen questions. Free. Under five minutes." },
+      { route: "/marketing-agency-kottayam/", title: "In Kottayam", note: "Where we are, and what we do for local businesses." },
       { route: "/growth-partner/", title: "What is a growth partner?", note: "The term, defined — and how it differs." },
       { route: "/growth-partner-vs-marketing-agency/", title: "Growth partner vs agency", note: "Which one the business actually needs." },
       { route: "/growth-partner-vs-fractional-cmo/", title: "Growth partner vs fractional CMO", note: "Closer than it looks. Easier to get wrong." },

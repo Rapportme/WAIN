@@ -5,6 +5,7 @@ PERSPECTIVE | ARTICLE 01
 Before You Choose a Marketing Channel, Decide What You Are Trying to Build
 Author: Ananthu Vasudev
 Excerpt: Channels are the easy part now. Decide what the brand is trying to mean, who needs to believe it and what behaviour to change — then pick the channel.
+Service: branding
 
 “Should we do influencer marketing?” “Can we start posting on Instagram?” “Should we run Meta ads?”
 
@@ -105,6 +106,7 @@ PERSPECTIVE | ARTICLE 03
 Creative Teams Need Systems Too
 Author: Ananthu Vasudev
 Excerpt: Systems don't tell creative people what idea to have. Clear briefs, approvals and timelines are what give a team the room to take creative risks.
+Service: content-production
 
 Creative work is often treated as something that should remain free from systems.
 
@@ -215,6 +217,7 @@ OBSERVATION | ARTICLE 05
 The Next Battle Between Instagram and YouTube May Be About Social, Not Video
 Author: Ananthu Vasudev
 Excerpt: The next platform battle may be about the social layer around the video, not the video. What that means for how brands brief and measure content.
+Service: social-media-marketing
 
 Instagram and YouTube are often compared as video platforms. That comparison misses an important difference.
 
@@ -268,6 +271,7 @@ OBSERVATION | ARTICLE 06
 Most of Your Customers Aren't Ready to Buy Yet
 Author: Ananthu Vasudev
 Excerpt: Most people meet a brand long before they need it. Why some marketing plants a memory rather than triggering a sale, and how to judge each on its terms.
+Service: lead-generation
 
 A common marketing expectation is that communication should produce an immediate response.
 
@@ -321,6 +325,7 @@ PERSPECTIVE | ARTICLE 07
 Digital Marketing Is Still Marketing
 Author: Ananthu Vasudev
 Excerpt: Running ads or making reels isn't the same as knowing how to market. Why understanding people should decide what the tools are for, not the reverse.
+Service: digital-marketing
 
 Many digital marketing courses now lead with tools.
 
@@ -384,6 +389,7 @@ PERSPECTIVE | ARTICLE 08
 The Segmentation Blind Spot: What People Are Willing to Spend
 Author: Ananthu Vasudev
 Excerpt: Income tells you what a customer can spend. It doesn't tell you what they're willing to spend on. A more useful way to segment: by priorities and value.
+Service: branding
 
 Marketing segmentation usually begins with variables that are easy to identify.
 
@@ -447,6 +453,7 @@ OBSERVATION | ARTICLE 09
 People Are Already Being Influenced. The Question Is by What.
 Author: Ananthu Vasudev
 Excerpt: Customers are part of the distribution system, not just the audience. A Maharani Wedding Collections campaign built on how people already sway each other.
+Service: social-media-marketing
 
 “Why bother convincing people?”
 
@@ -504,6 +511,7 @@ CASE STUDY | ARTICLE 10
 Good Ideas Are Not Single-Use
 Author: Ananthu Vasudev
 Excerpt: How one Malayalam eyewear idea for Allen & Habour Opticals moved from Zomato's order-tracking page to a restaurant screen without being reinvented.
+Service: content-production
 
 A campaign doesn’t need a new idea every time the placement changes.
 
@@ -575,6 +583,7 @@ PERSPECTIVE | ARTICLE 11
 A Campaign You Don't Like Can Still Be a Good Campaign
 Author: Ananthu Vasudev
 Excerpt: Not liking an ad doesn't make it ineffective. Why marketing judgement needs distance from personal taste, and better questions for a creative review.
+Service: branding
 
 Marketing professionals are exposed to thousands of campaigns. That makes personal taste almost impossible to separate from professional judgement.
 
@@ -642,6 +651,7 @@ CASE STUDY | ARTICLE 12
 Designing for Context: The Malayalam Ad on Zomato's Order-Tracking Page
 Author: Ananthu Vasudev
 Excerpt: A case study on treating a Zomato order-tracking placement as part of the idea, not just inventory, with a Malayalam ad for Allen & Habour Opticals.
+Service: digital-marketing
 
 A media placement can be bought as inventory.
 
@@ -727,6 +737,7 @@ OBSERVATION | ARTICLE 13
 A Logo Does Not Become a Brand Just Because There Is Space for It
 Author: Ananthu Vasudev
 Excerpt: A brand exists in customers' minds, not in the approval meeting. Why a logo should be judged by what it makes people think, not by who likes it.
+Service: branding
 
 Branding often becomes a matter of personal preference.
 
@@ -790,6 +801,7 @@ CASE STUDY | ARTICLE 14
 When a Marketing Idea Moves Faster Than the Campaign Calendar
 Author: Ananthu Vasudev
 Excerpt: A Women's Day campaign for Malabar Village Luxe went from idea to client approval in hours. What it shows about fitting the process to the idea.
+Service: social-media-marketing
 
 Some campaigns are built months ahead.
 
@@ -873,6 +885,7 @@ OBSERVATION | ARTICLE 15
 Sometimes the Billboard Next to Yours Is Part of Your Campaign
 Author: Ananthu Vasudev
 Excerpt: On a road, people see billboards together, not one at a time. Why contextual and reactive outdoor advertising is an underused opportunity in Kerala.
+Service: branding
 
 Outdoor advertising is usually planned as if every billboard exists independently.
 
@@ -930,6 +943,7 @@ PERSPECTIVE | ARTICLE 16
 “AI-Free” Is Not a Creative Strategy
 Author: Ananthu Vasudev
 Excerpt: Avoiding a tool doesn't make work original. Why 'AI-free' is a badge, not a creative strategy, and what actually decides whether work is good.
+Service: content-production
 
 “AI-free content.”
 
@@ -1070,6 +1084,7 @@ OBSERVATION | ARTICLE 18
 The Best Business Automation May Not Need New Software
 Author: Ananthu Vasudev
 Excerpt: A tyre shop's follow-up trick shows automation doesn't need new software. Start with where the business keeps losing time or follow-up, then build small.
+Service: lead-generation
 
 One of the smartest low-cost examples of sales automation can look almost too simple to count as automation.
 
@@ -1137,6 +1152,7 @@ OBSERVATION | ARTICLE 19
 A Good Product Can Become Unpopular Because of How It Is Sold
 Author: Ananthu Vasudev
 Excerpt: Insurance is useful, yet widely avoided in India. How the way a product is sold can shape how a whole category is seen, and what that means for trust.
+Service: lead-generation
 
 Insurance is a useful example of a marketing problem that is not really a product problem.
 
@@ -1196,6 +1212,7 @@ PERSPECTIVE | ARTICLE 20
 Sales Is Not the Last Department of a Business
 Author: Ananthu Vasudev
 Excerpt: Sales is where a business hears what the market actually thinks. Why it belongs alongside marketing and product as a market intelligence function.
+Service: lead-generation
 
 Sales is often treated as the final stage of business.
 
@@ -1289,6 +1306,7 @@ OBSERVATION | ARTICLE 21
 Customer Experience Starts Before the Product Does
 Author: Ananthu Vasudev
 Excerpt: A visit to River's Kochi showroom shows customer experience begins at the car park, not the product. Every small interaction is part of the brand.
+Service: branding
 
 A product showroom is usually evaluated by the product on display.
 
@@ -1368,6 +1386,7 @@ PERSPECTIVE | ARTICLE 22
 Why Should Businesses Be the Only Ones Being Rated?
 Author: Ananthu Vasudev
 Excerpt: Customers rate businesses, but the rating rarely runs the other way. A case for symmetry, accountability and worker dignity in review systems.
+Service: digital-marketing
 
 Businesses are increasingly measured through ratings.
 

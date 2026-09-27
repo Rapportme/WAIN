@@ -39,6 +39,10 @@ export function Close() {
             Get a free growth diagnosis
           </a>
         </Reveal>
+        <Reveal as="p" className="close-sub close-local" d={5}>
+          Based in Kottayam, working across Kerala.{" "}
+          <a href={withBase("/marketing-agency-kottayam/")}>What we do for Kottayam businesses →</a>
+        </Reveal>
       </div>
     </section>
   );
