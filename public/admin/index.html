@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
@@ -1180,6 +1180,69 @@
         .timeline-day-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .timeline-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-left: 3px solid var(--wain-cyan); background: var(--wain-light-gray); border-radius: 0 6px 6px 0; margin-bottom: 6px; font-size: 13px; }
         .timeline-item-type { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); }
+
+        /* ---------- v18: notifications bell ---------- */
+        .notif-wrap { position: relative; }
+        .notif-btn { position: relative; font-size: 15px; padding: 7px 11px; line-height: 1; }
+        .notif-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--danger-red); color: #fff; font-size: 10.5px; font-weight: 700; line-height: 18px; text-align: center; }
+        .notif-panel { display: none; position: absolute; right: 0; top: calc(100% + 8px); width: 360px; max-width: calc(100vw - 24px); max-height: 70vh; overflow: auto; background: #fff; border: 1px solid var(--wain-border); border-radius: 10px; box-shadow: 0 12px 32px rgba(26,33,56,0.16); z-index: 400; }
+        .notif-panel.open { display: block; }
+        .notif-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--wain-border); font-size: 13px; position: sticky; top: 0; background: #fff; }
+        .notif-head a { font-size: 12px; color: var(--wain-cyan); text-decoration: none; }
+        .notif-item { display: flex; gap: 10px; padding: 11px 14px; border-bottom: 1px solid var(--wain-border); cursor: pointer; }
+        .notif-item:hover { background: var(--wain-light-gray); }
+        .notif-item.unread { background: rgba(0,184,212,0.06); }
+        .notif-item.unread .notif-title { font-weight: 700; }
+        .notif-icon { font-size: 16px; line-height: 1.3; }
+        .notif-title { font-size: 13px; color: var(--text-primary); }
+        .notif-body { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+        .notif-time { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+        .notif-empty { padding: 22px 16px; text-align: center; font-size: 12px; color: var(--text-secondary); }
+        @media (max-width: 768px) { .notif-panel { position: fixed; top: 64px; right: 12px; left: 12px; width: auto; } }
+
+        /* ---------- v18: leave balances ---------- */
+        .bal-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .bal-chip { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(0,184,212,0.08); color: var(--text-primary); border: 1px solid rgba(0,184,212,0.25); }
+        .bal-chip.sl { background: rgba(245,166,35,0.08); border-color: rgba(245,166,35,0.3); }
+        .bal-chip.co { background: rgba(142,120,199,0.1); border-color: rgba(142,120,199,0.3); }
+        .bal-chip.up { background: var(--wain-light-gray); border-color: var(--wain-border); color: var(--text-secondary); }
+        .bal-chip.empty { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.25); color: var(--danger-red); }
+        .bal-chip em { font-style: normal; color: var(--text-secondary); }
+        .bal-note { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+        .bal-mini { font-size: 12px; white-space: nowrap; }
+        .bal-mini.empty, .bal-out { color: var(--danger-red); font-weight: 600; }
+        .lv-preview { font-size: 12.5px; color: var(--text-primary); min-height: 0; }
+        .lv-quota { font-size: 12px; padding: 8px 10px; border-radius: 6px; background: rgba(245,166,35,0.1); color: #8a5a00; }
+        .lv-reject { color: var(--danger-red); }
+        .lv-pending-row td { background: rgba(245,158,11,0.05); }
+        .sum-name { font-weight: 700; color: var(--wain-cyan); text-decoration: none; }
+        .sum-name:hover { text-decoration: underline; }
+        .sum-sub { font-size: 11px; color: var(--text-secondary); }
+        .prio-chip.brk { background: rgba(245,166,35,0.15); color: #8a5a00; }
+
+        /* ---------- v18: inline status selects ---------- */
+        .status-select { border: none; border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; width: auto; min-width: 0; }
+
+        /* ---------- v18: work library ---------- */
+        #libSearch, #libClient { padding: 8px 10px; border: 1px solid var(--wain-border); border-radius: 6px; font-size: 13px; font-family: inherit; }
+        .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+        .lib-card { border: 1px solid var(--wain-border); border-radius: 10px; padding: 10px; background: #fff; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+        .lib-thumb { height: 120px; border-radius: 6px; background: var(--wain-light-gray); display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden; margin-bottom: 4px; }
+        .lib-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .lib-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .lib-ver { font-weight: 400; color: var(--text-secondary); font-size: 11px; }
+        .lib-meta { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .lib-actions { display: flex; gap: 6px; margin-top: 6px; }
+        .lib-actions .btn { flex: 1; padding: 6px 8px; }
+
+        /* ---------- v18: goals ---------- */
+        .goal-line { font-size: 12.5px; margin: 4px 0; line-height: 1.45; }
+        .goal-line span { display: inline-block; min-width: 118px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--text-secondary); }
+        .goal-note { font-size: 12px; margin: 6px 0 2px; padding: 6px 8px; background: var(--wain-light-gray); border-radius: 6px; }
+        .goal-help { font-size: 12.5px; line-height: 1.6; color: var(--text-primary); }
+        .goal-help p { margin: 0 0 8px; }
+        .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--wain-border); border-radius: 6px; font-size: 14px; font-family: inherit; line-height: 1.45; resize: vertical; box-sizing: border-box; }
+        .form-group textarea:focus { outline: none; border-color: var(--wain-cyan); box-shadow: 0 0 0 3px rgba(0,184,212,0.1); }
     </style>
 </head>
 <body>
@@ -1346,6 +1409,10 @@
                 </div>
             </div>
             <div class="header-actions">
+                <div class="notif-wrap">
+                    <button type="button" class="btn btn-secondary btn-sm notif-btn" id="notifBtn" onclick="toggleNotifs(event)" aria-label="Notifications" title="Notifications">🔔<span class="notif-count" id="notifCount" style="display:none;">0</span></button>
+                    <div class="notif-panel" id="notifPanel"></div>
+                </div>
                 <button class="btn btn-secondary btn-sm" onclick="switchView('overview')">Refresh</button>
             </div>
         </div>
@@ -1416,8 +1483,9 @@
                 <div style="margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;" id="creativeViewToggle">
                     <span class="stage-pill active" data-cview="list" onclick="switchCreativeView('list')">Deliverables List</span>
                     <span class="stage-pill" data-cview="calendar" onclick="switchCreativeView('calendar')">Content Calendar</span>
+                    <span class="stage-pill" data-cview="library" onclick="switchCreativeView('library')">📁 Work Library</span>
                     <span style="flex:1;"></span>
-                    <button type="button" class="btn btn-sm btn-secondary" onclick="openSheetImport()">Import from Google Sheet</button>
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="openSheetImport()">⬆ Import calendar (Excel / Google Sheet)</button>
                 </div>
 
                 <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;" id="deliverableStageFilters">
@@ -1431,6 +1499,20 @@
 
                 <div id="deliverablesList">
                     <div class="card skeleton-row">Loading deliverables…</div>
+                </div>
+
+                <div id="workLibraryView" style="display:none;">
+                    <div class="card">
+                        <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                            <div class="card-title">Work Library <span class="card-badge" id="libCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan); margin-left:6px;">—</span></div>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <input type="search" id="libSearch" placeholder="Search file, deliverable or client" oninput="filterLibrary()" style="min-width:220px;">
+                                <select id="libClient" onchange="filterLibrary()"><option value="">All clients</option></select>
+                            </div>
+                        </div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin:4px 0 12px;">Every file uploaded on a deliverable, newest first. Anyone on the team can view or download the original — no need to send files over WhatsApp.</div>
+                        <div id="workLibraryGrid" class="lib-grid">Loading…</div>
+                    </div>
                 </div>
 
                 <div id="contentCalendarView" style="display:none;">
@@ -1751,7 +1833,7 @@
                 <div class="section-header">
                     <div class="section-titles">
                         <h2>Team Goals</h2>
-                        <div class="section-subtitle">Targets on client followers, engagement rate or ROI. Hit one and everyone on it earns the reward and the points.</div>
+                        <div class="section-subtitle">Targets for clients or for WAIN itself. Hit one and everyone on it earns the reward and the points.</div>
                     </div>
                 </div>
                 <div class="accent-line"></div>
@@ -1760,25 +1842,21 @@
                         <div class="card" id="goalFormCard" style="margin-bottom:20px;">
                             <div class="card-header"><div class="card-title">Set a goal</div></div>
                             <form id="goalForm" onsubmit="createGoal(event)">
-                                <div class="form-group"><label>Goal</label><input type="text" id="goalTitle" placeholder="e.g. MGM Instagram to 5,000 followers" required></div>
+                                <div class="form-group"><label>Goal</label><input type="text" id="goalTitle" placeholder="e.g. Get MGM's Instagram to 5,000 followers" required></div>
                                 <div class="prio-form-row">
-                                    <div class="form-group"><label>Client</label><select id="goalClient" onchange="onGoalClientChange()"><option value="">— Client —</option></select></div>
-                                    <div class="form-group"><label>Measure</label><select id="goalMetric"><option value="followers">Followers</option><option value="engagement_rate">Engagement rate %</option><option value="roi">ROI %</option></select></div>
-                                </div>
-                                <div class="prio-form-row">
-                                    <div class="form-group"><label>Channel</label><select id="goalAccount" onchange="onGoalAccountChange()"><option value="">— Channel (optional) —</option></select></div>
+                                    <div class="form-group"><label>For</label><select id="goalClient"><option value="__internal">WAIN (internal)</option></select></div>
                                     <div class="form-group"><label>Deadline</label><input type="date" id="goalDeadline"></div>
                                 </div>
+                                <div class="form-group"><label>What we'll measure</label><textarea id="goalMeasure" rows="2" placeholder="e.g. Followers on @mgmtrips — or: qualified leads from the website, reels posted a week, Google reviews…"></textarea></div>
                                 <div class="prio-form-row">
-                                    <div class="form-group"><label>Starting value</label><input type="number" step="any" id="goalBaseline" placeholder="Today's number"></div>
-                                    <div class="form-group"><label>Target</label><input type="number" step="any" id="goalTarget" required></div>
+                                    <div class="form-group"><label>Starting point <span style="font-weight:400; color:var(--text-secondary);">(optional)</span></label><input type="text" id="goalBaseline" placeholder="e.g. 3,200 followers today"></div>
+                                    <div class="form-group"><label>Target</label><textarea id="goalTarget" rows="2" required placeholder="e.g. 5,000 followers by 31/03 — or: 10 leads a month for 3 months"></textarea></div>
                                 </div>
                                 <div class="prio-form-row">
                                     <div class="form-group"><label>Reward</label><input type="text" id="goalReward" placeholder="e.g. ₹2,000 each, team lunch, a day off"></div>
                                     <div class="form-group"><label>Points each</label><input type="number" min="0" id="goalPoints" value="10"></div>
                                 </div>
                                 <div class="form-group"><label>Team on this goal (leave empty for everyone)</label><div class="check-group" id="goalMembers"></div></div>
-                                <div style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">Followers update from the channel's follower count, engagement rate from post metrics logged in Social Media, ROI from spend and return you enter.</div>
                                 <button type="submit" class="btn btn-primary btn-sm">+ Add goal</button>
                             </form>
                         </div>
@@ -1789,8 +1867,17 @@
                     </div>
                     <div>
                         <div class="card">
-                            <div class="card-header"><div class="card-title">🏆 Leaderboard</div></div>
+                            <div class="card-header"><div class="card-title">🏆 Leaderboard</div>
+                                <select id="goalsLbPeriod" onchange="renderGoals()" style="font-size:12px; padding:4px 8px;"><option value="month">This month</option><option value="quarter" selected>This quarter</option><option value="year">This year</option><option value="all">All time</option></select></div>
                             <div id="goalsLeaderboard" style="margin-top:10px;">Loading…</div>
+                        </div>
+                        <div class="card" style="margin-top:20px;">
+                            <div class="card-header"><div class="card-title">How the points work</div></div>
+                            <div class="goal-help">
+                                <p>Every goal carries points — 10 by default, set when you create it. When a goal is marked <strong>hit</strong> (or <strong>reward given</strong>), everyone on that goal gets its points. If no one was picked, the whole team gets them.</p>
+                                <p>The leaderboard adds up points for the period you choose. Use it for recognition at the end of each month or quarter — e.g. the top scorer picks the team outing, or points convert to a bonus (say ₹50 a point).</p>
+                                <p>Give bigger or harder goals more points (25–50) and small internal ones fewer (5–10). Missed or cancelled goals earn nothing.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2437,60 +2524,34 @@
                 <div class="accent-line"></div>
 
                 <div class="grid grid-2col">
-                    <div class="card">
+                    <div class="card" id="compOffCard">
                         <div class="card-header">
-                            <div class="card-title">Request Leave</div>
+                            <div class="card-title">🎁 Issue Comp Off</div>
                         </div>
-                        <form id="leaveForm" onsubmit="createLeaveRequest(event)" style="display:flex; flex-direction:column; gap:12px;">
-                            <div class="form-group" style="margin:0;">
-                                <label>Type</label>
-                                <select id="newLeaveType">
-                                    <option value="casual">Casual</option>
-                                    <option value="sick">Sick</option>
-                                    <option value="earned">Earned</option>
-                                    <option value="unpaid">Unpaid</option>
-                                </select>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">For someone who worked a Sunday, a holiday or a long shoot. It's added to their balance straight away and they're notified; they apply for it like any other leave.</div>
+                        <form id="compOffForm" onsubmit="grantCompOff(event)" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="form-group" style="margin:0;"><label>Team member</label><select id="compOffEmployee" required><option value="">— Team member —</option></select></div>
+                            <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px;">
+                                <div class="form-group" style="margin:0;"><label>Days</label><select id="compOffDays"><option value="0.5">Half day</option><option value="1" selected>1 day</option><option value="1.5">1.5 days</option><option value="2">2 days</option><option value="3">3 days</option></select></div>
+                                <div class="form-group" style="margin:0;"><label>Worked on</label><input type="date" id="compOffWorkDate"></div>
                             </div>
-                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                                <div class="form-group" style="margin:0;">
-                                    <label>From</label>
-                                    <input type="date" id="newLeaveStart" required>
-                                </div>
-                                <div class="form-group" style="margin:0;">
-                                    <label>To</label>
-                                    <input type="date" id="newLeaveEnd" required>
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Reason</label>
-                                <input type="text" id="newLeaveReason">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                            <div class="form-group" style="margin:0;"><label>Reason</label><input type="text" id="compOffReason" placeholder="e.g. Sunday shoot for MGM"></div>
+                            <button type="submit" class="btn btn-primary">Issue comp off</button>
                         </form>
+                        <div style="margin-top:14px; font-weight:600; font-size:13px;">Recently issued</div>
+                        <div id="compOffList" style="margin-top:6px;">Loading…</div>
+                    </div>
+                    <div class="card" id="hrApplyHint" style="display:none;">
+                        <div class="card-header"><div class="card-title">🌴 Applying for leave</div></div>
+                        <div style="font-size:13px; line-height:1.6;">Apply from <a href="#" onclick="switchView('profile'); return false;">My Profile → Apply for Leave</a>. Your balance is shown there, and HR is notified as soon as you apply.</div>
                     </div>
 
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Mark Today's Attendance</div>
+                            <div class="card-title">📅 Leave Policy</div>
                         </div>
-                        <form id="attendanceForm" onsubmit="markAttendance(event)" style="display:flex; flex-direction:column; gap:12px;">
-                            <div class="form-group" style="margin:0;">
-                                <label>Status</label>
-                                <select id="newAttendanceStatus">
-                                    <option value="present">Present</option>
-                                    <option value="wfh">Work from home</option>
-                                    <option value="half_day">Half Day</option>
-                                    <option value="absent">Absent</option>
-                                    <option value="leave">On Leave</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>Note</label>
-                                <input type="text" id="newAttendanceNote" placeholder="Optional">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Mark for Today</button>
-                            <div style="font-size:12px; color:var(--text-secondary);" id="todayAttendanceStatus"></div>
-                        </form>
+                        <div id="leavePolicyBox">Loading…</div>
+                        <div id="emailSettingsBox"></div>
                     </div>
                 </div>
 
@@ -2506,15 +2567,16 @@
                                     <tr>
                                         <th>Employee</th>
                                         <th>Type</th>
-                                        <th>From</th>
-                                        <th>To</th>
+                                        <th>Dates</th>
+                                        <th>Days</th>
+                                        <th>Balance (incl. pending)</th>
                                         <th>Reason</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="leaveTableBody">
-                                    <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                    <tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2523,27 +2585,28 @@
 
                 <div class="grid grid-full">
                     <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Recent Attendance</div>
+                        <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                            <div class="card-title">Team Attendance &amp; Leave</div>
+                            <label style="font-size:12px; display:flex; gap:6px; align-items:center;">Year <select id="hrSummaryYear" onchange="renderHR()"></select></label>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Employee</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Mode</th>
-                                        <th>In – Out</th>
-                                        <th>Hours</th>
-                                        <th>Note</th>
+                                        <th>Name</th>
+                                        <th>Casual leave</th>
+                                        <th>Sick leave</th>
+                                        <th>Comp off</th>
+                                        <th>Unpaid · unplanned</th>
+                                        <th>Pending work</th>
                                     </tr>
                                 </thead>
                                 <tbody id="attendanceTableBody">
-                                    <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                    <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
                                 </tbody>
                             </table>
                         </div>
+                        <div style="margin-top:10px; font-size:12px; color:var(--text-secondary);">Click a name for their day-by-day attendance (office / WFH, in–out, breaks, hours) and leave history. <em>Unplanned</em> = leave applied on or after the day it started. Pending work = open tasks (and overdue) plus creative work not yet approved.</div>
                     </div>
                 </div>
 
@@ -2560,12 +2623,13 @@
                                         <th>Role</th>
                                         <th>Phone</th>
                                         <th>Joined</th>
+                                        <th>Date of birth</th>
                                         <th>Emergency Contact</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="hrDirectoryTableBody">
-                                    <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
+                                    <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading…</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2803,7 +2867,8 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">Invoices</div>
-                            <span class="card-badge" id="invoicesCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span>
+                            <span style="display:flex; gap:8px; align-items:center;"><button type="button" class="btn btn-sm btn-secondary" onclick="openCompanySettings()">⚙ Invoice details</button>
+                            <span class="card-badge" id="invoicesCount" style="background: rgba(0,184,212,0.1); color: var(--wain-cyan);">—</span></span>
                         </div>
                         <div class="table-container">
                             <table>
@@ -3100,6 +3165,10 @@
                                 <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Personal Email</label>
                                 <input type="email" id="profilePersonalEmail" placeholder="Personal email">
                             </div>
+                            <div class="form-group">
+                                <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Date of birth</label>
+                                <input type="date" id="profileDob">
+                            </div>
                             <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                         </form>
                         <div style="margin-top:16px; font-size:12px; color:var(--text-secondary); border-top:1px solid var(--wain-border); padding-top:12px;">
@@ -3132,15 +3201,18 @@
                 <div class="grid grid-2col" style="margin-top:24px;">
                     <div class="card">
                         <div class="card-header"><div class="card-title">🌴 Apply for Leave</div></div>
+                        <div id="myLeaveBalance" style="margin-bottom:10px;"></div>
                         <form id="myLeaveForm" onsubmit="applyMyLeave(event)" style="display:flex; flex-direction:column; gap:10px;">
                             <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px;">
-                                <div class="form-group" style="margin:0;"><label>Type</label><select id="myLeaveType"><option value="casual">Casual</option><option value="sick">Sick</option><option value="earned">Earned</option><option value="unpaid">Unpaid</option></select></div>
-                                <div class="form-group" style="margin:0;"><label>&nbsp;</label><label style="display:flex; align-items:center; gap:6px; font-weight:500;"><input type="checkbox" id="myLeaveHalf" style="width:auto;"> Half day</label></div>
+                                <div class="form-group" style="margin:0;"><label>From</label><input type="date" id="myLeaveStart" required onchange="refreshLeaveForm('my')"></div>
+                                <div class="form-group" style="margin:0;"><label>To</label><input type="date" id="myLeaveEnd" onchange="refreshLeaveForm('my')"></div>
                             </div>
                             <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px;">
-                                <div class="form-group" style="margin:0;"><label>From</label><input type="date" id="myLeaveStart" required></div>
-                                <div class="form-group" style="margin:0;"><label>To</label><input type="date" id="myLeaveEnd"></div>
+                                <div class="form-group" style="margin:0;"><label>Type</label><select id="myLeaveType" onchange="refreshLeaveForm('my')"><option value="unpaid">Unpaid leave</option></select></div>
+                                <div class="form-group" style="margin:0;"><label>&nbsp;</label><label style="display:flex; align-items:center; gap:6px; font-weight:500;"><input type="checkbox" id="myLeaveHalf" style="width:auto;" onchange="refreshLeaveForm('my')"> Half day</label></div>
                             </div>
+                            <div id="myLeavePreview" class="lv-preview"></div>
+                            <div id="myLeaveQuotaNote" class="lv-quota" style="display:none;">This year's casual and sick leave is used up, so only comp off (if HR has issued you any) and unpaid leave are available.</div>
                             <div class="form-group" style="margin:0;"><label>Reason</label><input type="text" id="myLeaveReason" placeholder="Optional"></div>
                             <button type="submit" class="btn btn-primary btn-sm">Apply</button>
                         </form>
@@ -3251,7 +3323,7 @@
 
         const MODULE_TITLES = {
             'overview': { title: 'My Dashboard', subtitle: 'Your personalized view and quick tasks' },
-            'goals': { title: 'Team Goals', subtitle: 'Targets on client growth — hit them together, earn the reward' },
+            'goals': { title: 'Team Goals', subtitle: 'Client and WAIN targets — hit them together, earn the reward and the points' },
             'company': { title: 'Company Overview', subtitle: "What's happening across every department, live" },
             'priorities': { title: 'Daily Priorities', subtitle: "Set each person's priorities for the day, then share them to the team group" },
             'creative': { title: 'Creative Work', subtitle: 'Deliverables per client, with a checklist for each' },
@@ -3351,12 +3423,14 @@
             updateNavigation(emp.modules || []);
             switchView('overview');
             await loadAllData();
+            startNotifications();
             return true;
         }
 
         async function logout() {
             await db.auth.signOut();
             currentEmployee = null;
+            if (notifTimer) { clearInterval(notifTimer); notifTimer = null; }
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('loginEmail').value = '';
             document.getElementById('loginPassword').value = '';
@@ -3632,7 +3706,7 @@
             list.innerHTML = open.length ? open.slice(0, 8).map(t => `
                 <div style="padding: 8px 0; border-bottom: 1px solid var(--wain-border);">
                     <a href="#" class="task-link" onclick="openTaskDetail('${t.task_id}'); return false;"><strong>${escapeHtml(t.title)}</strong></a>${t.shared ? ' <span class="prio-chip shared">👥 shared</span>' : ''}${t.status === 'blocked' ? ' <span class="prio-chip important">⏸ Blocked</span>' : ''}${t.client_name ? ' — ' + escapeHtml(t.client_name) : ''}
-                    ${t.due_date ? ' <span style="color:var(--text-secondary); font-size:12px;">Due ' + new Date(t.due_date).toLocaleDateString() + '</span>' : ''}
+                    ${t.due_date ? ' <span style="color:var(--text-secondary); font-size:12px;">Due ' + fmtDate(t.due_date) + '</span>' : ''}
                 </div>
             `).join('') : '<div style="color:var(--text-secondary);">No open tasks assigned to you right now.</div>';
             renderOverviewModuleCards();
@@ -3722,12 +3796,12 @@
                         ${t.carried_from && t.status !== 'done' ? `<span class="prio-chip carried">↻ Pending since ${prioDateLabel(t.carried_from)}</span>` : ''}
                         ${t.clients ? `<span>🏢 ${escapeHtml(t.clients.name)}</span>` : ''}
                         ${t.projects ? `<span>📋 ${escapeHtml(t.projects.name)}</span>` : ''}
-                        ${t.due_date ? `<span>📅 ${new Date(t.due_date + 'T00:00:00').toLocaleDateString()}</span>` : ''}
+                        ${t.due_date ? `<span>📅 ${fmtDate(t.due_date + 'T00:00:00')}</span>` : ''}
                         ${t.self_logged ? '<span class="prio-chip">Extra work (self-logged)</span>' : ''}
                         ${t.hours_spent ? `<span>⏱ ${t.hours_spent} h</span>` : ''}
                     </div>
-                    ${t.status === 'blocked' ? `<div class="blocked-box">⏸ <strong>Waiting on ${escapeHtml(t.blocked_on || 'someone else')}</strong>${t.blocked_since ? ' since ' + new Date(t.blocked_since).toLocaleDateString() : ''}<div>${escapeHtml(t.blocked_reason || '')}</div></div>` : ''}
-                    ${t.reassigned_from && t.handover_note && t.status !== 'done' ? `<div class="handover-box">↪ <strong>Handed over by ${escapeHtml(empName(t.reassigned_from))}</strong>${t.reassigned_at ? ' on ' + new Date(t.reassigned_at).toLocaleDateString() : ''}<div>${escapeHtml(t.handover_note)}</div></div>` : ''}
+                    ${t.status === 'blocked' ? `<div class="blocked-box">⏸ <strong>Waiting on ${escapeHtml(t.blocked_on || 'someone else')}</strong>${t.blocked_since ? ' since ' + fmtDate(t.blocked_since) : ''}<div>${escapeHtml(t.blocked_reason || '')}</div></div>` : ''}
+                    ${t.reassigned_from && t.handover_note && t.status !== 'done' ? `<div class="handover-box">↪ <strong>Handed over by ${escapeHtml(empName(t.reassigned_from))}</strong>${t.reassigned_at ? ' on ' + fmtDate(t.reassigned_at) : ''}<div>${escapeHtml(t.handover_note)}</div></div>` : ''}
                     ${t.status !== 'done' && (t.progress_state || t.postpone_count > 0) ? `<div class="update-box">${t.progress_state === 'rework' ? '✏️ <strong>Needs rework</strong>' : t.progress_state === 'part_done' ? '🟡 <strong>Part done</strong>' : '⏭ <strong>Postponed</strong>'}${t.progress_total ? ` · ${t.progress_done || 0} of ${t.progress_total} ${t.progress_state === 'rework' ? 'fine' : 'done'}` : ''}${t.postpone_count > 0 && t.priority_date ? ` · now on ${prioDateLabel(t.priority_date)}${t.postponed_from ? ' (first planned ' + prioDateLabel(t.postponed_from) + (t.postpone_count > 1 ? ', moved ' + t.postpone_count + '×' : '') + ')' : ''}` : ''}${t.progress_note ? `<div>${escapeHtml(t.progress_note)}</div>` : ''}${t.progress_by ? `<div class="upd-soft">${escapeHtml(empName(t.progress_by))}${t.progress_at ? ', ' + new Date(t.progress_at).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : ''}</div>` : ''}</div>` : ''}
                     ${t.status === 'done' && t.completion_note ? `<div class="closed-box">✅ Closed: ${escapeHtml(t.completion_note)}</div>` : ''}
 
@@ -3895,7 +3969,7 @@
                         const x = taskExtras[t.id] || {};
                         const who = allEmployees.find(e => e.id === t.assigned_to);
                         return `<div class="pt-row" onclick="closeModal(); openTaskDetail('${t.id}')">
-                            <div class="pt-title">${escapeHtml(t.title)}<div class="pt-sub">${who ? escapeHtml(who.name) : 'Unassigned'}${t.due_date ? ' · due ' + new Date(t.due_date + 'T00:00:00').toLocaleDateString() : ''}${x.sub_total ? ' · ' + x.sub_done + '/' + x.sub_total + ' subtasks' : ''}${t.status === 'blocked' && x.blocked_reason ? ' · ⏸ ' + escapeHtml(x.blocked_reason) : ''}</div></div>
+                            <div class="pt-title">${escapeHtml(t.title)}<div class="pt-sub">${who ? escapeHtml(who.name) : 'Unassigned'}${t.due_date ? ' · due ' + fmtDate(t.due_date + 'T00:00:00') : ''}${x.sub_total ? ' · ' + x.sub_done + '/' + x.sub_total + ' subtasks' : ''}${t.status === 'blocked' && x.blocked_reason ? ' · ⏸ ' + escapeHtml(x.blocked_reason) : ''}</div></div>
                             <div class="pt-bar">${progressBar(taskProgress(t.status, x), t.status === 'blocked' ? 'blocked' : '')}</div>
                             ${taskStatusBadge(t.status)}
                         </div>`;
@@ -3943,6 +4017,10 @@
             const weekHours = (week || []).reduce((s, r) => s + (Number(r.hours_worked) || 0), 0);
             const wfhDays = (week || []).filter(r => r.work_mode === 'wfh').length;
             const a = att;
+            let breaks = [];
+            if (a && a.id) { const { data: br } = await db.from('attendance_breaks').select('*').eq('attendance_id', a.id).order('start_at'); breaks = br || []; }
+            const openBreak = breaks.find(b => !b.end_at);
+            const brMins = breakMinutes(breaks, a && a.check_out_time);
             let state;
             if (!a || !a.check_in_time) {
                 state = `<div class="wd-state">Not started yet today.</div>
@@ -3951,10 +4029,14 @@
                         <button type="button" class="btn btn-secondary btn-sm" onclick="startWorkday('wfh')">🏠 Start day — work from home</button>
                     </div>`;
             } else if (!a.check_out_time) {
-                state = `<div class="wd-state"><span class="prio-chip ${a.work_mode === 'wfh' ? 'wfh' : ''}">${a.work_mode === 'wfh' ? '🏠 Working from home' : '🏢 In office'}</span> since ${new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })}</div>
-                    <div class="wd-actions"><button type="button" class="btn btn-primary btn-sm" onclick="endWorkday()">⏹ End day</button></div>`;
+                state = `<div class="wd-state"><span class="prio-chip ${a.work_mode === 'wfh' ? 'wfh' : ''}">${a.work_mode === 'wfh' ? '🏠 Working from home' : '🏢 In office'}</span> since ${fmtTime(a.check_in_time)}${brMins ? ` · breaks so far ${brMins} min` : ''}
+                        ${openBreak ? `<div style="margin-top:6px;"><span class="prio-chip brk">☕ On a break since ${fmtTime(openBreak.start_at)}</span></div>` : ''}</div>
+                    <div class="wd-actions">
+                        ${openBreak ? `<button type="button" class="btn btn-primary btn-sm" onclick="resumeWork('${openBreak.id}')">▶ Resume work</button>` : `<button type="button" class="btn btn-secondary btn-sm" onclick="takeBreak()">☕ Take a break</button>`}
+                        <button type="button" class="btn ${openBreak ? 'btn-secondary' : 'btn-primary'} btn-sm" onclick="endWorkday()">⏹ End day</button>
+                    </div>`;
             } else {
-                state = `<div class="wd-state"><span class="prio-chip ${a.work_mode === 'wfh' ? 'wfh' : ''}">${a.work_mode === 'wfh' ? '🏠 WFH' : '🏢 Office'}</span> ${new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })} – ${new Date(a.check_out_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })} · <strong>${a.hours_worked ?? hoursBetween(a.check_in_time, a.check_out_time)} h</strong>
+                state = `<div class="wd-state"><span class="prio-chip ${a.work_mode === 'wfh' ? 'wfh' : ''}">${a.work_mode === 'wfh' ? '🏠 WFH' : '🏢 Office'}</span> ${new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })} – ${new Date(a.check_out_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })} · <strong>${a.hours_worked ?? hoursBetween(a.check_in_time, a.check_out_time)} h</strong>${brMins ? ` <span style="font-size:12px; color:var(--text-secondary);">(after ${brMins} min of breaks)</span>` : ''}
                     <a href="#" style="font-size:12px; margin-left:6px;" onclick="editWorkdayHours(); return false;">edit hours</a></div>`;
             }
             box.innerHTML = `
@@ -3984,7 +4066,11 @@
             const { data: a } = await db.from('attendance').select('*').eq('employee_id', currentEmployee.id).eq('attendance_date', localISO()).maybeSingle();
             if (!a) return;
             const out = new Date().toISOString();
-            const { error } = await db.from('attendance').update({ check_out_time: out, hours_worked: hoursBetween(a.check_in_time, out) }).eq('id', a.id);
+            const { data: br } = await db.from('attendance_breaks').select('*').eq('attendance_id', a.id);
+            if ((br || []).some(b => !b.end_at)) await db.from('attendance_breaks').update({ end_at: out }).eq('attendance_id', a.id).is('end_at', null);
+            const mins = breakMinutes((br || []).map(b => b.end_at ? b : { ...b, end_at: out }));
+            const net = Math.max(0, Math.round(((hoursBetween(a.check_in_time, out) || 0) - mins / 60) * 100) / 100);
+            const { error } = await db.from('attendance').update({ check_out_time: out, hours_worked: net, break_minutes: mins }).eq('id', a.id);
             if (error) { alert('Could not end the day: ' + error.message); return; }
             renderMyWorkday();
         }
@@ -4018,13 +4104,14 @@
         async function renderMyLeave() {
             const list = document.getElementById('myLeaveList');
             if (!list || !currentEmployee) return;
-            const { data } = await db.from('leave_requests').select('*').eq('employee_id', currentEmployee.id).order('start_date', { ascending: false }).limit(10);
+            refreshLeaveForm('my');
+            const { data } = await db.from('leave_requests').select('*').eq('employee_id', currentEmployee.id).order('start_date', { ascending: false }).limit(15);
             const cls = { pending: 'status-pending', approved: 'status-active', rejected: 'status-overdue' };
             list.innerHTML = (data || []).map(l => `
                 <div class="ml-row">
-                    <div><strong>${escapeHtml(l.leave_type)}${l.half_day ? ' · half day' : ''}</strong> · ${new Date(l.start_date + 'T00:00:00').toLocaleDateString()}${l.end_date !== l.start_date ? ' – ' + new Date(l.end_date + 'T00:00:00').toLocaleDateString() : ''}
+                    <div><strong>${escapeHtml(LEAVE_LABELS[l.leave_type] || l.leave_type)}${l.half_day ? ' · half day' : ''}</strong> · ${fmtDate(l.start_date)}${l.end_date !== l.start_date ? ' – ' + fmtDate(l.end_date) : ''} · ${fmtDays(l.days ?? workingDays(l.start_date, l.end_date, l.half_day))}
                         ${l.reason ? `<div style="font-size:12px; color:var(--text-secondary);">${escapeHtml(l.reason)}</div>` : ''}
-                        ${l.reviewer_note ? `<div style="font-size:12px;">HR: ${escapeHtml(l.reviewer_note)}</div>` : ''}</div>
+                        ${l.reviewer_note ? `<div class="${l.status === 'rejected' ? 'lv-reject' : ''}" style="font-size:12px;">${l.status === 'rejected' ? 'Reason for rejection: ' : 'HR: '}${escapeHtml(l.reviewer_note)}</div>` : ''}</div>
                     <div style="display:flex; gap:6px; align-items:center;"><span class="status-badge ${cls[l.status] || 'status-pending'}">${escapeHtml(l.status)}</span>${l.status === 'pending' ? `<button type="button" class="btn btn-sm btn-secondary" onclick="cancelMyLeave('${l.id}')">Cancel</button>` : ''}</div>
                 </div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary);">No leave applied yet.</div>';
         }
@@ -4035,23 +4122,28 @@
             const end_date = document.getElementById('myLeaveEnd').value || start_date;
             if (!start_date) return;
             if (end_date < start_date) { alert('The end date is before the start date.'); return; }
-            const { error } = await db.from('leave_requests').insert({
-                employee_id: currentEmployee.id,
-                leave_type: document.getElementById('myLeaveType').value,
-                start_date, end_date,
-                half_day: document.getElementById('myLeaveHalf').checked,
-                reason: document.getElementById('myLeaveReason').value.trim() || null
-            });
+            const leave_type = document.getElementById('myLeaveType').value;
+            const half_day = document.getElementById('myLeaveHalf').checked && end_date === start_date;
+            const reason = document.getElementById('myLeaveReason').value.trim() || null;
+            const info = await refreshLeaveForm('my');
+            if (info && leave_type !== 'unpaid' && info.days > info.left[leave_type]) { alert(`You have ${fmtNum(info.left[leave_type])} ${LEAVE_LABELS[leave_type].toLowerCase()} left for these dates. Shorten the leave or choose unpaid leave.`); return; }
+            const btn = event.submitter; if (btn) btn.disabled = true;
+            const { error } = await db.from('leave_requests').insert({ employee_id: currentEmployee.id, leave_type, start_date, end_date, half_day, reason });
+            if (btn) btn.disabled = false;
             if (error) { alert('Could not apply: ' + error.message); return; }
             document.getElementById('myLeaveForm').reset();
-            renderMyLeave();
+            clearLeaveCache();
+            await renderMyLeave();
+            alert('Leave applied. HR has been notified; their answer will show in the 🔔 bell.');
         }
 
         async function cancelMyLeave(id) {
             if (!confirm('Cancel this leave request?')) return;
             const { error } = await db.from('leave_requests').delete().eq('id', id).eq('status', 'pending');
             if (error) { alert('Could not cancel: ' + error.message); return; }
+            clearLeaveCache();
             renderMyLeave();
+            if (document.getElementById('hr').classList.contains('active')) renderHR();
         }
 
         // ---------- EMPLOYEE DOCUMENTS (ID proof, offer letter …) ----------
@@ -4061,7 +4153,7 @@
             return (docs || []).map(d => `
                 <div class="doc-row">
                     <div><span class="prio-chip">${escapeHtml(DOC_TYPES[d.doc_type] || d.doc_type)}</span> <a href="#" onclick="openEmployeeDoc('${d.file_path.replace(/'/g, "\\'")}'); return false;">${escapeHtml(d.file_name || 'file')}</a>
-                        <span style="font-size:11px; color:var(--text-secondary);">${new Date(d.created_at).toLocaleDateString()}${d.file_size ? ' · ' + Math.round(d.file_size / 1024) + ' KB' : ''}</span></div>
+                        <span style="font-size:11px; color:var(--text-secondary);">${fmtDate(d.created_at)}${d.file_size ? ' · ' + Math.round(d.file_size / 1024) + ' KB' : ''}</span></div>
                     ${canDeleteFn(d) ? `<button type="button" class="td-x" title="Delete" onclick="deleteEmployeeDoc('${d.id}', '${d.file_path.replace(/'/g, "\\'")}', '${d.employee_id}')">✕</button>` : ''}
                 </div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary);">No documents uploaded yet.</div>';
         }
@@ -4124,21 +4216,24 @@
         }
 
         // ---------- TEAM GOALS & REWARDS ----------
-        const GOAL_METRICS = { followers: 'Followers', engagement_rate: 'Engagement rate %', roi: 'ROI %' };
+        const GOAL_METRICS = { followers: 'Followers', engagement_rate: 'Engagement rate %', roi: 'ROI %', custom: '' };
         let allGoals = [];
         let goalMembers = {};
 
-        function goalUnit(metric) { return metric === 'followers' ? '' : '%'; }
+        function isCustomGoal(g) { return !g.metric || g.metric === 'custom'; }
         function fmtGoalValue(metric, v) {
             if (v === null || v === undefined || v === '') return '—';
             const n = Number(v);
             return metric === 'followers' ? n.toLocaleString('en-IN') : (Math.round(n * 10) / 10) + '%';
         }
+        function goalForLabel(g) { return g.clients ? g.clients.name : 'WAIN (internal)'; }
 
-        // Live value: followers from the linked channel, engagement from logged post metrics, ROI from spend/return
+        // Older numeric goals (followers / engagement / ROI) still compute a live value
         async function computeGoalCurrent(g) {
+            if (isCustomGoal(g)) return null;
             if (g.metric === 'followers') {
                 if (g.social_account_id) {
+                    if (!allSocialAccounts.length) await loadSocialAccounts();
                     const acct = allSocialAccounts.find(a => a.id === g.social_account_id);
                     if (acct && acct.followers !== null && acct.followers !== undefined) return Number(acct.followers);
                 }
@@ -4159,16 +4254,25 @@
         }
 
         function goalProgress(g, current) {
+            if (g.status === 'achieved' || g.status === 'rewarded') return 1;
+            if (isCustomGoal(g) || (g.progress_pct !== null && g.progress_pct !== undefined && !g.target)) return Math.max(0, Math.min(1, (Number(g.progress_pct) || 0) / 100));
             const target = Number(g.target), base = Number(g.baseline) || 0;
             if (current === null || current === undefined || !target) return 0;
             if (g.metric === 'followers' && target > base) return Math.max(0, Math.min(1, (current - base) / (target - base)));
             return Math.max(0, Math.min(1, current / target));
         }
 
+        function goalPeriodStart(period) {
+            const d = new Date();
+            if (period === 'month') return new Date(d.getFullYear(), d.getMonth(), 1);
+            if (period === 'quarter') return new Date(d.getFullYear(), Math.floor(d.getMonth() / 3) * 3, 1);
+            if (period === 'year') return new Date(d.getFullYear(), 0, 1);
+            return null;
+        }
+
         async function renderGoals() {
             const wrap = document.getElementById('goalsList');
             if (!wrap) return;
-            if (!allSocialAccounts.length) await loadSocialAccounts();
             const [{ data: goals }, { data: members }] = await Promise.all([
                 db.from('team_goals').select('*, clients(name)').order('created_at', { ascending: false }),
                 db.from('team_goal_members').select('*')
@@ -4182,9 +4286,8 @@
 
             const today = localISO();
             for (const g of allGoals) g._current = await computeGoalCurrent(g);
-            // Auto-mark achieved when a planner is looking and the target is reached
             if (planner) {
-                for (const g of allGoals.filter(x => x.status === 'active' && x._current !== null && x._current !== undefined && Number(x._current) >= Number(x.target))) {
+                for (const g of allGoals.filter(x => !isCustomGoal(x) && x.status === 'active' && x.target !== null && x._current !== null && x._current !== undefined && Number(x._current) >= Number(x.target))) {
                     await db.from('team_goals').update({ status: 'achieved', achieved_at: new Date().toISOString(), current_value: g._current, updated_at: new Date().toISOString() }).eq('id', g.id);
                     g.status = 'achieved'; g.achieved_at = new Date().toISOString();
                 }
@@ -4198,17 +4301,25 @@
             wrap.innerHTML = allGoals.map(g => {
                 const cur = g._current;
                 const frac = goalProgress(g, cur);
+                const custom = isCustomGoal(g);
                 const overdue = g.status === 'active' && g.deadline && g.deadline < today;
                 const people = (goalMembers[g.id] || []).map(id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name.split(' ')[0]) : null; }).filter(Boolean);
                 const statusChip = { active: overdue ? '<span class="fchip f-bad">Deadline passed</span>' : '<span class="fchip f-low">In progress</span>', achieved: '<span class="fchip f-good">🎉 Target hit — reward due</span>', rewarded: '<span class="fchip f-good">🏆 Rewarded</span>', missed: '<span class="fchip f-none">Missed</span>', cancelled: '<span class="fchip f-none">Cancelled</span>' }[g.status];
+                const targetText = g.target_text || (g.target !== null && g.target !== undefined ? fmtGoalValue(g.metric, g.target) : '');
                 return `<div class="goal-card ${g.status}">
-                    <div class="goal-head"><div><strong>${escapeHtml(g.title)}</strong><div class="goal-sub">${g.clients ? escapeHtml(g.clients.name) + ' · ' : ''}${GOAL_METRICS[g.metric]}${g.deadline ? ' · by ' + new Date(g.deadline + 'T00:00:00').toLocaleDateString() : ''}</div></div>${statusChip}</div>
-                    <div class="goal-nums"><span class="goal-cur">${fmtGoalValue(g.metric, cur)}</span><span class="goal-target">/ ${fmtGoalValue(g.metric, g.target)} target${g.metric === 'followers' && g.baseline ? ' (from ' + fmtGoalValue(g.metric, g.baseline) + ')' : ''}</span></div>
+                    <div class="goal-head"><div><strong>${escapeHtml(g.title)}</strong><div class="goal-sub">${escapeHtml(goalForLabel(g))}${custom ? '' : ' · ' + GOAL_METRICS[g.metric]}${g.deadline ? ' · by ' + fmtDate(g.deadline) : ''}</div></div>${statusChip}</div>
+                    ${g.measure_text ? `<div class="goal-line"><span>Measure</span>${escapeHtml(g.measure_text)}</div>` : ''}
+                    ${g.baseline_text ? `<div class="goal-line"><span>Starting point</span>${escapeHtml(g.baseline_text)}</div>` : ''}
+                    ${targetText ? `<div class="goal-line"><span>Target</span>${escapeHtml(targetText)}</div>` : ''}
+                    ${custom
+                        ? `<div class="goal-nums"><span class="goal-cur">${Math.round(frac * 100)}%</span><span class="goal-target">of the way there</span></div>`
+                        : `<div class="goal-nums"><span class="goal-cur">${fmtGoalValue(g.metric, cur)}</span><span class="goal-target">/ ${fmtGoalValue(g.metric, g.target)} target${g.metric === 'followers' && g.baseline ? ' (from ' + fmtGoalValue(g.metric, g.baseline) + ')' : ''}</span></div>`}
                     <div class="pbar big ${g.status === 'achieved' || g.status === 'rewarded' ? 'good' : overdue ? 'blocked' : ''}"><span style="width:${Math.round(frac * 100)}%"></span></div>
+                    ${g.notes ? `<div class="goal-note">📝 ${escapeHtml(g.notes)}</div>` : ''}
                     <div class="goal-reward">🎁 ${escapeHtml(g.reward || 'No reward set')}${g.points ? ` · <strong>${g.points} pts</strong> each` : ''}</div>
                     <div class="goal-team">👥 ${people.join(', ') || 'Whole team'}</div>
                     ${planner ? `<div class="goal-actions">
-                        ${g.metric !== 'followers' || !g.social_account_id ? `<button class="btn btn-sm btn-secondary" onclick="openGoalUpdate('${g.id}')">Update value</button>` : ''}
+                        ${g.status === 'active' ? `<button class="btn btn-sm btn-secondary" onclick="openGoalUpdate('${g.id}')">Update progress</button>` : ''}
                         ${g.status === 'active' ? `<button class="btn btn-sm btn-secondary" onclick="setGoalStatus('${g.id}', 'achieved')">Mark hit</button>` : ''}
                         ${g.status === 'achieved' ? `<button class="btn btn-sm btn-primary" onclick="setGoalStatus('${g.id}', 'rewarded')">🎁 Reward given</button>` : ''}
                         ${g.status === 'active' && overdue ? `<button class="btn btn-sm btn-secondary" onclick="setGoalStatus('${g.id}', 'missed')">Mark missed</button>` : ''}
@@ -4217,9 +4328,11 @@
                 </div>`;
             }).join('') || '<div class="approval-item" style="text-align:center; color:var(--text-secondary);">No goals yet.' + (planner ? ' Set the first one above.' : '') + '</div>';
 
-            // Leaderboard: points from goals hit or rewarded, per team member
+            // Leaderboard: points from goals hit or rewarded in the chosen period
+            const period = (document.getElementById('goalsLbPeriod') || {}).value || 'quarter';
+            const from = goalPeriodStart(period);
             const pts = {};
-            allGoals.filter(g => g.status === 'achieved' || g.status === 'rewarded').forEach(g => {
+            allGoals.filter(g => (g.status === 'achieved' || g.status === 'rewarded') && (!from || new Date(g.achieved_at || g.rewarded_at || g.updated_at || g.created_at) >= from)).forEach(g => {
                 const ids = (goalMembers[g.id] && goalMembers[g.id].length) ? goalMembers[g.id] : allEmployees.filter(e => e.active !== false && e.role !== 'View Only').map(e => e.id);
                 ids.forEach(id => { const p = pts[id] || (pts[id] = { points: 0, goals: 0 }); p.points += Number(g.points) || 0; p.goals++; });
             });
@@ -4227,57 +4340,51 @@
             document.getElementById('goalsLeaderboard').innerHTML = board.map(([id, v], i) => {
                 const e = allEmployees.find(x => x.id === id);
                 return `<div class="lb-row"><span class="lb-rank">${['🥇', '🥈', '🥉'][i] || (i + 1)}</span><span class="lb-name">${e ? escapeHtml(e.name) : '—'}</span><span class="lb-goals">${v.goals} goal${v.goals === 1 ? '' : 's'}</span><strong>${v.points} pts</strong></div>`;
-            }).join('') || '<div style="font-size:12px; color:var(--text-secondary);">Points show up here once the first goal is hit.</div>';
+            }).join('') || `<div style="font-size:12px; color:var(--text-secondary);">No goals hit ${period === 'all' ? 'yet' : 'in this period yet'}. Points show up here once one is marked hit.</div>`;
+        }
+
+        function goalClientOptions(selectedId, internal) {
+            return `<option value="__internal" ${internal || !selectedId ? 'selected' : ''}>WAIN (internal)</option>` + allClients.filter(c => c.status !== 'churned' || c.id === selectedId).map(c => `<option value="${c.id}" ${c.id === selectedId && !internal ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('');
         }
 
         function populateGoalForm() {
             const cSel = document.getElementById('goalClient');
-            if (cSel && cSel.options.length <= 1) cSel.innerHTML = '<option value="">— Client —</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+            if (cSel && cSel.options.length <= 1) cSel.innerHTML = goalClientOptions(null, true);
             const box = document.getElementById('goalMembers');
             if (box && !box.children.length) box.innerHTML = employeeCheckboxes('goalMemberCheckbox', []);
-            onGoalClientChange();
-        }
-
-        function onGoalClientChange() {
-            const clientId = (document.getElementById('goalClient') || {}).value;
-            const aSel = document.getElementById('goalAccount');
-            if (!aSel) return;
-            const accts = allSocialAccounts.filter(a => !clientId || a.client_id === clientId);
-            aSel.innerHTML = '<option value="">— Channel (optional) —</option>' + accts.map(a => `<option value="${a.id}">${platformLabel(a.platform)}${a.handle ? ' ' + escapeHtml(a.handle) : ''}${a.followers ? ' · ' + Number(a.followers).toLocaleString('en-IN') : ''}</option>`).join('');
-        }
-
-        function onGoalAccountChange() {
-            const a = allSocialAccounts.find(x => x.id === document.getElementById('goalAccount').value);
-            const base = document.getElementById('goalBaseline');
-            if (a && a.followers && document.getElementById('goalMetric').value === 'followers' && !base.value) base.value = a.followers;
         }
 
         async function createGoal(event) {
             event.preventDefault();
-            const num = id => { const v = document.getElementById(id).value; return v === '' ? null : Number(v); };
+            const forVal = document.getElementById('goalClient').value;
             const row = {
                 title: document.getElementById('goalTitle').value.trim(),
-                client_id: document.getElementById('goalClient').value || null,
-                social_account_id: document.getElementById('goalAccount').value || null,
-                metric: document.getElementById('goalMetric').value,
-                baseline: num('goalBaseline'), target: num('goalTarget'),
+                client_id: forVal && forVal !== '__internal' ? forVal : null,
+                is_internal: !forVal || forVal === '__internal',
+                metric: 'custom',
+                measure_text: document.getElementById('goalMeasure').value.trim() || null,
+                baseline_text: document.getElementById('goalBaseline').value.trim() || null,
+                target_text: document.getElementById('goalTarget').value.trim() || null,
+                target: null,
+                progress_pct: 0,
+                status: 'active',
                 deadline: document.getElementById('goalDeadline').value || null,
                 reward: document.getElementById('goalReward').value.trim() || null,
-                points: num('goalPoints') || 0,
+                points: Number(document.getElementById('goalPoints').value) || 0,
                 created_by: currentEmployee.id
             };
-            if (!row.title || row.target === null) { alert('Give the goal a title and a target.'); return; }
+            if (!row.title || !row.target_text) { alert('Give the goal a title and a target.'); return; }
             const { data, error } = await db.from('team_goals').insert(row).select().single();
             if (error) { alert('Could not create goal: ' + error.message); return; }
             const ids = Array.from(document.querySelectorAll('.goalMemberCheckbox:checked')).map(cb => cb.value);
-            if (ids.length) await db.from('team_goal_members').insert(ids.map(employee_id => ({ goal_id: data.id, employee_id })));
+            if (ids.length && data) await db.from('team_goal_members').insert(ids.map(employee_id => ({ goal_id: data.id, employee_id })));
             document.getElementById('goalForm').reset();
             renderGoals();
         }
 
         async function setGoalStatus(id, status) {
             const patch = { status, updated_at: new Date().toISOString() };
-            if (status === 'achieved') patch.achieved_at = new Date().toISOString();
+            if (status === 'achieved') { patch.achieved_at = new Date().toISOString(); patch.progress_pct = 100; }
             if (status === 'rewarded') patch.rewarded_at = new Date().toISOString();
             const { error } = await db.from('team_goals').update(patch).eq('id', id);
             if (error) { alert('Could not update: ' + error.message); return; }
@@ -4287,16 +4394,21 @@
         function openGoalUpdate(id) {
             const g = allGoals.find(x => x.id === id);
             if (!g) return;
-            openModal('Update — ' + g.title, `
+            const custom = isCustomGoal(g);
+            const pct = Math.round(goalProgress(g, g._current) * 100);
+            openModal('Update progress — ' + g.title, `
                 <form onsubmit="saveGoalUpdate(event, '${id}')">
-                    ${g.metric === 'roi' ? `
+                    ${g.target_text ? `<div style="font-size:13px; margin-bottom:10px;"><strong>Target:</strong> ${escapeHtml(g.target_text)}</div>` : ''}
+                    ${custom ? `
+                        <div class="form-group"><label>How far along are we? <strong id="goalPctLabel">${pct}%</strong></label>
+                            <input type="range" id="goalNewPct" min="0" max="100" step="5" value="${pct}" oninput="document.getElementById('goalPctLabel').textContent = this.value + '%'"></div>`
+                    : g.metric === 'roi' ? `
                         <div class="prio-form-row">
                             <div class="form-group"><label>Spend so far (₹)</label><input type="number" id="goalRoiSpend" min="0" value="${g.roi_spend ?? ''}"></div>
                             <div class="form-group"><label>Return so far (₹)</label><input type="number" id="goalRoiReturn" min="0" value="${g.roi_return ?? ''}"></div>
-                        </div>
-                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">ROI % = (return − spend) ÷ spend.</div>`
+                        </div>`
                     : `<div class="form-group"><label>Current ${GOAL_METRICS[g.metric].toLowerCase()}</label><input type="number" step="any" id="goalNewValue" value="${g._current ?? ''}"></div>`}
-                    <div class="form-group"><label>Note (optional)</label><input type="text" id="goalUpdateNote"></div>
+                    <div class="form-group"><label>Where it stands (shown on the goal)</label><textarea id="goalUpdateNote" rows="3" placeholder="e.g. 4,100 followers now — the travel reels are working, 2 more collabs lined up">${escapeHtml(g.notes || '')}</textarea></div>
                     <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
                         <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
                         <button type="submit" class="btn btn-primary btn-sm">Save</button>
@@ -4307,32 +4419,44 @@
         async function saveGoalUpdate(event, id) {
             event.preventDefault();
             const g = allGoals.find(x => x.id === id);
-            const patch = { updated_at: new Date().toISOString() };
+            const note = document.getElementById('goalUpdateNote').value.trim() || null;
+            const patch = { updated_at: new Date().toISOString(), notes: note };
             let value;
-            if (g.metric === 'roi') {
+            if (isCustomGoal(g)) {
+                value = Number(document.getElementById('goalNewPct').value) || 0;
+                patch.progress_pct = value;
+            } else if (g.metric === 'roi') {
                 patch.roi_spend = Number(document.getElementById('goalRoiSpend').value) || 0;
                 patch.roi_return = Number(document.getElementById('goalRoiReturn').value) || 0;
                 value = patch.roi_spend ? Math.round((patch.roi_return - patch.roi_spend) / patch.roi_spend * 1000) / 10 : 0;
+                patch.current_value = value;
             } else {
                 value = Number(document.getElementById('goalNewValue').value);
+                patch.current_value = value;
             }
-            patch.current_value = value;
             const { error } = await db.from('team_goals').update(patch).eq('id', id);
             if (error) { alert('Could not save: ' + error.message); return; }
-            await db.from('team_goal_updates').insert({ goal_id: id, value, note: document.getElementById('goalUpdateNote').value.trim() || null, recorded_by: currentEmployee.id });
+            await db.from('team_goal_updates').insert({ goal_id: id, value, note, recorded_by: currentEmployee.id });
             closeModal();
+            if (isCustomGoal(g) && value >= 100 && g.status === 'active' && confirm('100% — mark this goal as hit? Everyone on it gets the points.')) { await setGoalStatus(id, 'achieved'); return; }
             renderGoals();
         }
 
         function openGoalEdit(id) {
             const g = allGoals.find(x => x.id === id);
             if (!g) return;
+            const custom = isCustomGoal(g);
             openModal('Edit goal', `
                 <form onsubmit="saveGoalEdit(event, '${id}')">
-                    <div class="form-group"><label>Title</label><input type="text" id="goalEditTitle" value="${escapeHtml(g.title)}" required></div>
+                    <div class="form-group"><label>Goal</label><input type="text" id="goalEditTitle" value="${escapeHtml(g.title)}" required></div>
                     <div class="prio-form-row">
-                        <div class="form-group"><label>Target</label><input type="number" step="any" id="goalEditTarget" value="${g.target}" required></div>
+                        <div class="form-group"><label>For</label><select id="goalEditClient">${goalClientOptions(g.client_id, !g.client_id)}</select></div>
                         <div class="form-group"><label>Deadline</label><input type="date" id="goalEditDeadline" value="${g.deadline || ''}"></div>
+                    </div>
+                    <div class="form-group"><label>What we'll measure</label><textarea id="goalEditMeasure" rows="2">${escapeHtml(g.measure_text || (custom ? '' : GOAL_METRICS[g.metric]))}</textarea></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Starting point (optional)</label><input type="text" id="goalEditBaseline" value="${escapeHtml(g.baseline_text || (g.baseline !== null && g.baseline !== undefined ? fmtGoalValue(g.metric, g.baseline) : ''))}"></div>
+                        <div class="form-group"><label>Target</label><textarea id="goalEditTarget" rows="2" required>${escapeHtml(g.target_text || (g.target !== null && g.target !== undefined ? fmtGoalValue(g.metric, g.target) : ''))}</textarea></div>
                     </div>
                     <div class="prio-form-row">
                         <div class="form-group"><label>Reward</label><input type="text" id="goalEditReward" value="${escapeHtml(g.reward || '')}"></div>
@@ -4349,15 +4473,25 @@
 
         async function saveGoalEdit(event, id) {
             event.preventDefault();
-            const { error } = await db.from('team_goals').update({
+            const forVal = document.getElementById('goalEditClient').value;
+            const status = document.getElementById('goalEditStatus').value;
+            const g = allGoals.find(x => x.id === id) || {};
+            const patch = {
                 title: document.getElementById('goalEditTitle').value.trim(),
-                target: Number(document.getElementById('goalEditTarget').value),
+                client_id: forVal && forVal !== '__internal' ? forVal : null,
+                is_internal: !forVal || forVal === '__internal',
+                measure_text: document.getElementById('goalEditMeasure').value.trim() || null,
+                baseline_text: document.getElementById('goalEditBaseline').value.trim() || null,
+                target_text: document.getElementById('goalEditTarget').value.trim() || null,
                 deadline: document.getElementById('goalEditDeadline').value || null,
                 reward: document.getElementById('goalEditReward').value.trim() || null,
                 points: Number(document.getElementById('goalEditPoints').value) || 0,
-                status: document.getElementById('goalEditStatus').value,
+                status,
                 updated_at: new Date().toISOString()
-            }).eq('id', id);
+            };
+            if ((status === 'achieved' || status === 'rewarded') && !g.achieved_at) patch.achieved_at = new Date().toISOString();
+            if (status === 'rewarded' && !g.rewarded_at) patch.rewarded_at = new Date().toISOString();
+            const { error } = await db.from('team_goals').update(patch).eq('id', id);
             if (error) { alert('Could not save: ' + error.message); return; }
             const ids = Array.from(document.querySelectorAll('.goalEditMember:checked')).map(cb => cb.value);
             await db.from('team_goal_members').delete().eq('goal_id', id);
@@ -4410,7 +4544,7 @@
             const mBody = document.getElementById('movementsBody');
             const name = id => { const a = allMoneyAccounts.find(x => x.id === id); return a ? escapeHtml(a.name) : '—'; };
             mBody.innerHTML = allMovements.slice(0, 50).map(m => `<tr>
-                <td>${new Date(m.movement_date + 'T00:00:00').toLocaleDateString()}</td>
+                <td>${fmtDate(m.movement_date + 'T00:00:00')}</td>
                 <td>${escapeHtml(MOVEMENT_KINDS[m.kind] || m.kind)}${m.needs_review ? ' <span class="fchip f-mid">check</span>' : ''}</td>
                 <td>${m.from_account_id ? name(m.from_account_id) : (m.counterparty && m.kind !== 'deposit' ? escapeHtml(m.counterparty) : '—')}</td>
                 <td>${m.to_account_id ? name(m.to_account_id) : (m.counterparty ? escapeHtml(m.counterparty) : '—')}</td>
@@ -6120,6 +6254,7 @@
             }
             const statusClass = { active: 'status-active', paused: 'status-pending', churned: 'status-overdue' };
             const showMoney = isSuperadminUser();
+            const canEdit = canEditClients();
             body.innerHTML = sortByPriority(allClients, clientFin).map(c => {
                 const daysSince = clientDaysSinceActivity(c);
                 const f = clientFin[c.id];
@@ -6129,11 +6264,11 @@
                     <td>${priorityBadge(f)}</td>
                     <td><strong>${escapeHtml(c.name)}</strong>${showMoney && f ? '<div style="margin-top:3px;">' + bandChip('rev', f.revenue_band) + ' ' + bandChip('pay', f.payment_health) + ' ' + bandChip('margin', f.margin_band) + '</div>' : ''}${isLapsed ? ` <span title="No project/campaign/creative/invoice activity in ${daysSince} days" style="color:var(--warning-amber); font-size:11px;">⚠ Reconnect (${daysSince}d)</span>` : ''}</td>
                     <td>${escapeHtml(c.industry) || '—'}${clientCategoryBadges(c)}</td>
-                    <td><span class="status-badge ${statusClass[c.status] || 'status-active'}">${escapeHtml(c.status)}</span></td>
+                    <td>${canEdit ? `<select class="status-select ${statusClass[c.status] || 'status-active'}" onchange="setClientStatus('${c.id}', this.value)">${['active', 'paused', 'churned'].map(st => `<option value="${st}" ${c.status === st ? 'selected' : ''}>${st[0].toUpperCase() + st.slice(1)}</option>`).join('')}</select>` : `<span class="status-badge ${statusClass[c.status] || 'status-active'}">${escapeHtml(c.status)}</span>`}</td>
                     <td>${c.cost_centers ? escapeHtml(c.cost_centers.name) : '—'}</td>
                     <td>${escapeHtml(c.notes) || '—'}</td>
-                    <td>${new Date(c.created_at).toLocaleDateString()}</td>
-                    <td><button class="btn btn-sm btn-secondary" onclick="openClientDetail('${c.id}')">View</button></td>
+                    <td>${fmtDate(c.created_at)}</td>
+                    <td style="white-space:nowrap;"><button class="btn btn-sm btn-secondary" onclick="openClientDetail('${c.id}')">View</button>${canEdit ? ` <button class="btn btn-sm btn-secondary" onclick="openClientEdit('${c.id}')">Edit</button>` : ''}</td>
                 </tr>
             `;
             }).join('');
@@ -6177,7 +6312,8 @@
                         <a href="#" style="font-size:12px;" onclick="closeModal(); openClientFinanceEdit('${clientId}'); return false;">Edit billing / priority →</a>
                     </div></div>` : ''}
                     <div class="form-group"><label>Primary Team</label><div>${(client.primary_team_members || []).map(id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name) : null; }).filter(Boolean).join(', ') || '<span style="color:var(--text-secondary);">Not set — fill in the Onboarding tab</span>'}</div></div>
-                    <div class="form-group"><label>Status</label><div>${escapeHtml(client.status)}</div></div>
+                    <div class="form-group"><label>Status</label><div>${escapeHtml(client.status)}${canEditClients() ? ` · <a href="#" onclick="closeModal(); openClientEdit('${clientId}'); return false;">Edit client, status &amp; billing details →</a>` : ''}</div></div>
+                    ${client.billing_name || client.gstin || client.billing_address ? `<div class="form-group"><label>Billing</label><div style="font-size:13px;">${escapeHtml(client.billing_name || client.name)}${client.gstin ? ' · GSTIN ' + escapeHtml(client.gstin) : ''}${client.billing_address ? '<br>' + escapeHtml(client.billing_address) : ''}</div></div>` : ''}
                     <div class="form-group"><label>Cost Center</label><div>${client.cost_centers ? escapeHtml(client.cost_centers.name) : '—'}</div></div>
                     <div class="form-group"><label>Notes</label><div>${escapeHtml(client.notes) || '—'}</div></div>
                 </div>
@@ -6254,7 +6390,7 @@
                     ${projList.length ? projList.map(p => `
                         <div class="req-item">
                             <strong>${escapeHtml(p.name)}</strong> — <span class="status-badge status-pending">${escapeHtml((p.status||'planning').replace('_',' '))}</span>
-                            <div class="req-item-meta">Owner: ${p.employees ? escapeHtml(p.employees.name) : '—'}${(p.primary_team_members && p.primary_team_members.length) ? ' · Team: ' + employeeNames(p.primary_team_members) : ''}${p.due_date ? ' · Due ' + new Date(p.due_date).toLocaleDateString() : ''}</div>
+                            <div class="req-item-meta">Owner: ${p.employees ? escapeHtml(p.employees.name) : '—'}${(p.primary_team_members && p.primary_team_members.length) ? ' · Team: ' + employeeNames(p.primary_team_members) : ''}${p.due_date ? ' · Due ' + fmtDate(p.due_date) : ''}</div>
                         </div>
                     `).join('') : '<div style="color:var(--text-secondary); font-size:13px;">No projects for this client yet.</div>'}
                 </div>
@@ -6262,7 +6398,7 @@
                     ${(deliverables||[]).length ? deliverables.map(d => `
                         <div class="req-item">
                             <strong>${escapeHtml(d.title)}</strong> — <span class="status-badge ${DELIVERABLE_STAGE_CLASS[d.status]||'status-pending'}">${DELIVERABLE_STAGE_LABELS[d.status]||d.status}</span>
-                            <div class="req-item-meta">Assigned to ${d.employees ? escapeHtml(d.employees.name) : '—'}${d.due_date ? ' · Due ' + new Date(d.due_date).toLocaleDateString() : ''}</div>
+                            <div class="req-item-meta">Assigned to ${d.employees ? escapeHtml(d.employees.name) : '—'}${d.due_date ? ' · Due ' + fmtDate(d.due_date) : ''}</div>
                         </div>
                     `).join('') : '<div style="color:var(--text-secondary); font-size:13px;">No creative deliverables for this client yet.</div>'}
                 </div>
@@ -6305,7 +6441,7 @@
                     <div style="margin-top:6px;">${escapeHtml(r.description)}</div>
                     <div class="req-item-meta">
                         ${r.projects ? 'Project: ' + escapeHtml(r.projects.name) + ' · ' : ''}
-                        ${r.employees ? escapeHtml(r.employees.name) + ' · ' : ''}${new Date(r.created_at).toLocaleDateString()}
+                        ${r.employees ? escapeHtml(r.employees.name) + ' · ' : ''}${fmtDate(r.created_at)}
                         ${r.status !== 'addressed' ? ` · <a href="#" onclick="markRequirementAddressed('${r.id}'); return false;">Mark addressed</a>` : ''}
                     </div>
                 </div>
@@ -6481,7 +6617,7 @@
                     <td><strong>${a.clients ? escapeHtml(a.clients.name) : '—'}</strong></td>
                     <td>${platformLabel(a.platform)}</td>
                     <td>${a.handle ? (a.profile_url ? `<a href="${escapeHtml(a.profile_url)}" target="_blank" rel="noopener">${escapeHtml(a.handle)}</a>` : escapeHtml(a.handle)) : '—'}</td>
-                    <td>${(a.followers || 0).toLocaleString()}${a.followers_updated_at ? `<div style="font-size:10px; color:var(--text-secondary);">as of ${new Date(a.followers_updated_at).toLocaleDateString()}</div>` : ''}</td>
+                    <td>${(a.followers || 0).toLocaleString()}${a.followers_updated_at ? `<div style="font-size:10px; color:var(--text-secondary);">as of ${fmtDate(a.followers_updated_at)}</div>` : ''}</td>
                     <td>${escapeHtml(a.posting_cadence) || '—'}</td>
                     <td>${postsThisMonthForAccount(a.id)} published</td>
                     <td>${a.employees ? escapeHtml(a.employees.name) : '—'}</td>
@@ -6569,7 +6705,7 @@
             const dels = allDeliverables.filter(d => d.client_id === clientId);
             delSel.innerHTML = '<option value="">— None / quick post —</option>' + dels
                 .sort((a, b) => (b.due_date || '').localeCompare(a.due_date || ''))
-                .map(d => `<option value="${d.id}">${escapeHtml(d.title)}${d.deliverable_type ? ' · ' + escapeHtml(d.deliverable_type) : ''}${d.due_date ? ' · ' + new Date(d.due_date).toLocaleDateString() : ''} [${DELIVERABLE_STAGE_LABELS[d.status] || d.status}]</option>`).join('');
+                .map(d => `<option value="${d.id}">${escapeHtml(d.title)}${d.deliverable_type ? ' · ' + escapeHtml(d.deliverable_type) : ''}${d.due_date ? ' · ' + fmtDate(d.due_date) : ''} [${DELIVERABLE_STAGE_LABELS[d.status] || d.status}]</option>`).join('');
         }
 
         function onPostDeliverableChange() {
@@ -6668,9 +6804,9 @@
                         </div>
                         <div class="post-content">${escapeHtml(p.content)}</div>
                         <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
-                            ${p.scheduled_for ? '📅 ' + new Date(p.scheduled_for).toLocaleString() : 'Not scheduled'}
+                            ${p.scheduled_for ? '📅 ' + fmtDateTime(p.scheduled_for) : 'Not scheduled'}
                             ${p.creative_deliverables ? ' · from Creative Work: <em>' + escapeHtml(p.creative_deliverables.title) + '</em>' : ''}
-                            ${p.status === 'published' && p.published_at ? ' · published ' + new Date(p.published_at).toLocaleString() : ''}
+                            ${p.status === 'published' && p.published_at ? ' · published ' + fmtDateTime(p.published_at) : ''}
                             ${p.post_url ? ' · <a href="' + escapeHtml(p.post_url) + '" target="_blank" rel="noopener">View post ↗</a>' : ''}
                         </div>
                         <div class="post-actions">
@@ -6794,7 +6930,7 @@
 
             body.innerHTML = rows.length ? rows.map(p => { const er = postEngRate(p); return `
                 <tr>
-                    <td style="white-space:nowrap;">${p.published_at ? new Date(p.published_at).toLocaleDateString() : (p.scheduled_for ? new Date(p.scheduled_for).toLocaleDateString() : '—')}</td>
+                    <td style="white-space:nowrap;">${p.published_at ? fmtDate(p.published_at) : (p.scheduled_for ? fmtDate(p.scheduled_for) : '—')}</td>
                     <td><strong>${escapeHtml(postClientName(p)) || 'Internal'}</strong></td>
                     <td>${platformLabel(postPlatform(p))}</td>
                     <td>${escapeHtml(p.post_type) || '—'}</td>
@@ -6876,7 +7012,7 @@
                         <td>${escapeHtml(t.client_name) || 'Internal'}</td>
                         <td>${escapeHtml(t.cost_center_name) || '—'}</td>
                         <td>${taskStatusBadge(t.status)}${t.status === 'blocked' && x.blocked_reason ? '<div style="font-size:11px; color:var(--danger-red); margin-top:3px;">⏸ ' + escapeHtml(x.blocked_on || '') + ': ' + escapeHtml(x.blocked_reason) + '</div>' : ''}</td>
-                        <td>${t.due_date ? new Date(t.due_date).toLocaleDateString() : '—'}</td>
+                        <td>${t.due_date ? fmtDate(t.due_date) : '—'}</td>
                         <td style="white-space:nowrap;"><button class="btn btn-sm btn-primary" onclick="openTaskDetail('${t.task_id}')">Open</button> <button class="btn btn-sm btn-secondary" onclick="openTaskEdit('${t.task_id}')">Edit</button></td>
                     </tr>
                 `; }).join('');
@@ -7123,10 +7259,10 @@
                     <td>${escapeHtml(l.contact_name) || '—'}${l.contact_email ? '<br><span style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(l.contact_email) + '</span>' : ''}</td>
                     <td>${l.employees ? escapeHtml(l.employees.name) : '—'}</td>
                     <td>${l.estimated_value ? '₹' + Number(l.estimated_value).toLocaleString('en-IN') : '—'}</td>
-                    <td><span class="status-badge ${LEAD_STAGE_CLASS[l.stage] || 'status-pending'}">${LEAD_STAGE_LABELS[l.stage] || l.stage}</span></td>
+                    <td><select class="status-select ${LEAD_STAGE_CLASS[l.stage] || 'status-pending'}" title="Change stage" onchange="changeLeadStage('${l.id}', this.value, this)">${Object.keys(LEAD_STAGE_LABELS).map(st => `<option value="${st}" ${l.stage === st ? 'selected' : ''}>${LEAD_STAGE_LABELS[st]}</option>`).join('')}</select>${l.stage === 'lost' && l.lost_reason ? `<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(l.lost_reason)}</div>` : ''}</td>
                     <td style="white-space:nowrap;">
                         ${LEAD_NEXT_STAGE[l.stage] ? `<button class="btn btn-sm btn-secondary" onclick="advanceLead('${l.id}','${LEAD_NEXT_STAGE[l.stage]}')">${l.stage === 'negotiation' ? 'Mark Won' : 'Advance'}</button>` : ''}
-                        ${(l.stage !== 'won' && l.stage !== 'lost') ? `<button class="btn btn-sm btn-secondary" onclick="markLeadLost('${l.id}')">Lost</button>` : ''}
+                        <button class="btn btn-sm btn-secondary" onclick="openLeadEdit('${l.id}')">Edit</button>
                     </td>
                 </tr>
             `;
@@ -7209,7 +7345,7 @@
             list.innerHTML = data.map(a => `
                 <div style="padding:8px 0; border-bottom:1px solid var(--wain-border);">
                     <strong>${a.leads ? escapeHtml(a.leads.company_name) : '—'}</strong>
-                    <span style="color:var(--text-secondary); font-size:11px;"> · ${escapeHtml(a.activity_type)} · ${a.employees ? escapeHtml(a.employees.name) : ''} · ${new Date(a.created_at).toLocaleDateString()}</span>
+                    <span style="color:var(--text-secondary); font-size:11px;"> · ${escapeHtml(a.activity_type)} · ${a.employees ? escapeHtml(a.employees.name) : ''} · ${fmtDate(a.created_at)}</span>
                     <div style="margin-top:4px;">${escapeHtml(a.notes)}</div>
                 </div>
             `).join('');
@@ -7252,7 +7388,7 @@
                 <tr>
                     <td><strong>${r.clients ? escapeHtml(r.clients.name) : '—'}</strong></td>
                     <td>${escapeHtml(r.method)}</td>
-                    <td>${new Date(r.requested_at).toLocaleDateString()}</td>
+                    <td>${fmtDate(r.requested_at)}</td>
                     <td>${r.employees ? escapeHtml(r.employees.name) : '—'}</td>
                     <td><span class="status-badge ${REVIEW_STATUS_CLASS[r.status] || 'status-pending'}">${REVIEW_STATUS_LABELS[r.status] || r.status}</span></td>
                     <td style="white-space:nowrap;">
@@ -7455,13 +7591,14 @@
                     <tr>
                         <td><strong>${escapeHtml(i.invoice_number)}</strong></td>
                         <td>${i.clients ? escapeHtml(i.clients.name) : '—'}</td>
-                        <td>${i.issue_date ? new Date(i.issue_date).toLocaleDateString() : '—'}</td>
-                        <td>${i.due_date ? new Date(i.due_date).toLocaleDateString() : '—'}</td>
+                        <td>${i.issue_date ? fmtDate(i.issue_date) : '—'}</td>
+                        <td>${i.due_date ? fmtDate(i.due_date) : '—'}</td>
                         <td>₹${Number(i.total || 0).toLocaleString('en-IN')}</td>
                         <td><span class="status-badge ${statusClass[i.status] || 'status-pending'}">${escapeHtml(i.status)}</span></td>
                         <td style="white-space:nowrap;">
                             ${nextStatus[i.status] ? `<button class="btn btn-sm btn-secondary" onclick="updateInvoiceStatus('${i.id}','${nextStatus[i.status]}')">Mark ${nextStatus[i.status]}</button>` : ''}
                             ${i.status === 'sent' ? `<button class="btn btn-sm btn-secondary" onclick="updateInvoiceStatus('${i.id}','overdue')">Mark Overdue</button>` : ''}
+                            <button class="btn btn-sm btn-primary" onclick="downloadInvoicePdf('${i.id}', this)">⬇ PDF</button>
                         </td>
                     </tr>
                 `).join('');
@@ -7476,7 +7613,7 @@
                 const acctName = id => { const a = allMoneyAccounts.find(x => x.id === id); return a ? escapeHtml(a.name) : '—'; };
                 expBody.innerHTML = allExpenses.map(e => `
                     <tr>
-                        <td>${e.expense_date ? new Date(e.expense_date).toLocaleDateString() : '—'}</td>
+                        <td>${e.expense_date ? fmtDate(e.expense_date) : '—'}</td>
                         <td>${escapeHtml(e.category)}${e.entry_type === 'purchase' ? ' <span class="prio-chip">Purchase</span>' : ''}${e.needs_review ? ' <span class="fchip f-mid">check</span>' : ''}</td>
                         <td>${acctName(e.paid_from_account_id)}${e.payment_mode ? '<div style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(e.payment_mode) + '</div>' : ''}</td>
                         <td>${escapeHtml(e.description) || '—'}${e.payee ? '<div style="font-size:11px; color:var(--text-secondary);">To ' + escapeHtml(e.payee) + '</div>' : ''}${e.clients ? ' <span class="prio-chip">' + escapeHtml(e.clients.name) + '</span>' : ''}</td>
@@ -7514,101 +7651,107 @@
             return currentEmployee && (currentEmployee.role === 'Superadmin' || currentEmployee.role === 'HR Manager');
         }
 
-        async function createLeaveRequest(event) {
-            event.preventDefault();
-            const leave_type = document.getElementById('newLeaveType').value;
-            const start_date = document.getElementById('newLeaveStart').value;
-            const end_date = document.getElementById('newLeaveEnd').value;
-            const reason = document.getElementById('newLeaveReason').value.trim();
-            if (!start_date || !end_date) return;
-            const { error } = await db.from('leave_requests').insert({
-                employee_id: currentEmployee.id, leave_type, start_date, end_date, reason: reason || null
-            });
-            if (error) { alert('Could not submit leave request: ' + error.message); return; }
-            document.getElementById('leaveForm').reset();
-            renderHR();
-        }
-
         async function updateLeaveStatus(id, status) {
+            const l = allLeaveRequests.find(x => x.id === id);
+            if (status === 'rejected') { openRejectLeave(id); return; }
+            if (l && !confirm(`Approve ${l.employees ? l.employees.name + "'s " : ''}${(LEAVE_LABELS[l.leave_type] || l.leave_type).toLowerCase()} — ${fmtDate(l.start_date)}${l.end_date !== l.start_date ? ' to ' + fmtDate(l.end_date) : ''} (${fmtDays(l.days ?? workingDays(l.start_date, l.end_date, l.half_day))})?`)) return;
             const { error } = await db.from('leave_requests').update({ status, approved_by: currentEmployee.id, updated_at: new Date().toISOString() }).eq('id', id);
             if (error) { alert('Could not update: ' + error.message); return; }
-            renderHR();
-        }
-
-        async function markAttendance(event) {
-            event.preventDefault();
-            const status = document.getElementById('newAttendanceStatus').value;
-            const note = document.getElementById('newAttendanceNote').value.trim();
-            const today = new Date().toISOString().slice(0, 10);
-            const { error } = await db.from('attendance').upsert({
-                employee_id: currentEmployee.id, attendance_date: today, status: status === 'wfh' ? 'present' : status, work_mode: status === 'wfh' ? 'wfh' : 'office', note: note || null
-            }, { onConflict: 'employee_id,attendance_date' });
-            if (error) { alert('Could not mark attendance: ' + error.message); return; }
-            document.getElementById('todayAttendanceStatus').textContent = `Marked ${status.replace('_', ' ')} for today.`;
+            clearLeaveCache();
             renderHR();
         }
 
         async function renderHR() {
             const leaveBody = document.getElementById('leaveTableBody');
-            const attBody = document.getElementById('attendanceTableBody');
+            const sumBody = document.getElementById('attendanceTableBody');
             const dirBody = document.getElementById('hrDirectoryTableBody');
             if (!leaveBody) return;
 
             const manage = canManageHR();
+            const isSA = isSuperadminUser();
+            const thisYear = new Date().getFullYear();
+            const yearSel = document.getElementById('hrSummaryYear');
+            if (yearSel && !yearSel.options.length) yearSel.innerHTML = [thisYear - 1, thisYear, thisYear + 1].map(y => `<option value="${y}" ${y === thisYear ? 'selected' : ''}>${y}</option>`).join('');
+            const year = Number(yearSel ? yearSel.value : thisYear) || thisYear;
+            document.getElementById('compOffCard').style.display = manage ? '' : 'none';
+            document.getElementById('hrApplyHint').style.display = manage ? 'none' : '';
+            const ce = document.getElementById('compOffEmployee');
+            if (ce && ce.options.length <= 1) ce.innerHTML = '<option value="">— Team member —</option>' + allEmployees.filter(e => e.active !== false).map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');
 
-            const [{ data: leaves, error: leaveErr }, { data: attendance, error: attErr }] = await Promise.all([
+            clearLeaveCache();
+            const [{ data: leaves, error: leaveErr }, summary] = await Promise.all([
                 db.from('leave_requests').select('*, employees!leave_requests_employee_id_fkey(name)').order('created_at', { ascending: false }),
-                db.from('attendance').select('*, employees(name)').order('attendance_date', { ascending: false }).limit(30)
+                loadLeaveSummary(year, true)
             ]);
+            allLeaveRequests = (leaves || []).slice().sort((a, b) => (a.status === 'pending' ? 0 : 1) - (b.status === 'pending' ? 0 : 1) || (b.start_date || '').localeCompare(a.start_date || ''));
 
-            allLeaveRequests = leaves || [];
-            allAttendance = attendance || [];
+            // balances for the year each pending request falls in
+            const sums = { [year]: summary };
+            for (const y of [...new Set(allLeaveRequests.map(l => Number((l.start_date || '').slice(0, 4))).filter(Boolean))]) if (!sums[y]) sums[y] = await loadLeaveSummary(y);
+            const balFor = l => {
+                if (!['casual', 'sick', 'comp_off'].includes(l.leave_type)) return '<span style="color:var(--text-secondary);">—</span>';
+                const r = (sums[Number(l.start_date.slice(0, 4))] || []).find(x => x.employee_id === l.employee_id);
+                if (!r) return '—';
+                const left = leaveLeft(r)[l.leave_type];
+                const allowed = l.leave_type === 'casual' ? r.cl_allowed : l.leave_type === 'sick' ? r.sl_allowed : r.comp_granted;
+                return `<span class="bal-mini ${left <= 0 ? 'empty' : ''}">${fmtNum(left)} of ${fmtNum(allowed)} left</span>`;
+            };
 
-            document.getElementById('leaveCount').textContent = allLeaveRequests.length + (allLeaveRequests.length === 1 ? ' request' : ' requests');
+            const pending = allLeaveRequests.filter(l => l.status === 'pending').length;
+            document.getElementById('leaveCount').textContent = (pending ? pending + ' pending · ' : '') + allLeaveRequests.length + (allLeaveRequests.length === 1 ? ' request' : ' requests');
             if (leaveErr) {
-                leaveBody.innerHTML = `<tr><td colspan="7">Error: ${escapeHtml(leaveErr.message)}</td></tr>`;
+                leaveBody.innerHTML = `<tr><td colspan="8">Error: ${escapeHtml(leaveErr.message)}</td></tr>`;
             } else if (!allLeaveRequests.length) {
-                leaveBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No leave requests yet.</td></tr>';
+                leaveBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No leave requests yet.</td></tr>';
             } else {
                 const statusClass = { pending: 'status-pending', approved: 'status-active', rejected: 'status-overdue' };
-                leaveBody.innerHTML = allLeaveRequests.map(l => `
-                    <tr>
-                        <td><strong>${l.employees ? escapeHtml(l.employees.name) : '—'}</strong></td>
-                        <td>${escapeHtml(l.leave_type)}${l.half_day ? ' · half day' : ''}</td>
-                        <td>${new Date(l.start_date).toLocaleDateString()}</td>
-                        <td>${new Date(l.end_date).toLocaleDateString()}</td>
+                leaveBody.innerHTML = allLeaveRequests.map(l => {
+                    const own = currentEmployee && l.employee_id === currentEmployee.id;
+                    const canAct = manage && l.status === 'pending' && (!own || isSA);
+                    const unplanned = l.created_at && l.created_at.slice(0, 10) >= l.start_date;
+                    return `
+                    <tr${l.status === 'pending' ? ' class="lv-pending-row"' : ''}>
+                        <td><strong>${l.employees ? escapeHtml(l.employees.name) : '—'}</strong><div style="font-size:11px; color:var(--text-secondary);">applied ${fmtDate(l.created_at)}${unplanned ? ' · <span style="color:var(--warning-amber);">unplanned</span>' : ''}</div></td>
+                        <td>${escapeHtml(LEAVE_LABELS[l.leave_type] || l.leave_type)}${l.half_day ? ' · half day' : ''}</td>
+                        <td style="white-space:nowrap;">${fmtDate(l.start_date)}${l.end_date !== l.start_date ? ' – ' + fmtDate(l.end_date) : ''}</td>
+                        <td>${fmtNum(l.days ?? workingDays(l.start_date, l.end_date, l.half_day))}</td>
+                        <td>${balFor(l)}</td>
                         <td>${escapeHtml(l.reason) || '—'}</td>
-                        <td><span class="status-badge ${statusClass[l.status] || 'status-pending'}">${escapeHtml(l.status)}</span></td>
-                        <td>${(manage && l.status === 'pending') ? `<button class="btn btn-sm btn-secondary" onclick="updateLeaveStatus('${l.id}','approved')">Approve</button> <button class="btn btn-sm btn-secondary" onclick="updateLeaveStatus('${l.id}','rejected')">Reject</button>` : '—'}</td>
-                    </tr>
-                `).join('');
+                        <td><span class="status-badge ${statusClass[l.status] || 'status-pending'}">${escapeHtml(l.status)}</span>${l.reviewer_note ? `<div style="font-size:11px; margin-top:3px; max-width:220px;" class="${l.status === 'rejected' ? 'lv-reject' : ''}">${l.status === 'rejected' ? 'Reason: ' : ''}${escapeHtml(l.reviewer_note)}</div>` : ''}</td>
+                        <td style="white-space:nowrap;">${canAct ? `<button class="btn btn-sm btn-primary" onclick="updateLeaveStatus('${l.id}','approved')">Approve</button> <button class="btn btn-sm btn-secondary" onclick="openRejectLeave('${l.id}')">Reject</button>` : own && l.status === 'pending' ? `<button class="btn btn-sm btn-secondary" onclick="cancelMyLeave('${l.id}')">Cancel</button>` : '—'}</td>
+                    </tr>`;
+                }).join('');
             }
 
-            if (attErr) {
-                attBody.innerHTML = `<tr><td colspan="4">Error: ${escapeHtml(attErr.message)}</td></tr>`;
-            } else if (!allAttendance.length) {
-                attBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No attendance marked yet.</td></tr>';
-            } else {
-                attBody.innerHTML = allAttendance.map(a => `
-                    <tr>
-                        <td>${a.employees ? escapeHtml(a.employees.name) : '—'}</td>
-                        <td>${new Date(a.attendance_date).toLocaleDateString()}</td>
-                        <td>${escapeHtml((a.status || '').replace('_', ' '))}</td>
-                        <td>${a.work_mode === 'wfh' ? '<span class="prio-chip wfh">🏠 WFH</span>' : a.work_mode === 'field' ? 'Field' : 'Office'}</td>
-                        <td style="white-space:nowrap;">${a.check_in_time ? new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : '—'}${a.check_out_time ? ' – ' + new Date(a.check_out_time).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : ''}</td>
-                        <td>${a.hours_worked !== null && a.hours_worked !== undefined ? a.hours_worked + ' h' : '—'}</td>
-                        <td>${escapeHtml(a.note) || '—'}</td>
-                    </tr>
-                `).join('');
+            // Team attendance & leave summary
+            if (sumBody) {
+                const n = x => Number(x) || 0;
+                const cell = (taken, allowed, left, pend) => `<strong>${fmtNum(taken)}</strong> taken · <span class="${left <= 0 ? 'bal-out' : ''}">${fmtNum(left)} of ${fmtNum(allowed)} left</span>${n(pend) ? `<div class="sum-sub">${fmtNum(pend)} pending</div>` : ''}`;
+                sumBody.innerHTML = summary.map(r => {
+                    const left = leaveLeft(r);
+                    return `<tr>
+                        <td><a href="#" class="sum-name" onclick="openAttendanceDetail('${r.employee_id}'); return false;">${escapeHtml(r.name)}</a><div class="sum-sub">${escapeHtml(r.role || '')}</div></td>
+                        <td>${cell(r.cl_taken, r.cl_allowed, left.casual, r.cl_pending)}</td>
+                        <td>${cell(r.sl_taken, r.sl_allowed, left.sick, r.sl_pending)}</td>
+                        <td>${n(r.comp_granted) ? cell(r.comp_taken, r.comp_granted, left.comp_off, r.comp_pending) : '<span class="sum-sub">none issued</span>'}</td>
+                        <td><strong>${fmtNum(r.unpaid_taken)}</strong> unpaid<div class="sum-sub">${r.unplanned_count} unplanned</div></td>
+                        <td><strong>${r.open_tasks}</strong> task${r.open_tasks === 1 ? '' : 's'}${r.overdue_tasks ? ` · <span style="color:var(--danger-red);">${r.overdue_tasks} overdue</span>` : ''}<div class="sum-sub">${r.open_creative} creative in progress</div></td>
+                    </tr>`;
+                }).join('') || '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No data yet.</td></tr>';
             }
+
+            renderCompOffs();
+            renderLeavePolicy();
 
             if (dirBody) {
+                const today = localISO().slice(5);
                 dirBody.innerHTML = allEmployees.map(e => `
                     <tr>
                         <td><strong>${escapeHtml(e.name)}</strong> <span style="font-size:10px; color:var(--text-secondary);">${escapeHtml(e.employee_id) || ''}</span></td>
                         <td>${escapeHtml(e.role)}</td>
                         <td>${escapeHtml(e.phone) || '—'}</td>
-                        <td>${e.join_date ? new Date(e.join_date).toLocaleDateString() : '—'}</td>
+                        <td>${e.join_date ? fmtDate(e.join_date) : '—'}</td>
+                        <td>${e.date_of_birth ? fmtDate(e.date_of_birth) + (e.date_of_birth.slice(5) === today ? ' 🎂' : '') : '—'}</td>
                         <td>${escapeHtml(e.emergency_contact_name) || '—'}${e.emergency_contact_phone ? ' (' + escapeHtml(e.emergency_contact_phone) + ')' : ''}</td>
                         <td style="white-space:nowrap;">${manage ? `<button class="btn btn-sm btn-secondary" onclick="openEmployeeEdit('${e.id}')">Edit</button> <button class="btn btn-sm btn-secondary" onclick="openEmployeeDocs('${e.id}')">📄 Docs</button>` : '—'}</td>
                     </tr>
@@ -7628,7 +7771,10 @@
                     <div class="form-group"><label>Designation (public-facing title)</label><input type="text" id="editEmpDesignation" value="${escapeHtml(e.designation) || ''}"></div>
                     <div class="form-group"><label>Phone</label><input type="text" id="editEmpPhone" value="${escapeHtml(e.phone) || ''}"></div>
                     <div class="form-group"><label>Personal Email</label><input type="email" id="editEmpPersonalEmail" value="${escapeHtml(e.personal_email) || ''}"></div>
-                    <div class="form-group"><label>Join Date</label><input type="date" id="editEmpJoinDate" value="${e.join_date || ''}"></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Join Date</label><input type="date" id="editEmpJoinDate" value="${e.join_date || ''}"></div>
+                        <div class="form-group"><label>Date of birth</label><input type="date" id="editEmpDob" value="${e.date_of_birth || ''}"></div>
+                    </div>
                     <div class="form-group"><label>Emergency Contact Name</label><input type="text" id="editEmpEmergName" value="${escapeHtml(e.emergency_contact_name) || ''}"></div>
                     <div class="form-group"><label>Emergency Contact Phone</label><input type="text" id="editEmpEmergPhone" value="${escapeHtml(e.emergency_contact_phone) || ''}"></div>
                     <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
@@ -7647,6 +7793,7 @@
                 phone: document.getElementById('editEmpPhone').value.trim() || null,
                 personal_email: document.getElementById('editEmpPersonalEmail').value.trim() || null,
                 join_date: document.getElementById('editEmpJoinDate').value || null,
+                date_of_birth: document.getElementById('editEmpDob').value || null,
                 emergency_contact_name: document.getElementById('editEmpEmergName').value.trim() || null,
                 emergency_contact_phone: document.getElementById('editEmpEmergPhone').value.trim() || null
             };
@@ -7721,7 +7868,7 @@
                     <td>${p.employees ? escapeHtml(p.employees.name) : '—'}${(p.primary_team_members && p.primary_team_members.length) ? '<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Team: ' + employeeNames(p.primary_team_members) + '</div>' : ''}</td>
                     <td style="min-width:150px;">${pr && pr.tasks ? '<div class="task-sub-prog">' + progressBar(pr.frac, pr.blocked ? 'blocked' : '') + '</div><div style="font-size:11px; color:var(--text-secondary);">' + pr.done + '/' + pr.tasks + ' tasks done' + (pr.blocked ? ' · <span style="color:var(--danger-red);">' + pr.blocked + ' blocked</span>' : '') + '</div>' : '<span style="font-size:12px; color:var(--text-secondary);">No tasks yet</span>'}<div><a href="#" style="font-size:12px;" onclick="openProjectTasks('${p.id}'); return false;">Tasks &amp; subtasks →</a></div></td>
                     <td><span class="status-badge ${statusClass[p.status] || 'status-pending'}">${escapeHtml((p.status || 'planning').replace('_',' '))}</span></td>
-                    <td>${p.due_date ? new Date(p.due_date).toLocaleDateString() : '—'}</td>
+                    <td>${p.due_date ? fmtDate(p.due_date) : '—'}</td>
                     <td>
                         <select onchange="updateProjectStatus('${p.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px; margin-bottom:4px;">
                             <option value="planning" ${p.status==='planning'?'selected':''}>Planning</option>
@@ -7901,8 +8048,8 @@
                             <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
                                 ${d.clients ? escapeHtml(d.clients.name) : 'Internal'} · Assigned to ${d.employees ? escapeHtml(d.employees.name) : '—'}
                                 ${(d.team_ids && d.team_ids.length) ? ' +' + d.team_ids.map(id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name) : null; }).filter(Boolean).join(', ') : ''}
-                                ${d.assigned_date ? ' · Assigned ' + new Date(d.assigned_date).toLocaleDateString() : ''}
-                                ${d.due_date ? ' · Due ' + new Date(d.due_date).toLocaleDateString() : ''}
+                                ${d.assigned_date ? ' · Assigned ' + fmtDate(d.assigned_date) : ''}
+                                ${d.due_date ? ' · Due ' + fmtDate(d.due_date) : ''}
                                 ${(d.platforms && d.platforms.length) ? ' · ' + d.platforms.map(escapeHtml).join(', ') : ''}
                                 ${d.reference_link ? ' · <a href="' + escapeHtml(d.reference_link) + '" target="_blank" rel="noopener">Reference ↗</a>' : ''}
                                 ${items.length ? ' · ' + done + '/' + items.length + ' checklist items done' : ''}
@@ -7926,8 +8073,8 @@
                     <div class="file-list">
                         ${files.map(f => `
                             <div class="file-list-item">
-                                <span><a href="#" onclick="downloadDeliverableFile('${f.file_url}', '${escapeHtml(f.file_name).replace(/'/g,"\\'")}'); return false;">${escapeHtml(f.file_name)}</a> <span style="color:var(--text-secondary);">v${f.version}</span></span>
-                                <span style="color:var(--text-secondary);">${f.file_size ? Math.round(f.file_size/1024) + ' KB' : ''}</span>
+                                <span>${fileKindIcon(f)} <a href="#" onclick="downloadDeliverableFile('${f.file_url}', '${escapeHtml(f.file_name).replace(/'/g,"\\'")}', 'view'); return false;">${escapeHtml(f.file_name)}</a> <span style="color:var(--text-secondary);">v${f.version}${f.uploaded_by ? ' · ' + escapeHtml(((allEmployees.find(x => x.id === f.uploaded_by) || {}).name || '').split(' ')[0]) : ''}${f.created_at ? ' · ' + fmtDate(f.created_at) : ''}</span></span>
+                                <span style="display:flex; gap:8px; align-items:center;"><span style="color:var(--text-secondary);">${fileSizeLabel(f.file_size)}</span><button type="button" class="btn btn-sm btn-secondary" onclick="downloadDeliverableFile('${f.file_url}', '${escapeHtml(f.file_name).replace(/'/g,"\\'")}', 'download')">⬇ Download</button></span>
                             </div>
                         `).join('')}
                     </div>
@@ -8016,10 +8163,13 @@
             const list = document.getElementById('deliverablesList');
             const filters = document.getElementById('deliverableStageFilters');
             const cal = document.getElementById('contentCalendarView');
+            const lib = document.getElementById('workLibraryView');
             if (list) list.style.display = view === 'list' ? '' : 'none';
             if (filters) filters.style.display = view === 'list' ? '' : 'none';
             if (cal) cal.style.display = view === 'calendar' ? '' : 'none';
+            if (lib) lib.style.display = view === 'library' ? '' : 'none';
             if (view === 'calendar') renderContentCalendar();
+            if (view === 'library') renderWorkLibrary();
         }
 
         function formatCalDate(iso) {
@@ -8099,7 +8249,8 @@
             sheetImportRows = [];
             sheetImportSourceKey = 'paste';
             const empOpts = allEmployees.filter(e => e.active).map(e => `<option value="${e.id}" ${e.id === currentEmployee.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('');
-            openModal('Import Content Calendar from Google Sheet', `
+            importWorkbook = null;
+            openModal('Import Content Calendar', `
                 <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px; line-height:1.5;">
                     Brings rows from a content-calendar sheet (columns like <strong>No. · Date · Day · Content Type · Content · Platforms · Reference Link/Comments · Status · Responsibility</strong>) into Creative Works as deliverables, so the calendar lives here instead of in a separate sheet.
                     Re-importing the same sheet <strong>updates</strong> the rows it already brought in rather than duplicating them.
@@ -8110,7 +8261,14 @@
                 <div class="form-group"><label>Default assignee (used when "Responsibility" is blank or doesn't match a team member)</label>
                     <select id="impAssignee">${empOpts}</select>
                 </div>
-                <div class="form-group"><label>Google Sheet link (sheet must be shared as "Anyone with the link")</label>
+                <div class="form-group"><label>Upload the Excel or CSV file</label>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                        <input type="file" id="impFile" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" onchange="readSheetFile(this)">
+                        <select id="impSheetPick" style="display:none; max-width:200px;" onchange="useWorkbookSheet(this.value)"></select>
+                    </div>
+                    <div id="impFileStatus" style="font-size:11px; color:var(--text-secondary); margin-top:4px;"></div>
+                </div>
+                <div class="form-group"><label>Or a Google Sheet link (sheet must be shared as "Anyone with the link")</label>
                     <div style="display:flex; gap:8px;">
                         <input type="url" id="impUrl" placeholder="https://docs.google.com/spreadsheets/d/…" style="flex:1;">
                         <button type="button" class="btn btn-sm btn-secondary" onclick="fetchSheetForImport()">Fetch</button>
@@ -8361,10 +8519,15 @@
             await renderDeliverables();
         }
 
-        async function downloadDeliverableFile(path, name) {
-            const { data, error } = await db.storage.from('creative-assets').createSignedUrl(path, 300);
-            if (error || !data) { alert('Could not get download link: ' + (error ? error.message : '')); return; }
-            window.open(data.signedUrl, '_blank');
+        async function downloadDeliverableFile(path, name, mode) {
+            const opts = mode === 'download' ? { download: name || true } : undefined;
+            const { data, error } = await db.storage.from('creative-assets').createSignedUrl(path, 300, opts);
+            if (error || !data) { alert('Could not get the file: ' + (error ? error.message : '')); return; }
+            if (mode === 'download') {
+                const a = document.createElement('a');
+                a.href = data.signedUrl; a.download = name || ''; a.rel = 'noopener';
+                document.body.appendChild(a); a.click(); a.remove();
+            } else window.open(data.signedUrl, '_blank');
         }
 
         async function addChecklistItem(deliverableId, inputEl) {
@@ -8447,7 +8610,7 @@
                     <td>${c.clients ? escapeHtml(c.clients.name) : 'Internal'}</td>
                     <td>${escapeHtml(c.channel) || '—'}</td>
                     <td>${c.budget ? '₹' + Number(c.budget).toLocaleString('en-IN') : '—'}</td>
-                    <td>${c.start_date ? new Date(c.start_date).toLocaleDateString() : '—'}${c.end_date ? ' → ' + new Date(c.end_date).toLocaleDateString() : ''}</td>
+                    <td>${c.start_date ? fmtDate(c.start_date) : '—'}${c.end_date ? ' → ' + fmtDate(c.end_date) : ''}</td>
                     <td><span class="status-badge ${statusClass[c.status] || 'status-pending'}">${escapeHtml(c.status)}</span></td>
                     <td>
                         <select onchange="updateCampaignStatus('${c.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px; margin-bottom:4px;">
@@ -8551,7 +8714,7 @@
                     <td>${p.page_url ? '<code style="font-size:11px;">' + escapeHtml(p.page_url) + '</code>' : '—'}</td>
                     <td>${p.employees ? escapeHtml(p.employees.name) : '— Unassigned —'}</td>
                     <td><span class="status-badge ${statusClass[p.status] || 'status-pending'}">${escapeHtml((p.status||'live').replace('_',' '))}</span></td>
-                    <td>${p.last_updated_at ? new Date(p.last_updated_at).toLocaleDateString() : '—'}</td>
+                    <td>${p.last_updated_at ? fmtDate(p.last_updated_at) : '—'}</td>
                     <td>
                         <select onchange="updateWebsitePageStatus('${p.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px; margin-bottom:4px;">
                             <option value="live" ${p.status==='live'?'selected':''}>Live</option>
@@ -8673,7 +8836,7 @@
                     <div class="id-card-role">${escapeHtml(emp.designation) || escapeHtml(emp.role)}</div>
                     <div class="id-card-row"><span>Employee ID</span><span>${escapeHtml(emp.employee_id) || '—'}</span></div>
                     <div class="id-card-row"><span>Role</span><span>${escapeHtml(emp.role)}</span></div>
-                    <div class="id-card-row"><span>Joined</span><span>${emp.join_date ? new Date(emp.join_date).toLocaleDateString() : '—'}</span></div>
+                    <div class="id-card-row"><span>Joined</span><span>${emp.join_date ? fmtDate(emp.join_date) : '—'}</span></div>
                 </div>
             `;
         }
@@ -8683,6 +8846,7 @@
             document.getElementById('idCardContainer').innerHTML = buildIdCardHtml(currentEmployee);
             document.getElementById('profilePhone').value = currentEmployee.phone || '';
             document.getElementById('profilePersonalEmail').value = currentEmployee.personal_email || '';
+            document.getElementById('profileDob').value = currentEmployee.date_of_birth || '';
             renderMyLeave();
             renderMyDocuments();
         }
@@ -8691,8 +8855,10 @@
             event.preventDefault();
             const phone = document.getElementById('profilePhone').value.trim();
             const personal_email = document.getElementById('profilePersonalEmail').value.trim();
-            const { error } = await db.rpc('update_own_profile', { p_phone: phone || null, p_personal_email: personal_email || null });
+            const dob = document.getElementById('profileDob').value || null;
+            const { error } = await db.rpc('update_own_profile', { p_phone: phone || null, p_personal_email: personal_email || null, p_date_of_birth: dob });
             if (error) { alert('Could not save: ' + error.message); return; }
+            currentEmployee.date_of_birth = dob || currentEmployee.date_of_birth;
             currentEmployee.phone = phone || null;
             currentEmployee.personal_email = personal_email || null;
             alert('Saved.');
@@ -8769,6 +8935,776 @@
         }
 
         boot();
+
+        // =====================================================================
+        // v18 — dates, notifications, leave balances, comp off, breaks, files,
+        //        invoices, client/lead editing, goals
+        // =====================================================================
+
+        // ---------- DATES: always DD/MM/YYYY ----------
+        function fmtDate(v) {
+            if (v === null || v === undefined || v === '') return '—';
+            if (typeof v === 'string') {
+                const m = v.match(/^(\d{4})-(\d{2})-(\d{2})(T00:00:00)?$/);
+                if (m) return `${m[3]}/${m[2]}/${m[1]}`;
+            }
+            const d = v instanceof Date ? v : new Date(v);
+            if (isNaN(d)) return String(v);
+            return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+        }
+        function fmtTime(v) { return v ? new Date(v).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : '—'; }
+        function fmtDateTime(v) { if (!v) return '—'; const d = new Date(v); return isNaN(d) ? String(v) : fmtDate(d) + ', ' + fmtTime(d); }
+        function fmtDays(n) { n = Number(n) || 0; const s = Number.isInteger(n) ? String(n) : String(Math.round(n * 10) / 10); return s + ' day' + (n === 1 ? '' : 's'); }
+        function timeAgo(v) {
+            const s = (Date.now() - new Date(v).getTime()) / 1000;
+            if (s < 60) return 'just now';
+            if (s < 3600) return Math.floor(s / 60) + ' min ago';
+            if (s < 86400) return Math.floor(s / 3600) + ' h ago';
+            if (s < 7 * 86400) return Math.floor(s / 86400) + ' d ago';
+            return fmtDate(v);
+        }
+
+        // ---------- NOTIFICATIONS (bell) ----------
+        let myNotifs = [];
+        let notifTimer = null;
+
+        function startNotifications() {
+            loadNotifications();
+            if (notifTimer) clearInterval(notifTimer);
+            notifTimer = setInterval(() => { if (currentEmployee && !document.hidden) loadNotifications(); }, 60000);
+        }
+
+        async function loadNotifications() {
+            if (!currentEmployee) return;
+            const { data, error } = await db.from('notifications').select('*').eq('recipient_id', currentEmployee.id).order('created_at', { ascending: false }).limit(30);
+            if (error) return;
+            myNotifs = data || [];
+            const unread = myNotifs.filter(n => !n.read_at).length;
+            const c = document.getElementById('notifCount');
+            if (c) { c.textContent = unread > 9 ? '9+' : String(unread); c.style.display = unread ? '' : 'none'; }
+            const panel = document.getElementById('notifPanel');
+            if (panel && panel.classList.contains('open')) renderNotifPanel();
+        }
+
+        function renderNotifPanel() {
+            const panel = document.getElementById('notifPanel');
+            if (!panel) return;
+            const unread = myNotifs.filter(n => !n.read_at).length;
+            const icon = { leave_applied: '🌴', leave_approved: '✅', leave_rejected: '❌', comp_off: '🎁', test: '✉️' };
+            panel.innerHTML = `
+                <div class="notif-head"><strong>Notifications</strong>${unread ? `<a href="#" onclick="markAllNotifsRead(); return false;">Mark all read</a>` : ''}</div>
+                <div class="notif-list">${myNotifs.map(n => `
+                    <div class="notif-item ${n.read_at ? '' : 'unread'}" onclick="openNotif('${n.id}')">
+                        <div class="notif-icon">${icon[n.kind] || '🔔'}</div>
+                        <div class="notif-text"><div class="notif-title">${escapeHtml(n.title)}</div>
+                            ${n.body ? `<div class="notif-body">${escapeHtml(n.body.split('\n').slice(0, 2).join(' · '))}</div>` : ''}
+                            <div class="notif-time">${timeAgo(n.created_at)}</div></div>
+                    </div>`).join('') || '<div class="notif-empty">Nothing yet. Leave requests, approvals and comp offs show up here.</div>'}</div>`;
+        }
+
+        function toggleNotifs(event) {
+            if (event) event.stopPropagation();
+            const panel = document.getElementById('notifPanel');
+            if (!panel) return;
+            const open = !panel.classList.contains('open');
+            panel.classList.toggle('open', open);
+            if (open) { renderNotifPanel(); loadNotifications(); }
+        }
+        document.addEventListener('click', e => {
+            const panel = document.getElementById('notifPanel');
+            if (panel && panel.classList.contains('open') && !e.target.closest('.notif-wrap')) panel.classList.remove('open');
+        });
+
+        async function openNotif(id) {
+            const n = myNotifs.find(x => x.id === id);
+            if (!n) return;
+            if (!n.read_at) { n.read_at = new Date().toISOString(); await db.from('notifications').update({ read_at: n.read_at }).eq('id', id); }
+            document.getElementById('notifPanel').classList.remove('open');
+            loadNotifications();
+            const modules = currentEmployee.modules || [];
+            const view = n.view === 'hr' && !(modules.includes('hr')) ? 'profile' : (n.view || 'overview');
+            switchView(view);
+        }
+
+        async function markAllNotifsRead() {
+            const now = new Date().toISOString();
+            myNotifs.forEach(n => { if (!n.read_at) n.read_at = now; });
+            await db.from('notifications').update({ read_at: now }).eq('recipient_id', currentEmployee.id).is('read_at', null);
+            loadNotifications();
+            renderNotifPanel();
+        }
+
+        // ---------- LEAVE BALANCES ----------
+        const LEAVE_LABELS = { casual: 'Casual leave', sick: 'Sick leave', comp_off: 'Comp off', unpaid: 'Unpaid leave', earned: 'Earned leave' };
+        const leaveSummaryCache = {};
+
+        async function loadLeaveSummary(year, force) {
+            year = Number(year) || new Date().getFullYear();
+            if (!force && leaveSummaryCache[year]) return leaveSummaryCache[year];
+            const { data, error } = await db.rpc('leave_summary', { p_year: year });
+            if (error) { console.warn('leave_summary', error.message); return []; }
+            leaveSummaryCache[year] = data || [];
+            return leaveSummaryCache[year];
+        }
+        function clearLeaveCache() { Object.keys(leaveSummaryCache).forEach(k => delete leaveSummaryCache[k]); }
+
+        function leaveLeft(row) {
+            if (!row) return { casual: 0, sick: 0, comp_off: 0 };
+            const n = x => Number(x) || 0;
+            return {
+                casual: Math.max(0, n(row.cl_allowed) - n(row.cl_taken) - n(row.cl_pending)),
+                sick: Math.max(0, n(row.sl_allowed) - n(row.sl_taken) - n(row.sl_pending)),
+                comp_off: Math.max(0, n(row.comp_granted) - n(row.comp_taken) - n(row.comp_pending))
+            };
+        }
+
+        function balanceChipsHtml(row, year) {
+            if (!row) return '';
+            const left = leaveLeft(row);
+            const n = x => Number(x) || 0;
+            const chip = (cls, label, l, total, pend) => `<span class="bal-chip ${cls} ${l <= 0 ? 'empty' : ''}"><strong>${fmtNum(l)}</strong> of ${fmtNum(total)} ${label} left${pend ? ` <em>(${fmtNum(pend)} pending)</em>` : ''}</span>`;
+            return `<div class="bal-chips">
+                ${chip('cl', 'casual', left.casual, n(row.cl_allowed), n(row.cl_pending))}
+                ${chip('sl', 'sick', left.sick, n(row.sl_allowed), n(row.sl_pending))}
+                ${n(row.comp_granted) ? chip('co', 'comp off', left.comp_off, n(row.comp_granted), n(row.comp_pending)) : ''}
+                ${n(row.unpaid_taken) ? `<span class="bal-chip up">${fmtNum(row.unpaid_taken)} unpaid taken</span>` : ''}
+            </div><div class="bal-note">${year || new Date().getFullYear()} allowance. Sundays aren't counted.</div>`;
+        }
+        function fmtNum(n) { n = Number(n) || 0; return Number.isInteger(n) ? String(n) : String(Math.round(n * 10) / 10); }
+
+        // Working days between two ISO dates, Sundays excluded (mirrors leave_days() in the database)
+        function workingDays(start, end, half) {
+            if (!start) return 0;
+            if (half) return 0.5;
+            const a = new Date(start + 'T00:00:00'), b = new Date((end && end >= start ? end : start) + 'T00:00:00');
+            let n = 0;
+            for (let d = new Date(a); d <= b; d.setDate(d.getDate() + 1)) if (d.getDay() !== 0) n++;
+            return n;
+        }
+
+        // Rebuild the leave-type dropdown so casual / sick / comp off only appear while there is balance
+        async function refreshLeaveForm(prefix) {
+            const typeSel = document.getElementById(prefix + 'LeaveType');
+            if (!typeSel || !currentEmployee) return;
+            const start = document.getElementById(prefix + 'LeaveStart').value;
+            const endEl = document.getElementById(prefix + 'LeaveEnd');
+            const halfEl = document.getElementById(prefix + 'LeaveHalf');
+            const end = (endEl && endEl.value) || start;
+            const half = halfEl ? halfEl.checked && (!end || end === start) : false;
+            if (halfEl) { halfEl.disabled = !!(end && start && end !== start); if (halfEl.disabled) halfEl.checked = false; }
+            const year = start ? Number(start.slice(0, 4)) : new Date().getFullYear();
+            const rows = await loadLeaveSummary(year);
+            const row = rows.find(r => r.employee_id === currentEmployee.id);
+            const left = leaveLeft(row);
+            const balBox = document.getElementById(prefix + 'LeaveBalance');
+            if (balBox) balBox.innerHTML = balanceChipsHtml(row, year);
+            const prev = typeSel.value;
+            const opts = [];
+            if (left.casual > 0) opts.push(['casual', `Casual leave (${fmtNum(left.casual)} left)`]);
+            if (left.sick > 0) opts.push(['sick', `Sick leave (${fmtNum(left.sick)} left)`]);
+            if (left.comp_off > 0) opts.push(['comp_off', `Comp off (${fmtNum(left.comp_off)} left)`]);
+            opts.push(['unpaid', 'Unpaid leave']);
+            typeSel.innerHTML = opts.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+            if (opts.some(o => o[0] === prev)) typeSel.value = prev;
+            const days = workingDays(start, end, half);
+            const prevBox = document.getElementById(prefix + 'LeavePreview');
+            if (prevBox) {
+                if (!start) prevBox.innerHTML = '';
+                else {
+                    const t = typeSel.value;
+                    const over = t !== 'unpaid' && days > left[t];
+                    prevBox.innerHTML = `${fmtDate(start)}${end !== start ? ' – ' + fmtDate(end) : ''} · <strong>${fmtDays(days)}</strong>${over ? ` <span style="color:var(--danger-red);">· only ${fmtNum(left[t])} ${LEAVE_LABELS[t].toLowerCase()} left — shorten it or choose unpaid</span>` : ''}`;
+                }
+            }
+            const note = document.getElementById(prefix + 'LeaveQuotaNote');
+            if (note) note.style.display = (left.casual <= 0 && left.sick <= 0) ? '' : 'none';
+            return { row, left, days };
+        }
+
+        // ---------- COMP OFF ----------
+        async function grantCompOff(event) {
+            event.preventDefault();
+            const employee_id = document.getElementById('compOffEmployee').value;
+            const days = Number(document.getElementById('compOffDays').value);
+            if (!employee_id || !(days > 0)) return;
+            const { error } = await db.from('comp_offs').insert({
+                employee_id, days,
+                work_date: document.getElementById('compOffWorkDate').value || null,
+                reason: document.getElementById('compOffReason').value.trim() || null,
+                granted_by: currentEmployee.id
+            });
+            if (error) { alert('Could not issue comp off: ' + error.message); return; }
+            document.getElementById('compOffForm').reset();
+            clearLeaveCache();
+            renderHR();
+        }
+
+        async function renderCompOffs() {
+            const list = document.getElementById('compOffList');
+            if (!list) return;
+            const { data } = await db.from('comp_offs').select('*').order('created_at', { ascending: false }).limit(12);
+            const name = id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name) : '—'; };
+            list.innerHTML = (data || []).map(c => `<div class="ml-row"><div><strong>${name(c.employee_id)}</strong> · ${fmtDays(c.days)}${c.work_date ? ' for ' + fmtDate(c.work_date) : ''}${c.reason ? `<div style="font-size:12px; color:var(--text-secondary);">${escapeHtml(c.reason)}</div>` : ''}</div>
+                <div style="display:flex; gap:6px; align-items:center;"><span style="font-size:11px; color:var(--text-secondary);">${fmtDate(c.created_at)}</span>${canManageHR() ? `<button type="button" class="btn btn-sm btn-secondary" title="Remove this comp off" onclick="deleteCompOff('${c.id}')">✕</button>` : ''}</div></div>`).join('')
+                || '<div style="font-size:12px; color:var(--text-secondary);">No comp offs issued yet.</div>';
+        }
+
+        async function deleteCompOff(id) {
+            if (!confirm('Remove this comp off? It comes off the person\'s balance.')) return;
+            const { error } = await db.from('comp_offs').delete().eq('id', id);
+            if (error) { alert('Could not remove: ' + error.message); return; }
+            clearLeaveCache();
+            renderHR();
+        }
+
+        // ---------- LEAVE POLICY + EMAIL SETTINGS (HR / Superadmin) ----------
+        async function renderLeavePolicy() {
+            const box = document.getElementById('leavePolicyBox');
+            if (!box) return;
+            const { data } = await db.from('leave_policy').select('*').order('year');
+            const year = new Date().getFullYear();
+            const rows = data || [];
+            const has = y => rows.find(r => r.year === y);
+            const shown = [...rows];
+            if (!has(year)) shown.push({ year, casual: 12, sick: 2 });
+            if (!has(year + 1)) shown.push({ year: year + 1, casual: 12, sick: 2 });
+            shown.sort((a, b) => a.year - b.year);
+            const manage = canManageHR();
+            box.innerHTML = `<div class="table-container"><table><thead><tr><th>Year</th><th>Casual</th><th>Sick</th><th></th></tr></thead><tbody>${shown.map(r => `
+                <tr><td><strong>${r.year}</strong>${r.counts_from ? `<div style="font-size:11px; color:var(--text-secondary);">counts leave applied from ${fmtDate(r.counts_from)}</div>` : ''}</td>
+                <td>${manage ? `<input type="number" min="0" step="0.5" id="polCl_${r.year}" value="${r.casual}" style="width:70px;">` : r.casual}</td>
+                <td>${manage ? `<input type="number" min="0" step="0.5" id="polSl_${r.year}" value="${r.sick}" style="width:70px;">` : r.sick}</td>
+                <td>${manage ? `<button type="button" class="btn btn-sm btn-secondary" onclick="saveLeavePolicy(${r.year})">Save</button>` : ''}</td></tr>`).join('')}</tbody></table></div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-top:8px;">Default is 12 casual + 2 sick leaves a year. Once someone uses them up, casual and sick disappear from their leave form and they can take comp off (if they have any) or unpaid leave.</div>`;
+            renderEmailSettings();
+        }
+
+        async function saveLeavePolicy(year) {
+            const casual = Number(document.getElementById('polCl_' + year).value);
+            const sick = Number(document.getElementById('polSl_' + year).value);
+            if (!(casual >= 0) || !(sick >= 0)) { alert('Enter the number of days.'); return; }
+            const { error } = await db.from('leave_policy').upsert({ year, casual, sick, updated_at: new Date().toISOString() }, { onConflict: 'year' });
+            if (error) { alert('Could not save: ' + error.message); return; }
+            clearLeaveCache();
+            renderHR();
+        }
+
+        async function renderEmailSettings() {
+            const box = document.getElementById('emailSettingsBox');
+            if (!box) return;
+            if (!isSuperadminUser()) { box.innerHTML = ''; return; }
+            const { data, error } = await db.rpc('email_config_status');
+            const st = (Array.isArray(data) ? data[0] : data) || {};
+            box.innerHTML = `
+                <div style="font-weight:600; font-size:13px; margin:16px 0 6px;">✉️ Email notifications ${error ? '' : st.has_key ? '<span class="fchip f-good">On</span>' : '<span class="fchip f-none">Off — in-app only</span>'}</div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px; line-height:1.5;">Leave requests, approvals, rejections and comp offs always show in the 🔔 bell. To also email them, create a free Resend account, verify the wearein.in domain there (it gives you DNS records to add in GoDaddy; your Zoho mail is unaffected), create an API key and paste it here. It's stored encrypted in the database and never shown again.</div>
+                <form onsubmit="saveEmailSettings(event)" style="display:flex; flex-direction:column; gap:8px;">
+                    <input type="password" id="emailApiKey" placeholder="${st.has_key ? 'Key saved — paste a new one to replace it' : 'Resend API key (starts with re_)'}" autocomplete="off">
+                    <input type="text" id="emailFrom" placeholder="From, e.g. WAIN Admin <admin@wearein.in>" value="${escapeHtml(st.email_from || '')}">
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="submit" class="btn btn-sm btn-primary">Save email settings</button>
+                        ${st.has_key ? '<button type="button" class="btn btn-sm btn-secondary" onclick="sendTestEmail()">Send me a test email</button>' : ''}
+                    </div>
+                </form>`;
+        }
+
+        async function saveEmailSettings(event) {
+            event.preventDefault();
+            const key = document.getElementById('emailApiKey').value.trim();
+            const from = document.getElementById('emailFrom').value.trim();
+            if (key && !/^re_/.test(key)) { if (!confirm('Resend keys usually start with "re_". Save anyway?')) return; }
+            const { error } = await db.rpc('set_email_config', { p_key: key || null, p_from: from || null });
+            if (error) { alert('Could not save: ' + error.message); return; }
+            document.getElementById('emailApiKey').value = '';
+            alert('Saved.');
+            renderEmailSettings();
+        }
+
+        async function sendTestEmail() {
+            const { error } = await db.rpc('send_test_email');
+            if (error) { alert('Could not send: ' + error.message); return; }
+            alert('Test sent to your login email. If it does not arrive in a few minutes, check the domain is verified in Resend.');
+            loadNotifications();
+        }
+
+        // ---------- REJECT WITH A REASON ----------
+        function openRejectLeave(id) {
+            const l = allLeaveRequests.find(x => x.id === id);
+            if (!l) return;
+            openModal('Reject leave', `
+                <form onsubmit="rejectLeave(event, '${id}')">
+                    <div style="font-size:13px; margin-bottom:10px;"><strong>${l.employees ? escapeHtml(l.employees.name) : ''}</strong> · ${escapeHtml(LEAVE_LABELS[l.leave_type] || l.leave_type)} · ${fmtDate(l.start_date)}${l.end_date !== l.start_date ? ' – ' + fmtDate(l.end_date) : ''}</div>
+                    <div class="form-group"><label>Reason for rejecting (the employee sees this)</label><textarea id="rejectReason" rows="3" required placeholder="e.g. Client shoot that week, can you move it to the week after?"></textarea></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Reject leave</button>
+                    </div>
+                </form>`);
+            setTimeout(() => { const t = document.getElementById('rejectReason'); if (t) t.focus(); }, 50);
+        }
+
+        async function rejectLeave(event, id) {
+            event.preventDefault();
+            const note = document.getElementById('rejectReason').value.trim();
+            if (!note) return;
+            const { error } = await db.from('leave_requests').update({ status: 'rejected', reviewer_note: note, approved_by: currentEmployee.id, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not reject: ' + error.message); return; }
+            closeModal();
+            clearLeaveCache();
+            renderHR();
+        }
+
+        // ---------- ATTENDANCE DETAIL (click a name) ----------
+        async function openAttendanceDetail(empId) {
+            const e = allEmployees.find(x => x.id === empId);
+            const year = Number((document.getElementById('hrSummaryYear') || {}).value) || new Date().getFullYear();
+            const since = new Date(); since.setDate(since.getDate() - 60);
+            const [{ data: att }, { data: leaves }, { data: comps }, rows] = await Promise.all([
+                db.from('attendance').select('*').eq('employee_id', empId).gte('attendance_date', localISO(since)).order('attendance_date', { ascending: false }),
+                db.from('leave_requests').select('*').eq('employee_id', empId).order('start_date', { ascending: false }).limit(30),
+                db.from('comp_offs').select('*').eq('employee_id', empId).order('created_at', { ascending: false }),
+                loadLeaveSummary(year)
+            ]);
+            const ids = (att || []).map(a => a.id);
+            let breaks = [];
+            if (ids.length) { const { data: b } = await db.from('attendance_breaks').select('*').in('attendance_id', ids); breaks = b || []; }
+            const brMin = aid => breaks.filter(b => b.attendance_id === aid).reduce((s, b) => s + Math.max(0, ((b.end_at ? new Date(b.end_at) : new Date()) - new Date(b.start_at)) / 60000), 0);
+            const row = rows.find(r => r.employee_id === empId);
+            const lcls = { pending: 'status-pending', approved: 'status-active', rejected: 'status-overdue' };
+            openModal((e ? e.name : 'Team member') + ' — attendance & leave', `
+                ${balanceChipsHtml(row, year)}
+                ${row ? `<div style="font-size:12px; margin:8px 0 14px;">Pending work: <strong>${row.open_tasks}</strong> open task${row.open_tasks === 1 ? '' : 's'}${row.overdue_tasks ? ` (<span style="color:var(--danger-red);">${row.overdue_tasks} overdue</span>)` : ''} · <strong>${row.open_creative}</strong> creative in progress</div>` : ''}
+                <div style="font-weight:600; font-size:13px; margin-bottom:6px;">Last 60 days</div>
+                <div class="table-container"><table><thead><tr><th>Date</th><th>Mode</th><th>In – Out</th><th>Breaks</th><th>Hours</th><th>Note</th></tr></thead><tbody>
+                ${(att || []).map(a => { const bm = Math.round(brMin(a.id)); return `<tr><td>${fmtDate(a.attendance_date)}</td><td>${a.work_mode === 'wfh' ? '<span class="prio-chip wfh">🏠 WFH</span>' : escapeHtml((a.status || '') === 'present' ? 'Office' : (a.status || '').replace('_', ' '))}</td>
+                    <td style="white-space:nowrap;">${a.check_in_time ? fmtTime(a.check_in_time) : '—'}${a.check_out_time ? ' – ' + fmtTime(a.check_out_time) : a.check_in_time ? ' – <em>working</em>' : ''}</td>
+                    <td>${bm ? bm + ' min' : '—'}</td><td>${a.hours_worked !== null && a.hours_worked !== undefined ? a.hours_worked + ' h' : '—'}</td><td>${escapeHtml(a.note) || '—'}</td></tr>`; }).join('') || '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No attendance in the last 60 days.</td></tr>'}
+                </tbody></table></div>
+                <div style="font-weight:600; font-size:13px; margin:16px 0 6px;">Leave</div>
+                ${(leaves || []).map(l => `<div class="ml-row"><div><strong>${escapeHtml(LEAVE_LABELS[l.leave_type] || l.leave_type)}</strong> · ${fmtDate(l.start_date)}${l.end_date !== l.start_date ? ' – ' + fmtDate(l.end_date) : ''} · ${fmtDays(l.days ?? workingDays(l.start_date, l.end_date, l.half_day))}${l.created_at && l.created_at.slice(0, 10) >= l.start_date ? ' <span class="fchip f-mid">unplanned</span>' : ''}
+                    ${l.reason ? `<div style="font-size:12px; color:var(--text-secondary);">${escapeHtml(l.reason)}</div>` : ''}${l.reviewer_note ? `<div style="font-size:12px;">${l.status === 'rejected' ? 'Rejected: ' : 'Note: '}${escapeHtml(l.reviewer_note)}</div>` : ''}</div>
+                    <span class="status-badge ${lcls[l.status] || 'status-pending'}">${escapeHtml(l.status)}</span></div>`).join('') || '<div style="font-size:12px; color:var(--text-secondary);">No leave taken.</div>'}
+                ${(comps || []).length ? `<div style="font-weight:600; font-size:13px; margin:16px 0 6px;">Comp offs issued</div>${comps.map(c => `<div class="ml-row"><div>${fmtDays(c.days)}${c.work_date ? ' for ' + fmtDate(c.work_date) : ''}${c.reason ? ' · ' + escapeHtml(c.reason) : ''}</div><span style="font-size:11px; color:var(--text-secondary);">${fmtDate(c.created_at)}</span></div>`).join('')}` : ''}
+            `, true);
+        }
+
+        // ---------- WORKDAY BREAKS ----------
+        async function takeBreak() {
+            const { data: a } = await db.from('attendance').select('id').eq('employee_id', currentEmployee.id).eq('attendance_date', localISO()).maybeSingle();
+            if (!a) return;
+            const { error } = await db.from('attendance_breaks').insert({ attendance_id: a.id, employee_id: currentEmployee.id, start_at: new Date().toISOString() });
+            if (error) { alert('Could not start the break: ' + error.message); return; }
+            renderMyWorkday();
+        }
+
+        async function resumeWork(breakId) {
+            const { error } = await db.from('attendance_breaks').update({ end_at: new Date().toISOString() }).eq('id', breakId);
+            if (error) { alert('Could not resume: ' + error.message); return; }
+            renderMyWorkday();
+        }
+
+        function breakMinutes(breaks, until) {
+            return Math.round((breaks || []).reduce((s, b) => s + Math.max(0, ((b.end_at ? new Date(b.end_at) : (until ? new Date(until) : new Date())) - new Date(b.start_at)) / 60000), 0));
+        }
+
+        // ---------- CONTENT CALENDAR: EXCEL / CSV UPLOAD ----------
+        function loadScriptOnce(src, globalName) {
+            if (window[globalName]) return Promise.resolve(window[globalName]);
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src; s.async = true;
+                s.onload = () => window[globalName] ? resolve(window[globalName]) : reject(new Error(globalName + ' did not load'));
+                s.onerror = () => reject(new Error('Could not load ' + src));
+                document.head.appendChild(s);
+            });
+        }
+
+        let importWorkbook = null;
+        async function readSheetFile(input) {
+            const file = input.files && input.files[0];
+            const status = document.getElementById('impFileStatus');
+            if (!file) return;
+            status.textContent = 'Reading ' + file.name + '…';
+            try {
+                if (/\.csv$/i.test(file.name) || file.type === 'text/csv') {
+                    document.getElementById('impPaste').value = await file.text();
+                    status.textContent = 'Loaded ' + file.name + '.';
+                    previewSheetImport();
+                    return;
+                }
+                const XLSX = await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX');
+                importWorkbook = XLSX.read(await file.arrayBuffer(), { type: 'array', cellNF: true });
+                const names = importWorkbook.SheetNames;
+                const sel = document.getElementById('impSheetPick');
+                if (names.length > 1) {
+                    sel.innerHTML = names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
+                    sel.style.display = '';
+                } else sel.style.display = 'none';
+                useWorkbookSheet(names[0]);
+                status.textContent = `Loaded ${file.name}${names.length > 1 ? ` — ${names.length} tabs, pick the one to import` : ''}.`;
+            } catch (e) {
+                status.textContent = 'Could not read that file: ' + e.message;
+            }
+        }
+
+        function useWorkbookSheet(name) {
+            if (!importWorkbook || !window.XLSX) return;
+            const ws = importWorkbook.Sheets[name];
+            if (!ws) return;
+            // write dates as DD/MM/YYYY so the importer reads them the Indian way
+            Object.keys(ws).forEach(k => {
+                const c = ws[k];
+                if (k[0] === '!' || !c || c.t !== 'n' || !c.z || !XLSX.SSF.is_date(c.z)) return;
+                const p = XLSX.SSF.parse_date_code(c.v);
+                if (p && p.y) c.w = String(p.d).padStart(2, '0') + '/' + String(p.m).padStart(2, '0') + '/' + p.y;
+            });
+            document.getElementById('impPaste').value = XLSX.utils.sheet_to_csv(ws, { FS: '\t', blankrows: false });
+            previewSheetImport();
+        }
+
+        // ---------- CREATIVE: WORK LIBRARY + DOWNLOADS ----------
+        let libraryFilter = { q: '', client: '' };
+
+        function fileKindIcon(f) {
+            const t = (f.file_type || '') + ' ' + (f.file_name || '');
+            if (/image|\.(png|jpe?g|gif|webp|svg)/i.test(t)) return '🖼️';
+            if (/video|\.(mp4|mov|avi|mkv|webm)/i.test(t)) return '🎬';
+            if (/pdf/i.test(t)) return '📕';
+            if (/zip|rar|7z/i.test(t)) return '🗜️';
+            if (/psd|ai|figma|sketch|xd|indd|aep|prproj/i.test(t)) return '🎨';
+            return '📄';
+        }
+        function fileSizeLabel(b) { if (!b) return ''; if (b > 1048576) return (Math.round(b / 104857.6) / 10) + ' MB'; return Math.max(1, Math.round(b / 1024)) + ' KB'; }
+
+        async function renderWorkLibrary() {
+            const box = document.getElementById('workLibraryGrid');
+            if (!box) return;
+            const delMap = {};
+            allDeliverables.forEach(d => { delMap[d.id] = d; });
+            let files = [];
+            Object.values(deliverableFiles).forEach(list => files.push(...list));
+            files.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+            const clientSel = document.getElementById('libClient');
+            if (clientSel && clientSel.options.length <= 1) clientSel.innerHTML = '<option value="">All clients</option><option value="__internal">Internal / WAIN</option>' + allClients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+            const q = libraryFilter.q.toLowerCase();
+            files = files.filter(f => {
+                const d = delMap[f.deliverable_id] || {};
+                if (libraryFilter.client === '__internal' && d.client_id) return false;
+                if (libraryFilter.client && libraryFilter.client !== '__internal' && d.client_id !== libraryFilter.client) return false;
+                if (q && !((f.file_name || '') + ' ' + (d.title || '') + ' ' + (d.clients ? d.clients.name : '')).toLowerCase().includes(q)) return false;
+                return true;
+            });
+            document.getElementById('libCount').textContent = files.length + ' file' + (files.length === 1 ? '' : 's');
+            const who = id => { const e = allEmployees.find(x => x.id === id); return e ? escapeHtml(e.name.split(' ')[0]) : ''; };
+            box.innerHTML = files.map(f => {
+                const d = delMap[f.deliverable_id] || {};
+                const safeName = escapeHtml(f.file_name).replace(/'/g, "\\'");
+                return `<div class="lib-card">
+                    <div class="lib-thumb" id="thumb_${f.id}">${fileKindIcon(f)}</div>
+                    <div class="lib-name" title="${escapeHtml(f.file_name)}">${escapeHtml(f.file_name)} <span class="lib-ver">v${f.version}</span></div>
+                    <div class="lib-meta">${escapeHtml(d.title || '')}${d.clients ? ' · ' + escapeHtml(d.clients.name) : ''}</div>
+                    <div class="lib-meta">${who(f.uploaded_by)}${f.created_at ? ' · ' + fmtDate(f.created_at) : ''}${f.file_size ? ' · ' + fileSizeLabel(f.file_size) : ''}</div>
+                    <div class="lib-actions">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="downloadDeliverableFile('${f.file_url}', '${safeName}', 'view')">👁 View</button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="downloadDeliverableFile('${f.file_url}', '${safeName}', 'download')">⬇ Download</button>
+                    </div>
+                </div>`;
+            }).join('') || '<div style="grid-column:1/-1; text-align:center; color:var(--text-secondary); font-size:13px; padding:20px;">No files yet. Upload finished work on a deliverable (Deliverables List → Upload File) and it shows up here for the whole team.</div>';
+            // thumbnails for images
+            const imgs = files.filter(f => /image|\.(png|jpe?g|gif|webp)$/i.test((f.file_type || '') + ' ' + f.file_name)).slice(0, 40);
+            if (imgs.length && db.storage.from('creative-assets').createSignedUrls) {
+                const { data } = await db.storage.from('creative-assets').createSignedUrls(imgs.map(f => f.file_url), 600);
+                (data || []).forEach((r, i) => { const el = document.getElementById('thumb_' + imgs[i].id); if (el && r && r.signedUrl) el.innerHTML = `<img src="${r.signedUrl}" alt="" loading="lazy">`; });
+            }
+        }
+
+        function filterLibrary() {
+            libraryFilter.q = (document.getElementById('libSearch') || {}).value || '';
+            libraryFilter.client = (document.getElementById('libClient') || {}).value || '';
+            renderWorkLibrary();
+        }
+
+        // ---------- INVOICES: PDF + COMPANY DETAILS ----------
+        const COMPANY_FIELDS = [
+            ['legal_name', 'Business / legal name'], ['address', 'Address', 'textarea'], ['gstin', 'GSTIN'], ['pan', 'PAN'],
+            ['email', 'Billing email'], ['phone', 'Phone'], ['website', 'Website'],
+            ['bank_name', 'Bank name'], ['bank_account_name', 'Account name'], ['bank_account_no', 'Account number'], ['bank_ifsc', 'IFSC'], ['upi_id', 'UPI ID'],
+            ['invoice_terms', 'Terms / note printed on every invoice', 'textarea']
+        ];
+
+        async function loadCompanySettings() {
+            const { data } = await db.from('company_settings').select('key, value');
+            const s = {};
+            (data || []).forEach(r => { s[r.key] = r.value; });
+            return s;
+        }
+
+        async function openCompanySettings() {
+            const s = await loadCompanySettings();
+            openModal('Invoice details (printed on every invoice)', `
+                <form onsubmit="saveCompanySettings(event)">
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0 12px;">
+                    ${COMPANY_FIELDS.map(([k, label, kind]) => `<div class="form-group" ${kind === 'textarea' ? 'style="grid-column:1/-1;"' : ''}><label>${label}</label>${((attr, v) => kind === 'textarea' ? `<textarea ${attr} rows="2">${v}</textarea>` : `<input type="text" ${attr} value="${v}">`)(`id="co_${k}"`, escapeHtml(s[k] || ''))}</div>`).join('')}
+                    </div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </form>`, true);
+        }
+
+        async function saveCompanySettings(event) {
+            event.preventDefault();
+            const rows = COMPANY_FIELDS.map(([k]) => ({ key: k, value: document.getElementById('co_' + k).value.trim() || null, updated_at: new Date().toISOString() }));
+            const { error } = await db.from('company_settings').upsert(rows, { onConflict: 'key' });
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+        }
+
+        function amountInWordsINR(amount) {
+            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            const two = n => n < 20 ? ones[n] : tens[Math.floor(n / 10)] + (n % 10 ? ' ' + ones[n % 10] : '');
+            const three = n => (n >= 100 ? ones[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' ' : '') : '') + (n % 100 ? two(n % 100) : '');
+            const words = n => {
+                if (n === 0) return 'Zero';
+                const parts = [];
+                const crore = Math.floor(n / 10000000); n %= 10000000;
+                const lakh = Math.floor(n / 100000); n %= 100000;
+                const thousand = Math.floor(n / 1000); n %= 1000;
+                if (crore) parts.push(words(crore) + ' Crore');
+                if (lakh) parts.push(two(lakh) + ' Lakh');
+                if (thousand) parts.push(two(thousand) + ' Thousand');
+                if (n) parts.push(three(n));
+                return parts.join(' ');
+            };
+            const rupees = Math.floor(Math.round(amount * 100) / 100);
+            const paise = Math.round((amount - rupees) * 100);
+            return 'Rupees ' + words(rupees) + (paise ? ' and ' + two(paise) + ' Paise' : '') + ' Only';
+        }
+
+        function buildInvoiceHtml(inv, items, client, s) {
+            const inrf = n => '₹' + Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const svg = document.querySelector('.login-logo svg');
+            let logo = '';
+            if (svg) { const c = svg.cloneNode(true); c.setAttribute('width', '340'); c.setAttribute('height', '93'); c.removeAttribute('style'); logo = `<img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(c))}" alt="We Are In" style="width:170px; height:auto; display:block;">`; }
+            const esc = x => escapeHtml(x || '').replace(/\n/g, '<br>');
+            return `<div class="inv-doc">
+                <div class="inv-top">
+                    <div class="inv-brand">${logo ? `<div class="inv-logo">${logo}</div>` : ''}<div class="inv-co"><strong>${esc(s.legal_name || 'We Are In')}</strong><br>${esc(s.address)}${s.gstin ? '<br>GSTIN: ' + esc(s.gstin) : ''}${s.pan ? ' · PAN: ' + esc(s.pan) : ''}<br>${[s.phone, s.email, s.website].filter(Boolean).map(esc).join(' · ')}</div></div>
+                    <div class="inv-title"><div class="inv-h">${s.gstin && Number(inv.tax) ? 'TAX INVOICE' : 'INVOICE'}</div>
+                        <table class="inv-meta"><tr><td>Invoice no.</td><td><strong>${esc(inv.invoice_number)}</strong></td></tr><tr><td>Date</td><td>${fmtDate(inv.issue_date)}</td></tr>${inv.due_date ? `<tr><td>Due</td><td>${fmtDate(inv.due_date)}</td></tr>` : ''}</table></div>
+                </div>
+                <div class="inv-bill"><div class="inv-label">Bill to</div><strong>${esc((client && (client.billing_name || client.name)) || '—')}</strong>${client && client.billing_address ? '<br>' + esc(client.billing_address) : ''}${client && client.gstin ? '<br>GSTIN: ' + esc(client.gstin) : ''}${client && client.billing_email ? '<br>' + esc(client.billing_email) : ''}</div>
+                <table class="inv-items"><thead><tr><th style="width:36px;">#</th><th>Description</th><th style="width:60px; text-align:right;">Qty</th><th style="width:110px; text-align:right;">Rate</th><th style="width:120px; text-align:right;">Amount</th></tr></thead>
+                <tbody>${items.map((it, i) => `<tr><td>${i + 1}</td><td>${esc(it.description)}</td><td style="text-align:right;">${fmtNum(it.quantity)}</td><td style="text-align:right;">${inrf(it.unit_price)}</td><td style="text-align:right;">${inrf(it.amount)}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center;">—</td></tr>'}</tbody></table>
+                <div class="inv-totals"><table>
+                    <tr><td>Subtotal</td><td>${inrf(inv.subtotal)}</td></tr>
+                    ${Number(inv.tax) ? `<tr><td>Tax${Number(inv.subtotal) ? ' (' + fmtNum(Math.round(Number(inv.tax) / Number(inv.subtotal) * 1000) / 10) + '%)' : ''}</td><td>${inrf(inv.tax)}</td></tr>` : ''}
+                    <tr class="inv-grand"><td>Total</td><td>${inrf(inv.total)}</td></tr></table>
+                    <div class="inv-words">${amountInWordsINR(Number(inv.total) || 0)}</div></div>
+                ${(s.bank_name || s.bank_account_no || s.upi_id) ? `<div class="inv-bank"><div class="inv-label">Payment details</div>${s.bank_account_name ? 'Account name: ' + esc(s.bank_account_name) + '<br>' : ''}${s.bank_name ? 'Bank: ' + esc(s.bank_name) + '<br>' : ''}${s.bank_account_no ? 'Account no.: ' + esc(s.bank_account_no) + '<br>' : ''}${s.bank_ifsc ? 'IFSC: ' + esc(s.bank_ifsc) + '<br>' : ''}${s.upi_id ? 'UPI: ' + esc(s.upi_id) : ''}</div>` : ''}
+                ${inv.notes ? `<div class="inv-notes"><div class="inv-label">Notes</div>${esc(inv.notes)}</div>` : ''}
+                ${s.invoice_terms ? `<div class="inv-terms">${esc(s.invoice_terms)}</div>` : ''}
+                <div class="inv-foot">Thank you for working with ${esc(s.legal_name || 'We Are In')}.</div>
+            </div>`;
+        }
+
+        async function downloadInvoicePdf(id, btn) {
+            if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Preparing…'; }
+            try {
+                const [{ data: inv, error }, { data: items }, s] = await Promise.all([
+                    db.from('invoices').select('*, clients(*)').eq('id', id).single(),
+                    db.from('invoice_items').select('*').eq('invoice_id', id),
+                    loadCompanySettings()
+                ]);
+                if (error || !inv) { alert('Could not load the invoice: ' + (error ? error.message : '')); return; }
+                const client = inv.clients || allClients.find(c => c.id === inv.client_id);
+                if (!s.address && isSuperadminUser() && confirm('Your company address, GSTIN and bank details aren\'t filled in yet, so the invoice will only show the name. Fill them in first?')) { openCompanySettings(); return; }
+                const holder = document.createElement('div');
+                holder.style.cssText = 'position:absolute; left:0; top:0; width:794px; background:#fff; z-index:-1;';
+                holder.innerHTML = buildInvoiceHtml(inv, items || [], client, s);
+                document.body.appendChild(holder);
+                const filename = 'Invoice-' + String(inv.invoice_number).replace(/[^\w.-]+/g, '_') + '.pdf';
+                try {
+                    const html2pdf = await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js', 'html2pdf');
+                    await html2pdf().set({ margin: [10, 10, 12, 10], filename, image: { type: 'jpeg', quality: 0.96 }, html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, scrollX: 0, scrollY: 0 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(holder.firstElementChild).save();
+                } catch (e) {
+                    // fallback: open a printable page (Save as PDF from the print dialog)
+                    const w = window.open('', '_blank');
+                    if (w) { w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(filename)}</title><style>${INVOICE_CSS}</style></head><body>${holder.innerHTML}<script>setTimeout(()=>print(),300)<\/script></body></html>`); w.document.close(); }
+                    else alert('Could not create the PDF: ' + e.message);
+                } finally { holder.remove(); }
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || '⬇ PDF'; }
+            }
+        }
+
+        const INVOICE_CSS = `
+            .inv-doc { font-family: 'Helvetica Neue', Arial, sans-serif; color:#1a2138; font-size:12px; line-height:1.45; padding:28px 32px; background:#fff; }
+            .inv-top { display:flex; justify-content:space-between; gap:24px; border-bottom:3px solid #0e9aa7; padding-bottom:16px; }
+            .inv-brand { max-width:420px; } .inv-logo { margin-bottom:8px; }
+            .inv-co { font-size:11.5px; color:#3a4258; } .inv-co strong { font-size:14px; color:#1a2138; }
+            .inv-title { text-align:right; } .inv-h { font-size:22px; font-weight:800; letter-spacing:2px; color:#0e9aa7; margin-bottom:8px; }
+            .inv-meta td { padding:2px 0 2px 14px; font-size:12px; } .inv-meta td:first-child { color:#6b7280; }
+            .inv-bill { margin:18px 0 14px; font-size:12px; } .inv-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#6b7280; margin-bottom:3px; font-weight:700; }
+            .inv-items { width:100%; border-collapse:collapse; margin-top:6px; } .inv-items th { background:#1a2138; color:#fff; font-size:11px; text-align:left; padding:8px; }
+            .inv-items td { padding:8px; border-bottom:1px solid #e5e7eb; vertical-align:top; }
+            .inv-totals { display:flex; flex-direction:column; align-items:flex-end; margin-top:10px; } .inv-totals table { min-width:260px; } .inv-totals td { padding:4px 8px; } .inv-totals td:last-child { text-align:right; }
+            .inv-grand td { font-size:15px; font-weight:800; border-top:2px solid #1a2138; padding-top:8px; } .inv-words { font-size:11px; color:#3a4258; margin-top:6px; font-style:italic; }
+            .inv-bank, .inv-notes { margin-top:18px; font-size:11.5px; } .inv-terms { margin-top:16px; font-size:11px; color:#6b7280; }
+            .inv-foot { margin-top:26px; text-align:center; font-size:11px; color:#6b7280; border-top:1px solid #e5e7eb; padding-top:10px; }`;
+        (function injectInvoiceCss() { const st = document.createElement('style'); st.textContent = INVOICE_CSS; document.head.appendChild(st); })();
+
+        // ---------- CLIENTS: EDIT / STATUS / DELETE ----------
+        function canEditClients() { return isSuperadminUser() || canPlanPriorities() || ((currentEmployee && currentEmployee.modules) || []).includes('clients'); }
+
+        async function setClientStatus(id, status) {
+            const { error } = await db.from('clients').update({ status }).eq('id', id);
+            if (error) { alert('Could not change the status: ' + error.message); return; }
+            const c = allClients.find(x => x.id === id); if (c) c.status = status;
+            renderClients();
+        }
+
+        function openClientEdit(id) {
+            const c = allClients.find(x => x.id === id);
+            if (!c) return;
+            const inds = INDUSTRY_OPTIONS.includes(c.industry) || !c.industry ? INDUSTRY_OPTIONS : [c.industry, ...INDUSTRY_OPTIONS];
+            openModal('Edit client — ' + c.name, `
+                <form onsubmit="saveClientEdit(event, '${id}')">
+                    <div class="form-group"><label>Client name</label><input type="text" id="ceName" value="${escapeHtml(c.name)}" required></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Industry</label><select id="ceIndustry"><option value="">— Select —</option>${inds.map(o => `<option ${c.industry === o ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Status</label><select id="ceStatus">${['active', 'paused', 'churned'].map(s => `<option value="${s}" ${c.status === s ? 'selected' : ''}>${s[0].toUpperCase() + s.slice(1)}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="form-group"><label>Notes</label><textarea id="ceNotes" rows="2">${escapeHtml(c.notes || '')}</textarea></div>
+                    <div style="font-weight:600; font-size:13px; margin:6px 0 10px; color:var(--wain-cyan);">Billing details (printed on invoices)</div>
+                    <div class="form-group"><label>Billing name (legal name)</label><input type="text" id="ceBillName" value="${escapeHtml(c.billing_name || '')}" placeholder="${escapeHtml(c.name)}"></div>
+                    <div class="form-group"><label>Billing address</label><textarea id="ceBillAddr" rows="2">${escapeHtml(c.billing_address || '')}</textarea></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>GSTIN</label><input type="text" id="ceGstin" value="${escapeHtml(c.gstin || '')}"></div>
+                        <div class="form-group"><label>Billing email</label><input type="email" id="ceBillEmail" value="${escapeHtml(c.billing_email || '')}"></div>
+                    </div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border); justify-content:space-between;">
+                        <button type="button" class="btn btn-secondary btn-sm" style="color:var(--danger-red);" onclick="deleteClient('${id}')">Delete client</button>
+                        <span style="display:flex; gap:8px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button></span>
+                    </div>
+                </form>`);
+        }
+
+        async function saveClientEdit(event, id) {
+            event.preventDefault();
+            const patch = {
+                name: document.getElementById('ceName').value.trim(),
+                industry: document.getElementById('ceIndustry').value || null,
+                status: document.getElementById('ceStatus').value,
+                notes: document.getElementById('ceNotes').value.trim() || null,
+                billing_name: document.getElementById('ceBillName').value.trim() || null,
+                billing_address: document.getElementById('ceBillAddr').value.trim() || null,
+                gstin: document.getElementById('ceGstin').value.trim().toUpperCase() || null,
+                billing_email: document.getElementById('ceBillEmail').value.trim() || null
+            };
+            if (!patch.name) return;
+            const { error } = await db.from('clients').update(patch).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            await loadClients();
+            populateClientDropdowns();
+            renderClients();
+        }
+
+        async function deleteClient(id) {
+            const c = allClients.find(x => x.id === id);
+            if (!c) return;
+            if (!confirm(`Delete ${c.name}? This can't be undone.`)) return;
+            const { error } = await db.from('clients').delete().eq('id', id);
+            if (error) {
+                if (error.code === '23503' || /foreign key/i.test(error.message)) {
+                    if (confirm(`${c.name} still has projects, creative work, invoices or expenses linked to it, so it can't be deleted without losing that history.\n\nMark it as churned instead? It stays in reports but drops out of active lists.`)) {
+                        closeModal();
+                        await setClientStatus(id, 'churned');
+                    }
+                    return;
+                }
+                alert('Could not delete: ' + error.message);
+                return;
+            }
+            closeModal();
+            await loadClients();
+            populateClientDropdowns();
+            renderClients();
+        }
+
+        // ---------- CRM: CHANGE STAGE, EDIT, DELETE ----------
+        async function changeLeadStage(id, stage, sel) {
+            const lead = allLeads.find(l => l.id === id);
+            if (!lead || lead.stage === stage) return;
+            if (stage === 'won' && !lead.converted_client_id) { await convertLeadToClient(id); if (sel) sel.value = (allLeads.find(l => l.id === id) || lead).stage; return; }
+            if (stage === 'lost') { await markLeadLost(id); return; }
+            const from = lead.stage;
+            const { error } = await db.from('leads').update({ stage, updated_at: new Date().toISOString() }).eq('id', id);
+            if (error) { alert('Could not change the stage: ' + error.message); if (sel) sel.value = from; return; }
+            await db.from('crm_activities').insert({ lead_id: id, employee_id: currentEmployee.id, activity_type: 'stage_change', notes: `Stage: ${LEAD_STAGE_LABELS[from] || from} → ${LEAD_STAGE_LABELS[stage] || stage}` });
+            renderLeads();
+        }
+
+        function openLeadEdit(id) {
+            const l = allLeads.find(x => x.id === id);
+            if (!l) return;
+            const owners = allEmployees.filter(e => e.active !== false);
+            openModal('Edit lead — ' + l.company_name, `
+                <form onsubmit="saveLeadEdit(event, '${id}')">
+                    <div class="form-group"><label>Company</label><input type="text" id="leCompany" value="${escapeHtml(l.company_name)}" required></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Contact name</label><input type="text" id="leContact" value="${escapeHtml(l.contact_name || '')}"></div>
+                        <div class="form-group"><label>Phone</label><input type="text" id="lePhone" value="${escapeHtml(l.contact_phone || '')}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Email</label><input type="email" id="leEmail" value="${escapeHtml(l.contact_email || '')}"></div>
+                        <div class="form-group"><label>Est. value (₹)</label><input type="number" min="0" id="leValue" value="${l.estimated_value ?? ''}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Owner</label><select id="leOwner"><option value="">— Nobody —</option>${owners.map(e => `<option value="${e.id}" ${l.owner_id === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Source</label><input type="text" id="leSource" value="${escapeHtml(l.source || '')}"></div>
+                    </div>
+                    <div class="form-group"><label>Notes</label><textarea id="leNotes" rows="3">${escapeHtml(l.notes || '')}</textarea></div>
+                    <div class="modal-footer" style="padding:16px 0 0; margin-top:4px; border-top:1px solid var(--wain-border); justify-content:space-between;">
+                        <button type="button" class="btn btn-secondary btn-sm" style="color:var(--danger-red);" onclick="deleteLead('${id}')">Delete lead</button>
+                        <span style="display:flex; gap:8px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button></span>
+                    </div>
+                </form>`);
+        }
+
+        async function saveLeadEdit(event, id) {
+            event.preventDefault();
+            const v = document.getElementById('leValue').value;
+            const { error } = await db.from('leads').update({
+                company_name: document.getElementById('leCompany').value.trim(),
+                contact_name: document.getElementById('leContact').value.trim() || null,
+                contact_phone: document.getElementById('lePhone').value.trim() || null,
+                contact_email: document.getElementById('leEmail').value.trim() || null,
+                estimated_value: v === '' ? null : Number(v),
+                owner_id: document.getElementById('leOwner').value || null,
+                source: document.getElementById('leSource').value.trim() || null,
+                notes: document.getElementById('leNotes').value.trim() || null,
+                updated_at: new Date().toISOString()
+            }).eq('id', id);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal();
+            renderLeads();
+        }
+
+        async function deleteLead(id) {
+            const l = allLeads.find(x => x.id === id);
+            if (!l || !confirm(`Delete the lead "${l.company_name}" and its activity log? This can't be undone.`)) return;
+            const { error } = await db.from('leads').delete().eq('id', id);
+            if (error) { alert('Could not delete: ' + error.message); return; }
+            closeModal();
+            renderLeads();
+        }
+
     </script>
 </body>
 </html>
