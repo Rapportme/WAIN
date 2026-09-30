@@ -1258,6 +1258,25 @@
         .update-banner { position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:900; background:var(--wain-navy); color:#fff; padding:10px 14px 10px 16px; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.25); font-size:13px; display:flex; gap:12px; align-items:center; }
         .update-banner button { background:var(--wain-cyan); color:#fff; border:none; border-radius:6px; padding:6px 12px; font-weight:700; cursor:pointer; }
         .wd-hint { font-size:12px; color:var(--text-secondary); margin-top:6px; }
+
+        /* v20 payroll + linked sheets */
+        .pay-table { width:100%; border-collapse:collapse; font-size:12px; }
+        .pay-table th, .pay-table td { padding:6px 6px; border-bottom:1px solid var(--wain-border); text-align:left; vertical-align:middle; }
+        .pay-table th { font-size:11px; color:var(--text-secondary); font-weight:600; white-space:nowrap; }
+        .pay-table td.num, .pay-table th.num { text-align:right; white-space:nowrap; }
+        .pay-in { width:80px; font-size:12px; padding:4px 6px; border:1px solid var(--wain-border); border-radius:4px; text-align:right; }
+        .pay-note { width:160px; font-size:12px; padding:4px 6px; border:1px solid var(--wain-border); border-radius:4px; }
+        .pay-net { width:96px; font-weight:700; }
+        .pay-total td { font-weight:700; background:rgba(26,33,56,0.04); }
+        .pay-over { outline:2px solid rgba(244,178,45,0.6); }
+        .piece-row { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) 70px 90px 28px; gap:6px; margin-bottom:6px; align-items:center; }
+        .piece-row input, .piece-row select { font-size:12px; padding:5px 6px; border:1px solid var(--wain-border); border-radius:4px; min-width:0; }
+        .cal-sources { margin:4px 0 12px; border:1px solid var(--wain-border); border-radius:8px; padding:10px 12px; background:rgba(14,154,167,0.04); }
+        .cal-src-head { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-weight:600; font-size:13px; margin-bottom:6px; }
+        .cal-src-head .btn { margin-left:auto; }
+        .cal-src { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 0; border-top:1px solid var(--wain-border); font-size:13px; }
+        .pillar-chip { display:inline-block; margin-top:3px; font-size:10px; padding:1px 7px; border-radius:10px; background:rgba(142,120,199,0.14); color:#5b479a; font-weight:600; }
+        @media (max-width: 700px) { .piece-row { grid-template-columns:1fr 1fr; } }
     </style>
 </head>
 <body>
@@ -1394,6 +1413,10 @@
                 <div class="nav-item" id="accountsNav" style="display: none;" onclick="switchView('accounts')">
                     <span class="nav-icon">🧾</span>
                     <span>Accounts</span>
+                </div>
+                <div class="nav-item" id="payrollNav" style="display: none;" onclick="switchView('payroll')">
+                    <span class="nav-icon">💰</span>
+                    <span>Payroll</span>
                 </div>
             </div>
 
@@ -1535,10 +1558,11 @@
                         <div class="card-header" style="flex-wrap:wrap; gap:10px;">
                             <div class="card-title">Content Calendar</div>
                             <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                                <select id="calendarClientFilter" onchange="renderContentCalendar()" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;"><option value="">All clients</option></select>
+                                <select id="calendarClientFilter" onchange="renderContentCalendar(); renderCalSources();" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;"><option value="">All clients</option></select>
                                 <select id="calendarMonthFilter" onchange="renderContentCalendar()" style="font-size:12px; padding:6px; border:1px solid var(--wain-border); border-radius:4px;"><option value="">All months</option></select>
                             </div>
                         </div>
+                        <div id="calSources" class="cal-sources"></div>
                         <div class="table-container">
                             <table>
                                 <thead>
@@ -2976,6 +3000,28 @@
             </div>
 
             <!-- WEBSITE EDITOR -->
+            <div id="payroll" class="content-view">
+                <div class="section-header">
+                    <div class="section-titles">
+                        <h2>Payroll</h2>
+                        <div class="section-subtitle">Salary register for the month — days worked come from joining dates and approved leave; you can override any figure.</div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Month</label>
+                        <input type="month" id="payMonth" onchange="renderPayroll()" style="font-size:13px; padding:6px 8px; border:1px solid var(--wain-border); border-radius:4px;">
+                    </div>
+                </div>
+                <div class="accent-line"></div>
+                <div id="payrollBody">
+                    <div class="card"><div id="payrollRegister">Loading…</div></div>
+                    <div class="card" style="margin-top:16px;">
+                        <div class="card-header"><div class="card-title">⚙ Salary setup</div></div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Each person's pay code, pay type and monthly gross. New months start from these figures. Only HR and Superadmins can see this.</div>
+                        <div id="paySetupBody">Loading…</div>
+                    </div>
+                </div>
+            </div>
+
             <div id="website" class="content-view">
                 <div class="section-header">
                     <div class="section-titles">
@@ -3263,6 +3309,10 @@
                         </div>
                         <div id="myDocsList" style="margin-top:12px;">Loading…</div>
                     </div>
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">💰 My payslips</div></div>
+                        <div id="myPayslips">Loading…</div>
+                    </div>
                 </div>
             </div>
 
@@ -3372,6 +3422,7 @@
             'resources': { title: 'Team Capacity', subtitle: "Who's overloaded, who has room — from live task assignments" },
             'hr': { title: 'Team & HR', subtitle: 'Directory, leave requests, and attendance' },
             'accounts': { title: 'Accounts', subtitle: 'Invoicing, expenses, and profit & loss by client' },
+            'payroll': { title: 'Payroll', subtitle: 'Monthly salary register, payslips, and salary setup' },
             'website': { title: 'Website Tracker', subtitle: "What needs work on wearein.in — this doesn't edit the live site, it tracks the work" },
             'team': { title: 'Team & Access', subtitle: 'Manage roles, module access, and logins' },
             'profile': { title: 'My Profile', subtitle: 'Your details, ID card, and photo' },
@@ -3498,7 +3549,9 @@
             document.getElementById('companyNav').style.display = isSuperadmin ? 'flex' : 'none';
             document.getElementById('resourcesNav').style.display = modules.includes('resources') ? 'flex' : 'none';
             document.getElementById('hrNav').style.display = modules.includes('hr') ? 'flex' : 'none';
-            document.getElementById('financeSection').style.display = modules.includes('accounts') ? 'block' : 'none';
+            const canPay = typeof canManageHR === 'function' && canManageHR();
+            document.getElementById('financeSection').style.display = (modules.includes('accounts') || canPay) ? 'block' : 'none';
+            document.getElementById('payrollNav').style.display = canPay ? 'flex' : 'none';
             document.getElementById('accountsNav').style.display = modules.includes('accounts') ? 'flex' : 'none';
             restoreNavSections();
         }
@@ -3556,6 +3609,7 @@
                 (viewName === 'tasks' && (modules.includes('projects') || isSuperadmin)) ||
                 (viewName === 'priorities' && (modules.includes('projects') || isSuperadmin)) ||
                 (viewName === 'company' && isSuperadmin) ||
+                (viewName === 'payroll' && canManageHR()) ||
                 (viewName === 'creativetimeline' && modules.some(m => ['creative', 'social', 'marketing', 'website'].includes(m)));
             if (!allowed) {
                 alert('You do not have access to this module');
@@ -3592,6 +3646,7 @@
             if (viewName === 'team') renderEmployees();
             if (viewName === 'sales') renderLeads();
             if (viewName === 'accounts') renderAccounts();
+            if (viewName === 'payroll') renderPayroll();
             if (viewName === 'hr') renderHR();
             if (viewName === 'projects') renderProjects();
             if (viewName === 'resources') renderCapacity();
@@ -8221,7 +8276,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             if (filters) filters.style.display = view === 'list' ? '' : 'none';
             if (cal) cal.style.display = view === 'calendar' ? '' : 'none';
             if (lib) lib.style.display = view === 'library' ? '' : 'none';
-            if (view === 'calendar') renderContentCalendar();
+            if (view === 'calendar') { renderContentCalendar(); if (typeof autoSyncCalendars === 'function') autoSyncCalendars(); }
             if (view === 'library') renderWorkLibrary();
         }
 
@@ -8273,14 +8328,14 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
                     <td style="white-space:nowrap;">${f.date}${overdue ? ' <span title="Past its date and not delivered" style="color:var(--warning-amber);">⚠</span>' : ''}</td>
                     <td>${f.day}</td>
                     <td>${escapeHtml(d.deliverable_type) || '—'}</td>
-                    <td><strong>${escapeHtml(d.title)}</strong></td>
+                    <td><strong>${escapeHtml(d.title)}</strong>${d.content_pillar ? `<div><span class="pillar-chip">${escapeHtml(d.content_pillar)}</span></div>` : ''}</td>
                     <td>${d.clients ? escapeHtml(d.clients.name) : 'Internal'}</td>
                     <td>${(d.platforms || []).map(escapeHtml).join(', ') || '—'}</td>
                     <td>${[ref, note].filter(Boolean).join(' · ') || '—'}</td>
                     <td>
                         <select onchange="setDeliverableStatus('${d.id}', this.value)" style="font-size:11px; padding:4px; border:1px solid var(--wain-border); border-radius:4px;">
                             ${Object.keys(DELIVERABLE_STAGE_LABELS).map(s => `<option value="${s}" ${d.status === s ? 'selected' : ''}>${DELIVERABLE_STAGE_LABELS[s]}</option>`).join('')}
-                        </select>
+                        </select>${d.sheet_status ? `<div class="sum-sub" title="Status in the Google Sheet">Sheet: ${escapeHtml(d.sheet_status)}</div>` : ''}
                     </td>
                     <td>${resp || '—'}</td>
                     <td><button class="btn btn-sm btn-secondary" onclick="openDeliverableEdit('${d.id}')">Edit</button></td>
@@ -8387,7 +8442,8 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             map.no = find(/^(no\.?|#|sl\.?|s\.?no)/);
             map.date = find(/^date|post(ing)? date|scheduled/);
             map.day = find(/^day/);
-            map.content = h.findIndex((x, i) => i !== map.type && /content|title|topic|caption|idea/.test(x));
+            map.pillar = find(/pillar|theme|bucket/);
+            map.content = h.findIndex((x, i) => i !== map.type && i !== map.pillar && /content|title|topic|caption|idea/.test(x));
             map.platforms = find(/platform|channel/);
             map.ref = find(/ref|link|comment|remark|note/);
             map.status = find(/status/);
@@ -8902,6 +8958,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             document.getElementById('profileDob').value = currentEmployee.date_of_birth || '';
             renderMyLeave();
             renderMyDocuments();
+            if (typeof renderMyPayslips === 'function') renderMyPayslips();
         }
 
         async function saveOwnProfile(event) {
@@ -10249,7 +10306,7 @@ async function olDownloadPdf(o, filename) {
         }
 
         // ---------- "new version available" banner ----------
-        const ADMIN_BUILD = '20260930061058';
+        const ADMIN_BUILD = '20260930144825';
         async function checkForNewVersion() {
             try {
                 const res = await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' });
@@ -10268,6 +10325,717 @@ async function olDownloadPdf(o, filename) {
         setInterval(() => { if (!document.hidden) checkForNewVersion(); }, 10 * 60 * 1000);
         document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForNewVersion(); });
 
-    </script>
+    
+
+        // =====================================================================
+        // v20 — Payroll (salary register, payslips) + linked Google Sheet calendars
+        // =====================================================================
+        const PAY_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        function monthLabel(ym) { const [y, m] = ym.split('-').map(Number); return PAY_MONTHS[m - 1] + ' ' + y; }
+        function daysInMonth(ym) { const [y, m] = ym.split('-').map(Number); return new Date(y, m, 0).getDate(); }
+        function inr0(n) { return '₹' + Math.round(Number(n) || 0).toLocaleString('en-IN'); }
+        function canRunPayroll() { return canManageHR(); }
+
+        let payState = { ym: null, run: null, lines: [], pay: {}, dirty: false };
+
+        async function renderPayroll() {
+            const box = document.getElementById('payrollBody');
+            if (!box) return;
+            if (!canRunPayroll()) { box.innerHTML = '<div class="card">Payroll is only open to Superadmins and the HR Manager.</div>'; return; }
+            const monthInput = document.getElementById('payMonth');
+            if (!monthInput.value) {
+                const { data: last } = await db.from('payroll_runs').select('month').order('month', { ascending: false }).limit(1);
+                monthInput.value = last && last[0] ? last[0].month.slice(0, 7) : localISO().slice(0, 7);
+            }
+            const ym = monthInput.value;
+            payState.ym = ym;
+            const [{ data: run }, { data: pays }] = await Promise.all([
+                db.from('payroll_runs').select('*').eq('month', ym + '-01').maybeSingle(),
+                db.from('employee_pay').select('*')
+            ]);
+            payState.run = run || null;
+            payState.pay = {};
+            (pays || []).forEach(p => { payState.pay[p.employee_id] = p; });
+            payState.lines = [];
+            if (run) {
+                const { data: lines } = await db.from('payroll_lines').select('*').eq('run_id', run.id).order('sort_order').order('name');
+                payState.lines = lines || [];
+            }
+            payState.dirty = false;
+            drawPayroll();
+            drawPaySetup();
+        }
+
+        function payStatusChip(run) {
+            if (!run) return '<span class="status-badge status-pending">Not started</span>';
+            return { draft: '<span class="status-badge status-pending">Draft</span>', finalised: '<span class="status-badge status-in-progress">Finalised</span>', paid: '<span class="status-badge status-active">Paid</span>' }[run.status];
+        }
+
+        function drawPayroll() {
+            const box = document.getElementById('payrollRegister');
+            const run = payState.run;
+            const ym = payState.ym;
+            const editable = run && run.status === 'draft';
+            const lines = payState.lines;
+            const total = lines.reduce((s, l) => s + (Number(l.net_pay) || 0), 0);
+            const head = `
+                <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                    <div class="card-title">Salary register — ${monthLabel(ym)} ${payStatusChip(run)}</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        ${!run ? `<button class="btn btn-sm btn-primary" onclick="createPayrollRun()">Create ${monthLabel(ym)} register</button>` : ''}
+                        ${editable ? `<button class="btn btn-sm btn-secondary" onclick="recalcPayroll(true)" title="Re-read leave, joining dates and salaries">↻ Recalculate</button>
+                            <button class="btn btn-sm btn-secondary" onclick="openAddPayLine()">+ Add person</button>
+                            <button class="btn btn-sm btn-primary" id="paySaveBtn" onclick="savePayroll()">Save</button>
+                            <button class="btn btn-sm btn-secondary" onclick="finalisePayroll()">Finalise ✓</button>` : ''}
+                        ${run && run.status === 'finalised' ? `<button class="btn btn-sm btn-primary" onclick="openMarkPaid()">Mark paid…</button><button class="btn btn-sm btn-secondary" onclick="reopenPayroll()">Reopen</button>` : ''}
+                        ${run && run.status === 'paid' ? `<button class="btn btn-sm btn-secondary" onclick="reopenPayroll()" title="Only if something was entered wrongly">Reopen</button>` : ''}
+                        ${run ? `<button class="btn btn-sm btn-secondary" onclick="exportPayrollXlsx(this)">⬇ Excel</button>` : ''}
+                        <button class="btn btn-sm btn-secondary" onclick="document.getElementById('payImportFile').click()" title="Import a salary sheet in the same format">⬆ Import Excel</button>
+                        <input type="file" id="payImportFile" accept=".xlsx,.xls" style="display:none;" onchange="importPayrollXlsx(this)">
+                    </div>
+                </div>`;
+            if (!run) {
+                box.innerHTML = head + `<div style="font-size:13px; color:var(--text-secondary); padding:10px 0;">No register for ${monthLabel(ym)} yet. Creating one lists everyone on a salary or per-piece pay (from Salary setup below), counts their days from their joining date, and takes unpaid leave approved in Team & HR off automatically.</div>`;
+                return;
+            }
+            const inp = (l, k, v, extra) => editable ? `<input type="number" class="pay-in" step="${k === 'days_worked' ? '0.5' : '1'}" min="0" value="${v ?? ''}" oninput="payInput('${l.id}', '${k}', this.value)" ${extra || ''}>` : (v ?? '—');
+            box.innerHTML = head + `
+                <div class="table-container"><table class="pay-table">
+                    <thead><tr><th>Emp ID</th><th>Name</th><th>Designation</th><th>Joined</th><th>Monthly salary</th><th>Days</th><th>Per day</th><th>Leave<br><span style="font-weight:400;">paid · unpaid</span></th><th>Days worked</th><th>+ Add</th><th>− Deduct</th><th>Net pay</th><th>Notes</th><th></th></tr></thead>
+                    <tbody>${lines.map(l => {
+                        const piece = l.pay_type === 'per_piece';
+                        return `<tr data-line="${l.id}">
+                            <td>${escapeHtml(l.pay_code || '—')}</td>
+                            <td><strong>${escapeHtml(l.name)}</strong>${l.paid_on ? `<div class="sum-sub">paid ${fmtDate(l.paid_on)}${l.payment_mode ? ' · ' + escapeHtml(l.payment_mode) : ''}</div>` : ''}</td>
+                            <td>${escapeHtml(l.designation || '—')}</td>
+                            <td style="white-space:nowrap;">${l.joined_on ? fmtDate(l.joined_on) : '—'}</td>
+                            <td>${piece ? '<span class="prio-chip">per design/edit</span>' : inr0(l.monthly_gross)}</td>
+                            <td>${piece ? '—' : fmtNum(l.total_days)}</td>
+                            <td>${piece ? '—' : inr0(l.per_day)}</td>
+                            <td style="white-space:nowrap;">${piece ? '—' : `${fmtNum(l.paid_leave_days || 0)} · <span class="${Number(l.unpaid_leave_days) ? 'bal-out' : ''}">${fmtNum(l.unpaid_leave_days || 0)}</span>`}</td>
+                            <td>${piece ? `<button class="btn btn-sm btn-secondary" onclick="openPieces('${l.id}')">${(l.pieces || []).length ? (l.pieces || []).reduce((s, p) => s + (Number(p.qty) || 0), 0) + ' pieces' : 'Pieces…'}</button>` : inp(l, 'days_worked', l.days_worked, `title="${l.days_override ? 'Set by hand' : 'Worked out from joining date and unpaid leave'}"`) + (l.days_override && editable ? ` <a href="#" title="Go back to the worked-out value" onclick="resetPayDays('${l.id}'); return false;">↺</a>` : '')}</td>
+                            <td>${inp(l, 'additions', l.additions || 0)}</td>
+                            <td>${inp(l, 'deductions', l.deductions || 0)}</td>
+                            <td><strong class="pay-net">${piece && editable && !(l.pieces || []).length ? `<input type="number" class="pay-in" min="0" value="${l.net_pay ?? ''}" oninput="payInput('${l.id}', 'net_pay', this.value)">` : inr0(l.net_pay)}</strong></td>
+                            <td>${editable ? `<input type="text" class="pay-in pay-note" value="${escapeHtml(l.notes || '')}" oninput="payInput('${l.id}', 'notes', this.value)">` : `<span style="font-size:12px;">${escapeHtml(l.notes || '')}</span>`}</td>
+                            <td style="white-space:nowrap;">${run.status !== 'draft' ? `<button class="btn btn-sm btn-secondary" onclick="payslipPdf('${l.id}', this)">⬇ Payslip</button>` : editable ? `<button class="btn btn-sm btn-secondary" title="Remove from this month" onclick="removePayLine('${l.id}')">✕</button>` : ''}</td>
+                        </tr>`;
+                    }).join('') || '<tr><td colspan="14" style="text-align:center; color:var(--text-secondary);">Nobody on this register yet.</td></tr>'}
+                    <tr class="pay-total"><td colspan="11" style="text-align:right;">TOTAL</td><td id="payTotal">${inr0(total)}</td><td colspan="2"></td></tr>
+                    </tbody></table></div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-top:8px;">${run.days_basis === 'fixed30' ? 'Per day = monthly salary ÷ 30' : 'Per day = monthly salary ÷ days in the month'} (<a href="#" onclick="toggleDaysBasis(); return false;">${run.days_basis === 'fixed30' ? 'use calendar days instead' : 'use a fixed 30 days'}</a>). Days worked start from the joining date and drop by unpaid leave; casual, sick and comp-off leave are paid. Change days worked by hand for anything else (it's then kept on Recalculate).${run.notes ? ' · ' + escapeHtml(run.notes) : ''}</div>`;
+        }
+
+        function payInput(id, key, val) {
+            const l = payState.lines.find(x => x.id === id);
+            if (!l) return;
+            if (key === 'notes') l.notes = val;
+            else {
+                l[key] = val === '' ? null : Number(val);
+                if (key === 'days_worked') l.days_override = true;
+            }
+            calcPayLine(l);
+            payState.dirty = true;
+            const row = document.querySelector(`tr[data-line="${id}"] .pay-net`);
+            if (row && key !== 'net_pay') row.textContent = inr0(l.net_pay);
+            const tot = document.getElementById('payTotal');
+            if (tot) tot.textContent = inr0(payState.lines.reduce((s, x) => s + (Number(x.net_pay) || 0), 0));
+            const btn = document.getElementById('paySaveBtn'); if (btn) btn.textContent = 'Save changes';
+        }
+
+        function calcPayLine(l) {
+            const run = payState.run;
+            const ym = payState.ym;
+            if (l.pay_type === 'per_piece') {
+                if ((l.pieces || []).length) l.net_pay = Math.round(l.pieces.reduce((s, p) => s + (Number(p.qty) || 0) * (Number(p.rate) || 0), 0) + (Number(l.additions) || 0) - (Number(l.deductions) || 0));
+                return l;
+            }
+            const dim = daysInMonth(ym);
+            l.total_days = run && run.days_basis === 'calendar' ? dim : 30;
+            l.per_day = l.monthly_gross ? Math.round(Number(l.monthly_gross) / l.total_days * 100) / 100 : 0;
+            if (!l.days_override) {
+                let eligible = l.total_days;
+                if (l.joined_on && l.joined_on.slice(0, 7) === ym) eligible = Math.min(l.total_days, dim - Number(l.joined_on.slice(8, 10)) + 1);
+                if (l.joined_on && l.joined_on.slice(0, 7) > ym) eligible = 0;
+                l.days_worked = Math.max(0, eligible - (Number(l.unpaid_leave_days) || 0) - (Number(l.lop_days) || 0));
+            }
+            l.net_pay = Math.round(Number(l.monthly_gross || 0) / l.total_days * (Number(l.days_worked) || 0) + (Number(l.additions) || 0) - (Number(l.deductions) || 0));
+            return l;
+        }
+
+        function resetPayDays(id) { const l = payState.lines.find(x => x.id === id); if (!l) return; l.days_override = false; calcPayLine(l); payState.dirty = true; drawPayroll(); }
+
+        // leave taken inside the month, split paid / unpaid (Sundays not counted)
+        async function payLeaveForMonth(ym) {
+            const start = ym + '-01', end = ym + '-' + String(daysInMonth(ym)).padStart(2, '0');
+            const { data } = await db.from('leave_requests').select('employee_id, leave_type, start_date, end_date, half_day, status').eq('status', 'approved').lte('start_date', end).gte('end_date', start);
+            const out = {};
+            (data || []).forEach(l => {
+                const s = l.start_date < start ? start : l.start_date, e = l.end_date > end ? end : l.end_date;
+                const days = l.half_day ? 0.5 : workingDays(s, e, false);
+                const o = out[l.employee_id] || (out[l.employee_id] = { paid: 0, unpaid: 0 });
+                if (l.leave_type === 'unpaid') o.unpaid += days; else o.paid += days;
+            });
+            return out;
+        }
+
+        function payLineFromSetup(e, p, leave, order) {
+            return {
+                employee_id: e.id, pay_code: p.pay_code || null, name: e.name, designation: e.designation || e.role || null,
+                pay_type: p.pay_type, joined_on: p.pay_from || e.join_date || null, monthly_gross: p.monthly_gross || null,
+                paid_leave_days: (leave[e.id] || {}).paid || 0, unpaid_leave_days: (leave[e.id] || {}).unpaid || 0, lop_days: 0,
+                days_override: false, additions: 0, deductions: 0, pieces: p.pay_type === 'per_piece' && p.piece_rate ? [] : null,
+                net_pay: p.pay_type === 'per_piece' ? 0 : null, sort_order: order
+            };
+        }
+
+        async function createPayrollRun() {
+            const ym = payState.ym;
+            const { data: run, error } = await db.from('payroll_runs').insert({ month: ym + '-01', status: 'draft', days_basis: 'fixed30', created_by: currentEmployee.id }).select().single();
+            if (error) { alert('Could not create: ' + error.message); return; }
+            payState.run = run;
+            const leave = await payLeaveForMonth(ym);
+            const monthEnd = ym + '-' + String(daysInMonth(ym)).padStart(2, '0');
+            const rows = allEmployees.filter(e => e.active !== false && payState.pay[e.id] && payState.pay[e.id].pay_type !== 'none' && !(payState.pay[e.id].pay_from && payState.pay[e.id].pay_from > monthEnd))
+                .sort((a, b) => String(payState.pay[a.id].pay_code || a.name).localeCompare(String(payState.pay[b.id].pay_code || b.name)))
+                .map((e, i) => calcPayLine(payLineFromSetup(e, payState.pay[e.id], leave, i + 1)));
+            rows.forEach(r => { r.run_id = run.id; });
+            if (rows.length) { const { error: e2 } = await db.from('payroll_lines').insert(rows); if (e2) alert('Register created, but lines failed: ' + e2.message); }
+            if (!rows.length) alert('Nobody has a salary set up yet — fill in Salary setup below, then press Recalculate.');
+            renderPayroll();
+        }
+
+        async function recalcPayroll(fromSetup) {
+            if (!payState.run || payState.run.status !== 'draft') return;
+            const leave = await payLeaveForMonth(payState.ym);
+            payState.lines.forEach(l => {
+                const p = payState.pay[l.employee_id];
+                const e = allEmployees.find(x => x.id === l.employee_id);
+                if (fromSetup && p) { l.monthly_gross = p.monthly_gross; l.pay_type = p.pay_type; l.pay_code = p.pay_code || l.pay_code; l.joined_on = p.pay_from || (e && e.join_date) || l.joined_on; }
+                if (e) l.designation = e.designation || l.designation;
+                l.paid_leave_days = (leave[l.employee_id] || {}).paid || 0;
+                l.unpaid_leave_days = (leave[l.employee_id] || {}).unpaid || 0;
+                calcPayLine(l);
+            });
+            // people added to Salary setup since the register was made
+            const have = new Set(payState.lines.map(l => l.employee_id));
+            const monthEnd = payState.ym + '-' + String(daysInMonth(payState.ym)).padStart(2, '0');
+            const extra = allEmployees.filter(e => e.active !== false && !have.has(e.id) && payState.pay[e.id] && payState.pay[e.id].pay_type !== 'none' && !(payState.pay[e.id].pay_from && payState.pay[e.id].pay_from > monthEnd));
+            if (extra.length) {
+                const rows = extra.map((e, i) => Object.assign(calcPayLine(payLineFromSetup(e, payState.pay[e.id], leave, payState.lines.length + i + 1)), { run_id: payState.run.id }));
+                await db.from('payroll_lines').insert(rows);
+            }
+            await savePayroll(true);
+            if (extra.length) renderPayroll();
+        }
+
+        async function savePayroll(quiet) {
+            const btn = document.getElementById('paySaveBtn');
+            if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+            let failed = 0;
+            for (const l of payState.lines) {
+                const patch = {};
+                ['monthly_gross', 'pay_type', 'pay_code', 'designation', 'joined_on', 'total_days', 'per_day', 'paid_leave_days', 'unpaid_leave_days', 'lop_days', 'days_worked', 'days_override', 'additions', 'deductions', 'net_pay', 'notes', 'pieces'].forEach(k => { patch[k] = l[k] === undefined ? null : l[k]; });
+                patch.additions = patch.additions || 0; patch.deductions = patch.deductions || 0;
+                const { error } = await db.from('payroll_lines').update(patch).eq('id', l.id);
+                if (error) { failed++; console.warn(error.message); }
+            }
+            payState.dirty = false;
+            if (btn) { btn.disabled = false; btn.textContent = 'Save'; }
+            if (failed) alert(failed + ' row(s) could not be saved.');
+            else if (!quiet) { const b = document.getElementById('paySaveBtn'); if (b) { b.textContent = 'Saved ✓'; setTimeout(() => { if (b) b.textContent = 'Save'; }, 1500); } }
+            drawPayroll();
+        }
+
+        async function toggleDaysBasis() {
+            if (!payState.run || payState.run.status !== 'draft') { alert('Reopen the month to change this.'); return; }
+            const basis = payState.run.days_basis === 'fixed30' ? 'calendar' : 'fixed30';
+            const { error } = await db.from('payroll_runs').update({ days_basis: basis, updated_at: new Date().toISOString() }).eq('id', payState.run.id);
+            if (error) { alert(error.message); return; }
+            payState.run.days_basis = basis;
+            payState.lines.forEach(calcPayLine);
+            await savePayroll(true);
+        }
+
+        async function finalisePayroll() {
+            if (payState.dirty) await savePayroll(true);
+            const missing = payState.lines.filter(l => l.net_pay === null || l.net_pay === undefined);
+            if (missing.length) { alert('Fill in the pay for: ' + missing.map(l => l.name).join(', ')); return; }
+            if (!confirm(`Finalise ${monthLabel(payState.ym)}? Total ${inr0(payState.lines.reduce((s, l) => s + (Number(l.net_pay) || 0), 0))}. Numbers lock, and each person can see and download their payslip in My Profile.`)) return;
+            const { error } = await db.from('payroll_runs').update({ status: 'finalised', finalised_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('id', payState.run.id);
+            if (error) { alert(error.message); return; }
+            renderPayroll();
+        }
+
+        async function reopenPayroll() {
+            if (!confirm('Reopen this month for editing? Payslips disappear from My Profile until it is finalised again.' + (payState.run.status === 'paid' ? ' Expenses already recorded in Accounts stay there — fix them by hand if amounts change.' : ''))) return;
+            const { error } = await db.from('payroll_runs').update({ status: 'draft', updated_at: new Date().toISOString() }).eq('id', payState.run.id);
+            if (error) { alert(error.message); return; }
+            renderPayroll();
+        }
+
+        function openAddPayLine() {
+            const have = new Set(payState.lines.map(l => l.employee_id));
+            const opts = allEmployees.filter(e => e.active !== false && !have.has(e.id));
+            openModal('Add to ' + monthLabel(payState.ym), `
+                <form onsubmit="addPayLine(event)">
+                    <div class="form-group"><label>Team member</label><select id="apEmp">${opts.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('')}</select></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Pay type</label><select id="apType"><option value="monthly">Monthly salary</option><option value="per_piece">Per design / edit</option></select></div>
+                        <div class="form-group"><label>Monthly salary (₹)</label><input type="number" id="apGross" min="0"></div>
+                    </div>
+                    <div style="font-size:12px; color:var(--text-secondary);">This is also saved in their Salary setup for next month.</div>
+                    <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Add</button></div>
+                </form>`);
+        }
+
+        async function addPayLine(event) {
+            event.preventDefault();
+            const e = allEmployees.find(x => x.id === document.getElementById('apEmp').value);
+            if (!e) return;
+            const p = Object.assign({}, payState.pay[e.id] || {}, { employee_id: e.id, pay_type: document.getElementById('apType').value, monthly_gross: Number(document.getElementById('apGross').value) || null });
+            p.pay_from = p.pay_from || e.join_date || null;
+            await db.from('employee_pay').upsert({ employee_id: e.id, pay_type: p.pay_type, monthly_gross: p.monthly_gross, pay_code: p.pay_code || null, pay_from: p.pay_from, updated_by: currentEmployee.id, updated_at: new Date().toISOString() });
+            const leave = await payLeaveForMonth(payState.ym);
+            const row = Object.assign(calcPayLine(payLineFromSetup(e, p, leave, payState.lines.length + 1)), { run_id: payState.run.id });
+            const { error } = await db.from('payroll_lines').insert(row);
+            if (error) { alert(error.message); return; }
+            closeModal();
+            renderPayroll();
+        }
+
+        async function removePayLine(id) {
+            const l = payState.lines.find(x => x.id === id);
+            if (!l || !confirm(`Remove ${l.name} from ${monthLabel(payState.ym)}?`)) return;
+            const { error } = await db.from('payroll_lines').delete().eq('id', id);
+            if (error) { alert(error.message); return; }
+            renderPayroll();
+        }
+
+        // per design / edit: pieces by client
+        function openPieces(id) {
+            const l = payState.lines.find(x => x.id === id);
+            if (!l) return;
+            const editable = payState.run.status === 'draft';
+            const rate = (payState.pay[l.employee_id] || {}).piece_rate || '';
+            const rows = (l.pieces && l.pieces.length ? l.pieces : [{ client_id: '', label: '', qty: '', rate }]);
+            const clientOpts = sel => '<option value="">— Internal / other —</option>' + allClients.map(c => `<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('');
+            const row = p => `<div class="piece-row"><select class="pcClient" ${editable ? '' : 'disabled'}>${clientOpts(p.client_id)}</select><input type="text" class="pcLabel" placeholder="What (e.g. posters, reel edits)" value="${escapeHtml(p.label || '')}" ${editable ? '' : 'disabled'}><input type="number" class="pcQty" min="0" placeholder="Qty" value="${p.qty ?? ''}" ${editable ? '' : 'disabled'} oninput="piecesTotal()"><input type="number" class="pcRate" min="0" placeholder="Rate ₹" value="${p.rate ?? ''}" ${editable ? '' : 'disabled'} oninput="piecesTotal()"></div>`;
+            window.__pieceRow = row;
+            openModal(`${l.name} — ${monthLabel(payState.ym)} pieces`, `
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">One row per client and kind of work. When the month is marked paid, each client's share goes into Accounts against that client, so client profitability includes it.</div>
+                <div id="pieceRows">${rows.map(row).join('')}</div>
+                ${editable ? `<button type="button" class="btn btn-sm btn-secondary" style="margin-top:8px;" onclick="document.getElementById('pieceRows').insertAdjacentHTML('beforeend', window.__pieceRow({ rate: '${rate}' }))">+ Row</button>` : ''}
+                <div style="margin-top:12px; font-weight:700;">Total: <span id="piecesTotal">${inr0(0)}</span></div>
+                <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Close</button>${editable ? `<button type="button" class="btn btn-primary btn-sm" onclick="savePieces('${id}')">Use these</button>` : ''}</div>`);
+            piecesTotal();
+        }
+        function readPieces() {
+            return [...document.querySelectorAll('#pieceRows .piece-row')].map(r => ({ client_id: r.querySelector('.pcClient').value || null, label: r.querySelector('.pcLabel').value.trim(), qty: Number(r.querySelector('.pcQty').value) || 0, rate: Number(r.querySelector('.pcRate').value) || 0 })).filter(p => p.qty && p.rate);
+        }
+        function piecesTotal() { const t = readPieces().reduce((s, p) => s + p.qty * p.rate, 0); const el = document.getElementById('piecesTotal'); if (el) el.textContent = inr0(t); }
+        function savePieces(id) {
+            const l = payState.lines.find(x => x.id === id);
+            l.pieces = readPieces();
+            calcPayLine(l);
+            if (!l.pieces.length) l.pieces = null;
+            payState.dirty = true;
+            closeModal();
+            savePayroll(true);
+        }
+
+        async function openMarkPaid() {
+            const { data: accts } = await db.from('money_accounts').select('id, name').order('name');
+            openModal('Mark ' + monthLabel(payState.ym) + ' as paid', `
+                <form onsubmit="markPayrollPaid(event)">
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Paid on</label><input type="date" id="mpDate" value="${localISO()}" required></div>
+                        <div class="form-group"><label>Mode</label><select id="mpMode">${['Bank transfer', 'UPI', 'Cash', 'Cheque'].map(m => `<option>${m}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="form-group"><label>Paid from account</label><select id="mpAcct"><option value="">— Not recorded —</option>${(accts || []).map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select></div>
+                    <label style="display:flex; gap:8px; align-items:flex-start; font-size:13px;"><input type="checkbox" id="mpExpense" checked style="width:auto; margin-top:3px;"> <span>Record it in Accounts as expenses — salaries under <strong>Internal Ops</strong>, per-piece pay against each client, so P&amp;L and client margins include it.</span></label>
+                    <div style="margin-top:10px; font-weight:700;">Total ${inr0(payState.lines.reduce((s, l) => s + (Number(l.net_pay) || 0), 0))} to ${payState.lines.filter(l => Number(l.net_pay) > 0).length} people</div>
+                    <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Mark paid</button></div>
+                </form>`);
+        }
+
+        async function markPayrollPaid(event) {
+            event.preventDefault();
+            const date = document.getElementById('mpDate').value, mode = document.getElementById('mpMode').value, acct = document.getElementById('mpAcct').value || null;
+            const withExp = document.getElementById('mpExpense').checked;
+            const btn = event.submitter; if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+            let ccInternal = null, expFail = 0;
+            if (withExp) {
+                const cc = allCostCenters.find(c => /internal ops/i.test(c.name)) || allCostCenters.find(c => /wain internal/i.test(c.name));
+                ccInternal = cc ? cc.id : null;
+            }
+            for (const l of payState.lines) {
+                if (!(Number(l.net_pay) > 0)) continue;
+                let expenseId = null;
+                if (withExp) {
+                    const base = { expense_date: date, logged_by: currentEmployee.id, entry_type: 'expense', payment_mode: mode, paid_from_account_id: acct, payee: l.name };
+                    const rows = [];
+                    if (l.pay_type === 'per_piece' && (l.pieces || []).length) {
+                        const byClient = {};
+                        l.pieces.forEach(p => { const k = p.client_id || ''; byClient[k] = (byClient[k] || 0) + p.qty * p.rate; });
+                        const extra = (Number(l.additions) || 0) - (Number(l.deductions) || 0);
+                        Object.entries(byClient).forEach(([cid, amt], i) => {
+                            const client = allClients.find(c => c.id === cid);
+                            rows.push({ ...base, category: 'Freelance/Contractor', amount: Math.round(amt + (i === 0 ? extra : 0)), client_id: cid || null, cost_center_id: client && client.cost_center_id ? client.cost_center_id : ccInternal, description: `${l.name} — ${monthLabel(payState.ym)} design/edit work${client ? ' for ' + client.name : ''}` });
+                        });
+                    } else {
+                        rows.push({ ...base, category: l.pay_type === 'per_piece' ? 'Freelance/Contractor' : 'Salaries', amount: Math.round(Number(l.net_pay)), cost_center_id: ccInternal, description: `${l.pay_type === 'per_piece' ? 'Consultant pay' : 'Salary'} — ${l.name} — ${monthLabel(payState.ym)}` });
+                    }
+                    const { data, error } = await db.from('expenses').insert(rows).select('id');
+                    if (error) { expFail++; console.warn(error.message); } else expenseId = data && data[0] ? data[0].id : null;
+                }
+                await db.from('payroll_lines').update({ paid_on: date, payment_mode: mode, expense_id: expenseId }).eq('id', l.id);
+            }
+            const { error } = await db.from('payroll_runs').update({ status: 'paid', paid_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('id', payState.run.id);
+            closeModal();
+            if (error) alert(error.message);
+            else if (expFail) alert(`Marked paid, but ${expFail} expense entr${expFail === 1 ? 'y' : 'ies'} couldn't be added to Accounts (you need the Accounts module). Add them there by hand.`);
+            renderPayroll();
+        }
+
+        // ----- Salary setup (who is paid what) -----
+        function drawPaySetup() {
+            const box = document.getElementById('paySetupBody');
+            if (!box) return;
+            const emps = allEmployees.filter(e => e.active !== false).sort((a, b) => String((payState.pay[a.id] || {}).pay_code || 'zz' + a.name).localeCompare(String((payState.pay[b.id] || {}).pay_code || 'zz' + b.name)));
+            box.innerHTML = `<div class="table-container"><table class="pay-table">
+                <thead><tr><th>Emp ID</th><th>Name</th><th>Designation</th><th>Pay type</th><th>Monthly salary (₹)</th><th>Rate per piece (₹)</th><th>Paid from</th><th>Notes</th><th></th></tr></thead>
+                <tbody>${emps.map(e => { const p = payState.pay[e.id] || {}; return `<tr>
+                    <td><input type="text" class="pay-in" id="ps_code_${e.id}" value="${escapeHtml(p.pay_code || '')}" style="width:72px;"></td>
+                    <td><strong>${escapeHtml(e.name)}</strong></td>
+                    <td style="font-size:12px;">${escapeHtml(e.designation || e.role || '')}</td>
+                    <td><select class="pay-in" id="ps_type_${e.id}"><option value="monthly" ${p.pay_type === 'monthly' ? 'selected' : ''}>Monthly</option><option value="per_piece" ${p.pay_type === 'per_piece' ? 'selected' : ''}>Per design/edit</option><option value="none" ${!p.pay_type || p.pay_type === 'none' ? 'selected' : ''}>Not on payroll</option></select></td>
+                    <td><input type="number" class="pay-in" id="ps_gross_${e.id}" min="0" value="${p.monthly_gross ?? ''}"></td>
+                    <td><input type="number" class="pay-in" id="ps_rate_${e.id}" min="0" value="${p.piece_rate ?? ''}"></td>
+                    <td><input type="date" class="pay-in" id="ps_from_${e.id}" value="${p.pay_from || e.join_date || ''}"></td>
+                    <td><input type="text" class="pay-in pay-note" id="ps_notes_${e.id}" value="${escapeHtml(p.notes || '')}"></td>
+                    <td><button class="btn btn-sm btn-secondary" onclick="savePaySetup('${e.id}', this)">Save</button></td>
+                </tr>`; }).join('')}</tbody></table></div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-top:8px;">Only Superadmins and the HR Manager can see this. Each person sees just their own payslips in My Profile once a month is finalised. Changes here apply to new months, or press ↻ Recalculate on a draft month.</div>`;
+        }
+
+        async function savePaySetup(empId, btn) {
+            const v = k => document.getElementById(`ps_${k}_${empId}`).value;
+            const row = { employee_id: empId, pay_code: v('code').trim() || null, pay_type: v('type'), monthly_gross: v('gross') === '' ? null : Number(v('gross')), piece_rate: v('rate') === '' ? null : Number(v('rate')), pay_from: v('from') || null, notes: v('notes').trim() || null, updated_by: currentEmployee.id, updated_at: new Date().toISOString() };
+            const { error } = await db.from('employee_pay').upsert(row);
+            if (error) { alert('Could not save: ' + error.message); return; }
+            payState.pay[empId] = row;
+            if (btn) { btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent = 'Save'; }, 1500); }
+        }
+
+        // ----- Excel out / in -----
+        async function exportPayrollXlsx(btn) {
+            const XLSX = await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX');
+            const lines = payState.lines;
+            const aoa = [[`Salary Register — ${monthLabel(payState.ym)}`], [], [`WAIN Collective LLP · status: ${payState.run.status}`],
+                ['Emp ID', 'Employee Name', 'Designation', 'Date of Joining', 'Monthly Salary (Gross)', 'Total Days', 'Per Day Pay', 'Paid Leave', 'Unpaid Leave', 'Days Worked', 'Additions', 'Deductions', 'Net Pay', 'Notes']];
+            lines.forEach((l, i) => {
+                const r = i + 5;
+                const piece = l.pay_type === 'per_piece';
+                aoa.push([l.pay_code || '', l.name, l.designation || '', l.joined_on ? fmtDate(l.joined_on) : '',
+                    piece ? 'Per design/edit' : Number(l.monthly_gross) || 0, piece ? '' : Number(l.total_days) || 30,
+                    piece ? '' : { f: `E${r}/F${r}` }, piece ? '' : Number(l.paid_leave_days) || 0, piece ? '' : Number(l.unpaid_leave_days) || 0,
+                    piece ? '' : Number(l.days_worked) || 0, Number(l.additions) || 0, Number(l.deductions) || 0,
+                    piece ? Number(l.net_pay) || 0 : { f: `ROUND(G${r}*J${r}+K${r}-L${r},0)` },
+                    [l.notes, piece && (l.pieces || []).length ? l.pieces.map(p => `${(allClients.find(c => c.id === p.client_id) || {}).name || 'Other'}: ${p.qty} × ₹${p.rate}${p.label ? ' ' + p.label : ''}`).join('; ') : ''].filter(Boolean).join(' · ')]);
+            });
+            const last = lines.length + 4;
+            aoa.push(['', 'TOTAL', '', '', '', '', '', '', '', '', '', '', { f: `SUM(M5:M${last})` }, '']);
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+            ws['!cols'] = [8, 26, 30, 14, 18, 10, 12, 10, 12, 12, 11, 11, 12, 40].map(w => ({ wch: w }));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Salary Register');
+            XLSX.writeFile(wb, `WAIN Salary ${monthLabel(payState.ym)}.xlsx`);
+        }
+
+        async function importPayrollXlsx(input) {
+            const file = input.files && input.files[0];
+            input.value = '';
+            if (!file) return;
+            try {
+                const XLSX = await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX');
+                const wb = XLSX.read(await file.arrayBuffer(), { type: 'array', cellDates: false });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: '' });
+                const hi = rows.findIndex(r => r.some(c => /employee name/i.test(String(c))));
+                if (hi < 0) { alert('Could not find the "Employee Name" header row.'); return; }
+                const h = rows[hi].map(c => String(c).toLowerCase());
+                const col = re => h.findIndex(x => re.test(x));
+                const c = { code: col(/emp.*id|code/), name: col(/employee name|^name/), desig: col(/designation/), join: col(/joining/), gross: col(/monthly salary|gross/), days: col(/days worked/), leave: col(/leave/), net: col(/net pay/) };
+                const toIso = v => { if (typeof v === 'number') { const p = XLSX.SSF.parse_date_code(v); return p ? `${p.y}-${String(p.m).padStart(2, '0')}-${String(p.d).padStart(2, '0')}` : null; } return parseSheetDate(String(v)); };
+                const found = [], missing = [];
+                for (const r of rows.slice(hi + 1)) {
+                    const name = String(r[c.name] || '').trim();
+                    if (!name || /^total$/i.test(name)) continue;
+                    const first = name.toLowerCase().split(/\s+/)[0];
+                    const e = allEmployees.find(x => x.active !== false && x.name.toLowerCase().split(/\s+/)[0] === first) || allEmployees.find(x => x.name.toLowerCase() === name.toLowerCase());
+                    if (!e) { missing.push(name); continue; }
+                    const grossRaw = r[c.gross];
+                    const gross = typeof grossRaw === 'number' ? grossRaw : Number(String(grossRaw).replace(/[₹,\s]/g, '')) || null;
+                    const net = typeof r[c.net] === 'number' ? r[c.net] : Number(String(r[c.net] || '').replace(/[₹,\s]/g, '')) || null;
+                    const type = gross ? 'monthly' : net ? 'per_piece' : 'none';
+                    found.push({ e, code: String(r[c.code] || '').trim() || null, desig: String(r[c.desig] || '').trim(), join: c.join >= 0 ? toIso(r[c.join]) : null, gross, type, days: typeof r[c.days] === 'number' ? r[c.days] : null, net, note: type === 'per_piece' && typeof grossRaw === 'string' ? grossRaw.replace(/~/g, '').trim() : null });
+                }
+                if (!found.length) { alert('No matching team members found in that file.'); return; }
+                if (!confirm(`Update Salary setup for ${found.length} people${payState.run && payState.run.status === 'draft' ? ` and fill the ${monthLabel(payState.ym)} register` : ''} from ${file.name}?${missing.length ? '\n\nNot matched (skipped): ' + missing.join(', ') : ''}`)) return;
+                for (const f of found) {
+                    await db.from('employee_pay').upsert({ employee_id: f.e.id, pay_code: f.code, pay_type: f.type, monthly_gross: f.gross, pay_from: f.join || (payState.pay[f.e.id] || {}).pay_from || null, notes: f.note || (payState.pay[f.e.id] || {}).notes || null, updated_by: currentEmployee.id, updated_at: new Date().toISOString() });
+                    if (f.desig && !f.e.designation && canManageHR()) await db.from('employees').update({ designation: f.desig }).eq('id', f.e.id);
+                }
+                await renderPayroll();
+                if (payState.run && payState.run.status === 'draft') {
+                    for (const f of found) {
+                        const l = payState.lines.find(x => x.employee_id === f.e.id);
+                        if (!l) continue;
+                        if (f.type === 'monthly' && f.days !== null && f.days !== Number(l.days_worked)) { l.days_worked = f.days; l.days_override = true; }
+                        if (f.type === 'per_piece' && f.net) l.net_pay = f.net;
+                        calcPayLine(l);
+                    }
+                    await recalcPayroll(true);
+                }
+                alert('Imported.');
+            } catch (e) { alert('Could not read that file: ' + e.message); }
+        }
+
+        // ----- Payslip (WAIN letterhead) -----
+        async function payslipPdf(lineId, btn, lineObj, runObj) {
+            const l = lineObj || payState.lines.find(x => x.id === lineId);
+            const run = runObj || payState.run;
+            if (!l || !run) return;
+            const ym = run.month.slice(0, 7);
+            const label = btn ? btn.textContent : '';
+            if (btn) { btn.disabled = true; btn.textContent = '…'; }
+            const holder = document.createElement('div'); holder.style.cssText = 'position:absolute; left:0; top:0; z-index:-1; width:794px;';
+            document.body.appendChild(holder);
+            try {
+                if (!document.querySelector('#olStyles')) { const st = document.createElement('style'); st.id = 'olStyles'; st.textContent = OL_CSS; document.head.appendChild(st); }
+                const page = olPageShell(true);
+                holder.appendChild(page);
+                const piece = l.pay_type === 'per_piece';
+                const earned = piece ? (l.pieces || []).reduce((s, p) => s + p.qty * p.rate, 0) || (Number(l.net_pay) - (Number(l.additions) || 0) + (Number(l.deductions) || 0)) : Math.round(Number(l.monthly_gross || 0) / Number(l.total_days || 30) * Number(l.days_worked || 0));
+                const tr = (a, b, bold) => `<tr><td style="padding:7px 10px; border-bottom:1px solid #e6e1d6;">${a}</td><td style="padding:7px 10px; border-bottom:1px solid #e6e1d6; text-align:right; ${bold ? 'font-weight:700;' : ''}">${b}</td></tr>`;
+                page.querySelector('.ol-body').innerHTML = `
+                    <div class="ol-title">Payslip — ${olEsc(monthLabel(ym))}</div>
+                    <table style="width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:13.5px;">
+                        <tr><td style="padding:4px 0; color:#555; width:24%;">Name</td><td style="font-weight:700;">${olEsc(l.name)}</td><td style="color:#555; width:18%;">Emp ID</td><td style="font-weight:700;">${olEsc(l.pay_code || '—')}</td></tr>
+                        <tr><td style="padding:4px 0; color:#555;">Designation</td><td>${olEsc(l.designation || '—')}</td><td style="color:#555;">Joined</td><td>${l.joined_on ? fmtDate(l.joined_on) : '—'}</td></tr>
+                        <tr><td style="padding:4px 0; color:#555;">Pay period</td><td>${fmtDate(ym + '-01')} – ${fmtDate(ym + '-' + String(daysInMonth(ym)).padStart(2, '0'))}</td><td style="color:#555;">Paid on</td><td>${l.paid_on ? fmtDate(l.paid_on) + (l.payment_mode ? ' · ' + olEsc(l.payment_mode) : '') : '—'}</td></tr>
+                    </table>
+                    <table style="width:100%; border-collapse:collapse; font-size:13.5px; background:#fff; border-radius:6px;">
+                        <tr style="background:#1a2138; color:#fff;"><td style="padding:8px 10px; font-weight:700;">Earnings</td><td style="padding:8px 10px; text-align:right; font-weight:700;">Amount</td></tr>
+                        ${piece ? ((l.pieces || []).map(p => tr(`${olEsc((allClients.find(c => c.id === p.client_id) || {}).name || 'Design / edit work')}${p.label ? ' — ' + olEsc(p.label) : ''} (${p.qty} × ${inr0(p.rate)})`, inr0(p.qty * p.rate))).join('') || tr('Design / edit work', inr0(earned)))
+                                : tr(`Monthly salary ${inr0(l.monthly_gross)} ÷ ${fmtNum(l.total_days)} days × ${fmtNum(l.days_worked)} days worked`, inr0(earned))}
+                        ${Number(l.additions) ? tr('Additions / incentives', inr0(l.additions)) : ''}
+                        ${Number(l.deductions) ? tr('Deductions', '− ' + inr0(l.deductions)) : ''}
+                        ${!piece ? tr('Leave this month', `${fmtNum(l.paid_leave_days || 0)} paid · ${fmtNum(l.unpaid_leave_days || 0)} unpaid`) : ''}
+                        <tr><td style="padding:10px; font-weight:800; font-size:15px;">Net pay</td><td style="padding:10px; text-align:right; font-weight:800; font-size:15px;">${inr0(l.net_pay)}</td></tr>
+                    </table>
+                    <p style="margin-top:10px; font-style:italic; font-size:12.5px;">Rupees ${olEsc(olWords(Math.round(Number(l.net_pay) || 0)))} only</p>
+                    ${l.notes ? `<p style="font-size:12.5px;">Note: ${olEsc(l.notes)}</p>` : ''}
+                    <p style="margin-top:40px; font-size:11.5px; color:#6b7280;">This is a computer-generated payslip from WAIN Collective LLP and does not need a signature.</p>`;
+                const lib = await olLoadScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js', 'html2pdf');
+                await lib().set({ margin: 0, filename: `Payslip ${monthLabel(ym)} - ${l.name}.pdf`, image: { type: 'jpeg', quality: 0.95 }, html2canvas: { scale: 2, scrollX: 0, scrollY: 0, backgroundColor: '#fdfbf6' }, jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] } }).from(page).save();
+            } catch (e) { alert('Could not create the payslip: ' + e.message); }
+            finally { holder.remove(); if (btn) { btn.disabled = false; btn.textContent = label; } }
+        }
+
+        // My Profile → my payslips
+        async function renderMyPayslips() {
+            const box = document.getElementById('myPayslips');
+            if (!box || !currentEmployee) return;
+            const { data } = await db.from('payroll_lines').select('*, payroll_runs(month, status)').eq('employee_id', currentEmployee.id);
+            const rows = (data || []).filter(l => l.payroll_runs && l.payroll_runs.status !== 'draft').sort((a, b) => b.payroll_runs.month.localeCompare(a.payroll_runs.month));
+            window.__myPayslips = rows;
+            box.innerHTML = rows.map((l, i) => `<div class="ml-row"><div><strong>${monthLabel(l.payroll_runs.month.slice(0, 7))}</strong> · ${inr0(l.net_pay)}${l.paid_on ? ` <span class="sum-sub">paid ${fmtDate(l.paid_on)}</span>` : ''}</div><button type="button" class="btn btn-sm btn-secondary" onclick="payslipPdf(null, this, window.__myPayslips[${i}], window.__myPayslips[${i}].payroll_runs)">⬇ Payslip</button></div>`).join('')
+                || '<div style="font-size:12px; color:var(--text-secondary);">Your payslips show up here once a month\'s salary is finalised.</div>';
+        }
+
+        // =====================================================================
+        // Linked Google Sheets → Content Calendar (one-way sync, sheet is the source)
+        // =====================================================================
+        let calSources = [];
+        const STAGE_ORDER = ['brief', 'in_progress', 'review', 'approved', 'delivered'];
+
+        function monthTabName(offset) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + offset); return PAY_MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+
+        async function loadCalSources() {
+            const { data } = await db.from('content_calendar_sources').select('*').order('created_at');
+            calSources = data || [];
+            return calSources;
+        }
+
+        function renderCalSources() {
+            const box = document.getElementById('calSources');
+            if (!box) return;
+            const filter = (document.getElementById('calendarClientFilter') || {}).value;
+            const list = calSources.filter(s => !filter ? true : filter === 'internal' ? !s.client_id : s.client_id === filter);
+            box.innerHTML = `<div class="cal-src-head">🔗 Linked Google Sheets <span class="sum-sub">— rows sync into this calendar; edit them in the sheet as usual</span> <button type="button" class="btn btn-sm btn-secondary" onclick="openLinkSheet()">+ Link a sheet</button></div>` +
+                (list.map(s => { const c = allClients.find(x => x.id === s.client_id); return `<div class="cal-src">
+                    <div><strong>${escapeHtml(s.title || 'Google Sheet')}</strong> · ${c ? escapeHtml(c.name) : 'Internal'}
+                        <div class="sum-sub">Tabs: ${(s.tabs || []).map(escapeHtml).join(', ') || 'auto (month names)'} · ${s.last_synced_at ? 'synced ' + timeAgo(s.last_synced_at) : 'never synced'}${s.last_result ? ' · ' + escapeHtml(s.last_result) : ''}</div></div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-sm btn-primary" id="calSync_${s.id}" onclick="syncCalSource('${s.id}')">↻ Sync now</button>
+                        <a class="btn btn-sm btn-secondary" href="${escapeHtml(s.sheet_url)}" target="_blank" rel="noopener">Open sheet ↗</a>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="openLinkSheet('${s.id}')">⚙</button>
+                    </div></div>`; }).join('') || '<div class="sum-sub" style="padding:6px 0;">No sheets linked yet.</div>');
+        }
+
+        function openLinkSheet(id) {
+            const s = id ? calSources.find(x => x.id === id) : null;
+            const emp = allEmployees.filter(e => e.active !== false);
+            openModal(s ? 'Linked sheet settings' : 'Link a Google Sheet', `
+                <form onsubmit="saveLinkSheet(event, '${id || ''}')">
+                    <div class="form-group"><label>Google Sheet link</label><input type="url" id="lsUrl" required value="${escapeHtml(s ? s.sheet_url : '')}" placeholder="https://docs.google.com/spreadsheets/d/…"><div class="sum-sub" style="margin-top:4px;">Share the sheet as "Anyone with the link can view".</div></div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Client</label><select id="lsClient"><option value="">— Internal / WAIN —</option>${allClients.map(c => `<option value="${c.id}" ${s && s.client_id === c.id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Name</label><input type="text" id="lsTitle" value="${escapeHtml(s ? s.title || '' : '')}" placeholder="e.g. MGM Content Calendar 2026"></div>
+                    </div>
+                    <div class="form-group"><label>Tabs to read (comma separated)</label><input type="text" id="lsTabs" value="${escapeHtml(s ? (s.tabs || []).join(', ') : '')}" placeholder="September 2026, October 2026"><div class="sum-sub" style="margin-top:4px;">Month tabs named like "November 2026" are picked up on their own when they appear.</div></div>
+                    <div class="form-group"><label>If "Responsibility" is empty or not a team member, assign to</label><select id="lsAssignee">${emp.map(e => `<option value="${e.id}" ${(s ? s.default_assignee : currentEmployee.id) === e.id ? 'selected' : ''}>${escapeHtml(e.name)}</option>`).join('')}</select></div>
+                    <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px; justify-content:space-between;">
+                        ${s ? `<button type="button" class="btn btn-secondary btn-sm" style="color:var(--danger-red);" onclick="unlinkSheet('${s.id}')">Unlink</button>` : '<span></span>'}
+                        <span style="display:flex; gap:8px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">${s ? 'Save' : 'Link & sync'}</button></span>
+                    </div>
+                </form>`);
+        }
+
+        async function saveLinkSheet(event, id) {
+            event.preventDefault();
+            const url = document.getElementById('lsUrl').value.trim();
+            const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+            if (!m) { alert('That does not look like a Google Sheets link.'); return; }
+            const row = { sheet_url: url, sheet_id: m[1], client_id: document.getElementById('lsClient').value || null, title: document.getElementById('lsTitle').value.trim() || null,
+                tabs: document.getElementById('lsTabs').value.split(',').map(x => x.trim()).filter(Boolean), default_assignee: document.getElementById('lsAssignee').value || null };
+            let saved;
+            if (id) { const { data, error } = await db.from('content_calendar_sources').update(row).eq('id', id).select().single(); if (error) { alert(error.message); return; } saved = data; }
+            else { const { data, error } = await db.from('content_calendar_sources').insert({ ...row, created_by: currentEmployee.id }).select().single(); if (error) { alert(error.message); return; } saved = data; }
+            closeModal();
+            await loadCalSources();
+            renderCalSources();
+            if (saved) syncCalSource(saved.id);
+        }
+
+        async function unlinkSheet(id) {
+            if (!confirm('Unlink this sheet? Content already brought in stays in the calendar.')) return;
+            await db.from('content_calendar_sources').delete().eq('id', id);
+            closeModal(); await loadCalSources(); renderCalSources();
+        }
+
+        // Turn one sheet tab (CSV/TSV text) into deliverable rows
+        function buildCalendarRows(text, clientId, sourceKey, defaultAssignee) {
+            const table = parseDelimited(text).filter(r => r.some(c => c));
+            let headerIdx = table.findIndex(r => { const j = r.join(' ').toLowerCase(); return /date/.test(j) && /(content|type|title|topic)/.test(j); });
+            let map;
+            if (headerIdx >= 0) map = sheetColumnMap(table[headerIdx]);
+            else { headerIdx = -1; map = { no: 0, date: 1, day: 2, type: 3, content: 4, platforms: 5, ref: 6, status: 7, resp: 8, pillar: -1 }; }
+            const get = (r, k) => (map[k] >= 0 && map[k] < r.length) ? r[map[k]] : '';
+            const rows = [], problems = [];
+            table.slice(headerIdx + 1).forEach((r, idx) => {
+                const dateIso = parseSheetDate(get(r, 'date'));
+                const content = get(r, 'content');
+                const type = mapSheetType(get(r, 'type'));
+                const pillar = get(r, 'pillar');
+                if (!dateIso && !content) return;
+                if (!dateIso) { problems.push(`Row ${idx + 1}: could not read date "${get(r, 'date')}" — skipped`); return; }
+                const people = mapSheetPeople(get(r, 'resp'));
+                const refRaw = get(r, 'ref');
+                const isUrl = /^https?:\/\//i.test(refRaw);
+                const noteBits = [];
+                if (refRaw && !isUrl) noteBits.push(refRaw);
+                if (people.unmatched.length) noteBits.push('Responsibility: ' + people.unmatched.join(', '));
+                const rowNo = get(r, 'no') || String(idx + 1);
+                const rawStatus = get(r, 'status').trim();
+                rows.push({
+                    import_key: `${clientId || 'internal'}:${sourceKey}:${rowNo}`,
+                    title: content || [pillar, type].filter(Boolean).join(' — ') || `Content — ${formatCalDate(dateIso).date}`,
+                    client_id: clientId, deliverable_type: type, status: mapSheetStatus(rawStatus), sheet_status: rawStatus || null,
+                    content_pillar: pillar || null,
+                    assigned_to: people.matched[0] || defaultAssignee, team_ids: people.matched.slice(1),
+                    platforms: mapSheetPlatforms(get(r, 'platforms')), due_date: dateIso,
+                    reference_link: isUrl ? refRaw : null, notes: noteBits.join(' · ') || null
+                });
+            });
+            return { rows, problems, headerIdx };
+        }
+
+        // Insert new rows, update existing ones; status only ever moves forward from the sheet
+        async function upsertCalendarRows(rows) {
+            const existing = {};
+            allDeliverables.forEach(d => { if (d.import_key) existing[d.import_key] = d; });
+            const inserts = [], updates = [];
+            rows.forEach(r => {
+                const cur = existing[r.import_key];
+                if (cur) {
+                    const patch = { ...r, updated_at: new Date().toISOString() };
+                    if (STAGE_ORDER.indexOf(cur.status) > STAGE_ORDER.indexOf(r.status)) patch.status = cur.status;
+                    const same = ['title', 'deliverable_type', 'status', 'sheet_status', 'content_pillar', 'assigned_to', 'due_date', 'reference_link', 'notes'].every(k => (cur[k] || null) === (patch[k] || null))
+                        && JSON.stringify(cur.platforms || []) === JSON.stringify(patch.platforms || []) && JSON.stringify(cur.team_ids || []) === JSON.stringify(patch.team_ids || []);
+                    if (!same) updates.push({ id: cur.id, patch });
+                } else inserts.push({ ...r, created_by: currentEmployee.id });
+            });
+            let failed = 0;
+            if (inserts.length) { const { error } = await db.from('creative_deliverables').insert(inserts); if (error) throw new Error(error.message); }
+            for (const u of updates) { const { error } = await db.from('creative_deliverables').update(u.patch).eq('id', u.id); if (error) failed++; }
+            return { inserted: inserts.length, updated: updates.length - failed, failed };
+        }
+
+        async function fetchSheetTab(sheetId, tab) {
+            const res = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const text = await res.text();
+            if (!text.trim() || text.trim().startsWith('<')) throw new Error('not shared publicly');
+            return text;
+        }
+
+        async function syncCalSource(id, silent) {
+            const s = calSources.find(x => x.id === id);
+            if (!s) return;
+            const btn = document.getElementById('calSync_' + id);
+            if (btn) { btn.disabled = true; btn.textContent = 'Syncing…'; }
+            const monthRe = new RegExp('^(' + PAY_MONTHS.join('|') + ')\\s+(\\d{4})$', 'i');
+            const tabs = [...new Set([...(s.tabs || []), monthTabName(-1), monthTabName(0), monthTabName(1), monthTabName(2)])];
+            const found = [];
+            let total = { inserted: 0, updated: 0, failed: 0 }, rowsSeen = 0, errorMsg = null;
+            try {
+                if (!allDeliverables.length) await loadDeliverables();
+                for (const tab of tabs) {
+                    let text;
+                    try { text = await fetchSheetTab(s.sheet_id, tab); } catch (e) { if ((s.tabs || []).includes(tab)) errorMsg = `${tab}: ${e.message}`; continue; }
+                    const { rows } = buildCalendarRows(text, s.client_id, `${s.sheet_id}:${tab}`, s.default_assignee || currentEmployee.id);
+                    // Google returns the first tab when a tab name doesn't exist — for month tabs keep only that month's rows
+                    const mm = tab.match(monthRe);
+                    let use = rows;
+                    if (mm) { const ym = `${mm[2]}-${String(PAY_MONTHS.findIndex(x => x.toLowerCase() === mm[1].toLowerCase()) + 1).padStart(2, '0')}`; use = rows.filter(r => r.due_date.startsWith(ym)); }
+                    if (!use.length) continue;
+                    found.push(tab);
+                    rowsSeen += use.length;
+                    const r = await upsertCalendarRows(use);
+                    total.inserted += r.inserted; total.updated += r.updated; total.failed += r.failed;
+                    await loadDeliverables();
+                }
+            } catch (e) { errorMsg = e.message; }
+            const result = errorMsg && !found.length ? 'couldn\'t read the sheet — ' + errorMsg : `${rowsSeen} rows · ${total.inserted} new · ${total.updated} updated${total.failed ? ' · ' + total.failed + ' failed' : ''}`;
+            const newTabs = [...new Set([...(s.tabs || []), ...found])];
+            await db.from('content_calendar_sources').update({ last_synced_at: new Date().toISOString(), last_result: result, tabs: newTabs }).eq('id', id);
+            s.last_synced_at = new Date().toISOString(); s.last_result = result; s.tabs = newTabs;
+            if (btn) { btn.disabled = false; btn.textContent = '↻ Sync now'; }
+            renderCalSources();
+            if (total.inserted || total.updated) { await renderDeliverables(); if (creativeView === 'calendar') renderContentCalendar(); }
+            if (!silent) alert(`${s.title || 'Sheet'}: ${result}.`);
+        }
+
+        async function autoSyncCalendars() {
+            await loadCalSources();
+            renderCalSources();
+            const stale = calSources.filter(s => !s.last_synced_at || Date.now() - new Date(s.last_synced_at).getTime() > 15 * 60 * 1000);
+            for (const s of stale) await syncCalSource(s.id, true);
+        }
+
+</script>
 </body>
 </html>
