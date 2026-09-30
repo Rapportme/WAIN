@@ -2045,6 +2045,8 @@
                             <span class="stage-pill" data-stage="negotiation" onclick="filterLeadsByStage('negotiation')">Negotiation</span>
                             <span class="stage-pill" data-stage="won" onclick="filterLeadsByStage('won')">Won</span>
                             <span class="stage-pill" data-stage="lost" onclick="filterLeadsByStage('lost')">Lost</span>
+                            <span class="stage-pill" data-stage="no_response" onclick="filterLeadsByStage('no_response')">No Response</span>
+                            <span class="stage-pill" data-stage="closed" onclick="filterLeadsByStage('closed')">Closed</span>
                             <span class="stage-pill" data-stage="stale" onclick="filterLeadsByStage('stale')" style="border-color:var(--warning-amber);">⚠ Needs Follow-up</span>
                         </div>
                         <div class="table-container">
@@ -3348,8 +3350,10 @@
             { module: 'accounts', view: 'accounts', icon: '💳', label: 'Accounts' }
         ];
         let leadStageFilter = 'all';
-        const LEAD_STAGE_LABELS = { new: 'New', contacted: 'Contacted', proposal: 'Proposal', negotiation: 'Negotiation', won: 'Won', lost: 'Lost' };
-        const LEAD_STAGE_CLASS = { new: 'status-pending', contacted: 'status-in-progress', proposal: 'status-in-progress', negotiation: 'status-in-progress', won: 'status-active', lost: 'status-overdue' };
+        const LEAD_STAGE_LABELS = { new: 'New', contacted: 'Contacted', proposal: 'Proposal', negotiation: 'Negotiation', won: 'Won', lost: 'Lost', no_response: 'No Response', closed: 'Closed' };
+        const CLOSED_LEAD_STAGES = ['won', 'lost', 'no_response', 'closed'];
+        function isLeadOpen(l) { return !CLOSED_LEAD_STAGES.includes(l.stage); }
+        const LEAD_STAGE_CLASS = { new: 'status-pending', contacted: 'status-in-progress', proposal: 'status-in-progress', negotiation: 'status-in-progress', won: 'status-active', lost: 'status-overdue', no_response: 'status-pending', closed: 'status-overdue' };
         const LEAD_NEXT_STAGE = { new: 'contacted', contacted: 'proposal', proposal: 'negotiation', negotiation: 'won' };
 
         const MODULE_TITLES = {
@@ -7263,7 +7267,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
         }
 
         function computePipelineStats() {
-            const open = allLeads.filter(l => l.stage !== 'won' && l.stage !== 'lost');
+            const open = allLeads.filter(isLeadOpen);
             const won = allLeads.filter(l => l.stage === 'won');
             const totalValue = open.reduce((s, l) => s + (Number(l.estimated_value) || 0), 0);
             document.getElementById('statPipelineValue').textContent = '₹' + totalValue.toLocaleString('en-IN');
@@ -7291,14 +7295,14 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             if (!body) return;
             let rows;
             if (leadStageFilter === 'all') rows = allLeads;
-            else if (leadStageFilter === 'stale') rows = allLeads.filter(l => l.stage !== 'won' && l.stage !== 'lost' && leadDaysSinceContact(l) >= FOLLOWUP_STALE_DAYS);
+            else if (leadStageFilter === 'stale') rows = allLeads.filter(l => isLeadOpen(l) && leadDaysSinceContact(l) >= FOLLOWUP_STALE_DAYS);
             else rows = allLeads.filter(l => l.stage === leadStageFilter);
             if (!rows.length) {
                 body.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No leads in this stage.</td></tr>';
                 return;
             }
             body.innerHTML = rows.map(l => {
-                const isOpen = l.stage !== 'won' && l.stage !== 'lost';
+                const isOpen = isLeadOpen(l);
                 const daysSince = isOpen ? leadDaysSinceContact(l) : 0;
                 const isStale = isOpen && daysSince >= FOLLOWUP_STALE_DAYS;
                 return `
@@ -7307,7 +7311,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
                     <td>${escapeHtml(l.contact_name) || '—'}${l.contact_email ? '<br><span style="font-size:11px; color:var(--text-secondary);">' + escapeHtml(l.contact_email) + '</span>' : ''}</td>
                     <td>${l.employees ? escapeHtml(l.employees.name) : '—'}</td>
                     <td>${l.estimated_value ? '₹' + Number(l.estimated_value).toLocaleString('en-IN') : '—'}</td>
-                    <td><select class="status-select ${LEAD_STAGE_CLASS[l.stage] || 'status-pending'}" title="Change stage" onchange="changeLeadStage('${l.id}', this.value, this)">${Object.keys(LEAD_STAGE_LABELS).map(st => `<option value="${st}" ${l.stage === st ? 'selected' : ''}>${LEAD_STAGE_LABELS[st]}</option>`).join('')}</select>${l.stage === 'lost' && l.lost_reason ? `<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(l.lost_reason)}</div>` : ''}</td>
+                    <td><select class="status-select ${LEAD_STAGE_CLASS[l.stage] || 'status-pending'}" title="Change stage" onchange="changeLeadStage('${l.id}', this.value, this)">${Object.keys(LEAD_STAGE_LABELS).map(st => `<option value="${st}" ${l.stage === st ? 'selected' : ''}>${LEAD_STAGE_LABELS[st]}</option>`).join('')}</select>${(l.stage === 'lost' || l.stage === 'closed' || l.stage === 'no_response') && l.lost_reason ? `<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(l.lost_reason)}</div>` : ''}</td>
                     <td style="white-space:nowrap;">
                         ${LEAD_NEXT_STAGE[l.stage] ? `<button class="btn btn-sm btn-secondary" onclick="advanceLead('${l.id}','${LEAD_NEXT_STAGE[l.stage]}')">${l.stage === 'negotiation' ? 'Mark Won' : 'Advance'}</button>` : ''}
                         <button class="btn btn-sm btn-secondary" onclick="openLeadEdit('${l.id}')">Edit</button>
@@ -9693,7 +9697,13 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             if (stage === 'won' && !lead.converted_client_id) { await convertLeadToClient(id); if (sel) sel.value = (allLeads.find(l => l.id === id) || lead).stage; return; }
             if (stage === 'lost') { await markLeadLost(id); return; }
             const from = lead.stage;
-            const { error } = await db.from('leads').update({ stage, updated_at: new Date().toISOString() }).eq('id', id);
+            const patch = { stage, updated_at: new Date().toISOString() };
+            if (stage === 'closed' || stage === 'no_response') {
+                const note = prompt(stage === 'closed' ? 'Why is this lead closed? (optional)' : 'Any note? e.g. tried 3 calls, no reply (optional)');
+                if (note === null) { if (sel) sel.value = from; return; }
+                if (note.trim()) patch.lost_reason = note.trim();
+            }
+            const { error } = await db.from('leads').update(patch).eq('id', id);
             if (error) { alert('Could not change the stage: ' + error.message); if (sel) sel.value = from; return; }
             await db.from('crm_activities').insert({ lead_id: id, employee_id: currentEmployee.id, activity_type: 'stage_change', notes: `Stage: ${LEAD_STAGE_LABELS[from] || from} → ${LEAD_STAGE_LABELS[stage] || stage}` });
             renderLeads();
@@ -10239,7 +10249,7 @@ async function olDownloadPdf(o, filename) {
         }
 
         // ---------- "new version available" banner ----------
-        const ADMIN_BUILD = '20260929205013';
+        const ADMIN_BUILD = '20260930061058';
         async function checkForNewVersion() {
             try {
                 const res = await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' });
