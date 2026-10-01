@@ -1279,6 +1279,17 @@
         .rc-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) 110px 34px; gap:6px; margin-bottom:6px; align-items:center; }
         .rc-row select, .rc-row input { font-size:12px; padding:5px 6px; border:1px solid var(--wain-border); border-radius:4px; min-width:0; }
         tr.pw-off td { opacity:.45; }
+        .fund-chip { display:inline-block; font-size:10px; padding:1px 7px; border-radius:10px; background:rgba(244,93,93,0.12); color:#b23b3b; font-weight:700; margin-top:2px; }
+        .alloc-link { color:var(--text-secondary); text-decoration:underline dotted; font-size:11px; }
+        .fund-box { margin-top:14px; border:1px solid var(--wain-border); border-radius:8px; padding:12px 14px; background:rgba(14,154,167,0.04); }
+        .fund-head { font-weight:700; font-size:13px; margin-bottom:8px; }
+        .fund-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; }
+        .fund-cell { background:#fff; border:1px solid var(--wain-border); border-radius:6px; padding:8px 10px; }
+        .fund-cell.fund-due { border-color:rgba(244,178,45,0.7); }
+        .fund-num { font-size:17px; font-weight:700; margin-top:2px; }
+        .fund-ledger + .fund-ledger { margin-top:18px; padding-top:14px; border-top:1px solid var(--wain-border); }
+        .alloc-row { display:grid; grid-template-columns:minmax(0,1fr) 90px 16px 34px; gap:6px; align-items:center; margin-bottom:6px; }
+        .alloc-row select, .alloc-row input { font-size:12px; padding:5px 6px; border:1px solid var(--wain-border); border-radius:4px; min-width:0; }
         tr.pw-off td:first-child { opacity:1; }
         @media (max-width: 700px) { .piece-row { grid-template-columns:1fr 1fr; } }
     </style>
@@ -2873,6 +2884,12 @@
                             <button type="submit" class="btn btn-primary">+ Log Expense</button>
                         </form>
                     </div>
+                </div>
+
+                <div class="card" id="teamFundingCard" style="margin-top:24px; display:none;">
+                    <div class="card-header"><div class="card-title">🤝 Team funding — sister companies</div></div>
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Team members paid by a sister company (e.g. Refillr building its own marketing team). Its own share of their work is its marketing cost; the share spent on other WAIN clients is booked as WAIN's cost and owed back.</div>
+                    <div id="teamFundingBody">Loading…</div>
                 </div>
 
                 <div class="grid grid-2col" style="margin-top:24px;">
@@ -4600,7 +4617,7 @@
         let allMoneyAccounts = [];
         let allMovements = [];
         const PAYMENT_MODES = ['UPI', 'Card', 'Bank transfer', 'Cash', 'Cheque', 'Cred', 'Other'];
-        const MOVEMENT_KINDS = { transfer: 'Transfer between accounts', income: 'Money in', deposit: 'Deposit / advance paid (refundable)', refund: 'Refund received', capital: 'Owner capital added' };
+        const MOVEMENT_KINDS = { transfer: 'Transfer between accounts', income: 'Money in', deposit: 'Deposit / advance paid (refundable)', refund: 'Refund received', capital: 'Owner capital added', intercompany: 'Paid to / from a sister company' };
 
         async function loadMoneyAccounts() {
             const [{ data: accts }, { data: moves }] = await Promise.all([
@@ -7682,6 +7699,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             allInvoices = invoices || [];
             allExpenses = expenses || [];
             renderMoneyAccounts();
+            if (typeof renderTeamFunding === 'function') renderTeamFunding();
 
             const revenue = allInvoices.filter(i => i.status === 'paid').reduce((s, i) => s + Number(i.total || 0), 0);
             const outstanding = allInvoices.filter(i => i.status === 'sent' || i.status === 'overdue').reduce((s, i) => s + Number(i.total || 0), 0);
@@ -10310,7 +10328,7 @@ async function olDownloadPdf(o, filename) {
         }
 
         // ---------- "new version available" banner ----------
-        const ADMIN_BUILD = '20261001144237';
+        const ADMIN_BUILD = '20261001150522';
         async function checkForNewVersion() {
             try {
                 const res = await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' });
@@ -10410,7 +10428,7 @@ async function olDownloadPdf(o, filename) {
                         const piece = l.pay_type === 'per_piece';
                         return `<tr data-line="${l.id}">
                             <td>${escapeHtml(l.pay_code || '—')}</td>
-                            <td><strong>${escapeHtml(l.name)}</strong>${l.paid_on ? `<div class="sum-sub">paid ${fmtDate(l.paid_on)}${l.payment_mode ? ' · ' + escapeHtml(l.payment_mode) : ''}</div>` : ''}</td>
+                            <td style="min-width:170px;"><strong>${escapeHtml(l.name)}</strong>${l.funded_by_client_id ? `<div><span class="fund-chip">Paid by ${escapeHtml(clientShort(l.funded_by_client_id))}</span></div>` : ''}<div class="sum-sub"><a href="#" class="alloc-link" title="Which clients this pay belongs to" onclick="openAlloc('${l.id}'); return false;">${allocSummary(l)}</a></div>${l.paid_on ? `<div class="sum-sub">paid ${fmtDate(l.paid_on)}${l.payment_mode ? ' · ' + escapeHtml(l.payment_mode) : ''}</div>` : ''}</td>
                             <td>${escapeHtml(l.designation || '—')}</td>
                             <td style="white-space:nowrap;">${l.joined_on ? fmtDate(l.joined_on) : '—'}</td>
                             <td>${piece ? '<span class="prio-chip">per design/edit</span>' : inr0(l.monthly_gross)}</td>
@@ -10428,6 +10446,7 @@ async function olDownloadPdf(o, filename) {
                     <tr class="pay-total"><td colspan="11" style="text-align:right;">TOTAL</td><td id="payTotal">${inr0(total)}</td><td colspan="2"></td></tr>
                     </tbody></table></div>
                 <div style="font-size:12px; color:var(--text-secondary); margin-top:8px;">${run.days_basis === 'fixed30' ? 'Per day = monthly salary ÷ 30' : 'Per day = monthly salary ÷ days in the month'} (<a href="#" onclick="toggleDaysBasis(); return false;">${run.days_basis === 'fixed30' ? 'use calendar days instead' : 'use a fixed 30 days'}</a>). Days worked start from the joining date and drop by unpaid leave; casual, sick and comp-off leave are paid. Change days worked by hand for anything else (it's then kept on Recalculate).${run.notes ? ' · ' + escapeHtml(run.notes) : ''}</div>`;
+            drawPayFunding();
         }
 
         function payInput(id, key, val) {
@@ -10445,6 +10464,7 @@ async function olDownloadPdf(o, filename) {
             const tot = document.getElementById('payTotal');
             if (tot) tot.textContent = inr0(payState.lines.reduce((s, x) => s + (Number(x.net_pay) || 0), 0));
             const btn = document.getElementById('paySaveBtn'); if (btn) btn.textContent = 'Save changes';
+            drawPayFunding();
         }
 
         function calcPayLine(l) {
@@ -10488,7 +10508,7 @@ async function olDownloadPdf(o, filename) {
                 employee_id: e.id, pay_code: p.pay_code || null, name: e.name, designation: e.designation || e.role || null,
                 pay_type: p.pay_type, joined_on: p.pay_from || e.join_date || null, monthly_gross: p.monthly_gross || null,
                 paid_leave_days: (leave[e.id] || {}).paid || 0, unpaid_leave_days: (leave[e.id] || {}).unpaid || 0, lop_days: 0,
-                days_override: false, additions: 0, deductions: 0, pieces: null,
+                days_override: false, additions: 0, deductions: 0, pieces: null, funded_by_client_id: p.funded_by_client_id || null, alloc: null, alloc_manual: false,
                 net_pay: p.pay_type === 'per_piece' ? 0 : null, sort_order: order
             };
         }
@@ -10518,11 +10538,13 @@ async function olDownloadPdf(o, filename) {
                 const e = allEmployees.find(x => x.id === l.employee_id);
                 if (fromSetup && p) { l.monthly_gross = p.monthly_gross; l.pay_type = p.pay_type; l.pay_code = p.pay_code || l.pay_code; l.joined_on = p.pay_from || (e && e.join_date) || l.joined_on; }
                 if (e) l.designation = e.designation || l.designation;
+                if (p) l.funded_by_client_id = p.funded_by_client_id || null;
                 l.paid_leave_days = (leave[l.employee_id] || {}).paid || 0;
                 l.unpaid_leave_days = (leave[l.employee_id] || {}).unpaid || 0;
                 calcPayLine(l);
             });
             for (const l of payState.lines.filter(x => x.pay_type === 'per_piece')) await syncPiecesFromWork(l);
+            await refreshAllocs();
             // people added to Salary setup since the register was made
             const have = new Set(payState.lines.map(l => l.employee_id));
             const monthEnd = payState.ym + '-' + String(daysInMonth(payState.ym)).padStart(2, '0');
@@ -10541,7 +10563,7 @@ async function olDownloadPdf(o, filename) {
             let failed = 0;
             for (const l of payState.lines) {
                 const patch = {};
-                ['monthly_gross', 'pay_type', 'pay_code', 'designation', 'joined_on', 'total_days', 'per_day', 'paid_leave_days', 'unpaid_leave_days', 'lop_days', 'days_worked', 'days_override', 'additions', 'deductions', 'net_pay', 'notes', 'pieces'].forEach(k => { patch[k] = l[k] === undefined ? null : l[k]; });
+                ['monthly_gross', 'pay_type', 'pay_code', 'designation', 'joined_on', 'total_days', 'per_day', 'paid_leave_days', 'unpaid_leave_days', 'lop_days', 'days_worked', 'days_override', 'additions', 'deductions', 'net_pay', 'notes', 'pieces', 'alloc', 'alloc_manual', 'funded_by_client_id'].forEach(k => { patch[k] = l[k] === undefined ? null : l[k]; });
                 patch.additions = patch.additions || 0; patch.deductions = patch.deductions || 0;
                 const { error } = await db.from('payroll_lines').update(patch).eq('id', l.id);
                 if (error) { failed++; console.warn(error.message); }
@@ -10794,17 +10816,247 @@ async function olDownloadPdf(o, filename) {
             drawPayroll(); drawPaySetup();
         }
 
+        // ===== Who pays, and which client each person's pay belongs to =====
+        // A person's pay can be funded by a sister company (e.g. Refillr builds its own marketing team).
+        // Each month pay is split across clients by the work each person finished; the funder's own share
+        // is its in-house marketing cost, everything else is WAIN's cost and is owed back to the funder.
+        function clientShort(id) { if (!id) return 'WAIN internal'; const c = allClients.find(x => x.id === id); return c ? c.name.replace(/\s+(Pvt\.?\s+Ltd\.?|Private Limited|LLP|Ltd\.?)$/i, '') : 'Other'; }
+
+        async function payWorkMixAll(ym) {
+            const start = ym + '-01', end = ym + '-' + String(daysInMonth(ym)).padStart(2, '0');
+            const from = start + 'T00:00:00+05:30', to = end + 'T23:59:59+05:30';
+            const [{ data: dels }, { data: tasks }] = await Promise.all([
+                db.from('creative_deliverables').select('client_id, assigned_to, team_ids, status, delivered_at').eq('status', 'delivered').gte('delivered_at', from).lte('delivered_at', to),
+                db.from('tasks').select('client_id, assigned_to, team_ids, status, completed_at, deliverable_id').eq('status', 'done').gte('completed_at', from).lte('completed_at', to)
+            ]);
+            const byEmp = {}, team = {};
+            const add = (r) => {
+                const k = r.client_id || '';
+                [...new Set([r.assigned_to, ...(r.team_ids || [])].filter(Boolean))].forEach(e => { const m = byEmp[e] || (byEmp[e] = {}); m[k] = (m[k] || 0) + 1; });
+                team[k] = (team[k] || 0) + 1;
+            };
+            (dels || []).forEach(add);
+            (tasks || []).filter(t => !t.deliverable_id).forEach(add);
+            return { byEmp, team };
+        }
+        function weightsToAlloc(w) {
+            const tot = Object.values(w).reduce((s, v) => s + v, 0);
+            if (!tot) return null;
+            const list = Object.entries(w).filter(([, v]) => v > 0).map(([k, v]) => ({ client_id: k || null, pct: Math.round(v / tot * 1000) / 10 })).sort((a, b) => b.pct - a.pct);
+            const diff = Math.round((100 - list.reduce((s, a) => s + a.pct, 0)) * 10) / 10;
+            if (list.length) list[0].pct = Math.round((list[0].pct + diff) * 10) / 10;
+            return list;
+        }
+        function autoAlloc(l, mix) {
+            if (l.pay_type === 'per_piece' && payPieces(l).length) {
+                const w = {}; payPieces(l).forEach(p => { const k = p.client_id || ''; w[k] = (w[k] || 0) + Number(p.qty) * Number(p.rate); });
+                return weightsToAlloc(w);
+            }
+            return weightsToAlloc(mix.byEmp[l.employee_id] || {}) || weightsToAlloc(mix.team) || [{ client_id: l.funded_by_client_id || null, pct: 100 }];
+        }
+        async function refreshAllocs() {
+            if (!payState.run || payState.run.status !== 'draft') return;
+            const mix = await payWorkMixAll(payState.ym);
+            payState.lines.forEach(l => { if (!l.alloc_manual || !(l.alloc || []).length) { l.alloc = autoAlloc(l, mix); l.alloc_manual = false; } });
+        }
+        // rupee split of an amount by alloc %, remainder to the biggest share
+        function splitByAlloc(amount, alloc) {
+            const list = (alloc && alloc.length ? alloc : [{ client_id: null, pct: 100 }]).map(a => ({ client_id: a.client_id || null, amount: Math.round(amount * Number(a.pct) / 100) }));
+            const diff = Math.round(amount) - list.reduce((s, a) => s + a.amount, 0);
+            if (list.length) list[0].amount += diff;
+            return list.filter(a => a.amount);
+        }
+        function lineSplit(l) {
+            const net = Math.round(Number(l.net_pay) || 0);
+            if (l.pay_type === 'per_piece' && payPieces(l).length && !l.alloc_manual) {
+                const by = {}; payPieces(l).forEach(p => { const k = p.client_id || ''; by[k] = (by[k] || 0) + Number(p.qty) * Number(p.rate); });
+                const list = Object.entries(by).map(([k, v]) => ({ client_id: k || null, amount: Math.round(v) })).sort((a, b) => b.amount - a.amount);
+                const diff = net - list.reduce((s, a) => s + a.amount, 0); if (list.length) list[0].amount += diff;
+                return list.filter(a => a.amount);
+            }
+            return splitByAlloc(net, l.alloc);
+        }
+        // Totals per funder: own share vs owed back by WAIN
+        function payFundingSummary() {
+            const out = { wain: 0, funders: {} };
+            payState.lines.forEach(l => {
+                const net = Math.round(Number(l.net_pay) || 0); if (!net) return;
+                if (!l.funded_by_client_id) { out.wain += net; return; }
+                const f = out.funders[l.funded_by_client_id] || (out.funders[l.funded_by_client_id] = { total: 0, own: 0, due: 0, byClient: {}, people: [] });
+                f.total += net;
+                const parts = lineSplit(l);
+                parts.forEach(p => { if (p.client_id === l.funded_by_client_id) f.own += p.amount; else { f.due += p.amount; const k = p.client_id || ''; f.byClient[k] = (f.byClient[k] || 0) + p.amount; } });
+                f.people.push({ name: l.name, net, parts });
+            });
+            return out;
+        }
+        function allocSummary(l) {
+            const a = (l.alloc || []);
+            if (!a.length) return 'set client split';
+            const tiny = id => { const n = clientShort(id); return n.length > 12 ? n.split(/\s+/)[0] : n; };
+            return a.slice(0, 3).map(x => `${escapeHtml(tiny(x.client_id))} ${Math.round(x.pct)}%`).join(' · ') + (a.length > 3 ? ` · +${a.length - 3}` : '');
+        }
+        function drawPayFunding() {
+            const reg = document.getElementById('payrollRegister');
+            if (!reg || !payState.run) return;
+            let box = document.querySelector('#payFunding');
+            if (!box) { box = document.createElement('div'); box.id = 'payFunding'; reg.appendChild(box); }
+            const s = payFundingSummary();
+            const fids = Object.keys(s.funders);
+            if (!fids.length) { box.innerHTML = ''; return; }
+            box.innerHTML = `<div class="fund-box">
+                <div class="fund-head">💼 Who pays this month</div>
+                <div class="fund-grid">
+                    ${s.wain ? `<div class="fund-cell"><div class="sum-sub">Paid by WAIN</div><div class="fund-num">${inr0(s.wain)}</div></div>` : ''}
+                    ${fids.map(fid => { const f = s.funders[fid]; return `
+                    <div class="fund-cell"><div class="sum-sub">Paid by ${escapeHtml(clientShort(fid))}</div><div class="fund-num">${inr0(f.total)}</div></div>
+                    <div class="fund-cell"><div class="sum-sub">${escapeHtml(clientShort(fid))}'s own marketing (its share of the work)</div><div class="fund-num">${inr0(f.own)}</div></div>
+                    <div class="fund-cell fund-due"><div class="sum-sub">Work for other clients → WAIN owes ${escapeHtml(clientShort(fid))}</div><div class="fund-num">${inr0(f.due)}</div>
+                        <div class="sum-sub">${Object.entries(f.byClient).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${escapeHtml(clientShort(k || null))} ${inr0(v)}`).join(' · ')}</div></div>`; }).join('')}
+                </div>
+                <div class="sum-sub" style="margin-top:6px;">Each person's pay is split by the deliverables and tasks they finished this month for each client (click the split under a name to change it). When the month is marked paid, WAIN books only the other-client share as its cost — against each client — and adds it to the balance owed in Accounts → Team funding.</div>
+            </div>`;
+        }
+
+        function openAlloc(id) {
+            const l = payState.lines.find(x => x.id === id); if (!l) return;
+            const editable = payState.run.status === 'draft';
+            const rows = (l.alloc && l.alloc.length ? l.alloc : [{ client_id: l.funded_by_client_id || null, pct: 100 }]);
+            const opts = sel => '<option value="">WAIN internal</option>' + allClients.map(c => `<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('');
+            const row = a => `<div class="alloc-row"><select class="alClient" ${editable ? '' : 'disabled'}>${opts(a.client_id)}</select><input type="number" class="alPct" min="0" max="100" step="0.1" value="${a.pct ?? ''}" ${editable ? '' : 'disabled'} oninput="allocTotal()"><span>%</span>${editable ? '<button type="button" class="btn btn-sm btn-secondary" onclick="this.parentNode.remove(); allocTotal()">✕</button>' : ''}</div>`;
+            window.__alRow = row;
+            openModal(`${l.name} — who the pay belongs to`, `
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">${l.alloc_manual ? 'Set by hand.' : 'Worked out from the deliverables and tasks ' + escapeHtml(l.name.split(' ')[0]) + ' finished in ' + monthLabel(payState.ym) + '.'} ${l.funded_by_client_id ? `Paid by <strong>${escapeHtml(clientShort(l.funded_by_client_id))}</strong>: its own share stays its marketing cost; the rest is WAIN's cost, owed back.` : 'Paid by WAIN: each share is booked against that client.'}</div>
+                <div id="alRows">${rows.map(row).join('')}</div>
+                ${editable ? `<button type="button" class="btn btn-sm btn-secondary" style="margin-top:6px;" onclick="document.getElementById('alRows').insertAdjacentHTML('beforeend', window.__alRow({ pct: '' })); allocTotal()">+ Client</button>` : ''}
+                <div style="margin-top:10px; font-weight:700;">Total <span id="alTotal"></span> · ${inr0(l.net_pay)}</div>
+                <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px; justify-content:space-between;">
+                    ${editable ? `<button type="button" class="btn btn-secondary btn-sm" onclick="resetAlloc('${id}')">↺ Use work done</button>` : '<span></span>'}
+                    <span style="display:flex; gap:8px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Close</button>${editable ? `<button type="button" class="btn btn-primary btn-sm" onclick="saveAlloc('${id}')">Save split</button>` : ''}</span></div>`);
+            allocTotal();
+        }
+        function readAlloc() { return [...document.querySelectorAll('#alRows .alloc-row')].map(r => ({ client_id: r.querySelector('.alClient').value || null, pct: Number(r.querySelector('.alPct').value) || 0 })).filter(a => a.pct > 0); }
+        function allocTotal() { const t = Math.round(readAlloc().reduce((s, a) => s + a.pct, 0) * 10) / 10; const el = document.getElementById('alTotal'); if (el) { el.textContent = t + '%'; el.style.color = Math.abs(t - 100) > 0.05 ? 'var(--danger-red)' : ''; } }
+        async function saveAlloc(id) {
+            const l = payState.lines.find(x => x.id === id);
+            const a = readAlloc(); const t = a.reduce((s, x) => s + x.pct, 0);
+            if (Math.abs(t - 100) > 0.05) { alert('The split needs to add up to 100%.'); return; }
+            const merged = {}; a.forEach(x => { const k = x.client_id || ''; merged[k] = (merged[k] || 0) + x.pct; });
+            l.alloc = Object.entries(merged).map(([k, v]) => ({ client_id: k || null, pct: v })).sort((x, y) => y.pct - x.pct);
+            l.alloc_manual = true; payState.dirty = true; closeModal(); await savePayroll(true);
+        }
+        async function resetAlloc(id) {
+            const l = payState.lines.find(x => x.id === id);
+            const mix = await payWorkMixAll(payState.ym);
+            l.alloc_manual = false; l.alloc = autoAlloc(l, mix); payState.dirty = true; closeModal(); await savePayroll(true);
+        }
+
+        // ===== Accounts → Team funding ledger =====
+        let teamFunding = [];
+        async function renderTeamFunding() {
+            const box = document.getElementById('teamFundingBody'); if (!box) return;
+            const card = document.getElementById('teamFundingCard');
+            const { data, error } = await db.from('team_funding_entries').select('*').order('entry_date', { ascending: false });
+            if (error) { if (card) card.style.display = 'none'; return; }
+            teamFunding = data || [];
+            if (card) card.style.display = teamFunding.length ? '' : 'none';
+            const fids = [...new Set(teamFunding.map(e => e.funder_client_id))];
+            box.innerHTML = fids.map(fid => {
+                const rows = teamFunding.filter(e => e.funder_client_id === fid);
+                const charged = rows.filter(e => e.kind === 'charge').reduce((s, e) => s + Number(e.amount), 0);
+                const settled = rows.filter(e => e.kind === 'settlement').reduce((s, e) => s + Number(e.amount), 0);
+                const own = rows.filter(e => e.kind === 'charge').reduce((s, e) => s + Number(e.own_share || 0), 0);
+                const bal = charged - settled;
+                return `<div class="fund-ledger">
+                    <div class="fund-grid">
+                        <div class="fund-cell"><div class="sum-sub">${escapeHtml(clientShort(fid))} paid the team (to date)</div><div class="fund-num">${inr0(charged + own)}</div></div>
+                        <div class="fund-cell"><div class="sum-sub">Its own marketing share</div><div class="fund-num">${inr0(own)}</div></div>
+                        <div class="fund-cell"><div class="sum-sub">Charged to WAIN · repaid</div><div class="fund-num">${inr0(charged)} · ${inr0(settled)}</div></div>
+                        <div class="fund-cell fund-due"><div class="sum-sub">WAIN owes ${escapeHtml(clientShort(fid))}</div><div class="fund-num" style="color:${bal > 0 ? 'var(--danger-red)' : 'inherit'}">${inr0(bal)}</div></div>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openSettleFunding('${fid}', ${Math.max(0, bal)})">Record payment to ${escapeHtml(clientShort(fid))}</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="exportFundingStatement('${fid}', this)">⬇ Statement for ${escapeHtml(clientShort(fid))}'s books (Excel)</button>
+                    </div>
+                    <div class="table-container"><table class="fin-table"><thead><tr><th>Date</th><th>Entry</th><th class="num">${escapeHtml(clientShort(fid))}'s own</th><th class="num">Owed by WAIN</th><th class="num">Repaid</th><th></th></tr></thead><tbody>
+                    ${rows.map(e => `<tr><td>${fmtDate(e.entry_date)}</td><td>${e.kind === 'charge' ? `Team pay — ${monthLabel(String(e.month).slice(0, 7))}` : 'Payment to ' + escapeHtml(clientShort(fid))}${e.notes ? `<div class="sum-sub">${escapeHtml(e.notes)}</div>` : ''}</td>
+                        <td class="num">${e.kind === 'charge' ? inr0(e.own_share || 0) : ''}</td><td class="num">${e.kind === 'charge' ? inr0(e.amount) : ''}</td><td class="num">${e.kind === 'settlement' ? inr0(e.amount) : ''}</td>
+                        <td>${e.kind === 'settlement' ? `<button class="td-x" title="Delete" onclick="deleteFundingEntry('${e.id}')">✕</button>` : ''}</td></tr>`).join('')}
+                    </tbody></table></div></div>`;
+            }).join('') || '<div class="sum-sub">Nothing yet. When a payroll month with people paid by a sister company is marked paid, it shows here.</div>';
+        }
+        function openSettleFunding(fid, bal) {
+            openModal('Payment to ' + clientShort(fid), `
+                <form onsubmit="saveSettleFunding(event, '${fid}')">
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">WAIN paying back ${escapeHtml(clientShort(fid))} for team time spent on other clients. This isn't a new expense — the cost was booked against each client when payroll was marked paid — it just moves money and clears the balance.</div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Amount</label><input type="number" id="sfAmount" min="1" required value="${bal || ''}"></div>
+                        <div class="form-group"><label>Date</label><input type="date" id="sfDate" required value="${localISO()}"></div>
+                    </div>
+                    <div class="prio-form-row">
+                        <div class="form-group"><label>Paid from</label><select id="sfAcct">${accountOptions('', '— Not recorded —')}</select></div>
+                        <div class="form-group"><label>Mode</label><select id="sfMode">${['Bank transfer', 'UPI', 'Cash', 'Cheque', 'Adjusted against invoice'].map(m => `<option>${m}</option>`).join('')}</select></div>
+                    </div>
+                    <div class="form-group"><label>Note</label><input type="text" id="sfNote" placeholder="e.g. Refillr invoice no."></div>
+                    <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Save</button></div>
+                </form>`);
+        }
+        async function saveSettleFunding(event, fid) {
+            event.preventDefault();
+            const amount = Number(document.getElementById('sfAmount').value), date = document.getElementById('sfDate').value;
+            const acct = document.getElementById('sfAcct').value || null, mode = document.getElementById('sfMode').value, note = document.getElementById('sfNote').value.trim() || null;
+            let movementId = null;
+            if (acct) {
+                const { data, error } = await db.from('money_movements').insert({ kind: 'intercompany', amount, movement_date: date, from_account_id: acct, client_id: fid, counterparty: (allClients.find(c => c.id === fid) || {}).name || null, description: 'Team funding repaid' + (note ? ' — ' + note : ''), payment_mode: mode, recorded_by: currentEmployee.id }).select('id').single();
+                if (error) { alert('Could not record the payment: ' + error.message); return; }
+                movementId = data ? data.id : null;
+            }
+            const { error } = await db.from('team_funding_entries').insert({ funder_client_id: fid, kind: 'settlement', amount, entry_date: date, payment_mode: mode, movement_id: movementId, notes: note, created_by: currentEmployee.id });
+            if (error) { alert('Could not save: ' + error.message); return; }
+            closeModal(); renderAccounts();
+        }
+        async function deleteFundingEntry(id) {
+            const e = teamFunding.find(x => x.id === id);
+            if (!confirm('Delete this payment entry?')) return;
+            if (e && e.movement_id) await db.from('money_movements').delete().eq('id', e.movement_id);
+            await db.from('team_funding_entries').delete().eq('id', id);
+            renderAccounts();
+        }
+        async function exportFundingStatement(fid, btn) {
+            const XLSX = await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX');
+            const rows = teamFunding.filter(e => e.funder_client_id === fid).slice().sort((a, b) => String(a.entry_date).localeCompare(String(b.entry_date)));
+            const name = (allClients.find(c => c.id === fid) || {}).name || 'Funder';
+            const aoa = [[`${name} — marketing team cost and recharge to WAIN Collective LLP`], [], ['Date', 'Entry', 'Person', 'Paid by ' + name, name + "'s own marketing", 'Recharged to WAIN', 'Repaid by WAIN', 'For clients']];
+            rows.forEach(e => {
+                if (e.kind === 'charge') {
+                    (e.details && e.details.people || []).forEach(p => aoa.push([fmtDate(e.entry_date), 'Team pay — ' + monthLabel(String(e.month).slice(0, 7)), p.name, p.net, p.own, p.due, '', (p.parts || []).filter(x => x.client_id !== fid).map(x => `${clientShort(x.client_id)} ${x.amount}`).join('; ')]));
+                } else aoa.push([fmtDate(e.entry_date), 'Payment from WAIN' + (e.notes ? ' — ' + e.notes : ''), '', '', '', '', Number(e.amount), '']);
+            });
+            const n = aoa.length;
+            aoa.push(['', 'TOTAL', '', { f: `SUM(D4:D${n})` }, { f: `SUM(E4:E${n})` }, { f: `SUM(F4:F${n})` }, { f: `SUM(G4:G${n})` }, '']);
+            aoa.push(['', 'Balance WAIN owes ' + name, '', '', '', { f: `F${n + 1}-G${n + 1}` }, '', '']);
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+            ws['!cols'] = [{ wch: 12 }, { wch: 30 }, { wch: 20 }, { wch: 16 }, { wch: 18 }, { wch: 18 }, { wch: 16 }, { wch: 50 }];
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Statement');
+            XLSX.writeFile(wb, `${name.replace(/[^\w]+/g, ' ').trim()} team funding statement.xlsx`);
+        }
+
         async function openMarkPaid() {
             const { data: accts } = await db.from('money_accounts').select('id, name').order('name');
+            await refreshAllocs();
+            const s = payFundingSummary();
+            const fids = Object.keys(s.funders);
             openModal('Mark ' + monthLabel(payState.ym) + ' as paid', `
                 <form onsubmit="markPayrollPaid(event)">
                     <div class="prio-form-row">
                         <div class="form-group"><label>Paid on</label><input type="date" id="mpDate" value="${localISO()}" required></div>
                         <div class="form-group"><label>Mode</label><select id="mpMode">${['Bank transfer', 'UPI', 'Cash', 'Cheque'].map(m => `<option>${m}</option>`).join('')}</select></div>
                     </div>
-                    <div class="form-group"><label>Paid from account</label><select id="mpAcct"><option value="">— Not recorded —</option>${(accts || []).map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select></div>
-                    <label style="display:flex; gap:8px; align-items:flex-start; font-size:13px;"><input type="checkbox" id="mpExpense" checked style="width:auto; margin-top:3px;"> <span>Record it in Accounts as expenses — salaries under <strong>Internal Ops</strong>, per-piece pay against each client, so P&amp;L and client margins include it.</span></label>
-                    <div style="margin-top:10px; font-weight:700;">Total ${inr0(payState.lines.reduce((s, l) => s + (Number(l.net_pay) || 0), 0))} to ${payState.lines.filter(l => Number(l.net_pay) > 0).length} people</div>
+                    <div class="form-group" ${s.wain ? '' : 'style="display:none;"'}><label>WAIN paid ${inr0(s.wain)} from</label><select id="mpAcct"><option value="">— Not recorded —</option>${(accts || []).map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('')}</select></div>
+                    ${fids.map(fid => { const f = s.funders[fid]; return `<div class="fund-box" style="margin:0 0 10px;"><strong>${escapeHtml(clientShort(fid))} paid ${inr0(f.total)}</strong>
+                        <div class="sum-sub">${inr0(f.own)} is ${escapeHtml(clientShort(fid))}'s own marketing (not a WAIN cost). ${inr0(f.due)} was work for other clients → booked as WAIN's cost against each client and added to what WAIN owes ${escapeHtml(clientShort(fid))}.</div></div>`; }).join('')}
+                    <label style="display:flex; gap:8px; align-items:flex-start; font-size:13px;"><input type="checkbox" id="mpExpense" checked style="width:auto; margin-top:3px;"> <span>Record it in Accounts — each person's pay booked against the clients they worked for, so P&amp;L and client margins include it.</span></label>
+                    <div style="margin-top:10px; font-weight:700;">Total ${inr0(payState.lines.reduce((t, l) => t + (Number(l.net_pay) || 0), 0))} to ${payState.lines.filter(l => Number(l.net_pay) > 0).length} people</div>
                     <div class="modal-footer" style="padding:14px 0 0; border-top:1px solid var(--wain-border); margin-top:10px;"><button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Mark paid</button></div>
                 </form>`);
         }
@@ -10814,37 +11066,49 @@ async function olDownloadPdf(o, filename) {
             const date = document.getElementById('mpDate').value, mode = document.getElementById('mpMode').value, acct = document.getElementById('mpAcct').value || null;
             const withExp = document.getElementById('mpExpense').checked;
             const btn = event.submitter; if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
-            let ccInternal = null, expFail = 0;
-            if (withExp) {
-                const cc = allCostCenters.find(c => /internal ops/i.test(c.name)) || allCostCenters.find(c => /wain internal/i.test(c.name));
-                ccInternal = cc ? cc.id : null;
-            }
+            const cc = allCostCenters.find(c => /internal ops/i.test(c.name)) || allCostCenters.find(c => /wain internal/i.test(c.name));
+            const ccInternal = cc ? cc.id : null;
+            const ccFor = cid => { const c = allClients.find(x => x.id === cid); return c && c.cost_center_id ? c.cost_center_id : ccInternal; };
+            const month = monthLabel(payState.ym);
+            const funders = {};
+            let expFail = 0;
             for (const l of payState.lines) {
                 if (!(Number(l.net_pay) > 0)) continue;
+                const fid = l.funded_by_client_id || null;
+                const fname = fid ? clientShort(fid) : null;
+                const parts = lineSplit(l);
+                const piece = l.pay_type === 'per_piece';
+                if (fid) {
+                    const f = funders[fid] || (funders[fid] = { due: 0, own: 0, people: [] });
+                    const own = parts.filter(p => p.client_id === fid).reduce((t, p) => t + p.amount, 0);
+                    f.own += own; f.due += Math.round(Number(l.net_pay)) - own;
+                    f.people.push({ name: l.name, line_id: l.id, net: Math.round(Number(l.net_pay)), own, due: Math.round(Number(l.net_pay)) - own, parts });
+                }
                 let expenseId = null;
                 if (withExp) {
-                    const base = { expense_date: date, logged_by: currentEmployee.id, entry_type: 'expense', payment_mode: mode, paid_from_account_id: acct, payee: l.name };
-                    const rows = [];
-                    if (l.pay_type === 'per_piece' && payPieces(l).length) {
-                        const byClient = {};
-                        payPieces(l).forEach(p => { const k = p.client_id || ''; byClient[k] = (byClient[k] || 0) + p.qty * p.rate; });
-                        const extra = (Number(l.additions) || 0) - (Number(l.deductions) || 0);
-                        Object.entries(byClient).forEach(([cid, amt], i) => {
-                            const client = allClients.find(c => c.id === cid);
-                            rows.push({ ...base, category: 'Freelance/Contractor', amount: Math.round(amt + (i === 0 ? extra : 0)), client_id: cid || null, cost_center_id: client && client.cost_center_id ? client.cost_center_id : ccInternal, description: `${l.name} — ${monthLabel(payState.ym)} design/edit work${client ? ' for ' + client.name : ''}` });
-                        });
-                    } else {
-                        rows.push({ ...base, category: l.pay_type === 'per_piece' ? 'Freelance/Contractor' : 'Salaries', amount: Math.round(Number(l.net_pay)), cost_center_id: ccInternal, description: `${l.pay_type === 'per_piece' ? 'Consultant pay' : 'Salary'} — ${l.name} — ${monthLabel(payState.ym)}` });
+                    const rows = parts.filter(p => !fid || p.client_id !== fid).map(p => ({
+                        expense_date: date, logged_by: currentEmployee.id, entry_type: 'expense', payee: l.name,
+                        payment_mode: fid ? 'Paid by ' + fname : mode, paid_from_account_id: fid ? null : acct,
+                        category: piece ? 'Freelance/Contractor' : 'Salaries', amount: p.amount, client_id: p.client_id, cost_center_id: ccFor(p.client_id),
+                        description: `${piece ? 'Design/edit work' : 'Salary'} — ${l.name} — ${month}${p.client_id ? ' — ' + clientShort(p.client_id) : ' — WAIN internal'}${fid ? ` (paid by ${fname}, owed back)` : ''}`,
+                        source_key: `payroll:${l.id}:${p.client_id || 'internal'}`
+                    }));
+                    if (rows.length) {
+                        const { data, error } = await db.from('expenses').insert(rows).select('id');
+                        if (error) { expFail++; console.warn(error.message); } else expenseId = data && data[0] ? data[0].id : null;
                     }
-                    const { data, error } = await db.from('expenses').insert(rows).select('id');
-                    if (error) { expFail++; console.warn(error.message); } else expenseId = data && data[0] ? data[0].id : null;
                 }
-                await db.from('payroll_lines').update({ paid_on: date, payment_mode: mode, expense_id: expenseId }).eq('id', l.id);
+                await db.from('payroll_lines').update({ paid_on: date, payment_mode: fid ? 'Paid by ' + fname : mode, expense_id: expenseId, alloc: l.alloc || null }).eq('id', l.id);
+            }
+            for (const [fid, f] of Object.entries(funders)) {
+                await db.from('team_funding_entries').delete().eq('run_id', payState.run.id).eq('funder_client_id', fid).eq('kind', 'charge');
+                const { error } = await db.from('team_funding_entries').insert({ funder_client_id: fid, run_id: payState.run.id, month: payState.ym + '-01', kind: 'charge', amount: f.due, own_share: f.own, entry_date: date, details: { people: f.people }, created_by: currentEmployee.id });
+                if (error) { expFail++; console.warn(error.message); }
             }
             const { error } = await db.from('payroll_runs').update({ status: 'paid', paid_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('id', payState.run.id);
             closeModal();
             if (error) alert(error.message);
-            else if (expFail) alert(`Marked paid, but ${expFail} expense entr${expFail === 1 ? 'y' : 'ies'} couldn't be added to Accounts (you need the Accounts module). Add them there by hand.`);
+            else if (expFail) alert(`Marked paid, but ${expFail} Accounts entr${expFail === 1 ? 'y' : 'ies'} couldn't be added (you need the Accounts module). Add them there by hand.`);
             renderPayroll();
         }
 
@@ -10854,7 +11118,7 @@ async function olDownloadPdf(o, filename) {
             if (!box) return;
             const emps = allEmployees.filter(e => e.active !== false).sort((a, b) => String((payState.pay[a.id] || {}).pay_code || 'zz' + a.name).localeCompare(String((payState.pay[b.id] || {}).pay_code || 'zz' + b.name)));
             box.innerHTML = `<div class="table-container"><table class="pay-table">
-                <thead><tr><th>Emp ID</th><th>Name</th><th>Designation</th><th>Pay type</th><th>Monthly salary (₹)</th><th>Per piece (₹ default · rate card)</th><th>Paid from</th><th>Notes</th><th></th></tr></thead>
+                <thead><tr><th>Emp ID</th><th>Name</th><th>Designation</th><th>Pay type</th><th>Monthly salary (₹)</th><th>Per piece (₹ default · rate card)</th><th>Paid from</th><th>Paid by</th><th>Notes</th><th></th></tr></thead>
                 <tbody>${emps.map(e => { const p = payState.pay[e.id] || {}; return `<tr>
                     <td><input type="text" class="pay-in" id="ps_code_${e.id}" value="${escapeHtml(p.pay_code || '')}" style="width:72px;"></td>
                     <td><strong>${escapeHtml(e.name)}</strong></td>
@@ -10863,6 +11127,7 @@ async function olDownloadPdf(o, filename) {
                     <td><input type="number" class="pay-in" id="ps_gross_${e.id}" min="0" value="${p.monthly_gross ?? ''}"></td>
                     <td style="white-space:nowrap;"><input type="number" class="pay-in" id="ps_rate_${e.id}" min="0" value="${p.piece_rate ?? ''}" title="Default rate when the rate card has nothing for that kind of work"> <button type="button" class="btn btn-sm btn-secondary" onclick="openRateCard('${e.id}')" title="Rates by kind of work and client">Rates${(p.rate_card || []).length ? ' (' + p.rate_card.length + ')' : ''}</button></td>
                     <td><input type="date" class="pay-in" id="ps_from_${e.id}" value="${p.pay_from || e.join_date || ''}"></td>
+                    <td><select class="pay-in" id="ps_funder_${e.id}" style="width:120px; text-align:left;" title="Who actually pays this person"><option value="">WAIN</option>${allClients.map(c => `<option value="${c.id}" ${p.funded_by_client_id === c.id ? 'selected' : ''}>${escapeHtml(clientShort(c.id))}</option>`).join('')}</select></td>
                     <td><input type="text" class="pay-in pay-note" id="ps_notes_${e.id}" value="${escapeHtml(p.notes || '')}"></td>
                     <td><button class="btn btn-sm btn-secondary" onclick="savePaySetup('${e.id}', this)">Save</button></td>
                 </tr>`; }).join('')}</tbody></table></div>
@@ -10871,7 +11136,7 @@ async function olDownloadPdf(o, filename) {
 
         async function savePaySetup(empId, btn) {
             const v = k => document.getElementById(`ps_${k}_${empId}`).value;
-            const row = { ...(payState.pay[empId] || {}), employee_id: empId, pay_code: v('code').trim() || null, pay_type: v('type'), monthly_gross: v('gross') === '' ? null : Number(v('gross')), piece_rate: v('rate') === '' ? null : Number(v('rate')), pay_from: v('from') || null, notes: v('notes').trim() || null, updated_by: currentEmployee.id, updated_at: new Date().toISOString() };
+            const row = { ...(payState.pay[empId] || {}), employee_id: empId, pay_code: v('code').trim() || null, pay_type: v('type'), monthly_gross: v('gross') === '' ? null : Number(v('gross')), piece_rate: v('rate') === '' ? null : Number(v('rate')), pay_from: v('from') || null, funded_by_client_id: v('funder') || null, notes: v('notes').trim() || null, updated_by: currentEmployee.id, updated_at: new Date().toISOString() };
             const { error } = await db.from('employee_pay').upsert(row);
             if (error) { alert('Could not save: ' + error.message); return; }
             payState.pay[empId] = row;
