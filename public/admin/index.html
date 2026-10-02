@@ -1279,6 +1279,9 @@
         .rc-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) 110px 34px; gap:6px; margin-bottom:6px; align-items:center; }
         .rc-row select, .rc-row input { font-size:12px; padding:5px 6px; border:1px solid var(--wain-border); border-radius:4px; min-width:0; }
         tr.pw-off td { opacity:.45; }
+        .item-rate-box { border:1px dashed rgba(244,178,45,0.8); border-radius:6px; padding:10px; background:rgba(244,178,45,0.05); }
+        .item-rate-row { display:grid; grid-template-columns:minmax(0,1fr) 140px; gap:8px; align-items:center; margin-top:6px; font-size:13px; }
+        .item-rate-row input { font-size:12px; padding:5px 6px; border:1px solid var(--wain-border); border-radius:4px; }
         .fund-chip { display:inline-block; font-size:10px; padding:1px 7px; border-radius:10px; background:rgba(244,93,93,0.12); color:#b23b3b; font-weight:700; margin-top:2px; }
         .alloc-link { color:var(--text-secondary); text-decoration:underline dotted; font-size:11px; }
         .fund-box { margin-top:14px; border:1px solid var(--wain-border); border-radius:8px; padding:12px 14px; background:rgba(14,154,167,0.04); }
@@ -3035,6 +3038,11 @@
                 <div class="accent-line"></div>
                 <div id="payrollBody">
                     <div class="card"><div id="payrollRegister">Loading…</div></div>
+                    <div class="card" id="workRatesCard" style="margin-top:16px; display:none;">
+                        <div class="card-header"><div class="card-title">💰 Per-piece prices — task by task</div></div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Everything assigned to per-piece people that hasn't been paid yet. Set a price for any single deliverable or task (a big shoot edit, a quick resize…); it beats the rate card. You can also set it from Edit on the task or deliverable.</div>
+                        <div id="workRatesBody">Loading…</div>
+                    </div>
                     <div class="card" style="margin-top:16px;">
                         <div class="card-header"><div class="card-title">⚙ Salary setup</div></div>
                         <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Each person's pay code, pay type and monthly gross. New months start from these figures. Only HR and Superadmins can see this.</div>
@@ -7197,6 +7205,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
                     </div>
                 </form>
             `);
+            if (typeof addItemRateSection === 'function') addItemRateSection('t', taskId, '#modalBody form');
         }
 
         async function saveTaskEdit(event, taskId) {
@@ -7212,6 +7221,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             };
             const { error } = await db.from('tasks').update(patch).eq('id', taskId);
             if (error) { alert('Could not save: ' + error.message); return; }
+            if (typeof saveItemRateSection === 'function' && document.querySelector('.item-rate-box')) await saveItemRateSection('t', taskId);
             closeModal();
             renderTasks();
         }
@@ -8258,6 +8268,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
                     </div>
                 </form>
             `);
+            if (typeof addItemRateSection === 'function') addItemRateSection('d', id, '#modalBody form');
         }
 
         async function saveDeliverableEdit(event, id) {
@@ -8279,6 +8290,7 @@ ${(t.team_ids || []).length ? `<label class="split-each"><input type="checkbox" 
             };
             const { error } = await db.from('creative_deliverables').update(patch).eq('id', id);
             if (error) { alert('Could not save: ' + error.message); return; }
+            if (typeof saveItemRateSection === 'function' && document.querySelector('.item-rate-box')) await saveItemRateSection('d', id);
             closeModal();
             await renderDeliverables();
         }
@@ -10328,7 +10340,7 @@ async function olDownloadPdf(o, filename) {
         }
 
         // ---------- "new version available" banner ----------
-        const ADMIN_BUILD = '20261001150522';
+        const ADMIN_BUILD = '20261002104007';
         async function checkForNewVersion() {
             try {
                 const res = await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' });
@@ -10386,6 +10398,7 @@ async function olDownloadPdf(o, filename) {
             payState.dirty = false;
             drawPayroll();
             drawPaySetup();
+            drawWorkRates();
         }
 
         function payStatusChip(run) {
@@ -10685,18 +10698,22 @@ async function olDownloadPdf(o, filename) {
                 db.from('payroll_lines').select('run_id, pieces').eq('employee_id', empId)
             ]);
             const mine = r => r.assigned_to === empId || (r.team_ids || []).includes(empId);
+            const itemRates = await loadItemRates([empId], null);
+            const itemRate = ref => { const r = itemRates[ref + '|' + empId]; return r ? Number(r.rate) : null; };
             const paidElsewhere = new Set();
             (other || []).filter(o => !payState.run || o.run_id !== payState.run.id).forEach(o => (o.pieces || []).forEach(p => { if (p.ref && p.on !== false) paidElsewhere.add(p.src + ':' + p.ref); }));
             const out = [];
             (dels || []).filter(mine).forEach(d => {
                 if (paidElsewhere.has('d:' + d.id)) return;
                 const type = normPieceType(d.deliverable_type);
-                out.push({ src: 'd', ref: d.id, on: true, date: String(d.delivered_at).slice(0, 10), client_id: d.client_id || null, label: d.title, type, qty: 1, rate: pieceRateFor(empId, type, d.client_id) });
+                const own = itemRate('d:' + d.id);
+                out.push({ src: 'd', ref: d.id, on: true, date: String(d.delivered_at).slice(0, 10), client_id: d.client_id || null, label: d.title, type, qty: 1, rate: own ?? pieceRateFor(empId, type, d.client_id), item_rate: own !== null });
             });
             (tasks || []).filter(t => mine(t) && !t.deliverable_id).forEach(t => {
                 if (paidElsewhere.has('t:' + t.id)) return;
-                const rate = pieceRateFor(empId, 'Task', t.client_id);
-                out.push({ src: 't', ref: t.id, on: rate > 0, date: String(t.completed_at).slice(0, 10), client_id: t.client_id || null, label: t.title, type: 'Task', qty: 1, rate });
+                const own = itemRate('t:' + t.id);
+                const rate = own ?? pieceRateFor(empId, 'Task', t.client_id);
+                out.push({ src: 't', ref: t.id, on: rate > 0, date: String(t.completed_at).slice(0, 10), client_id: t.client_id || null, label: t.title, type: 'Task', qty: 1, rate, item_rate: own !== null });
             });
             return out.sort((a, b) => a.date.localeCompare(b.date));
         }
@@ -10706,7 +10723,7 @@ async function olDownloadPdf(o, filename) {
             const found = await payWorkForMonth(l.employee_id, payState.ym);
             const prev = l.pieces || [];
             const prevByKey = {}; prev.filter(p => p.src).forEach(p => { prevByKey[p.src + ':' + p.ref] = p; });
-            const merged = found.map(f => { const o = prevByKey[f.src + ':' + f.ref]; return o ? { ...f, on: o.on, qty: o.qty, rate: o.rate_set ? o.rate : (Number(f.rate) || Number(o.rate) || 0), rate_set: o.rate_set } : f; });
+            const merged = found.map(f => { const o = prevByKey[f.src + ':' + f.ref]; return o ? { ...f, on: (f.item_rate && !o.item_rate && Number(f.rate) > 0 && f.src === 't') ? true : o.on, qty: o.qty, rate: f.item_rate ? f.rate : o.rate_set ? o.rate : (Number(f.rate) || Number(o.rate) || 0), rate_set: f.item_rate ? false : o.rate_set } : f; });
             const manual = prev.filter(p => !p.src);
             const added = found.filter(f => !prevByKey[f.src + ':' + f.ref]).length;
             l.pieces = merged.concat(manual);
@@ -10731,7 +10748,7 @@ async function olDownloadPdf(o, filename) {
                 <td>${escapeHtml(p.label || '')}<div class="sum-sub">${p.src === 't' ? 'Task' : 'Deliverable'}</div></td>
                 <td><select class="pwType pay-in" style="width:96px; text-align:left;" ${dis} onchange="pwTypeChanged(this, '${l.employee_id}')">${PIECE_TYPES.concat(PIECE_TYPES.includes(p.type) ? [] : [p.type]).map(t => `<option ${t === p.type ? 'selected' : ''}>${escapeHtml(t)}</option>`).join('')}</select></td>
                 <td><input type="number" class="pwQty pay-in" style="width:56px;" min="0" step="0.5" value="${p.qty}" ${dis} oninput="piecesTotal()"></td>
-                <td><input type="number" class="pwRate pay-in${Number(p.rate) ? '' : ' pay-over'}" min="0" value="${p.rate || ''}" placeholder="₹" ${dis} oninput="this.dataset.set='1'; piecesTotal()" ${p.rate_set ? 'data-set="1"' : ''}></td>
+                <td><input type="number" class="pwRate pay-in${Number(p.rate) ? '' : ' pay-over'}" min="0" value="${p.rate || ''}" placeholder="₹" ${dis} oninput="this.dataset.set='1'; piecesTotal()" ${p.rate_set ? 'data-set="1"' : ''} title="${p.item_rate ? 'Price set for this piece' : 'From the rate card — type to set a price just for this piece'}">${p.item_rate ? '<div class="sum-sub">own price</div>' : ''}</td>
             </tr>`;
             window.__pwWork = work;
             const clientOpts = sel => '<option value="">— Internal / other —</option>' + allClients.map(c => `<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('');
@@ -10757,14 +10774,14 @@ async function olDownloadPdf(o, filename) {
         function pwTypeChanged(sel, empId) {
             const tr = sel.closest('tr'); const p = window.__pwWork[Number(tr.dataset.i)];
             const rate = tr.querySelector('.pwRate');
-            if (!rate.dataset.set) { const r = pieceRateFor(empId, sel.value, p.client_id); rate.value = r || ''; rate.classList.toggle('pay-over', !r); }
+            if (!rate.dataset.set && !p.item_rate) { const r = pieceRateFor(empId, sel.value, p.client_id); rate.value = r || ''; rate.classList.toggle('pay-over', !r); }
             piecesTotal();
         }
         function readPieces() {
             const work = [...document.querySelectorAll('#pieceWork tr.pw-row')].map(tr => {
                 const p = window.__pwWork[Number(tr.dataset.i)];
                 const rateEl = tr.querySelector('.pwRate');
-                return { src: p.src, ref: p.ref, date: p.date, client_id: p.client_id, label: p.label, type: tr.querySelector('.pwType').value, on: tr.querySelector('.pwOn').checked, qty: Number(tr.querySelector('.pwQty').value) || 0, rate: Number(rateEl.value) || 0, rate_set: !!rateEl.dataset.set };
+                return { src: p.src, ref: p.ref, item_rate: p.item_rate && !rateEl.dataset.set, date: p.date, client_id: p.client_id, label: p.label, type: tr.querySelector('.pwType').value, on: tr.querySelector('.pwOn').checked, qty: Number(tr.querySelector('.pwQty').value) || 0, rate: Number(rateEl.value) || 0, rate_set: !!rateEl.dataset.set };
             });
             const manual = [...document.querySelectorAll('#pieceRows .piece-row')].map(r => ({ client_id: r.querySelector('.pcClient').value || null, label: r.querySelector('.pcLabel').value.trim(), qty: Number(r.querySelector('.pcQty').value) || 0, rate: Number(r.querySelector('.pcRate').value) || 0 })).filter(p => p.qty && p.rate);
             return work.concat(manual);
@@ -10774,9 +10791,10 @@ async function olDownloadPdf(o, filename) {
             const el = document.getElementById('piecesTotal'); if (el) el.textContent = inr0(list.reduce((s, p) => s + p.qty * p.rate, 0));
             const c = document.getElementById('piecesCount'); if (c) c.textContent = `· ${list.reduce((s, p) => s + p.qty, 0)} pieces`;
         }
-        function savePieces(id) {
+        async function savePieces(id) {
             const l = payState.lines.find(x => x.id === id);
             l.pieces = readPieces();
+            for (const p of l.pieces.filter(p => p.src && p.rate_set)) { await saveItemRate(p.src + ':' + p.ref, l.employee_id, p.rate); p.item_rate = true; p.rate_set = false; }
             if (!l.pieces.length) l.pieces = null;
             calcPayLine(l);
             payState.dirty = true;
@@ -11039,6 +11057,111 @@ async function olDownloadPdf(o, filename) {
             ws['!cols'] = [{ wch: 12 }, { wch: 30 }, { wch: 20 }, { wch: 16 }, { wch: 18 }, { wch: 18 }, { wch: 16 }, { wch: 50 }];
             const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Statement');
             XLSX.writeFile(wb, `${name.replace(/[^\w]+/g, ' ').trim()} team funding statement.xlsx`);
+        }
+
+        // ===== Pay per individual task / deliverable (overrides the rate card) =====
+        // work_piece_rates: one row per piece of work per per-piece person. HR / Superadmin only.
+        async function loadItemRates(empIds, refs) {
+            let q = db.from('work_piece_rates').select('ref, employee_id, rate, note');
+            if (empIds && empIds.length) q = q.in('employee_id', empIds);
+            if (refs && refs.length) q = q.in('ref', refs);
+            const { data } = await q;
+            const map = {}; (data || []).forEach(r => { map[r.ref + '|' + r.employee_id] = r; });
+            return map;
+        }
+        async function saveItemRate(ref, empId, rate, note) {
+            if (rate === null || rate === '' || isNaN(rate)) {
+                return db.from('work_piece_rates').delete().eq('ref', ref).eq('employee_id', empId);
+            }
+            return db.from('work_piece_rates').upsert({ ref, employee_id: empId, rate: Number(rate), note: note || null, set_by: currentEmployee.id, updated_at: new Date().toISOString() }, { onConflict: 'ref,employee_id' });
+        }
+        async function perPiecePeople() {
+            if (!payState.pay || !Object.keys(payState.pay).length) {
+                const { data } = await db.from('employee_pay').select('*');
+                payState.pay = {}; (data || []).forEach(p => { payState.pay[p.employee_id] = p; });
+            }
+            return allEmployees.filter(e => e.active !== false && (payState.pay[e.id] || {}).pay_type === 'per_piece');
+        }
+
+        // Section injected into the Edit task / Edit deliverable forms
+        async function addItemRateSection(src, id, formSel) {
+            if (!canRunPayroll()) return;
+            const form = document.querySelector(formSel); if (!form) return;
+            const people = await perPiecePeople(); if (!people.length) return;
+            const ref = src + ':' + id;
+            const rates = await loadItemRates(people.map(p => p.id), [ref]);
+            const item = src === 'd' ? allDeliverables.find(x => x.id === id) : null;
+            const type = src === 'd' ? normPieceType(item && item.deliverable_type) : 'Task';
+            const clientId = src === 'd' ? (item && item.client_id) : ((allTasks.find(x => x.task_id === id) || {}).client_id);
+            const box = document.createElement('div');
+            box.className = 'form-group item-rate-box';
+            box.innerHTML = `<label>💰 Per-piece pay for this ${src === 'd' ? 'deliverable' : 'task'} <span class="sum-sub">(only HR / Superadmin see this)</span></label>
+                ${people.map(p => { const r = rates[ref + '|' + p.id]; const card = pieceRateFor(p.id, type, clientId); return `<div class="item-rate-row"><span>${escapeHtml(p.name)}</span><input type="number" min="0" class="itemRate" data-emp="${p.id}" value="${r ? r.rate : ''}" placeholder="${card ? 'rate card ₹' + card : (src === 't' ? 'not paid' : 'no rate yet')}"></div>`; }).join('')}
+                <div class="sum-sub" style="margin-top:4px;">Leave blank to use their rate card. Only counts when they're assigned or on the team and it's ${src === 'd' ? 'delivered' : 'done'}.</div>`;
+            const footer = form.querySelector('.modal-footer');
+            form.insertBefore(box, footer);
+        }
+        async function saveItemRateSection(src, id) {
+            const inputs = [...document.querySelectorAll('.item-rate-box .itemRate')];
+            for (const i of inputs) await saveItemRate(src + ':' + id, i.dataset.emp, i.value === '' ? null : Number(i.value));
+        }
+
+        // Payroll card: price each piece of work before or after it's done
+        async function drawWorkRates() {
+            const box = document.getElementById('workRatesBody'); if (!box) return;
+            const people = await perPiecePeople();
+            const card = document.getElementById('workRatesCard');
+            if (!people.length) { if (card) card.style.display = 'none'; return; }
+            if (card) card.style.display = '';
+            const ids = people.map(p => p.id);
+            const since = new Date(Date.now() - 45 * 864e5).toISOString();
+            const [{ data: dels }, { data: tasks }, { data: lines }] = await Promise.all([
+                db.from('creative_deliverables').select('id, title, deliverable_type, client_id, assigned_to, team_ids, status, due_date, delivered_at, created_at').or(`status.neq.delivered,delivered_at.gte.${since}`).order('due_date', { ascending: true, nullsFirst: false }),
+                db.from('tasks').select('id, title, client_id, assigned_to, team_ids, status, due_date, completed_at, deliverable_id').is('deliverable_id', null).or(`status.neq.done,completed_at.gte.${since}`).order('due_date', { ascending: true, nullsFirst: false }),
+                db.from('payroll_lines').select('employee_id, pieces, run_id').in('employee_id', ids)
+            ]);
+            const paidRuns = new Set(); // refs already on a non-draft register
+            const { data: runs } = await db.from('payroll_runs').select('id, status');
+            const done = new Set((runs || []).filter(r => r.status !== 'draft').map(r => r.id));
+            (lines || []).forEach(l => { if (done.has(l.run_id)) (l.pieces || []).forEach(p => { if (p.ref && p.on !== false) paidRuns.add(p.src + ':' + p.ref + '|' + l.employee_id); }); });
+            const rows = [];
+            people.forEach(p => {
+                const mine = r => r.assigned_to === p.id || (r.team_ids || []).includes(p.id);
+                (dels || []).filter(mine).forEach(d => rows.push({ emp: p, ref: 'd:' + d.id, title: d.title, type: normPieceType(d.deliverable_type), client_id: d.client_id, status: d.status, done: d.status === 'delivered', date: d.delivered_at ? String(d.delivered_at).slice(0, 10) : d.due_date }));
+                (tasks || []).filter(mine).forEach(t => rows.push({ emp: p, ref: 't:' + t.id, title: t.title, type: 'Task', client_id: t.client_id, status: t.status, done: t.status === 'done', date: t.completed_at ? String(t.completed_at).slice(0, 10) : t.due_date }));
+            });
+            const open = rows.filter(r => !paidRuns.has(r.ref + '|' + r.emp.id));
+            const rates = await loadItemRates(ids, null);
+            window.__workRates = open;
+            const filt = (document.getElementById('wrFilter') || {}).value || 'all';
+            const shown = open.filter(r => filt === 'all' || (filt === 'open' ? !r.done : filt === 'done' ? r.done : !rates[r.ref + '|' + r.emp.id]));
+            box.innerHTML = `<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+                    <select id="wrFilter" class="pay-in" style="width:auto; text-align:left;" onchange="drawWorkRates()">
+                        <option value="all" ${filt === 'all' ? 'selected' : ''}>All unpaid work</option><option value="open" ${filt === 'open' ? 'selected' : ''}>Not finished yet</option><option value="done" ${filt === 'done' ? 'selected' : ''}>Finished, waiting for payroll</option><option value="unpriced" ${filt === 'unpriced' ? 'selected' : ''}>No own price set</option></select>
+                    <span class="sum-sub">${open.length} pieces · type a price to set one just for that piece; blank uses the rate card</span>
+                    <button type="button" class="btn btn-sm btn-primary" style="margin-left:auto;" id="wrSave" onclick="saveWorkRates(this)">Save prices</button></div>
+                <div class="table-container" style="max-height:420px; overflow:auto;"><table class="pay-table">
+                <thead><tr><th>Person</th><th>Date</th><th>Client</th><th>Work</th><th>Kind</th><th>Status</th><th class="num">Rate card</th><th class="num">This piece ₹</th></tr></thead>
+                <tbody>${shown.map(r => { const cardRate = pieceRateFor(r.emp.id, r.type, r.client_id); const own = rates[r.ref + '|' + r.emp.id]; const i = open.indexOf(r); return `<tr>
+                    <td>${escapeHtml(r.emp.name.split(' ')[0])}</td><td style="white-space:nowrap;">${r.date ? fmtDate(r.date) : '—'}</td><td>${escapeHtml(clientShort(r.client_id))}</td>
+                    <td>${escapeHtml(r.title)}<div class="sum-sub">${r.ref[0] === 't' ? 'Task' : 'Deliverable'}</div></td><td>${escapeHtml(r.type)}</td>
+                    <td>${r.done ? '<span class="status-badge status-active">Done</span>' : `<span class="sum-sub">${escapeHtml(((typeof DELIVERABLE_STAGE_LABELS !== 'undefined' && DELIVERABLE_STAGE_LABELS[r.status]) || r.status || '').replace(/_/g, ' '))}</span>`}</td>
+                    <td class="num">${cardRate ? inr0(cardRate) : '—'}</td>
+                    <td class="num"><input type="number" min="0" class="pay-in wrRate" data-i="${i}" value="${own ? own.rate : ''}" data-orig="${own ? own.rate : ''}" placeholder="${cardRate || ''}"></td></tr>`; }).join('') || '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">Nothing here.</td></tr>'}</tbody></table></div>`;
+        }
+        async function saveWorkRates(btn) {
+            const changed = [...document.querySelectorAll('#workRatesBody .wrRate')].filter(i => i.value !== i.dataset.orig);
+            if (!changed.length) { btn.textContent = 'Nothing changed'; setTimeout(() => { btn.textContent = 'Save prices'; }, 1500); return; }
+            btn.disabled = true; btn.textContent = 'Saving…';
+            for (const i of changed) { const r = window.__workRates[Number(i.dataset.i)]; await saveItemRate(r.ref, r.emp.id, i.value === '' ? null : Number(i.value)); }
+            btn.disabled = false;
+            // re-price the open month for those people
+            if (payState.run && payState.run.status === 'draft') {
+                for (const l of payState.lines.filter(x => x.pay_type === 'per_piece')) await syncPiecesFromWork(l);
+                await refreshAllocs(); await savePayroll(true);
+            }
+            await drawWorkRates();
+            const b = document.getElementById('wrSave'); if (b) { b.textContent = 'Saved ✓'; setTimeout(() => { if (b) b.textContent = 'Save prices'; }, 1500); }
         }
 
         async function openMarkPaid() {
